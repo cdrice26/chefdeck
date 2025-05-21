@@ -1,0 +1,77 @@
+'use client';
+
+import Card from '@/components/ui/Card';
+import Input from '@/components/forms/Input';
+import Button from '@/components/forms/Button';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+/**
+ * Login page component.
+ *
+ * Renders a login form that allows users to sign in with their email and password.
+ * On successful login, the user is redirected to the home page.
+ * Displays error messages if authentication fails.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered login page.
+ */
+const Login = () => {
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  /**
+   * Handles form submission for user login.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || 'Login failed');
+      return;
+    }
+
+    router.push('/');
+  };
+
+  return (
+    <div className='w-full h-full flex justify-center items-center'>
+      <Card className='p-4 w-full h-full sm:w-1/2 sm:h-1/2'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <h1>Login</h1>
+          <Input type='email' name='email' placeholder='Email' required />
+          <Input
+            type='password'
+            name='password'
+            placeholder='Password'
+            required
+          />
+          <Button type='submit'>Login</Button>
+          {error && <div style={{ color: 'red' }}>{error}</div>}
+          <p>
+            Don&apos;t have an account?{' '}
+            <a href='/signup' className='text-blue-500'>
+              Sign up
+            </a>
+          </p>
+        </form>
+      </Card>
+    </div>
+  );
+};
+
+export default Login;
