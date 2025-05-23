@@ -17,10 +17,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
 
   const fetchUser = async () => {
-    const res = await fetch('/api/auth/checkAuth');
-    const data = await res.json();
-    if (!res.ok) setUser(null);
-    else setUser(data.data.user);
+    try {
+      const res = await fetch('/api/auth/checkAuth');
+      if (!res.ok) {
+        setUser(null);
+        return;
+      }
+      const data = await res.json();
+      setUser(data.data.user);
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+      setUser(null);
+    }
   };
 
   useEffect(() => {

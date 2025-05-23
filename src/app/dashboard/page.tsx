@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 
 const Dashboard = async () => {
   try {
-    await requireAuth();
+    //await requireAuth();
     return (
       <div>
         <h1>Dashboard</h1>
