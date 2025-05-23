@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import createClient from '@/lib/supabase/supabase';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Handles POST requests for user signup.
@@ -12,6 +13,8 @@ import { supabase } from '@/lib/supabase';
  * @returns {Promise<NextResponse>} The response containing signup result.
  */
 export async function POST(req: NextRequest) {
+  const supabase = await createClient();
+
   try {
     const { email, password, confirmPassword } = await req.json();
 
@@ -36,6 +39,8 @@ export async function POST(req: NextRequest) {
         emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL
       }
     });
+
+    revalidatePath('/', 'layout');
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 401 });

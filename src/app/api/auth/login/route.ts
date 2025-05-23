@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import createClient from '@/lib/supabase/supabase';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Handles POST requests for user login.
@@ -12,6 +13,8 @@ import { supabase } from '@/lib/supabase';
  * @returns {Promise<NextResponse>} The response containing authentication result.
  */
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  const supabase = await createClient();
+
   try {
     const { email, password } = await req.json();
 
@@ -26,6 +29,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       email,
       password
     });
+
+    revalidatePath('/', 'layout');
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 401 });
