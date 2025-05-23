@@ -5,6 +5,7 @@ import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 /**
  * Login page component.
@@ -19,6 +20,7 @@ import { useState } from 'react';
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { fetchUser } = useAuth();
 
   /**
    * Handles form submission for user login.
@@ -45,7 +47,8 @@ const Login = () => {
       return;
     }
 
-    router.push('/');
+    await fetchUser();
+    router.push('/dashboard');
   };
 
   return (

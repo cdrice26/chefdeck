@@ -1,4 +1,5 @@
-import { requireAuth } from '@/lib/requireAuth';
+import { requireAuth } from '@/utils/requireAuth';
+import { redirect } from 'next/navigation';
 
 const Dashboard = async () => {
   try {
@@ -9,11 +10,7 @@ const Dashboard = async () => {
       </div>
     );
   } catch (error) {
-    return (
-      <div>
-        <h1>Unauthorized</h1>
-      </div>
-    );
+    redirect('/login');
   }
 };
 
