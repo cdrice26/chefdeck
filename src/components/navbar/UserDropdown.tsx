@@ -10,7 +10,7 @@ interface OptionType {
 }
 
 interface UserDropdownProps {
-  user: { email: string };
+  user: { email: string; username?: string } | null;
   onClickAccount: () => void;
   onClickLogout: () => void;
 }
@@ -87,7 +87,7 @@ const UserDropdown = ({
   ];
 
   // Show user's email/username as placeholder
-  const placeholder = user?.email ? user.email.split('@')[0] : 'User';
+  const placeholder = user?.username ?? user?.email ?? 'User';
 
   const isDark = useIsDark();
 

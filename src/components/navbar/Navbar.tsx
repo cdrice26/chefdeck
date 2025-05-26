@@ -14,13 +14,14 @@ const Navbar = () => {
   const isDark = useIsDark();
   const router = useRouter();
 
-  const { user, fetchUser } = useAuth();
+  const { user, username, setUsername, fetchUser } = useAuth();
 
   const logout = async () => {
     const response = await fetch('/api/auth/logout', { method: 'POST' });
     if (response.status !== 200) throw new Error('Logout failed');
+    setUsername(null);
     await fetchUser();
-    router.push('/'); // Optionally redirect
+    router.push('/');
   };
 
   useEffect(() => {
@@ -50,7 +51,7 @@ const Navbar = () => {
       <div className='flex flex-row gap-4'>
         {user ? (
           <UserDropdown
-            user={user}
+            user={{ ...user, username: username ?? user.email }}
             onClickAccount={() => {}}
             onClickLogout={logout}
           />

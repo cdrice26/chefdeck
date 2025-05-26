@@ -39,18 +39,46 @@ export async function updateSession(request: NextRequest) {
     data: { user }
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    !request.nextUrl.pathname.startsWith('/resetPassword') &&
-    !(request.nextUrl.pathname === '/') &&
-    !request.nextUrl.pathname.startsWith('/api/auth')
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  const unprotectedPaths = [
+    '/login',
+    '/auth',
+    '/signup',
+    '/resetPassword',
+    '/api/auth',
+    '/'
+  ];
+
+  const isUnprotected = unprotectedPaths.some(
+    (path) =>
+      request.nextUrl.pathname === path ||
+      request.nextUrl.pathname.startsWith(path + '/')
+  );
+
+  if (!user && !isUnprotected) {
+    // User is not authenticated and the path is protected
     const url = request.nextUrl.clone();
     url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
+
+  const { data } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('user_id', user?.id)
+    .single();
+  const username = data?.username ?? null;
+  if (
+    !username &&
+    request.nextUrl.pathname !== '/setupProfile' &&
+    !isUnprotected
+  ) {
+    // User is authenticated but has not set up their profile
+    const url = request.nextUrl.clone();
+    url.pathname = '/setupProfile';
+    url.searchParams.set(
+      'redirectTo',
+      encodeURIComponent(request.nextUrl.pathname)
+    );
     return NextResponse.redirect(url);
   }
 
