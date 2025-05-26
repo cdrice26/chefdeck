@@ -53,7 +53,7 @@ const Login = () => {
 
   return (
     <div className='w-full h-full flex justify-center items-center'>
-      <Card className='p-4 w-full h-full sm:w-1/2 sm:h-1/2'>
+      <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
         <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
           <h1>Login</h1>
           <Input type='email' name='email' placeholder='Email' required />
