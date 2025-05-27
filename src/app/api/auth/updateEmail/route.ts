@@ -1,0 +1,41 @@
+import { NextRequest, NextResponse } from 'next/server';
+import createClient from '@/utils/supabase/supabase';
+
+export async function POST(req: NextRequest) {
+  try {
+    const { email } = await req.json();
+
+    if (!email) {
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+    }
+
+    // Create Supabase client with SSR cookies for authentication
+    const supabase = await createClient();
+
+    // Get current user
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Update email
+    const { error: updateError } = await supabase.auth.updateUser({
+      email
+    });
+
+    if (updateError) {
+      return NextResponse.json({ error: updateError.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: 'Email updated successfully' });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

@@ -8,21 +8,19 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;
-  const next = searchParams.get('next') ?? '/';
+  const next = searchParams.get('next') ?? '/static/confirmSuccess';
 
   if (token_hash && type) {
     const supabase = await createClient();
 
-    const { error } = await supabase.auth.verifyOtp({
-      type,
-      token_hash
-    });
+    const verifyParams: any = { type, token_hash };
+
+    const { error } = await supabase.auth.verifyOtp(verifyParams);
+    console.error(error);
     if (!error) {
-      // redirect user to specified redirect URL or root of app
       redirect(next);
     }
   }
 
-  // redirect the user to an error page with some instructions
-  redirect('/signup');
+  redirect('/static/error');
 }

@@ -10,9 +10,15 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { error } = await supabase
     .from('profiles')
-    .insert({ user_id: user?.id, username });
+    .upsert({ user_id: user?.id, username });
 
   if (error) {
+    if (error.code === '23505') {
+      return NextResponse.json(
+        { error: 'Username already exists' },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(
       { error: 'Failed to update profile' },
       { status: 500 }

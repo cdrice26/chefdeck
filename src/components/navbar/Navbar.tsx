@@ -24,6 +24,14 @@ const Navbar = () => {
     router.push('/');
   };
 
+  const handleAccountClick = () => {
+    if (user) {
+      router.push('/account');
+    } else {
+      router.push('/login');
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -37,7 +45,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 p-5 flex flex-row justify-between transition-shadow items-center ${
+      className={`sticky z-100 bg-white dark:bg-[#151515] top-0 p-5 flex flex-row justify-between transition-shadow items-center ${
         showShadow ? 'shadow-lg' : ''
       }`}
     >
@@ -52,7 +60,7 @@ const Navbar = () => {
         {user ? (
           <UserDropdown
             user={{ ...user, username: username ?? user.email }}
-            onClickAccount={() => {}}
+            onClickAccount={handleAccountClick}
             onClickLogout={logout}
           />
         ) : (
