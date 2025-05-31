@@ -71,6 +71,11 @@ const Login = () => {
               Sign up
             </a>
           </p>
+          <p>
+            <a href='/forgotPassword' className='text-blue-500'>
+              Forgot Password?
+            </a>
+          </p>
         </form>
       </Card>
     </div>

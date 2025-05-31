@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       email,
       password,
       options: {
-        emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/confirm?type=signup`
       }
     });
 

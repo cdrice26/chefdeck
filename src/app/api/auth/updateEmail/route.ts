@@ -23,9 +23,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Update email
-    const { error: updateError } = await supabase.auth.updateUser({
-      email
-    });
+    const { error: updateError } = await supabase.auth.updateUser(
+      {
+        email
+      },
+      {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/confirm?type=email_change`
+      }
+    );
 
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 400 });

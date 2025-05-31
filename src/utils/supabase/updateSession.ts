@@ -43,11 +43,12 @@ export async function updateSession(request: NextRequest) {
     '/login',
     '/auth',
     '/signup',
-    '/resetPassword',
+    '/forgotPassword',
     '/api/auth',
     '/',
     '/static/confirmSuccess',
-    '/static/error'
+    '/static/error',
+    '/confirm'
   ];
 
   const isUnprotected = unprotectedPaths.some(

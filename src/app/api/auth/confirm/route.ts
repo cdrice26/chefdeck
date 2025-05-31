@@ -1,26 +1,36 @@
 import { type EmailOtpType } from '@supabase/supabase-js';
-import { type NextRequest } from 'next/server';
-
+import { NextRequest, NextResponse } from 'next/server';
 import createClient from '@/utils/supabase/supabase';
-import { redirect } from 'next/navigation';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;
-  const next = searchParams.get('next') ?? '/static/confirmSuccess';
 
-  if (token_hash && type) {
-    const supabase = await createClient();
-
-    const verifyParams: any = { type, token_hash };
-
-    const { error } = await supabase.auth.verifyOtp(verifyParams);
-    console.error(error);
-    if (!error) {
-      redirect(next);
-    }
+  if (!token_hash || !type) {
+    return NextResponse.json(
+      { error: 'Missing token or type.' },
+      { status: 400 }
+    );
   }
 
-  redirect('/static/error');
+  const supabase = await createClient();
+  const { error } = await supabase.auth.verifyOtp({ type, token_hash });
+
+  if (error) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: 400 }
+    );
+  }
+
+  // For password reset, client should show a password reset form.
+  // For signup/email change, client can show a success message.
+  return NextResponse.json({
+    message:
+      type === 'recovery'
+        ? 'Token valid, please set a new password.'
+        : 'Confirmation successful.',
+    type
+  });
 }
