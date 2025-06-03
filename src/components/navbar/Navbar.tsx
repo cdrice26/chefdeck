@@ -5,6 +5,7 @@ import useIsDark from '@/hooks/useIsDark';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import TabBar from './TabBar';
 
 const UserDropdown = dynamic(() => import('./UserDropdown'), { ssr: false });
 
@@ -56,6 +57,7 @@ const Navbar = () => {
           alt='Cooky'
         />
       </button>
+      {user && <TabBar />}
       <div className='flex flex-row gap-4'>
         {user ? (
           <UserDropdown

@@ -1,0 +1,9 @@
+const Schedule = async () => {
+  return (
+    <div>
+      <h1>Schedule</h1>
+    </div>
+  );
+};
+
+export default Schedule;
