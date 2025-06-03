@@ -3,18 +3,50 @@ import Input from '@/components/forms/Input';
 import { Direction, Ingredient, Recipe } from '@/types/Recipe';
 import { useState } from 'react';
 import Button from '../forms/Button';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable';
+import SortableItem from '../forms/SortableItem';
+import { v4 as uuid } from 'uuid';
 
 interface RecipeFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   recipe?: Recipe | null;
 }
 
+interface StatePair {
+  state: any;
+  setter: React.Dispatch<React.SetStateAction<any>>;
+}
+
 const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
   const [ingredients, setIngredients] = useState<Ingredient[]>(
     recipe?.ingredients || []
   );
+
+  const ingredientSensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
   const [directions, setDirections] = useState<Direction[]>(
     recipe?.directions || []
+  );
+
+  const directionsSensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
   const handleIngredientChange = (
@@ -36,24 +68,55 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
     setDirections(updatedDirections);
   };
 
-  const addIngredient = () => {
-    setIngredients([
-      ...ingredients,
-      { id: null, name: '', amount: 0, unit: '' }
-    ]);
-  };
+  const addItem =
+    ({ state, setter }: StatePair) =>
+    () =>
+      setter([...state, { id: uuid(), content: '' }]);
 
-  const removeIngredient = (index: number) => {
-    setIngredients(ingredients.filter((_, i) => i !== index));
-  };
+  const addIngredient = addItem({ state: ingredients, setter: setIngredients });
+  const addDirection = addItem({ state: directions, setter: setDirections });
 
-  const addDirection = () => {
-    setDirections([...directions, { id: null, content: '' }]);
-  };
+  const removeItem =
+    ({ state, setter }: StatePair) =>
+    (index: number) => {
+      setter(state.filter((_: any, i: number) => i !== index));
+    };
 
-  const removeDirection = (index: number) => {
-    setDirections(directions.filter((_, i) => i !== index));
-  };
+  const removeIngredient = removeItem({
+    state: ingredients,
+    setter: setIngredients
+  });
+  const removeDirection = removeItem({
+    state: directions,
+    setter: setDirections
+  });
+
+  const handleDrag =
+    ({ state, setter }: StatePair) =>
+    (event: any) => {
+      const { active, over } = event;
+
+      if (active && over) {
+        const oldIndex = state.findIndex((item: any) => item.id === active.id);
+        const newIndex = state.findIndex((item: any) => item.id === over.id);
+
+        if (oldIndex !== newIndex) {
+          setter((items: any[]) => {
+            return arrayMove(items, oldIndex, newIndex);
+          });
+        }
+      }
+    };
+
+  const handleIngredientDrag = handleDrag({
+    state: ingredients,
+    setter: setIngredients
+  });
+
+  const handleDirectionDrag = handleDrag({
+    state: directions,
+    setter: setDirections
+  });
 
   return (
     <ResponsiveForm onSubmit={handleSubmit}>
@@ -81,62 +144,88 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
       </label>
 
       <h2>Ingredients</h2>
-      {ingredients.map((ingredient, index) => (
-        <div key={index} className='flex gap-2'>
-          <Input
-            name={`ingredients[${index}].name`}
-            placeholder='Ingredient Name'
-            value={ingredient.name}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleIngredientChange(index, 'name', e.target.value)
-            }
-            required
-          />
-          <Input
-            name={`ingredients[${index}].amount`}
-            placeholder='Amount'
-            type='number'
-            min='0'
-            value={ingredient.amount}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleIngredientChange(index, 'amount', Number(e.target.value))
-            }
-            required
-          />
-          <Input
-            name={`ingredients[${index}].unit`}
-            placeholder='Unit (e.g., cups, grams)'
-            value={ingredient.unit}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleIngredientChange(index, 'unit', e.target.value)
-            }
-          />
-          <Button type='button' onClick={() => removeIngredient(index)}>
-            Remove
-          </Button>
-        </div>
-      ))}
+      <DndContext
+        sensors={ingredientSensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleIngredientDrag}
+      >
+        <SortableContext
+          items={ingredients.map((ingredient) => ingredient.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {ingredients.map((ingredient, index) => (
+            <SortableItem key={ingredient.id} id={ingredient.id}>
+              <Input
+                name={`ingredients[${index}].name`}
+                placeholder='Ingredient Name'
+                value={ingredient?.name ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleIngredientChange(index, 'name', e.target.value)
+                }
+                required
+              />
+              <Input
+                name={`ingredients[${index}].amount`}
+                placeholder='Amount'
+                type='number'
+                min='0'
+                value={ingredient?.amount ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleIngredientChange(
+                    index,
+                    'amount',
+                    Number(e.target.value)
+                  )
+                }
+                required
+              />
+              <Input
+                name={`ingredients[${index}].unit`}
+                placeholder='Unit (e.g., cups, grams)'
+                value={ingredient?.unit ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleIngredientChange(index, 'unit', e.target.value)
+                }
+              />
+              <Button type='button' onClick={() => removeIngredient(index)}>
+                Remove
+              </Button>
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </DndContext>
       <Button type='button' onClick={addIngredient}>
         Add Ingredient
       </Button>
 
       <h2>Directions</h2>
-      {directions.map((direction, index) => (
-        <div key={index} className='flex gap-2'>
-          <Input
-            name={`directions[${index}]`}
-            placeholder={`Direction ${index + 1}`}
-            value={direction.content}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleDirectionChange(index, e.target.value)
-            }
-            required
-          />
-          <Button type='button' onClick={() => removeDirection(index)}>
-            Remove
-          </Button>
-        </div>
-      ))}
+      <DndContext
+        sensors={directionsSensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDirectionDrag}
+      >
+        <SortableContext
+          items={directions.map((d) => d.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {directions.map((direction, index) => (
+            <SortableItem key={direction.id} id={direction.id}>
+              <Input
+                name={`directions[${index}]`}
+                placeholder={`Direction ${index + 1}`}
+                value={direction?.content ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleDirectionChange(index, e.target.value)
+                }
+                required
+              />
+              <Button type='button' onClick={() => removeDirection(index)}>
+                Remove
+              </Button>
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </DndContext>
       <Button type='button' onClick={addDirection}>
         Add Direction
       </Button>

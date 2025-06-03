@@ -1,12 +1,12 @@
 export interface Ingredient {
-  id: string | null; // Allow null for new ingredients
+  id: string;
   name: string;
   amount: number;
   unit: string;
 }
 
 export interface Direction {
-  id: string | null; // Allow null for new directions
+  id: string;
   content: string;
 }
 
