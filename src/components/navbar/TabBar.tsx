@@ -17,6 +17,16 @@ const TabBar = ({ currentRecipe }: TabBarProps) => {
           isActive={url === '/dashboard'}
           onClick={() => router.push('/dashboard')}
         />
+        {(url === '/dashboard' || url === '/create') && (
+          <Tab
+            label='+ New Recipe'
+            isActive={url === '/create'}
+            onClick={() => router.push('/create')}
+          />
+        )}
+        {url === '/account' && (
+          <Tab label='Account' isActive={true} onClick={() => {}} />
+        )}
         {currentRecipe && (
           <Tab
             label={currentRecipe.title}

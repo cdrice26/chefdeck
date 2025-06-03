@@ -1,11 +1,11 @@
 'use client';
 
-import Card from '@/components/ui/Card';
 import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import ResponsiveForm from '@/components/forms/ResponsiveForm';
 
 /**
  * Login page component.
@@ -52,33 +52,24 @@ const Login = () => {
   };
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
-      <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <h1>Login</h1>
-          <Input type='email' name='email' placeholder='Email' required />
-          <Input
-            type='password'
-            name='password'
-            placeholder='Password'
-            required
-          />
-          <Button type='submit'>Login</Button>
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-          <p>
-            Don&apos;t have an account?{' '}
-            <a href='/signup' className='text-blue-500'>
-              Sign up
-            </a>
-          </p>
-          <p>
-            <a href='/forgotPassword' className='text-blue-500'>
-              Forgot Password?
-            </a>
-          </p>
-        </form>
-      </Card>
-    </div>
+    <ResponsiveForm onSubmit={handleSubmit}>
+      <h1>Login</h1>
+      <Input type='email' name='email' placeholder='Email' required />
+      <Input type='password' name='password' placeholder='Password' required />
+      <Button type='submit'>Login</Button>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <p>
+        Don&apos;t have an account?{' '}
+        <a href='/signup' className='text-blue-500'>
+          Sign up
+        </a>
+      </p>
+      <p>
+        <a href='/forgotPassword' className='text-blue-500'>
+          Forgot Password?
+        </a>
+      </p>
+    </ResponsiveForm>
   );
 };
 

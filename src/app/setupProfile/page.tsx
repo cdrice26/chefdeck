@@ -1,11 +1,11 @@
 'use client';
 
-import Card from '@/components/ui/Card';
 import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import ResponsiveForm from '@/components/forms/ResponsiveForm';
 
 /**
  * Login page component.
@@ -52,16 +52,12 @@ const Login = () => {
   };
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
-      <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <h1>Setup Profile</h1>
-          <Input type='text' name='username' placeholder='Username' required />
-          <Button type='submit'>Save</Button>
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-        </form>
-      </Card>
-    </div>
+    <ResponsiveForm onSubmit={handleSubmit}>
+      <h1>Setup Profile</h1>
+      <Input type='text' name='username' placeholder='Username' required />
+      <Button type='submit'>Save</Button>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+    </ResponsiveForm>
   );
 };
 

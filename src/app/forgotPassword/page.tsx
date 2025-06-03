@@ -2,7 +2,7 @@
 
 import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
-import Card from '@/components/ui/Card';
+import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import { useState } from 'react';
 
 const ForgotPassword = () => {
@@ -34,18 +34,14 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
-      <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <h1>Forgot Password</h1>
-          <Input type='email' name='email' placeholder='Email' required />
+    <ResponsiveForm onSubmit={handleSubmit}>
+      <h1>Forgot Password</h1>
+      <Input type='email' name='email' placeholder='Email' required />
 
-          <Button type='submit'>Reset Password</Button>
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-          {message && <div style={{ color: 'green' }}>{message}</div>}
-        </form>
-      </Card>
-    </div>
+      <Button type='submit'>Reset Password</Button>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {message && <div style={{ color: 'green' }}>{message}</div>}
+    </ResponsiveForm>
   );
 };
 

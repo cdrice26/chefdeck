@@ -57,7 +57,11 @@ const Navbar = () => {
           alt='Cooky'
         />
       </button>
-      {user && <TabBar />}
+      {user && (
+        <div className='hidden lg:flex'>
+          <TabBar />
+        </div>
+      )}
       <div className='flex flex-row gap-4'>
         {user ? (
           <UserDropdown

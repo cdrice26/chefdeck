@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
-import Card from '@/components/ui/Card';
+import ResponsiveForm from '@/components/forms/ResponsiveForm';
 
 /**
  * Signup component renders a user registration form.
@@ -84,32 +84,28 @@ const Signup = () => {
   };
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
-      <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:flex-shrink-0 sm:h-auto'>
-        <form onSubmit={handleSignup} className='flex flex-col gap-4'>
-          <h1>Sign Up</h1>
-          <Input type='email' name='email' placeholder='Email' required />
-          <Input
-            type='password'
-            name='password'
-            placeholder='Password'
-            required
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <Input
-            type='password'
-            name='confirmPassword'
-            placeholder='Confirm Password'
-            required
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
-          <Button type='submit'>Sign Up</Button>
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-        </form>
-      </Card>
-    </div>
+    <ResponsiveForm onSubmit={handleSignup}>
+      <h1>Sign Up</h1>
+      <Input type='email' name='email' placeholder='Email' required />
+      <Input
+        type='password'
+        name='password'
+        placeholder='Password'
+        required
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <Input
+        type='password'
+        name='confirmPassword'
+        placeholder='Confirm Password'
+        required
+        value={confirmPassword}
+        onChange={handleConfirmPasswordChange}
+      />
+      <Button type='submit'>Sign Up</Button>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+    </ResponsiveForm>
   );
 };
 
