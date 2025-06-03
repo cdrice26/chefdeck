@@ -15,7 +15,7 @@ interface ResponsiveFormProps {
  * @returns {JSX.Element} The rendered responsive form.
  */
 const ResponsiveForm = ({ onSubmit, children }: ResponsiveFormProps) => (
-  <div className='w-full h-full flex justify-center items-center'>
+  <div className='w-full h-full flex justify-center items-center m-0 sm:m-4'>
     <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
       <form onSubmit={onSubmit} className='flex flex-col gap-4'>
         {children}

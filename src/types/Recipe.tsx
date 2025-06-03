@@ -1,15 +1,13 @@
 export interface Ingredient {
-  id: string;
+  id: string | null; // Allow null for new ingredients
   name: string;
   amount: number;
   unit: string;
-  sequence: number;
 }
 
 export interface Direction {
-  id: string;
+  id: string | null; // Allow null for new directions
   content: string;
-  sequence: number;
 }
 
 export interface Recipe {
