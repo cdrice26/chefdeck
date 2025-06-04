@@ -136,7 +136,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
         />
       </label>
       <label>
-        Image URL: <Input name='image' placeholder='Image URL' type='url' />
+        Image: <Input name='image' type='file' />
       </label>
       <label>
         Time (in minutes):{' '}
