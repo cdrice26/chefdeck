@@ -156,7 +156,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
           {ingredients.map((ingredient, index) => (
             <SortableItem key={ingredient.id} id={ingredient.id}>
               <Input
-                name={`ingredients[${index}].name`}
+                name={`ingredientNames`}
                 placeholder='Ingredient Name'
                 value={ingredient?.name ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -165,7 +165,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
                 required
               />
               <Input
-                name={`ingredients[${index}].amount`}
+                name={`ingredientAmounts`}
                 placeholder='Amount'
                 type='number'
                 min='0'
@@ -180,7 +180,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
                 required
               />
               <Input
-                name={`ingredients[${index}].unit`}
+                name={`ingredientUnits`}
                 placeholder='Unit (e.g., cups, grams)'
                 value={ingredient?.unit ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -211,7 +211,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
           {directions.map((direction, index) => (
             <SortableItem key={direction.id} id={direction.id}>
               <Input
-                name={`directions[${index}]`}
+                name={`directions`}
                 placeholder={`Direction ${index + 1}`}
                 value={direction?.content ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
