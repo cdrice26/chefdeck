@@ -10,6 +10,7 @@ import {
 interface RecipeProps {
   recipe: Recipe;
   onClick: (id: string) => void;
+  onImageError: (e: React.SyntheticEvent<HTMLImageElement>, id: string) => void;
 }
 
 /**
@@ -17,16 +18,22 @@ interface RecipeProps {
  * @param {Object} props
  * @returns A card representing a recipe
  */
-const RecipeCard = ({ recipe, onClick }: RecipeProps) => {
+const RecipeCard = ({ recipe, onClick, onImageError }: RecipeProps) => {
   return (
     <Card
-      className={`flex flex-col items-center justify-between py-4 gap-4 ${getColorClass(
+      className={`flex flex-col items-center justify-between py-4 gap-4 relative ${getColorClass(
         recipe?.color
       )}`}
     >
       <h3 className='p-2 text-xl font-bold'>{recipe?.title}</h3>
       {recipe?.imgUrl ? (
-        <img src={recipe?.imgUrl} alt='' width='100%' />
+        <img
+          loading='lazy'
+          src={recipe?.imgUrl}
+          alt=''
+          className='w-full'
+          onError={(e) => onImageError(e, recipe?.id)}
+        />
       ) : (
         <></>
       )}
