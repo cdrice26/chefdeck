@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
+import { useNotification } from '@/context/NotificationContext';
 
 export default function ConfirmPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { addNotification } = useNotification();
   const [status, setStatus] = useState<
     'loading' | 'success' | 'error' | 'reset'
   >('loading');
@@ -39,8 +41,9 @@ export default function ConfirmPage() {
           setStatus('reset');
         } else {
           setStatus('success');
-          setMessage(data.message || 'Confirmation successful!');
-          setTimeout(() => router.replace(next), 2000);
+          addNotification('Confirmation successful!', 'success');
+          setMessage('Confirmation successful! Redirecting...');
+          router.replace(next);
         }
       } else {
         setStatus('error');

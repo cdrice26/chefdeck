@@ -4,6 +4,8 @@ import './globals.css';
 import Navbar from '@/components/navbar/Navbar';
 import { AuthProvider } from '@/context/AuthContext';
 import BottomNavigation from '@/components/navbar/BottomNavigation';
+import { NotificationProvider } from '@/context/NotificationContext';
+import NotificationWrapper from '@/components/notifications/NotificationWrapper';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,15 +29,18 @@ export default async function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang='en'>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen relative flex flex-col`}
-        >
-          <Navbar />
-          <div className='flex-grow pb-16'>{children}</div>
-          <BottomNavigation />
-        </body>
-      </html>
+      <NotificationProvider>
+        <html lang='en'>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen relative flex flex-col`}
+          >
+            <NotificationWrapper />
+            <Navbar />
+            <div className='flex-grow pb-16'>{children}</div>
+            <BottomNavigation />
+          </body>
+        </html>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

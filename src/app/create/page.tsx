@@ -2,9 +2,11 @@
 
 import RecipeForm from '@/components/specificForms/RecipeForm';
 import { useRouter } from 'next/navigation';
+import { useNotification } from '@/context/NotificationContext';
 
 const CreatePage = () => {
   const router = useRouter();
+  const { addNotification } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,11 +17,10 @@ const CreatePage = () => {
     });
     if (!resp.ok) {
       const error = await resp.json();
-      console.error('Error creating recipe:', error);
-      throw new Error(error.message || 'Failed to create recipe');
+      addNotification(error.message || 'Failed to create recipe', 'error');
+      return;
     }
-    const data = await resp.json();
-    console.log('Recipe created successfully:', data);
+    addNotification('Recipe created successfully', 'success');
     router.push(`/dashboard`);
   };
   return <RecipeForm handleSubmit={handleSubmit} />;
