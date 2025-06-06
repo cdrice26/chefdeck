@@ -6,7 +6,9 @@ interface CardProps {
 const Card = ({ children, className }: CardProps) => {
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${className}`}
+      className={`${className} ${
+        !className?.includes('bg-') ? 'bg-white dark:bg-gray-800' : ''
+      } border border-gray-200 rounded-lg shadow dark:border-gray-700`}
     >
       {children}
     </div>

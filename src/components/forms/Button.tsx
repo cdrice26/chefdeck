@@ -9,6 +9,7 @@ const Button = ({
 }) => {
   return (
     <button
+      tabIndex={0}
       className={`${
         !className.includes('bg-')
           ? 'bg-blue-500 hover:bg-blue-700 text-white'

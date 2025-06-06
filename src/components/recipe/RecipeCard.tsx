@@ -1,0 +1,43 @@
+import React from 'react';
+import Card from '../ui/Card';
+import { Recipe } from '@/types/Recipe';
+import Button from '../forms/Button';
+import {
+  getColorClass,
+  getButtonColorClass
+} from '@/utils/colors/getColorClass';
+
+interface RecipeProps {
+  recipe: Recipe;
+  onClick: (id: string) => void;
+}
+
+/**
+ * A recipe card for the grid, with the title, image, and a "Details" button
+ * @param {Object} props
+ * @returns A card representing a recipe
+ */
+const RecipeCard = ({ recipe, onClick }: RecipeProps) => {
+  return (
+    <Card
+      className={`flex flex-col items-center justify-between py-4 gap-4 ${getColorClass(
+        recipe?.color
+      )}`}
+    >
+      <h3 className='p-2 text-xl font-bold'>{recipe?.title}</h3>
+      {recipe?.imgUrl ? (
+        <img src={recipe?.imgUrl} alt='' width='100%' />
+      ) : (
+        <></>
+      )}
+      <Button
+        className={getButtonColorClass(recipe?.color)}
+        onClick={() => onClick(recipe?.id)}
+      >
+        Details
+      </Button>
+    </Card>
+  );
+};
+
+export default RecipeCard;

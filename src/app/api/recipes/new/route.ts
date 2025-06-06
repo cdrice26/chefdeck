@@ -49,12 +49,12 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { data, error } = imagePath
+  const { error } = imagePath
     ? await supabase.storage.from('images').upload(imagePath, image as Blob, {
         cacheControl: '3600',
         upsert: true
       })
-    : { data: null, error: null };
+    : { error: null };
 
   if (error) {
     return new Response(
@@ -66,17 +66,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const imageUrl =
-    data && imagePath
-      ? supabase.storage.from('images').getPublicUrl(imagePath).data.publicUrl
-      : null;
-
   // Call the stored procedure
   const { error: procedureError } = await supabase.rpc('create_recipe', {
     title,
     yield_value: yieldValue,
     minutes: time,
-    img_url: imageUrl,
+    img_url: imagePath,
     user_id: user.id,
     ingredients: ingredients,
     directions: directions.map((direction, index) => ({
@@ -88,7 +83,7 @@ export async function POST(req: NextRequest) {
 
   if (procedureError) {
     // If the procedure fails, delete the uploaded image if it exists
-    if (imageUrl && imagePath) {
+    if (imagePath) {
       const { error: deleteError } = await supabase.storage
         .from('images')
         .remove([imagePath]);

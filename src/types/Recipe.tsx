@@ -19,4 +19,5 @@ export interface Recipe {
   sourceUrl: string;
   ingredients: Ingredient[];
   directions: Direction[];
+  color: string;
 }
