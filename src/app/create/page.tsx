@@ -11,6 +11,14 @@ const CreatePage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    if (formData.get('ingredientNames') === null) {
+      addNotification('Please add at least one ingredient', 'error');
+      return;
+    }
+    if (formData.get('directions') === null) {
+      addNotification('Please add at least one direction', 'error');
+      return;
+    }
     const resp = await fetch('/api/recipes/new', {
       body: formData,
       method: 'POST'

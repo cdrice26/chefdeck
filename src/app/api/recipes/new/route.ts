@@ -39,8 +39,9 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const imagePath = image ? `${user.id}/${Date.now()}-${image?.name}` : null;
-  if (image && !imagePath) {
+  const imagePath =
+    (image?.size ?? 0) > 0 ? `${user.id}/${Date.now()}-${image?.name}` : null;
+  if ((image?.size ?? 0) > 0 && !imagePath) {
     return new Response(JSON.stringify({ error: 'Image upload failed' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' }
@@ -68,8 +69,6 @@ export async function POST(req: NextRequest) {
     data && imagePath
       ? supabase.storage.from('images').getPublicUrl(imagePath).data.publicUrl
       : null;
-
-  console.log(JSON.stringify(ingredients));
 
   // Call the stored procedure
   const { error: procedureError } = await supabase.rpc('create_recipe', {
