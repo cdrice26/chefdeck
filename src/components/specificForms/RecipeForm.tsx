@@ -19,6 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import SortableItem from '../forms/SortableItem';
 import { v4 as uuid } from 'uuid';
+import ColorSelector from '../forms/ColorSelector';
 
 interface RecipeFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -229,6 +230,8 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
       <Button type='button' onClick={addDirection}>
         Add Direction
       </Button>
+
+      <ColorSelector />
 
       <Button type='submit'>Submit Recipe</Button>
     </ResponsiveForm>

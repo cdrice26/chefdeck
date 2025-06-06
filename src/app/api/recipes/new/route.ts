@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
     ingredientAmounts,
     ingredientUnits
   );
+  const color = formData.get('color')?.toString() || 'white';
 
   const supabase = await createClient();
 
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest) {
       content: direction,
       sequence: index + 1
     })),
-    color: 'white'
+    color
   });
 
   if (procedureError) {

@@ -19,6 +19,9 @@ const CreatePage = () => {
       addNotification('Please add at least one direction', 'error');
       return;
     }
+    if (formData.get('color') === null || formData.get('color') === '') {
+      formData.set('color', 'white'); // Default color if not set
+    }
     const resp = await fetch('/api/recipes/new', {
       body: formData,
       method: 'POST'
