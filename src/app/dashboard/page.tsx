@@ -33,7 +33,7 @@ const Dashboard = () => {
       )
     );
     if (tries?.find((t) => t?.recipeId === recipeId)?.tries ?? 4 >= 3) {
-      console.error('Image failed to load after 3 attempts:', recipeId);
+      console.log('Image failed to load after 3 attempts:', recipeId);
       return;
     }
     const response = await fetch(`/api/recipes/getImageUrl?id=${recipeId}`);
@@ -43,6 +43,12 @@ const Dashboard = () => {
     }
     const imageUrl = await response.text();
     target.src = imageUrl; // Set the new image URL
+  };
+
+  const handleImageLoad = (recipeId: string) => {
+    setTries((prevTries) =>
+      prevTries.map((t) => (t.recipeId === recipeId ? { ...t, tries: 0 } : t))
+    );
   };
 
   const fetchRecipes = async () => {
@@ -85,6 +91,7 @@ const Dashboard = () => {
               recipe={recipe}
               onClick={() => {}}
               onImageError={handleImageError}
+              onImageLoad={handleImageLoad}
             />
           ))}
         </div>

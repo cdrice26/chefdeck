@@ -19,6 +19,10 @@ const TabBar = ({ currentRecipe }: TabBarProps) => {
     null
   );
 
+  const handleSearchBlur = () => {
+    router.push(url + '?' + searchParams.toString(), { scroll: false });
+  };
+
   const handleQueryChange = (newQuery: string) => {
     setQuery(newQuery);
 
@@ -58,7 +62,7 @@ const TabBar = ({ currentRecipe }: TabBarProps) => {
           <SearchBar
             query={query}
             onQueryChange={handleQueryChange}
-            onBlur={() => {}}
+            onBlur={handleSearchBlur}
           />
         )}
         {url === '/account' && (
