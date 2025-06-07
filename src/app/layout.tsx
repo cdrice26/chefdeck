@@ -36,7 +36,7 @@ export default async function RootLayout({
           >
             <NotificationWrapper />
             <Navbar />
-            <div className='flex-grow pb-16'>{children}</div>
+            <div className='flex-grow pb-16 relative'>{children}</div>
             <BottomNavigation />
           </body>
         </html>

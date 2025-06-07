@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IoSearch } from 'react-icons/io5'; // Import the search icon
-import Modal from '@/components/ui/Modal'; // Import the Modal component
+import SearchModal from '@/components/specificForms/SearchModal'; // Import the Modal component
 
 interface SearchBarProps {
   query: string;
@@ -44,7 +44,7 @@ const SearchBar = ({ query, onQueryChange, onBlur }: SearchBarProps) => {
       </div>
 
       {/* Modal for Search Input */}
-      <Modal
+      <SearchModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         query={query}

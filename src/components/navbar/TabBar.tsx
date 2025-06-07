@@ -6,11 +6,7 @@ import { useState } from 'react';
 import { IoAdd, IoCalendar, IoHome, IoList, IoPerson } from 'react-icons/io5';
 import { IoMdListBox } from 'react-icons/io';
 
-interface TabBarProps {
-  currentRecipe?: Recipe | null;
-}
-
-const TabBar = ({ currentRecipe }: TabBarProps) => {
+const TabBar = () => {
   const url = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -73,13 +69,11 @@ const TabBar = ({ currentRecipe }: TabBarProps) => {
             icon={<IoPerson />}
           />
         )}
-        {currentRecipe && (
+        {url.startsWith('/dashboard/recipe') && (
           <Tab
-            label={currentRecipe.title}
-            isActive={url === `/recipes/${currentRecipe.id}`}
-            onClick={() =>
-              (window.location.href = `/recipes/${currentRecipe.id}`)
-            }
+            label='Recipe'
+            isActive={url.startsWith(`/dashboard/recipe`)}
+            onClick={() => {}}
             icon={<IoMdListBox />}
           />
         )}
