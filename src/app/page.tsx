@@ -1,23 +1,13 @@
-'use client';
+import { requireAuth } from '@/utils/requireAuth';
+import { redirect } from 'next/navigation';
 
-import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
-export default function Home() {
-  const redirectToDasboard = async () => {
-    await fetchUser();
+export default async function Home() {
+  try {
+    const user = await requireAuth();
     if (user) {
-      router.push('/dashboard');
+      return redirect('/dashboard');
     }
-  };
-
-  const router = useRouter();
-  const { fetchUser, user } = useAuth();
-
-  useEffect(() => {
-    redirectToDasboard();
-  });
+  } catch (e) {}
 
   return <div>Cooky</div>;
 }
