@@ -2,21 +2,7 @@ import { Recipe } from '@/types/Recipe';
 import createClient from '@/utils/supabase/supabase';
 import { NextResponse } from 'next/server';
 import asyncMap from '@/utils/async/asyncMap';
-import { SupabaseClient } from '@supabase/supabase-js';
-
-const fetchImageUrl = async (
-  supabase: SupabaseClient,
-  recipe: { [key: string]: string }
-) => {
-  const { data, error } = await supabase.storage
-    .from('images')
-    .createSignedUrl(recipe.img_url, 60);
-  if (error) {
-    return null;
-  } else {
-    return data?.signedUrl || null;
-  }
-};
+import fetchImageUrl from '@/utils/supabase/fetchImageUrl';
 
 export async function GET() {
   const supabase = await createClient();

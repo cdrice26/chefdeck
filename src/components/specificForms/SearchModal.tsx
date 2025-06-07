@@ -19,7 +19,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <Modal className='bg-white w-[90%]'>
+    <Modal className='bg-white w-[90%] justify-center items-center'>
       <Input
         className='px-4 py-2 w-full text-sm'
         value={query}
