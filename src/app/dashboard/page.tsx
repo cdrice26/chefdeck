@@ -2,12 +2,24 @@
 
 import RecipeCard from '@/components/recipe/RecipeCard';
 import { Recipe } from '@/types/Recipe';
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 const Dashboard = () => {
+  const searchParams = useSearchParams();
+
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState<string>('');
   const [tries, setTries] = useState<{ recipeId: string; tries: number }[]>([]);
+
+  const query = useMemo(() => searchParams.get('q') ?? '', [searchParams]);
+  const filteredRecipes = useMemo(
+    () =>
+      recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(query.toLowerCase())
+      ),
+    [recipes, searchParams]
+  );
 
   const handleImageError = async (
     event: React.SyntheticEvent<HTMLImageElement>,
@@ -65,9 +77,9 @@ const Dashboard = () => {
   return (
     <div className='m-4'>
       <h1 className='text-2xl font-bold mb-4'>Your Recipes</h1>
-      {recipes && recipes.length > 0 ? (
+      {filteredRecipes && filteredRecipes.length > 0 ? (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-          {recipes.map((recipe) => (
+          {filteredRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
               recipe={recipe}

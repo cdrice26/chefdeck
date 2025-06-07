@@ -42,11 +42,11 @@ const Navbar = () => {
 
   const showShadow = pathname !== '/' || scrolled;
   const buttonClasses =
-    'shadow-md rounded-full p-4 px-6 bg-gray-100 dark:bg-[#222] hover:bg-gray-200 dark:hover:bg-[#333]';
+    'shadow-md rounded-full p-4 px-6 bg-gray-100 dark:bg-[#222] hover:bg-gray-200 dark:hover:bg-[#333] text-nowrap';
 
   return (
     <nav
-      className={`sticky z-100 bg-white dark:bg-[#151515] top-0 p-5 flex flex-row justify-between transition-shadow items-center ${
+      className={`sticky z-100 bg-white dark:bg-[#151515] top-0 py-5 pr-5 flex flex-row justify-between transition-shadow items-center ${
         showShadow ? 'shadow-lg' : ''
       }`}
     >

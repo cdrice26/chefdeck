@@ -49,13 +49,13 @@
   --color-button-blue-hover: rgb(133, 176, 190);
   --color-button-blue-active: rgb(113, 156, 170);
 
-  --color-white-normal-dark: rgb(50, 50, 50); /* Darker background for white */
-  --color-green-normal-dark: rgb(34, 77, 34); /* Darker green */
-  --color-yellow-normal-dark: rgb(128, 128, 64); /* Darker yellow */
-  --color-orange-normal-dark: rgb(128, 102, 77); /* Darker orange */
-  --color-red-normal-dark: rgb(128, 34, 34); /* Darker red */
-  --color-purple-normal-dark: rgb(102, 34, 102); /* Darker purple */
-  --color-blue-normal-dark: rgb(34, 77, 102); /* Darker blue */
+  --color-white-normal-dark: rgb(70, 70, 70); /* Darker background for white */
+  --color-green-normal-dark: rgb(54, 97, 54); /* Darker green */
+  --color-yellow-normal-dark: rgb(148, 148, 84); /* Darker yellow */
+  --color-orange-normal-dark: rgb(148, 122, 97); /* Darker orange */
+  --color-red-normal-dark: rgb(148, 54, 54); /* Darker red */
+  --color-purple-normal-dark: rgb(122, 44, 122); /* Darker purple */
+  --color-blue-normal-dark: rgb(54, 97, 122); /* Darker blue */
 
   --color-button-white-normal-dark: rgb(
     70,
