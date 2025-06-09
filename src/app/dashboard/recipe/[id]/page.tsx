@@ -2,7 +2,7 @@
 
 import Modal from '@/components/ui/Modal';
 import { Recipe } from '@/types/Recipe';
-import { getColorClass } from '@/utils/colors/getColorClass';
+import { getColorClass } from '@/utils/colors/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';

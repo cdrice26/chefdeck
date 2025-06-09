@@ -2,7 +2,7 @@ import { Recipe } from '@/types/Recipe';
 import createClient from '@/utils/supabase/supabase';
 import { NextResponse } from 'next/server';
 import asyncMap from '@/utils/async/asyncMap';
-import fetchImageUrl from '@/utils/supabase/fetchImageUrl';
+import getRecipe from '@/utils/objectCreators/getRecipe';
 
 export async function GET() {
   const supabase = await createClient();
@@ -18,27 +18,7 @@ export async function GET() {
     )
     .eq('user_id', user?.id);
   const recipes: Recipe[] =
-    data && data?.length > 0
-      ? await asyncMap(data, async (recipe) => ({
-          id: recipe.id,
-          title: recipe.title,
-          servings: recipe.yield,
-          minutes: recipe.minutes,
-          imgUrl: await fetchImageUrl(supabase, recipe),
-          sourceUrl: recipe.source,
-          color: recipe.color,
-          ingredients: recipe.ingredients.map((ingredient: any) => ({
-            id: ingredient.id,
-            name: ingredient.name,
-            amount: ingredient.amount,
-            unit: ingredient.unit
-          })),
-          directions: recipe.directions.map((direction: any) => ({
-            id: direction.id,
-            content: direction.content
-          }))
-        }))
-      : [];
+    data && data?.length > 0 ? await asyncMap(data, getRecipe(supabase)) : [];
   if (error) {
     console.log(error);
     return NextResponse.json(

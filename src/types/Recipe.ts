@@ -1,3 +1,5 @@
+import { Color } from '@/utils/colors/colorUtils';
+
 export interface Ingredient {
   id: string;
   name: string;
@@ -15,9 +17,9 @@ export interface Recipe {
   title: string;
   servings: number;
   minutes: number;
-  imgUrl: string;
-  sourceUrl: string;
+  imgUrl: string | null;
+  sourceUrl: string | null;
   ingredients: Ingredient[];
   directions: Direction[];
-  color: string;
+  color: Color;
 }

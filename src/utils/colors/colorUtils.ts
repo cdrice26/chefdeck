@@ -1,4 +1,28 @@
-export const getColorClass = (color: string) => {
+export type Color =
+  | 'white'
+  | 'blue'
+  | 'green'
+  | 'red'
+  | 'yellow'
+  | 'purple'
+  | 'orange';
+
+/**
+ * Check if the provided string is a valid color
+ * @param color - Color to check
+ * @returns Boolean - true if valid, false if invalid
+ */
+export const isValidColor = (color: string): color is Color =>
+  ['white', 'blue', 'green', 'red', 'yellow', 'purple', 'orange'].includes(
+    color
+  );
+
+/**
+ * Get the tailwind classes for a given color
+ * @param color - The color to get the classes for
+ * @returns The classes given the color
+ */
+export const getColorClass = (color: Color) => {
   switch (color) {
     case 'white':
       return 'bg-white-normal dark:bg-white-normal-dark';
@@ -19,7 +43,12 @@ export const getColorClass = (color: string) => {
   }
 };
 
-export const getButtonColorClass = (color: string) => {
+/**
+ * Gets the button tailwind classes for a given color
+ * @param color - The color to get the classes for
+ * @returns The button classes given the color
+ */
+export const getButtonColorClass = (color: Color) => {
   // Define an array of color objects
   const colors = [
     {
