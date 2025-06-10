@@ -12,6 +12,11 @@ interface DBDirection {
   sequence: number;
 }
 
+interface DBRecipeViewLog {
+  id: string;
+  last_viewed: Date;
+}
+
 interface DBRecipe {
   id: string;
   title: string;
@@ -22,4 +27,5 @@ interface DBRecipe {
   color: string;
   ingredients: DBIngredient[];
   directions: DBDirection[];
+  last_viewed?: Date;
 }

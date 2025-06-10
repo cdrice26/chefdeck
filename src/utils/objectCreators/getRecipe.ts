@@ -31,7 +31,8 @@ const getRecipe =
       .map((direction: any) => ({
         id: direction.id,
         content: direction.content
-      }))
+      })),
+    lastViewed: recipe?.last_viewed
   });
 
 export default getRecipe;

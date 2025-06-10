@@ -9,16 +9,15 @@ export async function GET() {
   const {
     data: { user }
   } = await supabase.auth.getUser();
-  const { data, error } = await supabase
-    .from('recipes')
-    .select(
-      `id, title, yield, minutes, img_url, source, color, 
-      ingredients (id, name, amount, unit),
-      directions (id, content)`
-    )
-    .eq('user_id', user?.id);
+  if (user === null) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  const { data, error } = await supabase.rpc('get_recipes', {
+    in_user_id: user?.id
+  });
   const recipes: Recipe[] =
     data && data?.length > 0 ? await asyncMap(data, getRecipe(supabase)) : [];
+  console.log(recipes);
   if (error) {
     console.log(error);
     return NextResponse.json(

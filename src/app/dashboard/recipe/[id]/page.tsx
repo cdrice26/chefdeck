@@ -25,7 +25,7 @@ export default function RecipePage() {
   return (
     <Modal
       className={`w-full h-full sm:w-[80%] sm:h-[80%] md:w-[70%] lg:w-[60%] z-[100] p-4 ${
-        recipe?.color ? getColorClass(recipe?.color) : 'bg-white'
+        recipe?.color ? getColorClass(recipe?.color) : 'bg-white dark:bg-[#222]'
       } relative transition duration-300 justify-start`}
     >
       <button

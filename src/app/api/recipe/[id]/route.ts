@@ -26,6 +26,14 @@ export async function GET(
       { status: 500 }
     );
   }
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+  await supabase.from('recipe_usage').upsert({
+    user_id: user?.id,
+    recipe_id: id,
+    last_viewed: new Date()
+  });
   const recipe = await getRecipe(supabase)(data);
   return NextResponse.json({ data: { recipe } }, { status: 200 });
 }

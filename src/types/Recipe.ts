@@ -22,4 +22,5 @@ export interface Recipe {
   ingredients: Ingredient[];
   directions: Direction[];
   color: Color;
+  lastViewed?: Date;
 }
