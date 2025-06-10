@@ -3,6 +3,7 @@ import Card from '../ui/Card';
 import { Recipe } from '@/types/Recipe';
 import Button from '../forms/Button';
 import { getColorClass, getButtonColorClass } from '@/utils/colorUtils';
+import Image from 'next/image';
 
 interface RecipeProps {
   recipe: Recipe;
@@ -30,11 +31,13 @@ const RecipeCard = ({
     >
       <h3 className='p-2 text-xl font-bold'>{recipe?.title}</h3>
       {recipe?.imgUrl ? (
-        <img
+        <Image
           loading='lazy'
           src={recipe?.imgUrl}
           alt=''
-          className='w-full'
+          className='w-full h-[300px] object-cover'
+          width={500}
+          height={300}
           onError={(e) => onImageError(e, recipe?.id)}
           onLoad={() => onImageLoad(recipe?.id)}
         />
