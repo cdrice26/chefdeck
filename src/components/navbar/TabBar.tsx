@@ -69,10 +69,10 @@ const TabBar = () => {
             icon={<IoPerson />}
           />
         )}
-        {url.startsWith('/dashboard/recipe') && (
+        {url.startsWith('/recipe') && (
           <Tab
             label='Recipe'
-            isActive={url.startsWith(`/dashboard/recipe`)}
+            isActive={url.startsWith(`/recipe`)}
             onClick={() => {}}
             icon={<IoMdListBox />}
           />

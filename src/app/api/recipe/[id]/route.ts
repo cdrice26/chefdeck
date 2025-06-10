@@ -1,4 +1,4 @@
-import getRecipe from '@/utils/objectCreators/getRecipe';
+import getRecipe from '@/models/getRecipe';
 import createClient from '@/utils/supabase/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 

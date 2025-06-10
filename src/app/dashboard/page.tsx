@@ -35,8 +35,7 @@ const Dashboard = () => {
       )
     );
     if (tries?.find((t) => t?.recipeId === recipeId)?.tries ?? 4 >= 3) {
-      console.log('Image failed to load after 3 attempts:', recipeId);
-      return;
+      return; // Max 3 attempts
     }
     const response = await fetch(`/api/recipes/getImageUrl?id=${recipeId}`);
     if (!response.ok) {
@@ -111,7 +110,7 @@ const Dashboard = () => {
                   key={recipe.id}
                   recipe={recipe}
                   onClick={() => {
-                    router.push(`/dashboard/recipe/${recipe.id}`);
+                    router.push(`/recipe/${recipe.id}`);
                   }}
                   onImageError={handleImageError}
                   onImageLoad={handleImageLoad}

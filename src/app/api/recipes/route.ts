@@ -2,7 +2,7 @@ import { Recipe } from '@/types/Recipe';
 import createClient from '@/utils/supabase/supabase';
 import { NextResponse } from 'next/server';
 import asyncMap from '@/utils/async/asyncMap';
-import getRecipe from '@/utils/objectCreators/getRecipe';
+import getRecipe from '@/models/getRecipe';
 
 export async function GET() {
   const supabase = await createClient();
@@ -17,9 +17,7 @@ export async function GET() {
   });
   const recipes: Recipe[] =
     data && data?.length > 0 ? await asyncMap(data, getRecipe(supabase)) : [];
-  console.log(recipes);
   if (error) {
-    console.log(error);
     return NextResponse.json(
       { error: 'Error fetching recipes' },
       { status: 500, headers: { 'Content-Type': 'application/json' } }
