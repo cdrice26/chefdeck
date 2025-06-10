@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetchImageUrl from '../utils/supabase/fetchImageUrl';
 import { Recipe } from '@/types/Recipe';
-import { isValidColor } from '../utils/colors/colorUtils';
+import { isValidColor } from '../utils/colorUtils';
 
 /**
  * Converts a database recipe into a recipe object the application can use

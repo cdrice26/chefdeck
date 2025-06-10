@@ -1,7 +1,7 @@
 import { Recipe } from '@/types/Recipe';
 import createClient from '@/utils/supabase/supabase';
 import { NextResponse } from 'next/server';
-import asyncMap from '@/utils/async/asyncMap';
+import asyncMap from '@/utils/asyncUtils';
 import getRecipe from '@/models/getRecipe';
 
 export async function GET() {
