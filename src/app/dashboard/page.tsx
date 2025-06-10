@@ -5,11 +5,12 @@ import { Recipe } from '@/types/Recipe';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
-const Dashboard = ({ children }: { children: React.ReactNode }) => {
+const Dashboard = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [tries, setTries] = useState<{ recipeId: string; tries: number }[]>([]);
 
@@ -53,6 +54,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   };
 
   const fetchRecipes = async () => {
+    setLoading(true);
     try {
       const response = await fetch('/api/recipes');
       if (!response.ok) {
@@ -65,6 +67,8 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       );
     } catch (err) {
       setError('An error occurred while fetching recipes');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,7 +89,12 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className='m-4'>
         <h1 className='text-2xl font-bold mb-4'>Your Recipes</h1>
-        {filteredRecipes && filteredRecipes.length > 0 ? (
+        {loading ? (
+          <div className='flex flex-col items-center justify-center'>
+            <h2 className='text-lg'>Loading Recipes...</h2>
+            <p>We're getting your cookbook ready!</p>
+          </div>
+        ) : filteredRecipes && filteredRecipes.length > 0 ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
             {filteredRecipes
               .sort(
@@ -116,7 +125,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           </div>
         )}
       </div>
-      {children}
     </>
   );
 };
