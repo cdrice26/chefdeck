@@ -30,7 +30,10 @@ const SearchModal: React.FC<SearchModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <Modal usePortal className='bg-white w-[90%] justify-center items-center'>
+    <Modal
+      usePortal
+      className='bg-white dark:bg-[#222] w-[90%] justify-center items-center'
+    >
       <SearchBarRenderer
         query={query}
         selectValue={tags}

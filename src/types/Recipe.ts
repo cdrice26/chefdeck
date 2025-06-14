@@ -1,4 +1,4 @@
-import { Color } from '@/utils/colorUtils';
+import { Color } from '@/utils/styles/colorUtils';
 
 export interface Ingredient {
   id: string;

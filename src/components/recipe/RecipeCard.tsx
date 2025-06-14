@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '../ui/Card';
 import { Recipe } from '@/types/Recipe';
 import Button from '../forms/Button';
-import { getColorClass, getButtonColorClass } from '@/utils/colorUtils';
+import { getColorClass, getButtonColorClass } from '@/utils/styles/colorUtils';
 import Image from 'next/image';
 
 interface RecipeProps {

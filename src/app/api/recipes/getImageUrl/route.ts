@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const { data: recipe, error: recipeError } = await supabase.rpc(
     'get_recipe_image',
     {
-      p_id: recipeId,
+      p_recipe_id: recipeId,
       p_user_id: user?.id
     }
   );
