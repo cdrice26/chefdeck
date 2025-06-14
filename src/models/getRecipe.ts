@@ -32,7 +32,8 @@ const getRecipe =
         id: direction.id,
         content: direction.content
       })),
-    lastViewed: recipe?.last_viewed
+    lastViewed: recipe?.last_viewed,
+    tags: recipe?.tags
   });
 
 export default getRecipe;

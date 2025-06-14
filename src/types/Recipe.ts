@@ -23,4 +23,5 @@ export interface Recipe {
   directions: Direction[];
   color: Color;
   lastViewed?: Date;
+  tags?: string[];
 }

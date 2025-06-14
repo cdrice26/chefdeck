@@ -20,9 +20,16 @@ import {
 import SortableItem from '../forms/SortableItem';
 import { v4 as uuid } from 'uuid';
 import ColorSelector from '../forms/ColorSelector';
+import { OptionType } from '../forms/TagSelector';
+import dynamic from 'next/dynamic';
+import useAvailableTags from '@/hooks/useAvailableTags';
+
+const TagSelector = dynamic(() => import('@/components/forms/TagSelector'), {
+  ssr: false
+});
 
 interface RecipeFormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: FormData) => void;
   recipe?: Recipe | null;
 }
 
@@ -32,6 +39,9 @@ interface StatePair {
 }
 
 const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
+  const [tags, setTags] = useState<OptionType[]>([]);
+  const availableTags = useAvailableTags();
+
   const [ingredients, setIngredients] = useState<Ingredient[]>(
     recipe?.ingredients || []
   );
@@ -119,8 +129,18 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
     setter: setDirections
   });
 
+  const handleSubmitInternal = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    tags.forEach((tag) => formData.append('tags[]', tag.value));
+
+    handleSubmit(formData);
+  };
+
   return (
-    <ResponsiveForm onSubmit={handleSubmit}>
+    <ResponsiveForm onSubmit={handleSubmitInternal}>
       {recipe && <input type='hidden' name='id' value={recipe.id} readOnly />}
       <h1>New Recipe</h1>
       <label>
@@ -230,9 +250,12 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
       <Button type='button' onClick={addDirection}>
         Add Direction
       </Button>
-
       <ColorSelector />
-
+      <TagSelector
+        value={tags}
+        onChange={setTags}
+        initialOptions={availableTags}
+      />
       <Button type='submit'>Submit Recipe</Button>
     </ResponsiveForm>
   );

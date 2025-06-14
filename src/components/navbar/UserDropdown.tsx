@@ -44,18 +44,36 @@ const userDropdownStyles: (
     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
     color: isDark ? '#f3f4f6' : '#111827'
   }),
-  option: (base, state) => ({
-    ...base,
-    borderRadius: '0.5rem',
-    backgroundColor: state.isFocused
+  option: (
+    provided: any,
+    state: { isFocused: boolean; isSelected: boolean }
+  ) => ({
+    ...provided,
+    'backgroundColor': state.isFocused
       ? isDark
-        ? '#333'
-        : '#e5e7eb'
+        ? '#555'
+        : '#f0f0f0' // Background color when focused
       : isDark
-      ? '#222'
-      : '#fff',
-    color: isDark ? '#f3f4f6' : '#111827',
-    cursor: 'pointer'
+      ? '#333'
+      : 'white', // Background color when not focused
+    'color': state.isSelected
+      ? 'white' // Text color when selected
+      : state.isFocused
+      ? isDark
+        ? 'white'
+        : 'black' // Text color when focused
+      : isDark
+      ? 'white'
+      : 'black', // Text color when not focused
+    ':active': {
+      backgroundColor: state.isFocused
+        ? isDark
+          ? '#555'
+          : '#f0f0f0'
+        : isDark
+        ? '#333'
+        : 'white'
+    }
   }),
   placeholder: (base) => ({
     ...base,

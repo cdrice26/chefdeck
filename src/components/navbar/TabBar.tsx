@@ -11,30 +11,54 @@ const TabBar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState<string>(searchParams.get('q') ?? '');
+  const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
 
   const handleSearchBlur = () => {
-    router.push(url + '?' + searchParams.toString(), { scroll: false });
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('q', query);
+    if (tags.length > 0) {
+      params.set('tags', tags.map(t => t.value).join(','));
+    } else {
+      params.delete('tags');
+    }
+    router.push(url + '?' + params.toString(), { scroll: false });
   };
 
   const handleQueryChange = (newQuery: string) => {
     setQuery(newQuery);
 
-    // Clear the previous timeout if it exists
     if (typingTimeout) {
       clearTimeout(typingTimeout);
     }
 
-    // Set a new timeout to update the URL after a short delay
     const timeout = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
       params.set('q', newQuery);
+      if (tags.length > 0) {
+        params.set('tags', tags.map(t => t.value).join(','));
+      } else {
+        params.delete('tags');
+      }
       router.replace(url + '?' + params.toString(), {});
-    }, 300); // Adjust the delay as needed
+    }, 300);
 
     setTypingTimeout(timeout);
+  };
+
+  const handleTagsChange = (newTags: { label: string; value: string }[]) => {
+    setTags(newTags);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('q', query);
+    if (newTags.length > 0) {
+      params.set('tags', newTags.map(t => t.value).join(','));
+    } else {
+      params.delete('tags');
+    }
+    router.replace(url + '?' + params.toString(), {});
   };
 
   return (
@@ -58,6 +82,8 @@ const TabBar = () => {
           <SearchBar
             query={query}
             onQueryChange={handleQueryChange}
+            tags={tags}
+            onChangeTags={handleTagsChange}
             onBlur={handleSearchBlur}
           />
         )}

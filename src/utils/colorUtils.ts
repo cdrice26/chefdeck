@@ -46,47 +46,55 @@ export const getColorClass = (color: Color) => {
 /**
  * Gets the button tailwind classes for a given color
  * @param color - The color to get the classes for
+ * @param includeHover - Whether to include hover classes
  * @returns The button classes given the color
  */
-export const getButtonColorClass = (color: Color) => {
-  // Define an array of color objects
+export const getButtonColorClass = (
+  color: Color,
+  includeHover: boolean = true
+) => {
+  // Define an array of color objects with base and hover classes separated
   const colors = [
     {
       name: 'white',
-      classes:
-        'bg-button-white-normal hover:bg-button-white-hover dark:bg-button-white-normal-dark dark:hover:bg-button-white-hover-dark'
+      base: 'bg-button-white-normal dark:bg-button-white-normal-dark',
+      hover: 'hover:bg-button-white-hover dark:hover:bg-button-white-hover-dark'
     },
     {
       name: 'yellow',
-      classes:
-        'bg-button-yellow-normal hover:bg-button-yellow-hover dark:bg-button-yellow-normal-dark dark:hover:bg-button-yellow-hover-dark'
+      base: 'bg-button-yellow-normal dark:bg-button-yellow-normal-dark',
+      hover:
+        'hover:bg-button-yellow-hover dark:hover:bg-button-yellow-hover-dark'
     },
     {
       name: 'green',
-      classes:
-        'bg-button-green-normal hover:bg-button-green-hover dark:bg-button-green-normal-dark dark:hover:bg-button-green-hover-dark'
+      base: 'bg-button-green-normal dark:bg-button-green-normal-dark',
+      hover: 'hover:bg-button-green-hover dark:hover:bg-button-green-hover-dark'
     },
     {
       name: 'blue',
-      classes:
-        'bg-button-blue-normal hover:bg-button-blue-hover dark:bg-button-blue-normal-dark dark:hover:bg-button-blue-hover-dark'
+      base: 'bg-button-blue-normal dark:bg-button-blue-normal-dark',
+      hover: 'hover:bg-button-blue-hover dark:hover:bg-button-blue-hover-dark'
     },
     {
       name: 'purple',
-      classes:
-        'bg-button-purple-normal hover:bg-button-purple-hover dark:bg-button-purple-normal-dark dark:hover:bg-button-purple-hover-dark'
+      base: 'bg-button-purple-normal dark:bg-button-purple-normal-dark',
+      hover:
+        'hover:bg-button-purple-hover dark:hover:bg-button-purple-hover-dark'
     },
     {
       name: 'red',
-      classes:
-        'bg-button-red-normal hover:bg-button-red-hover dark:bg-button-red-normal-dark dark:hover:bg-button-red-hover-dark'
+      base: 'bg-button-red-normal dark:bg-button-red-normal-dark',
+      hover: 'hover:bg-button-red-hover dark:hover:bg-button-red-hover-dark'
     },
     {
       name: 'orange',
-      classes:
-        'bg-button-orange-normal hover:bg-button-orange-hover dark:bg-button-orange-normal-dark dark:hover:bg-button-orange-hover-dark'
+      base: 'bg-button-orange-normal dark:bg-button-orange-normal-dark',
+      hover:
+        'hover:bg-button-orange-hover dark:hover:bg-button-orange-hover-dark'
     }
   ];
   const colorObj = colors.find((c) => c.name === color);
-  return colorObj ? colorObj.classes : '';
+  if (!colorObj) return '';
+  return includeHover ? `${colorObj.base} ${colorObj.hover}` : colorObj.base;
 };

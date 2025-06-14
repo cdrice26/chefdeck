@@ -8,9 +8,8 @@ const CreatePage = () => {
   const router = useRouter();
   const { addNotification } = useNotification();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const handleSubmit = async (e: FormData) => {
+    const formData = e;
     if (formData.get('ingredientNames') === null) {
       addNotification('Please add at least one ingredient', 'error');
       return;

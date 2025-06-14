@@ -13,6 +13,7 @@ const zipArrays = (names: string[], amounts: string[], units: string[]) => {
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
+  console.log(formData);
   const title = formData.get('title')?.toString() || '';
   const ingredientNames = formData.getAll('ingredientNames') as string[];
   const ingredientAmounts = formData.getAll('ingredientAmounts') as string[];
@@ -21,6 +22,7 @@ export async function POST(req: NextRequest) {
   const time = formData.get('time')?.toString() || '';
   const image = formData.get('image') as File | null;
   const directions = formData.getAll('directions') as string[];
+  const tags = formData.getAll('tags[]') as string[];
   const ingredients = zipArrays(
     ingredientNames,
     ingredientAmounts,
@@ -66,18 +68,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  console.log(tags);
+
   // Call the stored procedure
   const { error: procedureError } = await supabase.rpc('create_recipe', {
     title,
     yield_value: yieldValue,
     minutes: time,
     img_url: imagePath,
-    user_id: user.id,
+    current_user_id: user.id,
     ingredients: ingredients,
     directions: directions.map((direction, index) => ({
       content: direction,
       sequence: index + 1
     })),
+    tags: tags,
     color
   });
 
@@ -91,6 +96,8 @@ export async function POST(req: NextRequest) {
         console.error('Image deletion error:', deleteError.message);
       }
     }
+
+    console.log(procedureError.message);
 
     return new Response(
       JSON.stringify({

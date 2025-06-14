@@ -28,4 +28,5 @@ interface DBRecipe {
   ingredients: DBIngredient[];
   directions: DBDirection[];
   last_viewed?: Date;
+  tags?: string[];
 }

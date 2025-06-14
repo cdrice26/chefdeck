@@ -15,12 +15,18 @@ const Dashboard = () => {
   const [tries, setTries] = useState<{ recipeId: string; tries: number }[]>([]);
 
   const query = useMemo(() => searchParams.get('q') ?? '', [searchParams]);
+  const tags = useMemo(
+    () => searchParams.get('tags')?.split(',') ?? [],
+    [searchParams]
+  );
   const filteredRecipes = useMemo(
     () =>
-      recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(query.toLowerCase())
+      recipes.filter(
+        (recipe) =>
+          recipe.title.toLowerCase().includes(query.toLowerCase()) &&
+          (tags?.length === 0 || recipe.tags?.some((tag) => tags.includes(tag)))
       ),
-    [recipes, searchParams]
+    [recipes, query, tags]
   );
 
   const handleImageError = async (

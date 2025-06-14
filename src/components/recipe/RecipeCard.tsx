@@ -30,20 +30,30 @@ const RecipeCard = ({
       )}`}
     >
       <h3 className='p-2 text-xl font-bold'>{recipe?.title}</h3>
-      {recipe?.imgUrl ? (
-        <Image
-          loading='lazy'
-          src={recipe?.imgUrl}
-          alt=''
-          className='w-full h-[300px] object-cover'
-          width={500}
-          height={300}
-          onError={(e) => onImageError(e, recipe?.id)}
-          onLoad={() => onImageLoad(recipe?.id)}
-        />
-      ) : (
-        <></>
-      )}
+      <Image
+        loading='lazy'
+        src={recipe?.imgUrl ?? '/logo.png'}
+        alt=''
+        className='w-full h-[300px] object-cover'
+        width={500}
+        height={300}
+        onError={(e) => onImageError(e, recipe?.id)}
+        onLoad={() => onImageLoad(recipe?.id)}
+      />
+      <div className='flex flex-row flex-wrap gap-4'>
+        {recipe?.tags &&
+          recipe?.tags?.map((tag, index) => (
+            <div
+              key={index}
+              className={`${getButtonColorClass(
+                recipe?.color,
+                false
+              )} rounded-full min-w-10 p-3 flex justify-center items-center`}
+            >
+              {tag}
+            </div>
+          ))}
+      </div>
       <Button
         className={getButtonColorClass(recipe?.color)}
         onClick={() => onClick(recipe?.id)}

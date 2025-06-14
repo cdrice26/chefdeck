@@ -1,33 +1,52 @@
 import React from 'react';
-import Input from '../forms/Input';
 import Button from '../forms/Button';
 import Modal from '@/components/ui/Modal';
+import SearchBarRenderer from '../navbar/SearchBarRenderer';
+
+interface TagOption {
+  label: string;
+  value: string;
+}
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
   query: string;
   onQueryChange: (e: string) => void;
+  tags: TagOption[];
+  onChangeTags: (tags: TagOption[]) => void;
+  tagOptions: TagOption[];
 }
 
 const SearchModal: React.FC<SearchModalProps> = ({
   isOpen,
   onClose,
   query,
-  onQueryChange
+  onQueryChange,
+  tags,
+  onChangeTags,
+  tagOptions
 }) => {
   if (!isOpen) return null;
 
   return (
-    <Modal className='bg-white w-[90%] justify-center items-center'>
-      <Input
-        className='px-4 py-2 w-full text-sm'
-        value={query}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onQueryChange(e.target.value)
-        }
-        placeholder='Search'
-        style={{ fontSize: '16px' }} // Set font size to prevent zoom on mobile
+    <Modal usePortal className='bg-white w-[90%] justify-center items-center'>
+      <SearchBarRenderer
+        query={query}
+        selectValue={tags}
+        tagOptions={tagOptions}
+        handleInputChange={(input, meta) => {
+          if (meta.action === 'input-change') onQueryChange(input);
+        }}
+        handleChange={(selected, actionMeta) => {
+          if (actionMeta.action === 'clear') {
+            onChangeTags([]);
+            onQueryChange('');
+            return;
+          }
+          onChangeTags(selected as TagOption[]);
+        }}
+        onBlur={onClose}
       />
       <Button onClick={onClose}>Close</Button>
     </Modal>
