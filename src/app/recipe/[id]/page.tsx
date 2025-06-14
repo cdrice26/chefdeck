@@ -2,7 +2,7 @@
 
 import Modal from '@/components/ui/Modal';
 import { Recipe } from '@/types/Recipe';
-import { getColorClass } from '@/utils/styles/colorUtils';
+import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
@@ -36,7 +36,21 @@ export default function RecipePage() {
       </button>
       {recipe ? (
         <>
-          <h1 className='text-4xl font-bold'>{recipe?.title}</h1>
+          <h1 className='text-4xl font-bold flex flex-row justify-start'>
+            {recipe?.title}
+            {(recipe?.tags?.length ?? 0) > 0 &&
+              recipe?.tags?.map((tag, index) => (
+                <div
+                  className={`ml-2 px-4 py-1 rounded-full min-w-10 text-sm flex items-center justify-center ${getButtonColorClass(
+                    recipe?.color,
+                    false
+                  )}`}
+                  key={index}
+                >
+                  {tag}
+                </div>
+              ))}
+          </h1>
           <ul className='flex flex-row items-center justify-start gap-2'>
             <li>
               <strong>Yield:</strong> {recipe?.servings} Servings
