@@ -64,12 +64,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const { data } = await supabase
-    .from('profiles')
-    .select('username')
-    .eq('user_id', user?.id)
-    .single();
-  const username = data?.username ?? null;
+  const { data } = await supabase.rpc('get_profile', {
+    current_user_id: user?.id
+  });
+  const username = data ?? null;
   if (
     !username &&
     request.nextUrl.pathname !== '/setupProfile' &&

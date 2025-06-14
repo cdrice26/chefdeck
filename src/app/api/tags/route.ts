@@ -12,10 +12,11 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { data, error } = await supabase
-    .from('user_tags')
-    .select('id, name')
-    .eq('user_id', user.id);
+  const { data, error } = await supabase.rpc('get_tags', {
+    current_user_id: user.id
+  });
+
+  console.log(data);
 
   if (error) {
     return NextResponse.json({ error: 'Error fetching tags' }, { status: 500 });

@@ -1,6 +1,6 @@
 interface DBTag {
-  id: string;
-  name: string;
+  tag_id: string;
+  tag_name: string;
 }
 
 export default DBTag;
