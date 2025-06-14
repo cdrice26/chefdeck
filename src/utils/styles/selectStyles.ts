@@ -37,7 +37,7 @@ const getSelectStyles = (
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: isDarkMode ? 'white' : 'black' // Placeholder text color
+    color: isDarkMode ? '#aaa' : '#999' // Placeholder text color
   }),
   singleValue: (provided: any) => ({
     ...provided,
