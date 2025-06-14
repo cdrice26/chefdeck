@@ -11,15 +11,9 @@ export async function GET(
   if (!id) {
     return NextResponse.json({ error: 'ID is required.' }, { status: 400 });
   }
-  const { data, error } = await supabase
-    .from('recipes')
-    .select(
-      `id, title, yield, minutes, img_url, source, color, 
-      ingredients (id, name, amount, unit, sequence),
-      directions (id, content, sequence)`
-    )
-    .eq('id', id)
-    .single();
+  const { data, error } = await supabase.rpc('get_recipe_by_id', {
+    p_id: id
+  });
   if (error || !data) {
     return NextResponse.json(
       { error: error?.message ?? 'Internal Server Error' },

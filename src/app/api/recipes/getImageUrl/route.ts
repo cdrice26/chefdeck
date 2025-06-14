@@ -10,12 +10,13 @@ export async function GET(req: NextRequest) {
   const {
     data: { user }
   } = await supabase.auth.getUser();
-  const { data: recipe, error: recipeError } = await supabase
-    .from('recipes')
-    .select('id, img_url')
-    .eq('id', recipeId)
-    .eq('user_id', user?.id)
-    .single();
+  const { data: recipe, error: recipeError } = await supabase.rpc(
+    'get_recipe_image',
+    {
+      p_id: recipeId,
+      p_user_id: user?.id
+    }
+  );
   if (recipeError) {
     console.error('Error fetching recipe:', recipeError);
     return new Response('Error fetching recipe', { status: 500 });
