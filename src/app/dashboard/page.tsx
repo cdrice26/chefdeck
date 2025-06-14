@@ -24,7 +24,8 @@ const Dashboard = () => {
       recipes.filter(
         (recipe) =>
           recipe.title.toLowerCase().includes(query.toLowerCase()) &&
-          (tags?.length === 0 || recipe.tags?.some((tag) => tags.includes(tag)))
+          (tags.length === 0 ||
+            (recipe.tags && tags.every((tag) => recipe?.tags?.includes(tag))))
       ),
     [recipes, query, tags]
   );

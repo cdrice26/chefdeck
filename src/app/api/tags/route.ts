@@ -15,9 +15,6 @@ export async function GET() {
   const { data, error } = await supabase.rpc('get_tags', {
     current_user_id: user.id
   });
-
-  console.log(data);
-
   if (error) {
     return NextResponse.json({ error: 'Error fetching tags' }, { status: 500 });
   }
