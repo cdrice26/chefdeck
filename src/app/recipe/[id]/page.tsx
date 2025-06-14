@@ -36,7 +36,7 @@ export default function RecipePage() {
       </button>
       {recipe ? (
         <>
-          <h1 className='text-4xl font-bold flex flex-row justify-start'>
+          <h1 className='text-4xl font-bold flex flex-row flex-wrap justify-start'>
             {recipe?.title}
             {(recipe?.tags?.length ?? 0) > 0 &&
               recipe?.tags?.map((tag, index) => (
