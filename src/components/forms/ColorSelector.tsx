@@ -1,65 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from './Button';
+import {
+  Color,
+  COLORS,
+  getButtonColorClass,
+  isValidColor
+} from '@/utils/styles/colorUtils';
 
-const ColorSelector = () => {
-  const [selectedColor, setSelectedColor] = useState('white');
+const ColorSelector = ({ defaultValue }: { defaultValue?: Color }) => {
+  const [selectedColor, setSelectedColor] = useState(defaultValue ?? 'white');
 
-  const handleColorSelect = (color: string) => {
+  const handleColorSelect = (color: Color) => {
     setSelectedColor(color);
   };
 
-  // Define an array of color objects
-  const colors = [
-    {
-      name: 'white',
-      classes:
-        'bg-button-white-normal hover:bg-button-white-hover dark:bg-button-white-normal-dark dark:hover:bg-button-white-hover-dark'
-    },
-    {
-      name: 'yellow',
-      classes:
-        'bg-button-yellow-normal hover:bg-button-yellow-hover dark:bg-button-yellow-normal-dark dark:hover:bg-button-yellow-hover-dark'
-    },
-    {
-      name: 'green',
-      classes:
-        'bg-button-green-normal hover:bg-button-green-hover dark:bg-button-green-normal-dark dark:hover:bg-button-green-hover-dark'
-    },
-    {
-      name: 'blue',
-      classes:
-        'bg-button-blue-normal hover:bg-button-blue-hover dark:bg-button-blue-normal-dark dark:hover:bg-button-blue-hover-dark'
-    },
-    {
-      name: 'purple',
-      classes:
-        'bg-button-purple-normal hover:bg-button-purple-hover dark:bg-button-purple-normal-dark dark:hover:bg-button-purple-hover-dark'
-    },
-    {
-      name: 'red',
-      classes:
-        'bg-button-red-normal hover:bg-button-red-hover dark:bg-button-red-normal-dark dark:hover:bg-button-red-hover-dark'
-    },
-    {
-      name: 'orange',
-      classes:
-        'bg-button-orange-normal hover:bg-button-orange-hover dark:bg-button-orange-normal-dark dark:hover:bg-button-orange-hover-dark'
+  useEffect(() => {
+    if (defaultValue && isValidColor(defaultValue)) {
+      setSelectedColor(defaultValue);
     }
-  ];
+  }, [defaultValue]);
 
   return (
     <>
       <label className='flex flex-row gap-4 items-center'>
         Color:
-        {colors.map(({ name, classes }) => (
+        {COLORS.map((name) => (
           <Button
             key={name}
             type='button'
-            onClick={() => handleColorSelect(name)}
+            onClick={() =>
+              handleColorSelect(isValidColor(name) ? name : 'white')
+            }
             className={
               selectedColor === name
-                ? `border-black border-2 ${classes} transition-colors duration-200`
-                : `${classes} transition-colors duration-200`
+                ? `border-black border-2 ${getButtonColorClass(
+                    isValidColor(name) ? name : 'white'
+                  )} transition-colors duration-200`
+                : `${getButtonColorClass(
+                    isValidColor(name) ? name : 'white'
+                  )} transition-colors duration-200`
             }
           >
             {name.charAt(0).toUpperCase() + name.slice(1)}

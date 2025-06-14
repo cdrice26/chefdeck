@@ -1,3 +1,13 @@
+export const COLORS = [
+  'white',
+  'blue',
+  'green',
+  'red',
+  'yellow',
+  'purple',
+  'orange'
+];
+
 export type Color =
   | 'white'
   | 'blue'
@@ -13,9 +23,7 @@ export type Color =
  * @returns Boolean - true if valid, false if invalid
  */
 export const isValidColor = (color: string): color is Color =>
-  ['white', 'blue', 'green', 'red', 'yellow', 'purple', 'orange'].includes(
-    color
-  );
+  COLORS.includes(color);
 
 /**
  * Get the tailwind classes for a given color

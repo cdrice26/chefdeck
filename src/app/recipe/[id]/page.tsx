@@ -1,26 +1,15 @@
 'use client';
 
 import Modal from '@/components/ui/Modal';
-import { Recipe } from '@/types/Recipe';
+import useRecipe from '@/hooks/useRecipe';
 import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 
 export default function RecipePage() {
   const { id } = useParams();
   const router = useRouter();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-
-  const fetchRecipe = async () => {
-    const resp = await fetch(`/api/recipe/${id}`);
-    const data = await resp.json();
-    setRecipe(data?.data?.recipe);
-  };
-
-  useEffect(() => {
-    fetchRecipe();
-  }, [id]);
+  const recipe = useRecipe(id as string);
 
   return (
     <Modal
@@ -88,6 +77,30 @@ export default function RecipePage() {
               <li key={direction?.id}>{direction?.content}</li>
             ))}
           </ul>
+          <div className='flex flex-row flex-wrap gap-4 mt-4'>
+            <button
+              className={`rounded-full px-6 py-2 ${getButtonColorClass(
+                recipe?.color
+              )}`}
+            >
+              Delete
+            </button>
+            <button
+              className={`rounded-full px-6 py-2 ${getButtonColorClass(
+                recipe?.color
+              )}`}
+            >
+              Print
+            </button>
+            <button
+              className={`rounded-full px-6 py-2 ${getButtonColorClass(
+                recipe?.color
+              )}`}
+              onClick={() => router.push(`/recipe/${id}/edit`)}
+            >
+              Edit
+            </button>
+          </div>
         </>
       ) : (
         <div>Loading...</div>

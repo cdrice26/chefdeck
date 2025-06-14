@@ -1,7 +1,7 @@
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import Input from '@/components/forms/Input';
 import { Direction, Ingredient, Recipe } from '@/types/Recipe';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../forms/Button';
 import {
   DndContext,
@@ -42,18 +42,14 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
   const availableTags = useAvailableTags();
 
-  const [ingredients, setIngredients] = useState<Ingredient[]>(
-    recipe?.ingredients || []
-  );
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
   const ingredientSensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const [directions, setDirections] = useState<Direction[]>(
-    recipe?.directions || []
-  );
+  const [directions, setDirections] = useState<Direction[]>([]);
 
   const directionsSensors = useSensors(
     useSensor(PointerSensor),
@@ -139,12 +135,26 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
     handleSubmit(formData);
   };
 
+  useEffect(() => {
+    if (recipe) {
+      setIngredients(recipe.ingredients || []);
+      setDirections(recipe.directions || []);
+      setTags(recipe.tags?.map((tag) => ({ label: tag, value: tag })) || []);
+    }
+  }, [recipe]);
+
   return (
     <ResponsiveForm onSubmit={handleSubmitInternal}>
       {recipe && <input type='hidden' name='id' value={recipe.id} readOnly />}
-      <h1>New Recipe</h1>
+      <h1 className='text-2xl font-bold'>{recipe ? 'Update' : 'New'} Recipe</h1>
       <label>
-        Recipe Name: <Input name='title' placeholder='Name' required />
+        Recipe Name:{' '}
+        <Input
+          name='title'
+          placeholder='Name'
+          defaultValue={recipe?.title}
+          required
+        />
       </label>
       <label>
         Yield:{' '}
@@ -153,6 +163,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
           placeholder='Yield'
           type='number'
           min='1'
+          defaultValue={recipe?.servings}
           required
         />
       </label>
@@ -161,7 +172,14 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
       </label>
       <label>
         Time (in minutes):{' '}
-        <Input name='time' placeholder='Time' type='number' min='1' required />
+        <Input
+          name='time'
+          placeholder='Time'
+          type='number'
+          min='1'
+          defaultValue={recipe?.minutes}
+          required
+        />
       </label>
 
       <h2>Ingredients</h2>
@@ -250,13 +268,13 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
       <Button type='button' onClick={addDirection}>
         Add Direction
       </Button>
-      <ColorSelector />
+      <ColorSelector defaultValue={recipe?.color} />
       <TagSelector
         value={tags}
         onChange={setTags}
         initialOptions={availableTags}
       />
-      <Button type='submit'>Submit Recipe</Button>
+      <Button type='submit'>{recipe ? 'Update' : 'Submit'} Recipe</Button>
     </ResponsiveForm>
   );
 };
