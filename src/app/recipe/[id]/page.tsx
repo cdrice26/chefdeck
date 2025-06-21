@@ -1,6 +1,7 @@
 'use client';
 
 import Modal from '@/components/ui/Modal';
+import { useNotification } from '@/context/NotificationContext';
 import useRecipe from '@/hooks/useRecipe';
 import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
@@ -10,6 +11,29 @@ export default function RecipePage() {
   const { id } = useParams();
   const router = useRouter();
   const recipe = useRecipe(id as string);
+  const { addNotification } = useNotification();
+
+  const handleDelete = async () => {
+    const confirmed = confirm(
+      'Deleting a recipe is permanent and cannot be undone. Are you sure?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const resp = await fetch(`/api/recipe/${id}/delete`, {
+      method: 'DELETE'
+    });
+
+    if (!resp.ok) {
+      addNotification('Failed to delete recipe.', 'error');
+    } else {
+      const json = await resp.json();
+      addNotification(json.data.message, 'success');
+      router.push('/dashboard');
+    }
+  };
 
   return (
     <Modal
@@ -82,8 +106,16 @@ export default function RecipePage() {
               className={`rounded-full px-6 py-2 ${getButtonColorClass(
                 recipe?.color
               )}`}
+              onClick={handleDelete}
             >
               Delete
+            </button>
+            <button
+              className={`rounded-full px-6 py-2 ${getButtonColorClass(
+                recipe?.color
+              )}`}
+            >
+              Manage Schedules
             </button>
             <button
               className={`rounded-full px-6 py-2 ${getButtonColorClass(
