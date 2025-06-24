@@ -2,7 +2,7 @@ import { getRecipeImageUrl } from '@/services/recipeService';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest, { params }: { params: any }) {
-  const { recipeId } = await params;
+  const { id: recipeId } = await params;
   if (!recipeId) {
     return new Response('Recipe ID is required', { status: 400 });
   }
@@ -13,6 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       headers: { 'Content-Type': 'text/plain' }
     });
   } catch (error: any) {
+    console.log(error);
     if (error.code === '404') {
       return new Response(error.message, { status: 404 });
     }
