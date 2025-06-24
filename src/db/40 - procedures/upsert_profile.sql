@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.upsert_profile;
+
 CREATE OR REPLACE FUNCTION public.upsert_profile(p_user_id uuid, p_username text)
  RETURNS void
  LANGUAGE plpgsql

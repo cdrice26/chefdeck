@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.get_recipe_image;
+
 CREATE OR REPLACE FUNCTION public.get_recipe_image(p_recipe_id uuid, p_user_id uuid) RETURNS jsonb
     LANGUAGE plpgsql
     SECURITY INVOKER

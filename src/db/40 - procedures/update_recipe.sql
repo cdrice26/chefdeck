@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.update_recipe;
+
 CREATE OR REPLACE FUNCTION public.update_recipe(
     p_id uuid, 
     p_title text, 

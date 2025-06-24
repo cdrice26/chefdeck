@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.upsert_recipe_usage;
+
 CREATE OR REPLACE FUNCTION public.upsert_recipe_usage(p_user_id uuid, p_recipe_id uuid, p_last_viewed timestamptz)
  RETURNS void
  LANGUAGE plpgsql

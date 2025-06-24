@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.get_image_path;
+
 CREATE OR REPLACE FUNCTION get_image_path(p_recipe_id uuid)
   RETURNS text
   LANGUAGE sql

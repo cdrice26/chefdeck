@@ -1,3 +1,5 @@
+DROP FUNCTION public.get_tags;
+
 --
 -- Name: get_tags(uuid); Type: FUNCTION; Schema: public; Owner: postgres
 --

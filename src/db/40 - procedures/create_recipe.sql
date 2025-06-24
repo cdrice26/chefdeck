@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.create_recipe;
+
 CREATE OR REPLACE FUNCTION public.create_recipe(
     p_title text, 
     p_yield_value smallint, 

@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.get_recipe_by_id;
+
 CREATE OR REPLACE FUNCTION public.get_recipe_by_id(p_id uuid)
  RETURNS jsonb
  LANGUAGE plpgsql

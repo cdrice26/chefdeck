@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.get_recipes;
+
 --
 -- Name: get_recipes(uuid); Type: FUNCTION; Schema: public; Owner: postgres
 --

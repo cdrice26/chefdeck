@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.get_profile;
+
 CREATE OR REPLACE FUNCTION public.get_profile(current_user_id uuid)
  RETURNS text
  LANGUAGE plpgsql

@@ -1,3 +1,5 @@
+DROP FUNCTION IF EXISTS public.delete_recipe;
+
 CREATE OR REPLACE FUNCTION public.delete_recipe(p_recipe_id uuid)
  RETURNS void
  LANGUAGE plpgsql
