@@ -1,29 +1,46 @@
 import { NextResponse } from 'next/server';
-import getTags from '@/models/getTags';
-import createClient from '@/utils/supabase/supabase';
+import { getTags } from '@/services/tagsService';
 
 export async function GET() {
-  const supabase = await createClient();
-
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-  if (user === null) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const tags = await getTags();
+    return NextResponse.json(tags, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
+      }
+    });
+  } catch (error: any) {
+    if (error.code === '401') {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        {
+          status: 401,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+    } else if (error.code === '404') {
+      return NextResponse.json(
+        { error: 'No tags found' },
+        {
+          status: 404,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+    }
+    return NextResponse.json(
+      { error: 'Failed to fetch tags' },
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   }
-
-  const { data, error } = await supabase.rpc('get_tags', {
-    current_user_id: user.id
-  });
-  if (error) {
-    return NextResponse.json({ error: 'Error fetching tags' }, { status: 500 });
-  }
-
-  const tags = data && getTags(data);
-
-  if (!tags) {
-    return NextResponse.json({ error: 'No tags found' }, { status: 404 });
-  }
-
-  return NextResponse.json(tags, { status: 200 });
 }

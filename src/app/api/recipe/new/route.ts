@@ -2,11 +2,7 @@ import { createOrUpdateRecipe } from '@/services/recipeService';
 import getRecipeUpdateData from '@/formParsers/getRecipeUpdateData';
 import { NextRequest } from 'next/server';
 
-export const POST = async (req: NextRequest, { params }: { params: any }) => {
-  const { id } = await params;
-  if (!id) {
-    return new Response('Recipe ID is required', { status: 400 });
-  }
+export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
   const {
     title,
@@ -26,7 +22,6 @@ export const POST = async (req: NextRequest, { params }: { params: any }) => {
     image,
     directions,
     tags,
-    color,
-    id
+    color
   );
 };

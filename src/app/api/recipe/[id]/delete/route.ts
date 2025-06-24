@@ -1,4 +1,4 @@
-import createClient from '@/utils/supabase/supabase';
+import { deleteRecipe } from '@/services/recipeService';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(
@@ -6,19 +6,23 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
-  const supabase = await createClient();
+
   if (!id) {
     return NextResponse.json({ error: 'ID is required.' }, { status: 400 });
   }
-  const { error } = await supabase.rpc('delete_recipe', {
-    p_recipe_id: id
-  });
-  if (error) {
+
+  try {
+    await deleteRecipe(id);
+  } catch (error: any) {
+    if (error.code === '404') {
+      return NextResponse.json({ error: error.message }, { status: 404 });
+    }
     return NextResponse.json(
-      { error: error?.message ?? 'Internal Server Error' },
+      { error: 'Internal Server Error' },
       { status: 500 }
     );
   }
+
   return NextResponse.json({
     data: { message: 'Recipe Deleted Successfully.' }
   });

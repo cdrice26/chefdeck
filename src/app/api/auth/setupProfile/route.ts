@@ -8,9 +8,10 @@ export async function POST(request: Request) {
   const { username } = await request.json();
 
   const supabase = await createClient();
-  const { error } = await supabase
-    .from('profiles')
-    .upsert({ user_id: user?.id, username });
+  const { error } = await supabase.rpc('upsert_profile', {
+    p_user_id: user?.id,
+    p_username: username
+  });
 
   if (error) {
     if (error.code === '23505') {

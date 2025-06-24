@@ -1,10 +1,9 @@
---
--- Name: get_recipe_by_id(uuid); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.get_recipe_by_id(p_id uuid) RETURNS jsonb
-    LANGUAGE plpgsql
-    AS $$DECLARE
+CREATE OR REPLACE FUNCTION public.get_recipe_by_id(p_id uuid)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SECURITY INVOKER
+ SET search_path = public
+AS $function$DECLARE
     recipe_data JSONB;
 BEGIN
     -- Retrieve the recipe along with its ingredients and directions
@@ -38,7 +37,4 @@ BEGIN
 
     -- Return the recipe data
     RETURN recipe_data;
-END;$$;
-
-
-ALTER FUNCTION public.get_recipe_by_id(p_id uuid) OWNER TO postgres;
+END;$function$;

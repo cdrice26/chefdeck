@@ -1,10 +1,19 @@
---
--- Name: create_recipe(text, smallint, integer, text, uuid, text, jsonb, jsonb, jsonb); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.create_recipe(p_title text, p_yield_value smallint, p_minutes integer, p_img_url text, p_current_user_id uuid, p_color text, p_ingredients jsonb, p_directions jsonb, p_tags jsonb) RETURNS void
-    LANGUAGE plpgsql
-    AS $$
+CREATE OR REPLACE FUNCTION public.create_recipe(
+    p_title text, 
+    p_yield_value smallint, 
+    p_minutes integer, 
+    p_img_url text, 
+    p_current_user_id uuid, 
+    p_color text, 
+    p_ingredients jsonb, 
+    p_directions jsonb, 
+    p_tags jsonb
+) 
+RETURNS void
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = public
+AS $function$
 DECLARE
     tag_name text;
     tag_id uuid;
@@ -47,7 +56,4 @@ BEGIN
     VALUES (p_current_user_id, new_recipe_id)
     ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = NOW();
 END;
-$$;
-
-
-ALTER FUNCTION public.create_recipe(p_title text, p_yield_value smallint, p_minutes integer, p_img_url text, p_current_user_id uuid, p_color text, p_ingredients jsonb, p_directions jsonb, p_tags jsonb) OWNER TO postgres;
+$function$;

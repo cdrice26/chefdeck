@@ -8,7 +8,7 @@ import { isValidColor } from '../utils/styles/colorUtils';
  * @param supabase - Supabase client to use to fetch the image URL
  * @returns A function that takes a DBRecipe and outputs a Recipe that can be used by the application
  */
-const getRecipe =
+const parseRecipe =
   (supabase: SupabaseClient) =>
   async (recipe: DBRecipe): Promise<Recipe> => ({
     id: recipe.id,
@@ -36,4 +36,4 @@ const getRecipe =
     tags: recipe?.tags
   });
 
-export default getRecipe;
+export default parseRecipe;

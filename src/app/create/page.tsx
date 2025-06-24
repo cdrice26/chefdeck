@@ -21,7 +21,7 @@ const CreatePage = () => {
     if (formData.get('color') === null || formData.get('color') === '') {
       formData.set('color', 'white'); // Default color if not set
     }
-    const resp = await fetch('/api/recipes/new', {
+    const resp = await fetch('/api/recipe/new', {
       body: formData,
       method: 'POST'
     });

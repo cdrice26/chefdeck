@@ -1,9 +1,7 @@
---
--- Name: get_recipe_image(uuid, uuid); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.get_recipe_image(p_recipe_id uuid, p_user_id uuid) RETURNS jsonb
+CREATE OR REPLACE FUNCTION public.get_recipe_image(p_recipe_id uuid, p_user_id uuid) RETURNS jsonb
     LANGUAGE plpgsql
+    SECURITY INVOKER
+    SET search_path = public
     AS $$
 DECLARE
     recipe_data JSONB;
@@ -21,6 +19,3 @@ BEGIN
     RETURN recipe_data;
 END;
 $$;
-
-
-ALTER FUNCTION public.get_recipe_image(p_recipe_id uuid, p_user_id uuid) OWNER TO postgres;

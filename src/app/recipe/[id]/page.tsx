@@ -114,6 +114,7 @@ export default function RecipePage() {
               className={`rounded-full px-6 py-2 ${getButtonColorClass(
                 recipe?.color
               )}`}
+              onClick={() => router.push(`/recipe/${id}/schedule`)}
             >
               Manage Schedules
             </button>

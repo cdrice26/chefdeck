@@ -2,8 +2,10 @@
 -- Name: get_recipes(uuid); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION public.get_recipes(in_user_id uuid) RETURNS TABLE(id uuid, title text, yield smallint, minutes integer, img_url text, source text, color text, ingredients jsonb, directions jsonb, last_viewed timestamp with time zone, tags jsonb)
+CREATE OR REPLACE FUNCTION public.get_recipes(in_user_id uuid) RETURNS TABLE(id uuid, title text, yield smallint, minutes integer, img_url text, source text, color text, ingredients jsonb, directions jsonb, last_viewed timestamp with time zone, tags jsonb)
     LANGUAGE plpgsql
+    SET search_path = public
+    SECURITY INVOKER
     AS $$
 BEGIN
     RETURN QUERY

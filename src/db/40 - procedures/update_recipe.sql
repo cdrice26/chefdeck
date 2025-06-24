@@ -1,10 +1,20 @@
---
--- Name: update_recipe(uuid, text, smallint, integer, text, uuid, text, jsonb, jsonb, jsonb); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.update_recipe(p_id uuid, p_title text, p_yield_value smallint, p_minutes integer, p_img_url text, p_current_user_id uuid, p_color text, p_ingredients jsonb, p_directions jsonb, p_tags jsonb) RETURNS void
-    LANGUAGE plpgsql
-    AS $$DECLARE
+CREATE OR REPLACE FUNCTION public.update_recipe(
+    p_id uuid, 
+    p_title text, 
+    p_yield_value smallint, 
+    p_minutes integer, 
+    p_img_url text, 
+    p_current_user_id uuid, 
+    p_color text, 
+    p_ingredients jsonb, 
+    p_directions jsonb, 
+    p_tags jsonb
+) 
+RETURNS void
+SET search_path = public, pg_catalog
+SECURITY INVOKER
+AS $$
+DECLARE
     tag_name text;
     tag_id uuid;
 BEGIN
@@ -13,7 +23,10 @@ BEGIN
     SET title = p_title,
         yield = p_yield_value,
         minutes = p_minutes,
-        img_url = p_img_url,
+        img_url = CASE
+            WHEN p_img_url IS NOT NULL THEN p_img_url
+            ELSE img_url
+        END,
         color = p_color
     WHERE id = p_id AND user_id = p_current_user_id;
 
@@ -51,7 +64,5 @@ BEGIN
     INSERT INTO recipe_usage (user_id, recipe_id)
     VALUES (p_current_user_id, p_id)
     ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = NOW();
-END;$$;
-
-
-ALTER FUNCTION public.update_recipe(p_id uuid, p_title text, p_yield_value smallint, p_minutes integer, p_img_url text, p_current_user_id uuid, p_color text, p_ingredients jsonb, p_directions jsonb, p_tags jsonb) OWNER TO postgres;
+END;
+$$ LANGUAGE plpgsql;

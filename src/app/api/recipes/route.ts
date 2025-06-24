@@ -1,33 +1,48 @@
-import { Recipe } from '@/types/Recipe';
-import createClient from '@/utils/supabase/supabase';
 import { NextResponse } from 'next/server';
-import { asyncMap } from '@/utils/arrayUtils';
-import getRecipe from '@/models/getRecipe';
+import { getRecipes } from '@/services/recipesService';
 
 export async function GET() {
-  const supabase = await createClient();
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-  if (user === null) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  const { data, error } = await supabase.rpc('get_recipes', {
-    in_user_id: user?.id
-  });
-  const recipes: Recipe[] =
-    data && data?.length > 0 ? await asyncMap(data, getRecipe(supabase)) : [];
-  if (error) {
+  try {
+    const recipes = await getRecipes();
+    if (!recipes || recipes.length === 0) {
+      return NextResponse.json(
+        { data: [] },
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
     return NextResponse.json(
-      { error: 'Error fetching recipes' },
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { data: recipes },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+  } catch (error: any) {
+    if (error.code === '401') {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please log in to access your recipes.' },
+        {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    } else if (error.code === '404') {
+      return NextResponse.json(
+        { error: 'No recipes found.' },
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+    return NextResponse.json(
+      { error: 'Internal Server Error. Please try again later.' },
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      }
     );
   }
-
-  return NextResponse.json(
-    { data: recipes },
-    {
-      headers: { 'Content-Type': 'application/json' }
-    }
-  );
 }
