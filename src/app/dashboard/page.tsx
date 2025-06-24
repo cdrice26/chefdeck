@@ -44,7 +44,7 @@ const Dashboard = () => {
     if (tries?.find((t) => t?.recipeId === recipeId)?.tries ?? 4 >= 3) {
       return; // Max 3 attempts
     }
-    const response = await fetch(`/api/recipe/${recipeId}/getImageUrl`);
+    const response = await fetch(`/api/recipe/${recipeId}/imageUrl`);
     if (!response.ok) {
       console.error('Failed to fetch image URL for recipe:', recipeId);
       return;

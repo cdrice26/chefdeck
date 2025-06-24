@@ -4,7 +4,7 @@ interface CardProps {
   squareOnMobile?: boolean;
 }
 
-const Card = ({ children, className, squareOnMobile = true }: CardProps) => {
+const Card = ({ children, className, squareOnMobile = false }: CardProps) => {
   return (
     <div
       className={`${className} ${

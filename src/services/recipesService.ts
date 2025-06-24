@@ -1,4 +1,4 @@
-import getRecipe from '@/models/recipeModel';
+import { parseRecipe } from '@/models/recipeModel';
 import { Recipe } from '@/types/Recipe';
 import { asyncMap } from '@/utils/arrayUtils';
 import createClient from '@/utils/supabase/supabase';
@@ -21,7 +21,7 @@ export const getRecipes: () => Promise<Recipe[]> = async () => {
     in_user_id: user?.id
   });
   const recipes: Recipe[] =
-    data && data?.length > 0 ? await asyncMap(data, getRecipe(supabase)) : [];
+    data && data?.length > 0 ? await asyncMap(data, parseRecipe(supabase)) : [];
   if (error) {
     throw new PostgrestError({
       message: 'Error fetching recipes',

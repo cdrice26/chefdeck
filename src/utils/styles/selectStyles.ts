@@ -7,7 +7,7 @@ const getSelectStyles = (
   control: (provided: any) => ({
     ...provided,
     'backgroundColor': isDarkMode ? '#333' : 'white',
-    'borderColor': isRounded ? 'transparent' : isDarkMode ? 'white' : 'black',
+    'borderColor': isRounded ? 'transparent' : isDarkMode ? 'white' : '#D1D5DB',
     'color': isDarkMode ? 'white' : 'black',
     'borderRadius': isRounded ? '50px' : '4px',
     'minWidth': minWidth,

@@ -1,6 +1,7 @@
 import createClient from '@/utils/supabase/supabase';
 import { PostgrestError } from '@supabase/supabase-js';
-import getRecipeFromDBResult from '@/models/recipeModel';
+import { parseRecipe, parseSchedules } from '@/models/recipeModel';
+import { Schedule } from '@/types/Schedule';
 
 export const getRecipe = async (recipeId: string) => {
   const supabase = await createClient();
@@ -29,7 +30,7 @@ export const getRecipe = async (recipeId: string) => {
     p_recipe_id: recipeId,
     p_last_viewed: new Date()
   });
-  const recipe = await getRecipeFromDBResult(supabase)(data);
+  const recipe = await parseRecipe(supabase)(data);
   return recipe;
 };
 
@@ -67,12 +68,49 @@ export const getRecipeImageUrl = async (recipeId: string) => {
     throw new PostgrestError({
       message: 'Image URL not found',
       code: '404',
-      details: 'No image found with the provided URL',
-      hint: 'Check if the URL is correct and it exists for the user.'
+      details: 'No image found with the provided recipe id',
+      hint: 'Check if the recipe is correct and it exists for the user.'
     });
   }
 
   return data.signedUrl;
+};
+
+export const getRecipeSchedules = async (recipeId: string) => {
+  const supabase = await createClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+  const { data, error } = await supabase.rpc('get_scheduled_recipes', {
+    p_recipe_id: recipeId,
+    p_user_id: user?.id
+  });
+  if (error) {
+    throw error;
+  }
+  return parseSchedules(data);
+};
+
+export const scheduleRecipe = async (
+  recipeId: string,
+  schedules: Schedule[]
+) => {
+  const supabase = await createClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+  const { error } = await supabase.rpc('upsert_scheduled_recipes', {
+    p_user_id: user?.id,
+    p_schedules: schedules.map((schedule) => ({
+      id: schedule.id,
+      recipe_id: recipeId,
+      date: schedule.date,
+      repeat: schedule?.repeat,
+      repeat_end: schedule?.endRepeat
+    }))
+  });
+  console.log(error);
+  if (error) throw error;
 };
 
 export const createOrUpdateRecipe = async (
