@@ -16,7 +16,10 @@ interface ResponsiveFormProps {
  */
 const ResponsiveForm = ({ onSubmit, children }: ResponsiveFormProps) => (
   <div className='w-full h-full flex justify-center items-center m-0 sm:m-4'>
-    <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
+    <Card
+      className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'
+      squareOnMobile
+    >
       <form onSubmit={onSubmit} className='flex flex-col gap-4 relative'>
         {children}
       </form>
