@@ -23,13 +23,14 @@ const userDropdownStyles: (
     minWidth: 120,
     borderRadius: '9999px', // rounded-full
     padding: '0.5rem 1.5rem', // p-4 px-6
+    backdropFilter: 'blur(8px)',
     backgroundColor: state.isFocused
       ? isDark
-        ? '#333'
-        : '#e5e7eb' // dark:hover:bg-[#333] or hover:bg-gray-200
+        ? 'rgba(34, 34, 34, 0.75)'
+        : 'rgba(229, 231, 235, 0.75)' // dark:hover:bg-[#333] or hover:bg-gray-200
       : isDark
-      ? '#222'
-      : '#f3f4f6', // dark:bg-[#222] or bg-gray-100
+      ? 'rgba(34, 34, 34, 0.75)'
+      : 'rgba(243, 244, 246, 0.75)', // dark:bg-[#222] or bg-gray-100
     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', // shadow-md
     border: 'none',
     cursor: 'pointer',

@@ -1,4 +1,3 @@
-import { Recipe } from '@/types/Recipe';
 import Tab from './Tab';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchBar from './SearchBar';
@@ -20,7 +19,7 @@ const TabBar = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', query);
     if (tags.length > 0) {
-      params.set('tags', tags.map(t => t.value).join(','));
+      params.set('tags', tags.map((t) => t.value).join(','));
     } else {
       params.delete('tags');
     }
@@ -38,7 +37,7 @@ const TabBar = () => {
       const params = new URLSearchParams(searchParams.toString());
       params.set('q', newQuery);
       if (tags.length > 0) {
-        params.set('tags', tags.map(t => t.value).join(','));
+        params.set('tags', tags.map((t) => t.value).join(','));
       } else {
         params.delete('tags');
       }
@@ -54,7 +53,7 @@ const TabBar = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', query);
     if (newTags.length > 0) {
-      params.set('tags', newTags.map(t => t.value).join(','));
+      params.set('tags', newTags.map((t) => t.value).join(','));
     } else {
       params.delete('tags');
     }
@@ -63,7 +62,7 @@ const TabBar = () => {
 
   return (
     <div className='flex flex-row justify-center items-center gap-4'>
-      <ul className='flex flex-row justify-between items-center gap-4 bg-gray-100 rounded-full p-2 shadow-md dark:bg-[#222]'>
+      <ul className='flex flex-row justify-between items-center gap-4 bg-gray-100/75 backdrop-blur-md rounded-full p-2 shadow-md dark:bg-[#222]/75'>
         <Tab
           label='Recipes'
           isActive={url === '/dashboard'}
