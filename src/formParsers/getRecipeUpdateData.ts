@@ -9,7 +9,6 @@ const getRecipeUpdateData = (formData: FormData) => {
   const time = parseInt(formData.get('time')?.toString() ?? '');
   const image = formData.get('image') as File | null;
   const directions = formData.getAll('directions') as string[];
-  console.log('Directions:', directions);
   const tags = formData.getAll('tags[]') as string[];
   const ingredients = zipArrays(
     ingredientNames,

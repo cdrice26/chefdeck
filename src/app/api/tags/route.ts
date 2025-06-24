@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTags } from '@/services/tagsService';
+import { getErrorResponse } from '@/utils/errorUtils';
+import { PostgrestError } from '@supabase/supabase-js';
 
 export async function GET() {
   try {
@@ -12,35 +14,6 @@ export async function GET() {
       }
     });
   } catch (error: any) {
-    if (error.code === '401') {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        {
-          status: 401,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-    } else if (error.code === '404') {
-      return NextResponse.json(
-        { error: 'No tags found' },
-        {
-          status: 404,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-    }
-    return NextResponse.json(
-      { error: 'Failed to fetch tags' },
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    return getErrorResponse(error as PostgrestError);
   }
 }

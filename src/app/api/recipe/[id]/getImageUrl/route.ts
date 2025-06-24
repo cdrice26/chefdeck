@@ -1,5 +1,7 @@
 import { getRecipeImageUrl } from '@/services/recipeService';
-import { NextRequest } from 'next/server';
+import { getErrorResponse } from '@/utils/errorUtils';
+import { PostgrestError } from '@supabase/supabase-js';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, { params }: { params: any }) {
   const { id: recipeId } = await params;
@@ -13,10 +15,6 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       headers: { 'Content-Type': 'text/plain' }
     });
   } catch (error: any) {
-    console.log(error);
-    if (error.code === '404') {
-      return new Response(error.message, { status: 404 });
-    }
-    return new Response('Internal Server Error', { status: 500 });
+    return getErrorResponse(error as PostgrestError);
   }
 }

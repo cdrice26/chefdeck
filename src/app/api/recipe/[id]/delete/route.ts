@@ -1,4 +1,6 @@
 import { deleteRecipe } from '@/services/recipeService';
+import { getErrorResponse } from '@/utils/errorUtils';
+import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(
@@ -14,13 +16,7 @@ export async function DELETE(
   try {
     await deleteRecipe(id);
   } catch (error: any) {
-    if (error.code === '404') {
-      return NextResponse.json({ error: error.message }, { status: 404 });
-    }
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return getErrorResponse(error as PostgrestError);
   }
 
   return NextResponse.json({

@@ -106,11 +106,18 @@ export const createOrUpdateRecipe = async (
   const imagePath =
     (image?.size ?? 0) > 0 ? `${user.id}/${Date.now()}-${image?.name}` : null;
   if ((image?.size ?? 0) > 0 && !imagePath) {
-    console.log('Image error');
     return new Response(JSON.stringify({ error: 'Image upload failed' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' }
     });
+  }
+
+  if (id && imagePath) {
+    const { data: oldImagePath } = await supabase.rpc('get_image_path', {
+      p_recipe_id: id
+    });
+    if (oldImagePath)
+      await supabase.storage.from('images').remove([oldImagePath]);
   }
 
   const { error } = imagePath
@@ -121,13 +128,12 @@ export const createOrUpdateRecipe = async (
     : { error: null };
 
   if (error) {
-    return new Response(
-      JSON.stringify({ error: 'Image error: ' + error.message }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
+    throw new PostgrestError({
+      message: 'Image could not be updated.',
+      hint: 'Check that the image is supported.',
+      code: '500',
+      details: error.message
+    });
   }
 
   const args = {
@@ -165,32 +171,25 @@ export const createOrUpdateRecipe = async (
       }
     }
 
-    return new Response(
-      JSON.stringify({
-        error:
-          `Recipe ${id ? 'update' : 'creation'} error: ` +
-          procedureError.message
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
+    throw new PostgrestError({
+      message: `Could not ${id ? 'update' : 'create'} recipe`,
+      details: procedureError.message,
+      hint: procedureError.hint,
+      code: '500'
+    });
   }
 
-  return new Response(
-    JSON.stringify({
-      data: { message: `Recipe ${id ? 'updated' : 'created'} successfully.` }
-    }),
-    {
-      status: 201,
-      headers: { 'Content-Type': 'application/json' }
-    }
-  );
+  return {
+    data: { message: `Recipe ${id ? 'updated' : 'created'} successfully.` }
+  };
 };
 
 export const deleteRecipe = async (recipeId: string) => {
   const supabase = await createClient();
+
+  const { data: imagePath } = await supabase.rpc('get_image_path', {
+    p_recipe_id: recipeId
+  });
 
   const { error } = await supabase.rpc('delete_recipe', {
     p_recipe_id: recipeId
@@ -203,5 +202,9 @@ export const deleteRecipe = async (recipeId: string) => {
       details: error.details,
       hint: error.hint
     });
+  }
+
+  if (imagePath) {
+    await supabase.storage.from('images').remove([imagePath]);
   }
 };
