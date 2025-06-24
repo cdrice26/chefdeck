@@ -46,7 +46,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky z-100 top-0 p-5 flex flex-row justify-between transition-shadow items-center ${
+      className={`sticky z-100 top-0 p-5 relative flex flex-row justify-between transition-shadow items-center ${
         showShadow ? 'shadow-lg' : ''
       }`}
     >
@@ -55,13 +55,13 @@ const Navbar = () => {
         onClick={() => router.push('/')}
         className={
           scrolled
-            ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md'
+            ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md h-full'
             : '' + 'transition-all'
         }
       >
         <img
           src={isDark ? '/logo-darktheme.png' : '/logo.png'}
-          className='h-15'
+          className='h-12'
           alt='Cooky'
         />
       </button>

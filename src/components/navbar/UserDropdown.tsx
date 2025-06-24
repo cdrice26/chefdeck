@@ -41,7 +41,12 @@ const userDropdownStyles: (
     ...base,
     borderRadius: '0.75rem',
     marginTop: 4,
-    backgroundColor: isDark ? '#222' : '#fff',
+    paddingTop: 6,
+    paddingBottom: 6,
+    backdropFilter: 'blur(8px)',
+    backgroundColor: isDark
+      ? 'rgba(34, 34, 34, 0.75)'
+      : 'rgba(255, 255, 255, 0.75)',
     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
     color: isDark ? '#f3f4f6' : '#111827'
   }),
@@ -52,11 +57,9 @@ const userDropdownStyles: (
     ...provided,
     'backgroundColor': state.isFocused
       ? isDark
-        ? '#555'
-        : '#f0f0f0' // Background color when focused
-      : isDark
-      ? '#333'
-      : 'white', // Background color when not focused
+        ? 'rgba(85, 85, 85, 0.5)'
+        : 'rgba(240, 240, 240, 0.5)' // Background color when focused
+      : 'transparent', // Background color when not focused
     'color': state.isSelected
       ? 'white' // Text color when selected
       : state.isFocused
