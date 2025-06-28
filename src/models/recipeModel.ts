@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import fetchImageUrl from '../utils/supabase/fetchImageUrl';
+import fetchImageUrl from '../utils/imageUtils';
 import { Recipe } from '@/types/Recipe';
 import { isValidColor } from '../utils/styles/colorUtils';
 import {

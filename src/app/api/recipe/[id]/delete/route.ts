@@ -1,4 +1,5 @@
 import { deleteRecipe } from '@/services/recipeService';
+import { getAccessToken } from '@/utils/authUtils';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -14,7 +15,7 @@ export async function DELETE(
   }
 
   try {
-    await deleteRecipe(req.headers.get('Authorization'), id);
+    await deleteRecipe(await getAccessToken(req), id);
   } catch (error: any) {
     return getErrorResponse(error as PostgrestError);
   }

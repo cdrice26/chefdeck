@@ -1,4 +1,5 @@
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { getAccessToken } from '@/utils/authUtils';
+import { createClientWithToken } from '@/utils/supabaseUtils';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
-    const supabase = createClientFromHeaders(req.headers.get('Authorization'));
+    const supabase = createClientWithToken(await getAccessToken(req));
 
     if (!supabase) {
       return NextResponse.json(

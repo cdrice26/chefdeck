@@ -1,18 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { createClientWithToken } from '@/utils/supabaseUtils';
+import { getAccessToken } from '@/utils/authUtils';
 
 export async function GET(req: NextRequest) {
   try {
-    const authHeader = req.headers.get('authorization');
-    const accessToken = authHeader?.startsWith('Bearer ')
-      ? authHeader.slice(7)
-      : null;
-
-    if (!accessToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const supabase = createClientFromHeaders(req.headers.get('Authorization'));
+    const supabase = createClientWithToken(await getAccessToken(req));
 
     const {
       data: { user },

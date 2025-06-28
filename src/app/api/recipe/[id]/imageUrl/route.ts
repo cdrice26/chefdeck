@@ -1,4 +1,5 @@
 import { getRecipeImageUrl } from '@/services/recipeService';
+import { getAccessToken } from '@/utils/authUtils';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest } from 'next/server';
@@ -10,7 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
   }
   try {
     const signedUrl = await getRecipeImageUrl(
-      req.headers.get('Authorization'),
+      await getAccessToken(req),
       recipeId
     );
     return new Response(signedUrl, {

@@ -1,21 +1,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import request from '@/utils/fetchUtils';
 
 export default function useRequireAuth() {
   const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
-        router.replace('/login');
-        return;
-      }
-      const res = await fetch('/api/auth/checkAuth', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
+      const res = await request('/api/auth/checkAuth', 'GET');
       if (!res.ok) {
         router.replace('/login');
       }

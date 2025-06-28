@@ -1,15 +1,14 @@
+import { getAccessToken } from '@/utils/authUtils';
 import { requireAuth } from '@/utils/requireAuth';
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
-import { NextResponse } from 'next/server';
+import { createClientWithToken } from '@/utils/supabaseUtils';
+import { NextResponse, NextRequest } from 'next/server';
 
-export async function POST(request: Request) {
-  const user = await requireAuth(request.headers.get('Authorization'));
+export async function POST(request: NextRequest) {
+  const user = await requireAuth('Bearer ' + (await getAccessToken(request)));
 
   const { username } = await request.json();
 
-  const supabase = createClientFromHeaders(
-    request.headers.get('Authorization')
-  );
+  const supabase = createClientWithToken(await getAccessToken(request));
   const { error } = await supabase.rpc('upsert_profile', {
     p_user_id: user?.id,
     p_username: username

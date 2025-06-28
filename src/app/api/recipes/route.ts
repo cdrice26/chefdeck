@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getRecipes } from '@/services/recipesService';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
+import { getAccessToken } from '@/utils/authUtils';
 
 export async function GET(req: NextRequest) {
   try {
-    const recipes = await getRecipes(req.headers.get('Authorization'));
+    const recipes = await getRecipes(await getAccessToken(req));
     if (!recipes) {
       return NextResponse.json(
         { data: [] },

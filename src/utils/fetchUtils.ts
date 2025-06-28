@@ -1,26 +1,16 @@
 const refreshAccessToken = async () => {
-  const refreshToken = localStorage.getItem('refreshToken');
-  if (!refreshToken) return null;
-
   const res = await fetch('/api/auth/refreshToken', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'x-refresh-token': refreshToken
+      'Content-Type': 'application/json'
     },
     credentials: 'include'
   });
 
   if (!res.ok) {
-    return null;
+    return false;
   }
-  const data = await res.json();
-  if (data.accessToken && data.refreshToken) {
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    return data.accessToken;
-  }
-  return null;
+  return true;
 };
 
 const request = async (url: string, method: string, body?: BodyInit) => {
@@ -28,27 +18,19 @@ const request = async (url: string, method: string, body?: BodyInit) => {
     throw new Error('request() called on the server');
   }
 
-  let accessToken = localStorage.getItem('accessToken') ?? '';
-
   let res = await fetch(url, {
     method,
     body,
-    headers: {
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
-    },
     credentials: 'include'
   });
 
   if (res.status === 401) {
     // Try to refresh token
-    accessToken = await refreshAccessToken();
+    const accessToken = await refreshAccessToken();
     if (accessToken) {
       res = await fetch(url, {
         method,
         body,
-        headers: {
-          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
-        },
         credentials: 'include'
       });
     }

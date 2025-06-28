@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { createClientWithToken } from '@/utils/supabaseUtils';
 import { revalidatePath } from 'next/cache';
+import { getAccessToken } from '@/utils/authUtils';
 
 /**
  * Handles POST requests for user signup.
@@ -13,7 +14,7 @@ import { revalidatePath } from 'next/cache';
  * @returns {Promise<NextResponse>} The response containing signup result.
  */
 export async function POST(req: NextRequest) {
-  const supabase = createClientFromHeaders(req.headers.get('Authorization'));
+  const supabase = createClientWithToken(await getAccessToken(req));
 
   try {
     const { email, password, confirmPassword } = await req.json();

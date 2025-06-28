@@ -1,9 +1,9 @@
 import parseTags from '@/models/tagsModel';
 import { PostgrestError } from '@supabase/supabase-js';
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { createClientWithToken } from '@/utils/supabaseUtils';
 
-export const getTags = async (authHeader: string | null): Promise<string[]> => {
-  const supabase = await createClientFromHeaders(authHeader);
+export const getTags = async (authToken: string | null): Promise<string[]> => {
+  const supabase = createClientWithToken(authToken ?? '');
 
   const {
     data: { user }

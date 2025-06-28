@@ -49,8 +49,6 @@ const Login = () => {
     }
 
     const data = await res.json();
-    localStorage.setItem('accessToken', data.data.accessToken);
-    localStorage.setItem('refreshToken', data.data.refreshToken);
 
     await fetchUser();
     router.push('/dashboard');

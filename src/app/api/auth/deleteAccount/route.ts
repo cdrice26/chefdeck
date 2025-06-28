@@ -1,6 +1,7 @@
 import { createClient as createAdminClient } from '@supabase/supabase-js';
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { createClientWithToken } from '@/utils/supabaseUtils';
 import { NextRequest, NextResponse } from 'next/server';
+import { getAccessToken } from '@/utils/authUtils';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,8 +14,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const clientSupabase = await createClientFromHeaders(
-      req.headers.get('Authorization')
+    const clientSupabase = await createClientWithToken(
+      await getAccessToken(req)
     );
 
     // Create Supabase client with cookies for auth
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
       {
         global: {
           headers: {
-            Authorization: req.headers.get('Authorization') ?? ''
+            Authorization: 'Bearer ' + ((await getAccessToken(req)) ?? '')
           }
         }
       }

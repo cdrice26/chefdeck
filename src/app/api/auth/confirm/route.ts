@@ -1,4 +1,5 @@
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { getAccessToken } from '@/utils/authUtils';
+import { createClientWithToken } from '@/utils/supabaseUtils';
 import { type EmailOtpType } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -14,9 +15,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const supabase = createClientFromHeaders(
-    request.headers.get('Authorization')
-  );
+  const supabase = createClientWithToken(await getAccessToken(request));
   const { error } = await supabase.auth.verifyOtp({ type, token_hash });
 
   if (error) {

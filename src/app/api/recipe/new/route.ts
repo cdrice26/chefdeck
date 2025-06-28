@@ -1,6 +1,7 @@
 import { createOrUpdateRecipe } from '@/services/recipeService';
 import getRecipeUpdateData from '@/formParsers/getRecipeUpdateData';
 import { NextRequest } from 'next/server';
+import { getAccessToken } from '@/utils/authUtils';
 
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
@@ -15,7 +16,7 @@ export const POST = async (req: NextRequest) => {
     color
   } = getRecipeUpdateData(formData);
   return await createOrUpdateRecipe(
-    req.headers.get('Authorization'),
+    await getAccessToken(req),
     title,
     ingredients,
     yieldValue,

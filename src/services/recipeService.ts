@@ -1,13 +1,10 @@
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { createClientWithToken } from '@/utils/supabaseUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 import { parseRecipe, parseSchedules } from '@/models/recipeModel';
 import { Schedule } from '@/types/Schedule';
 
-export const getRecipe = async (
-  authHeader: string | null,
-  recipeId: string
-) => {
-  const supabase = createClientFromHeaders(authHeader);
+export const getRecipe = async (authToken: string | null, recipeId: string) => {
+  const supabase = createClientWithToken(authToken ?? '');
   const { data, error } = await supabase.rpc('get_recipe_by_id', {
     p_id: recipeId
   });
@@ -38,10 +35,10 @@ export const getRecipe = async (
 };
 
 export const getRecipeImageUrl = async (
-  authHeader: string | null,
+  authToken: string | null,
   recipeId: string
 ) => {
-  const supabase = createClientFromHeaders(authHeader);
+  const supabase = createClientWithToken(authToken ?? '');
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -83,10 +80,10 @@ export const getRecipeImageUrl = async (
 };
 
 export const getRecipeSchedules = async (
-  authHeader: string | null,
+  authToken: string | null,
   recipeId: string
 ) => {
-  const supabase = createClientFromHeaders(authHeader);
+  const supabase = createClientWithToken(authToken ?? '');
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -101,11 +98,11 @@ export const getRecipeSchedules = async (
 };
 
 export const scheduleRecipe = async (
-  authHeader: string | null,
+  authToken: string | null,
   recipeId: string,
   schedules: Schedule[]
 ) => {
-  const supabase = createClientFromHeaders(authHeader);
+  const supabase = createClientWithToken(authToken ?? '');
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -123,7 +120,7 @@ export const scheduleRecipe = async (
 };
 
 export const createOrUpdateRecipe = async (
-  authHeader: string | null,
+  authToken: string | null,
   title: string,
   ingredients: {
     name: string;
@@ -139,7 +136,7 @@ export const createOrUpdateRecipe = async (
   color: string,
   id: string | null = null
 ) => {
-  const supabase = createClientFromHeaders(authHeader);
+  const supabase = createClientWithToken(authToken ?? '');
 
   const {
     data: { user }
@@ -233,10 +230,10 @@ export const createOrUpdateRecipe = async (
 };
 
 export const deleteRecipe = async (
-  authHeader: string | null,
+  authToken: string | null,
   recipeId: string
 ) => {
-  const supabase = createClientFromHeaders(authHeader);
+  const supabase = createClientWithToken(authToken ?? '');
 
   const { data: imagePath } = await supabase.rpc('get_image_path', {
     p_recipe_id: recipeId

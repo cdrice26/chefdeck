@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClientFromHeaders } from './utils/supabase/supabase';
+import { createClientWithToken } from './utils/supabaseUtils';
+import { getAccessToken } from './utils/authUtils';
 
 const unprotectedPaths = [
   '/api/auth/login',
@@ -24,21 +25,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const authHeader = request.headers.get('authorization');
-  const accessToken = authHeader?.startsWith('Bearer ')
-    ? authHeader.slice(7)
-    : null;
-
-  if (!accessToken) {
-    return NextResponse.json(
-      { error: 'User is not signed in' },
-      { status: 401 }
-    );
-  }
-
-  const supabase = createClientFromHeaders(
-    request.headers.get('Authorization')
-  );
+  const supabase = createClientWithToken(await getAccessToken(request));
 
   const {
     data: { user },

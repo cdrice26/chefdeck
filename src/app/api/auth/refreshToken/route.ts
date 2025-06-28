@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { getRefreshToken } from '@/utils/authUtils';
 
 export async function POST(req: NextRequest) {
-  const refreshToken = req.headers.get('x-refresh-token');
+  const refreshToken = await getRefreshToken(req);
 
   if (!refreshToken) {
     return NextResponse.json(

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { createClientWithToken } from '@/utils/supabaseUtils';
+import { getAccessToken } from '@/utils/authUtils';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Create Supabase client with SSR cookies for authentication
-    const supabase = createClientFromHeaders(req.headers.get('Authorization'));
+    const supabase = createClientWithToken(await getAccessToken(req));
 
     // Get current user
     const {

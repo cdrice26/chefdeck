@@ -3,6 +3,7 @@ import getRecipeUpdateData from '@/formParsers/getRecipeUpdateData';
 import { NextRequest, NextResponse } from 'next/server';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
+import { getAccessToken } from '@/utils/authUtils';
 
 export const POST = async (req: NextRequest, { params }: { params: any }) => {
   const { id } = await params;
@@ -22,7 +23,7 @@ export const POST = async (req: NextRequest, { params }: { params: any }) => {
   } = getRecipeUpdateData(formData);
   try {
     const response = await createOrUpdateRecipe(
-      req.headers.get('Authorization'),
+      await getAccessToken(req),
       title,
       ingredients,
       yieldValue,
