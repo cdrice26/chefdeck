@@ -1,10 +1,13 @@
-import createClient from '@/utils/supabase/supabase';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 import { PostgrestError } from '@supabase/supabase-js';
 import { parseRecipe, parseSchedules } from '@/models/recipeModel';
 import { Schedule } from '@/types/Schedule';
 
-export const getRecipe = async (recipeId: string) => {
-  const supabase = await createClient();
+export const getRecipe = async (
+  authHeader: string | null,
+  recipeId: string
+) => {
+  const supabase = createClientFromHeaders(authHeader);
   const { data, error } = await supabase.rpc('get_recipe_by_id', {
     p_id: recipeId
   });
@@ -34,8 +37,11 @@ export const getRecipe = async (recipeId: string) => {
   return recipe;
 };
 
-export const getRecipeImageUrl = async (recipeId: string) => {
-  const supabase = await createClient();
+export const getRecipeImageUrl = async (
+  authHeader: string | null,
+  recipeId: string
+) => {
+  const supabase = createClientFromHeaders(authHeader);
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -76,8 +82,11 @@ export const getRecipeImageUrl = async (recipeId: string) => {
   return data.signedUrl;
 };
 
-export const getRecipeSchedules = async (recipeId: string) => {
-  const supabase = await createClient();
+export const getRecipeSchedules = async (
+  authHeader: string | null,
+  recipeId: string
+) => {
+  const supabase = createClientFromHeaders(authHeader);
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -92,10 +101,11 @@ export const getRecipeSchedules = async (recipeId: string) => {
 };
 
 export const scheduleRecipe = async (
+  authHeader: string | null,
   recipeId: string,
   schedules: Schedule[]
 ) => {
-  const supabase = await createClient();
+  const supabase = createClientFromHeaders(authHeader);
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -109,11 +119,11 @@ export const scheduleRecipe = async (
       repeat_end: schedule?.endRepeat
     }))
   });
-  console.log(error);
   if (error) throw error;
 };
 
 export const createOrUpdateRecipe = async (
+  authHeader: string | null,
   title: string,
   ingredients: {
     name: string;
@@ -129,7 +139,7 @@ export const createOrUpdateRecipe = async (
   color: string,
   id: string | null = null
 ) => {
-  const supabase = await createClient();
+  const supabase = createClientFromHeaders(authHeader);
 
   const {
     data: { user }
@@ -222,8 +232,11 @@ export const createOrUpdateRecipe = async (
   };
 };
 
-export const deleteRecipe = async (recipeId: string) => {
-  const supabase = await createClient();
+export const deleteRecipe = async (
+  authHeader: string | null,
+  recipeId: string
+) => {
+  const supabase = createClientFromHeaders(authHeader);
 
   const { data: imagePath } = await supabase.rpc('get_image_path', {
     p_recipe_id: recipeId

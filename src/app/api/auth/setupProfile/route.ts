@@ -1,13 +1,15 @@
 import { requireAuth } from '@/utils/requireAuth';
-import createClient from '@/utils/supabase/supabase';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const user = await requireAuth();
+  const user = await requireAuth(request.headers.get('Authorization'));
 
   const { username } = await request.json();
 
-  const supabase = await createClient();
+  const supabase = createClientFromHeaders(
+    request.headers.get('Authorization')
+  );
   const { error } = await supabase.rpc('upsert_profile', {
     p_user_id: user?.id,
     p_username: username

@@ -1,4 +1,6 @@
 'use client';
+
+import request from '@/utils/fetchUtils';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 type AuthContextType = {
@@ -23,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch('/api/auth/checkAuth');
+      const res = await request('/api/auth/checkAuth', 'GET');
       if (!res.ok) {
         setUser(null);
         setUsername(null);

@@ -3,11 +3,14 @@
 import Modal from '@/components/ui/Modal';
 import { useNotification } from '@/context/NotificationContext';
 import useRecipe from '@/hooks/useRecipe';
+import useRequireAuth from '@/hooks/useRequireAuth';
+import request from '@/utils/fetchUtils';
 import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
 import { IoClose } from 'react-icons/io5';
 
 export default function RecipePage() {
+  useRequireAuth();
   const { id } = useParams();
   const router = useRouter();
   const recipe = useRecipe(id as string);
@@ -22,9 +25,7 @@ export default function RecipePage() {
       return;
     }
 
-    const resp = await fetch(`/api/recipe/${id}/delete`, {
-      method: 'DELETE'
-    });
+    const resp = await request(`/api/recipe/${id}/delete`, 'DELETE');
 
     if (!resp.ok) {
       addNotification('Failed to delete recipe.', 'error');

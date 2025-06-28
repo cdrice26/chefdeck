@@ -4,12 +4,15 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
   try {
-    const scheduledRecipes = await getRecipeSchedules(id);
+    const scheduledRecipes = await getRecipeSchedules(
+      req.headers.get('Authorization'),
+      id
+    );
     return NextResponse.json(
       {
         data: scheduledRecipes

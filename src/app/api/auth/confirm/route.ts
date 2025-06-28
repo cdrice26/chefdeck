@@ -1,6 +1,6 @@
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 import { type EmailOtpType } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import createClient from '@/utils/supabase/supabase';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -14,14 +14,13 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const supabase = await createClient();
+  const supabase = createClientFromHeaders(
+    request.headers.get('Authorization')
+  );
   const { error } = await supabase.auth.verifyOtp({ type, token_hash });
 
   if (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
   // For password reset, client should show a password reset form.

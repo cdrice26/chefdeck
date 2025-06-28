@@ -1,5 +1,5 @@
 import { createClient as createAdminClient } from '@supabase/supabase-js';
-import createClient from '@/utils/supabase/supabase';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -13,12 +13,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const clientSupabase = await createClient();
+    const clientSupabase = await createClientFromHeaders(
+      req.headers.get('Authorization')
+    );
 
     // Create Supabase client with cookies for auth
     const adminSupabase = createAdminClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        global: {
+          headers: {
+            Authorization: req.headers.get('Authorization') ?? ''
+          }
+        }
+      }
     );
 
     if (!adminSupabase || !clientSupabase) {

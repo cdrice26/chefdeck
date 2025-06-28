@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
+import request from '@/utils/fetchUtils';
+import useRequireAuth from '@/hooks/useRequireAuth';
 
 /**
  * Login page component.
@@ -18,6 +20,7 @@ import ResponsiveForm from '@/components/forms/ResponsiveForm';
  * @returns {JSX.Element} The rendered login page.
  */
 const Login = () => {
+  useRequireAuth();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { fetchUser } = useAuth();
@@ -34,11 +37,11 @@ const Login = () => {
     const formData = new FormData(e.currentTarget);
     const username = formData.get('username');
 
-    const res = await fetch('/api/auth/setupProfile', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username })
-    });
+    const res = await request(
+      '/api/auth/setupProfile',
+      'POST',
+      JSON.stringify({ username })
+    );
 
     if (!res.ok) {
       const data = await res.json();

@@ -1,11 +1,13 @@
 import { parseRecipe } from '@/models/recipeModel';
 import { Recipe } from '@/types/Recipe';
 import { asyncMap } from '@/utils/arrayUtils';
-import createClient from '@/utils/supabase/supabase';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 import { PostgrestError } from '@supabase/supabase-js';
 
-export const getRecipes: () => Promise<Recipe[]> = async () => {
-  const supabase = await createClient();
+export const getRecipes: (
+  authHeader: string | null
+) => Promise<Recipe[]> = async (authHeader: string | null) => {
+  const supabase = createClientFromHeaders(authHeader);
   const {
     data: { user }
   } = await supabase.auth.getUser();

@@ -15,6 +15,7 @@ export const POST = async (req: NextRequest) => {
     color
   } = getRecipeUpdateData(formData);
   return await createOrUpdateRecipe(
+    req.headers.get('Authorization'),
     title,
     ingredients,
     yieldValue,

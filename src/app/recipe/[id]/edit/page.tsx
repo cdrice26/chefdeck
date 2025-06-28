@@ -3,9 +3,12 @@
 import RecipeForm from '@/components/specificForms/RecipeForm';
 import { useNotification } from '@/context/NotificationContext';
 import useRecipe from '@/hooks/useRecipe';
+import useRequireAuth from '@/hooks/useRequireAuth';
+import request from '@/utils/fetchUtils';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function EditRecipePage() {
+  useRequireAuth();
   const { id } = useParams();
   const router = useRouter();
   const recipe = useRecipe(id as string);
@@ -24,10 +27,7 @@ export default function EditRecipePage() {
     if (formData.get('color') === null || formData.get('color') === '') {
       formData.set('color', 'white'); // Default color if not set
     }
-    const resp = await fetch(`/api/recipe/${id}/update`, {
-      body: formData,
-      method: 'POST'
-    });
+    const resp = await request(`/api/recipe/${id}/update`, 'POST', formData);
     if (!resp.ok) {
       const error = await resp.json();
       addNotification(error.message || 'Failed to update recipe', 'error');

@@ -1,4 +1,4 @@
-import createClient from '@/utils/supabase/supabase';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -9,8 +9,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
-    // Create Supabase client with cookies for auth
-    const supabase = await createClient();
+    const supabase = createClientFromHeaders(req.headers.get('Authorization'));
 
     if (!supabase) {
       return NextResponse.json(

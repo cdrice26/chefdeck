@@ -1,8 +1,8 @@
-import createClient from '@/utils/supabase/supabase';
-import { NextResponse } from 'next/server';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST() {
-  const supabase = await createClient();
+export async function POST(req: NextRequest) {
+  const supabase = createClientFromHeaders(req.headers.get('Authorization'));
   const { error } = await supabase.auth.signOut();
   if (error) {
     return NextResponse.json({ error: error }, { status: 500 });

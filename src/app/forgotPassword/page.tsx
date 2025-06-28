@@ -3,6 +3,7 @@
 import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
+import request from '@/utils/fetchUtils';
 import { useState } from 'react';
 
 const ForgotPassword = () => {
@@ -16,11 +17,11 @@ const ForgotPassword = () => {
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
 
-    const res = await fetch('/api/auth/forgotPassword', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
+    const res = await request(
+      '/api/auth/forgotPassword',
+      'POST',
+      JSON.stringify({ email })
+    );
 
     if (!res.ok) {
       const data = await res.json();

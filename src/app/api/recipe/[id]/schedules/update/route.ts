@@ -19,7 +19,7 @@ export async function POST(
       endRepeat: new Date(schedule?.endRepeat)
     }));
     console.log(schedules);
-    await scheduleRecipe(id, schedules);
+    await scheduleRecipe(req.headers.get('Authorization'), id, schedules);
     return NextResponse.json(
       { message: 'Recipe schedules updated successfully.' },
       { status: 200 }

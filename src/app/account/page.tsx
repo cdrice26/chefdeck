@@ -4,6 +4,7 @@ import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
 import Card from '@/components/ui/Card';
 import { useAuth } from '@/context/AuthContext';
+import request from '@/utils/fetchUtils';
 import { useState } from 'react';
 
 interface SectionProps {
@@ -45,13 +46,11 @@ const AccountPage = () => {
     const formData = new FormData(e.currentTarget);
     const username = formData.get('username');
 
-    const response = await fetch('/api/auth/setupProfile', {
-      method: 'POST',
-      body: JSON.stringify({ username }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await request(
+      '/api/auth/setupProfile',
+      'POST',
+      JSON.stringify({ username })
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -106,13 +105,11 @@ const AccountPage = () => {
       return;
     }
 
-    const response = await fetch('/api/auth/changePassword', {
-      method: 'POST',
-      body: JSON.stringify({ currentPassword, newPassword: password }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await request(
+      '/api/auth/changePassword',
+      'POST',
+      JSON.stringify({ currentPassword, newPassword: password })
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -135,13 +132,11 @@ const AccountPage = () => {
       return;
     }
 
-    const response = await fetch('/api/auth/updateEmail', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await request(
+      '/api/auth/updateEmail',
+      'POST',
+      JSON.stringify({ email })
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -167,13 +162,11 @@ const AccountPage = () => {
       return;
     }
 
-    const response = await fetch('/api/auth/deleteAccount', {
-      method: 'POST',
-      body: JSON.stringify({ password: confirmDelete }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await request(
+      '/api/auth/deleteAccount',
+      'POST',
+      JSON.stringify({ password: confirmDelete })
+    );
 
     if (!response.ok) {
       const errorData = await response.json();

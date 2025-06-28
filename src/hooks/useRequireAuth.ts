@@ -1,26 +1,25 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function useRequireAuth() {
   const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('accessToken');
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        router.replace('/login');
+        return;
+      }
       const res = await fetch('/api/auth/checkAuth', {
         headers: {
-          Authorization: token ? `Bearer ${token}` : ''
+          Authorization: `Bearer ${accessToken}`
         }
       });
-      const data = await res.json();
-      if (data.data.user) {
-        router.replace('/dashboard');
+      if (!res.ok) {
+        router.replace('/login');
       }
     };
     checkAuth();
   }, [router]);
-
-  return <div>Cooky</div>;
 }

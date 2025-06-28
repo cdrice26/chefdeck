@@ -22,6 +22,7 @@ export const POST = async (req: NextRequest, { params }: { params: any }) => {
   } = getRecipeUpdateData(formData);
   try {
     const response = await createOrUpdateRecipe(
+      req.headers.get('Authorization'),
       title,
       ingredients,
       yieldValue,

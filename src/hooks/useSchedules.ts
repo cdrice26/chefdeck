@@ -1,5 +1,6 @@
 import { useNotification } from '@/context/NotificationContext';
 import { Schedule } from '@/types/Schedule';
+import request from '@/utils/fetchUtils';
 import { useEffect, useState } from 'react';
 
 const useSchedules = (recipeId: string) => {
@@ -7,7 +8,7 @@ const useSchedules = (recipeId: string) => {
   const { addNotification } = useNotification();
 
   const fetchSchedules = async () => {
-    const resp = await fetch(`/api/recipe/${recipeId}/schedules`);
+    const resp = await request(`/api/recipe/${recipeId}/schedules`, 'GET');
     if (!resp.ok) {
       addNotification('Error fetching schedules.', 'error');
       return;

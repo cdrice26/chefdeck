@@ -1,12 +1,15 @@
 'use client';
 
 import RecipeCard from '@/components/recipe/RecipeCard';
+import useRequireAuth from '@/hooks/useRequireAuth';
 import { Recipe } from '@/types/Recipe';
+import request from '@/utils/fetchUtils';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 const Dashboard = () => {
   const router = useRouter();
+  useRequireAuth();
   const searchParams = useSearchParams();
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -44,7 +47,7 @@ const Dashboard = () => {
     if (tries?.find((t) => t?.recipeId === recipeId)?.tries ?? 4 >= 3) {
       return; // Max 3 attempts
     }
-    const response = await fetch(`/api/recipe/${recipeId}/imageUrl`);
+    const response = await request(`/api/recipe/${recipeId}/imageUrl`, 'GET');
     if (!response.ok) {
       console.error('Failed to fetch image URL for recipe:', recipeId);
       return;
@@ -62,7 +65,7 @@ const Dashboard = () => {
   const fetchRecipes = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/recipes');
+      const response = await request('/api/recipes', 'GET');
       if (!response.ok) {
         setError('Failed to fetch recipes');
       }

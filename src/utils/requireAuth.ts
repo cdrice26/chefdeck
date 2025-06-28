@@ -1,5 +1,5 @@
 import { User } from '@supabase/supabase-js';
-import createClient from './supabase/supabase';
+import { createClientFromHeaders } from './supabase/supabase';
 
 /**
  * Checks if the request is authenticated using Supabase session.
@@ -8,8 +8,8 @@ import createClient from './supabase/supabase';
  *
  * @returns {Promise<User>} NextResponse if unauthorized, otherwise the user object.
  */
-export async function requireAuth(): Promise<User> {
-  const supabase = await createClient();
+export async function requireAuth(authHeader: string | null): Promise<User> {
+  const supabase = createClientFromHeaders(authHeader);
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {

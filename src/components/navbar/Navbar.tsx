@@ -6,11 +6,11 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TabBar from './TabBar';
+import request from '@/utils/fetchUtils';
 
 const UserDropdown = dynamic(() => import('./UserDropdown'), { ssr: false });
 
 const Navbar = () => {
-  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const isDark = useIsDark();
   const router = useRouter();
@@ -18,9 +18,10 @@ const Navbar = () => {
   const { user, username, setUsername, fetchUser } = useAuth();
 
   const logout = async () => {
-    const response = await fetch('/api/auth/logout', { method: 'POST' });
+    const response = await request('/api/auth/logout', 'POST');
     if (response.status !== 200) throw new Error('Logout failed');
     setUsername(null);
+    localStorage.clear();
     await fetchUser();
     router.push('/');
   };

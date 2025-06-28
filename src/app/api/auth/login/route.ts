@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import createClient from '@/utils/supabase/supabase';
-import { revalidatePath } from 'next/cache';
+import { createClient } from '@supabase/supabase-js';
 
 /**
  * Handles POST requests for user login.
@@ -13,8 +12,6 @@ import { revalidatePath } from 'next/cache';
  * @returns {Promise<NextResponse>} The response containing authentication result.
  */
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const supabase = await createClient();
-
   try {
     const { email, password } = await req.json();
 
@@ -25,19 +22,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_ANON_KEY!
+    );
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
 
-    revalidatePath('/', 'layout');
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+    if (error || !data.session) {
+      return NextResponse.json(
+        { error: error?.message ?? 'Login failed' },
+        { status: 401 }
+      );
     }
 
     return NextResponse.json({
-      data: { user: data.user, session: data.session }
+      data: {
+        user: data.user,
+        accessToken: data.session.access_token,
+        refreshToken: data.session.refresh_token
+      }
     });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400 });

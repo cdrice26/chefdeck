@@ -3,9 +3,12 @@
 import RecipeForm from '@/components/specificForms/RecipeForm';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '@/context/NotificationContext';
+import request from '@/utils/fetchUtils';
+import useRequireAuth from '@/hooks/useRequireAuth';
 
 const CreatePage = () => {
   const router = useRouter();
+  useRequireAuth();
   const { addNotification } = useNotification();
 
   const handleSubmit = async (e: FormData) => {
@@ -21,10 +24,7 @@ const CreatePage = () => {
     if (formData.get('color') === null || formData.get('color') === '') {
       formData.set('color', 'white'); // Default color if not set
     }
-    const resp = await fetch('/api/recipe/new', {
-      body: formData,
-      method: 'POST'
-    });
+    const resp = await request('/api/recipe/new', 'POST', formData);
     if (!resp.ok) {
       const error = await resp.json();
       addNotification(error.message || 'Failed to create recipe', 'error');

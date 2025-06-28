@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import createClient from '@/utils/supabase/supabase';
+import { createClientFromHeaders } from '@/utils/supabase/supabase';
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = createClientFromHeaders(req.headers.get('Authorization'));
 
     // Use the token to update the user's password
     const { error } = await supabase.auth.updateUser({

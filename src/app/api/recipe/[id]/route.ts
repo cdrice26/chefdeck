@@ -4,7 +4,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
@@ -12,7 +12,7 @@ export async function GET(
     return NextResponse.json({ error: 'ID is required.' }, { status: 400 });
   }
   try {
-    const recipe = await getRecipe(id);
+    const recipe = await getRecipe(req.headers.get('Authorization'), id);
     return NextResponse.json({ data: { recipe } }, { status: 200 });
   } catch (error: any) {
     return getErrorResponse(error as PostgrestError);

@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getTags } from '@/services/tagsService';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const tags = await getTags();
+    const tags = await getTags(req.headers.get('Authorization'));
     return NextResponse.json(tags, {
       status: 200,
       headers: {

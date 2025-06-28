@@ -6,7 +6,9 @@ import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import Card from '@/components/ui/Card';
 import { useNotification } from '@/context/NotificationContext';
 import useIsDark from '@/hooks/useIsDark';
+import useRequireAuth from '@/hooks/useRequireAuth';
 import useSchedules from '@/hooks/useSchedules';
+import request from '@/utils/fetchUtils';
 import getSelectStyles from '@/utils/styles/selectStyles';
 import { useParams, useRouter } from 'next/navigation';
 import Select from 'react-select';
@@ -21,6 +23,8 @@ const OPTIONS = [
 ];
 
 export default function ScheduleRecipePage() {
+  useRequireAuth();
+
   const { id } = useParams() as { id: string };
 
   const { schedules, setSchedules } = useSchedules(id);
@@ -68,11 +72,11 @@ export default function ScheduleRecipePage() {
           : null
     }));
     try {
-      const res = await fetch(`/api/recipe/${id}/schedules/update`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: normalizedSchedules })
-      });
+      const res = await request(
+        `/api/recipe/${id}/schedules/update`,
+        'POST',
+        JSON.stringify({ data: normalizedSchedules })
+      );
       if (!res.ok) {
         const json = await res.json();
         addNotification(json.error.message, 'error');

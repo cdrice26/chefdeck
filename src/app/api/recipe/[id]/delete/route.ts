@@ -4,7 +4,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
@@ -14,7 +14,7 @@ export async function DELETE(
   }
 
   try {
-    await deleteRecipe(id);
+    await deleteRecipe(req.headers.get('Authorization'), id);
   } catch (error: any) {
     return getErrorResponse(error as PostgrestError);
   }

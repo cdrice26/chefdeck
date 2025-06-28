@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card';
 import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import { useNotification } from '@/context/NotificationContext';
+import request from '@/utils/fetchUtils';
 
 export default function ConfirmPage() {
   const router = useRouter();
@@ -30,10 +31,11 @@ export default function ConfirmPage() {
     }
 
     try {
-      const resp = await fetch(
+      const resp = await request(
         `/api/auth/confirm?token_hash=${encodeURIComponent(
           token_hash
-        )}&type=${encodeURIComponent(type)}`
+        )}&type=${encodeURIComponent(type)}`,
+        'GET'
       );
       const data = await resp.json();
       if (resp.ok) {
@@ -65,11 +67,11 @@ export default function ConfirmPage() {
     e.preventDefault();
     setResetError('');
     setStatus('loading');
-    const res = await fetch('/api/auth/resetPassword', {
-      method: 'POST',
-      body: JSON.stringify({ token_hash, password }),
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const res = await request(
+      '/api/auth/resetPassword',
+      'POST',
+      JSON.stringify({ token_hash, password })
+    );
     const data = await res.json();
     if (res.ok) {
       setStatus('success');

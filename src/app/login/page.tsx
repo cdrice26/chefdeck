@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
+import request from '@/utils/fetchUtils';
 
 /**
  * Login page component.
@@ -35,17 +36,21 @@ const Login = () => {
     const email = formData.get('email');
     const password = formData.get('password');
 
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    const res = await request(
+      '/api/auth/login',
+      'POST',
+      JSON.stringify({ email, password })
+    );
 
     if (!res.ok) {
       const data = await res.json();
       setError(data.error || 'Login failed');
       return;
     }
+
+    const data = await res.json();
+    localStorage.setItem('accessToken', data.data.accessToken);
+    localStorage.setItem('refreshToken', data.data.refreshToken);
 
     await fetchUser();
     router.push('/dashboard');

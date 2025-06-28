@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
+import request from '@/utils/fetchUtils';
 
 /**
  * Signup component renders a user registration form.
@@ -36,11 +37,11 @@ const Signup = () => {
       return;
     }
 
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, confirmPassword })
-    });
+    const res = await request(
+      '/api/auth/signup',
+      'POST',
+      JSON.stringify({ email, password, confirmPassword })
+    );
 
     if (!res.ok) {
       const data = await res.json();
