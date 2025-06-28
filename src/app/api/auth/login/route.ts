@@ -14,6 +14,7 @@ import { createClient } from '@supabase/supabase-js';
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const { email, password } = await req.json();
+    const clientType = req.headers.get('X-Client-Type');
 
     if (!email || !password) {
       return NextResponse.json(
@@ -43,11 +44,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const refreshToken = data.session.refresh_token;
 
     const resp = NextResponse.json({
-      data: {
-        user: data.user,
-        accessToken,
-        refreshToken
-      }
+      data:
+        clientType === 'web'
+          ? { user: data.user }
+          : {
+              user: data.user,
+              accessToken,
+              refreshToken
+            }
     });
 
     resp.cookies.set('accessToken', accessToken, {

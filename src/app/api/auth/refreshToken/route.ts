@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import { getRefreshToken } from '@/utils/authUtils';
 
 export async function POST(req: NextRequest) {
+  const clientType = req.headers.get('X-Client-Type');
+
   const refreshToken = await getRefreshToken(req);
 
   if (!refreshToken) {
@@ -30,8 +32,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  return NextResponse.json({
-    accessToken: data.session.access_token,
-    refreshToken: data.session.refresh_token
-  });
+  return clientType === 'web'
+    ? NextResponse.json({ message: 'success' })
+    : NextResponse.json({
+        accessToken: data.session.access_token,
+        refreshToken: data.session.refresh_token
+      });
 }

@@ -2,7 +2,8 @@ const refreshAccessToken = async () => {
   const res = await fetch('/api/auth/refreshToken', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-Client-Type': 'web'
     },
     credentials: 'include'
   });
@@ -14,14 +15,13 @@ const refreshAccessToken = async () => {
 };
 
 const request = async (url: string, method: string, body?: BodyInit) => {
-  if (typeof window === 'undefined') {
-    throw new Error('request() called on the server');
-  }
-
   let res = await fetch(url, {
     method,
     body,
-    credentials: 'include'
+    credentials: 'include',
+    headers: {
+      'X-Client-Type': 'web'
+    }
   });
 
   if (res.status === 401) {
@@ -31,7 +31,10 @@ const request = async (url: string, method: string, body?: BodyInit) => {
       res = await fetch(url, {
         method,
         body,
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'X-Client-Type': 'web'
+        }
       });
     }
   }

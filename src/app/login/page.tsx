@@ -48,8 +48,6 @@ const Login = () => {
       return;
     }
 
-    const data = await res.json();
-
     await fetchUser();
     router.push('/dashboard');
   };
