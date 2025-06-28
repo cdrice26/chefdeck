@@ -7,10 +7,13 @@ const refreshAccessToken = async () => {
     headers: {
       'Content-Type': 'application/json',
       'x-refresh-token': refreshToken
-    }
+    },
+    credentials: 'include'
   });
 
-  if (!res.ok) return null;
+  if (!res.ok) {
+    return null;
+  }
   const data = await res.json();
   if (data.accessToken && data.refreshToken) {
     localStorage.setItem('accessToken', data.accessToken);
@@ -32,7 +35,8 @@ const request = async (url: string, method: string, body?: BodyInit) => {
     body,
     headers: {
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
-    }
+    },
+    credentials: 'include'
   });
 
   if (res.status === 401) {
@@ -44,7 +48,8 @@ const request = async (url: string, method: string, body?: BodyInit) => {
         body,
         headers: {
           ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
-        }
+        },
+        credentials: 'include'
       });
     }
   }

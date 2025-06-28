@@ -20,7 +20,6 @@ export async function GET(
       { status: 200 }
     );
   } catch (e: any) {
-    console.log(e);
     return getErrorResponse(e as PostgrestError);
   }
 }

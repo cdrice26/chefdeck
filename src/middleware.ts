@@ -6,7 +6,8 @@ const unprotectedPaths = [
   '/api/auth/confirm',
   '/api/auth/resetPassword',
   '/api/auth/signup',
-  '/api/auth/forgotPassword'
+  '/api/auth/forgotPassword',
+  '/api/auth/refreshToken'
 ];
 
 function isUnprotected(path: string) {
@@ -29,15 +30,10 @@ export async function middleware(request: NextRequest) {
     : null;
 
   if (!accessToken) {
-    if (pathname.includes('/api')) {
-      return NextResponse.json(
-        { error: 'User is not signed in' },
-        { status: 401 }
-      );
-    }
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    return NextResponse.redirect(url);
+    return NextResponse.json(
+      { error: 'User is not signed in' },
+      { status: 401 }
+    );
   }
 
   const supabase = createClientFromHeaders(
@@ -50,9 +46,10 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (!user || error) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    return NextResponse.redirect(url);
+    return NextResponse.json(
+      { error: { message: 'Unauthorized' } },
+      { status: 401 }
+    );
   }
 
   return NextResponse.next();

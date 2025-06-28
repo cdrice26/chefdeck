@@ -39,13 +39,33 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    return NextResponse.json({
+    const accessToken = data.session.access_token;
+    const refreshToken = data.session.refresh_token;
+
+    const resp = NextResponse.json({
       data: {
         user: data.user,
-        accessToken: data.session.access_token,
-        refreshToken: data.session.refresh_token
+        accessToken,
+        refreshToken
       }
     });
+
+    resp.cookies.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60
+    });
+    resp.cookies.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30
+    });
+
+    return resp;
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400 });
   }

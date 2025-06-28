@@ -2,18 +2,14 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import request from '@/utils/fetchUtils';
 
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('accessToken');
-      const res = await fetch('/api/auth/checkAuth', {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : ''
-        }
-      });
+      const res = await request('/api/auth/checkAuth', 'GET');
       if (!res.ok) {
         return;
       }
