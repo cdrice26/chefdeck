@@ -14,21 +14,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const clientSupabase = await createClientWithToken(
-      await getAccessToken(req)
-    );
+    const clientSupabase = createClientWithToken(await getAccessToken(req));
 
-    // Create Supabase client with cookies for auth
     const adminSupabase = createAdminClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        global: {
-          headers: {
-            Authorization: 'Bearer ' + ((await getAccessToken(req)) ?? '')
-          }
-        }
-      }
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
     if (!adminSupabase || !clientSupabase) {
@@ -69,6 +59,7 @@ export async function POST(req: NextRequest) {
     );
 
     if (deleteError) {
+      console.log(deleteError);
       return NextResponse.json(
         { error: 'Failed to delete account' },
         { status: 500 }

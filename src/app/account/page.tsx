@@ -4,7 +4,9 @@ import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
 import Card from '@/components/ui/Card';
 import { useAuth } from '@/context/AuthContext';
+import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface SectionProps {
@@ -23,6 +25,10 @@ const Section = ({ children, name, onFormSubmit }: SectionProps) => (
 );
 
 const AccountPage = () => {
+  useRequireAuth();
+
+  const router = useRouter();
+
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [usernameMessage, setUsernameMessage] = useState<string | null>(null);
 
@@ -178,6 +184,8 @@ const AccountPage = () => {
     setDeleteError(null);
 
     await fetchUser();
+
+    router.push('/');
   };
 
   return (
