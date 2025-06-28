@@ -14,8 +14,11 @@ export default function Home() {
           Authorization: token ? `Bearer ${token}` : ''
         }
       });
+      if (!res.ok) {
+        return;
+      }
       const data = await res.json();
-      if (data.data.user) {
+      if (data?.data?.user) {
         router.replace('/dashboard');
       }
     };

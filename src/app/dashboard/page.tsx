@@ -24,7 +24,7 @@ const Dashboard = () => {
   );
   const filteredRecipes = useMemo(
     () =>
-      recipes.filter(
+      recipes?.filter(
         (recipe) =>
           recipe.title.toLowerCase().includes(query.toLowerCase()) &&
           (tags.length === 0 ||

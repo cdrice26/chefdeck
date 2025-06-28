@@ -19,6 +19,11 @@ export default function useRequireAuth() {
       if (!res.ok) {
         router.replace('/login');
       }
+      const json = await res.json();
+      const username = json?.data?.profile?.username;
+      if (!username) {
+        router.replace('/setupProfile');
+      }
     };
     checkAuth();
   }, [router]);

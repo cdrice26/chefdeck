@@ -2,19 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClientFromHeaders } from './utils/supabase/supabase';
 
 const unprotectedPaths = [
-  '/login',
-  '/auth',
-  '/signup',
-  '/forgotPassword',
   '/api/auth/login',
   '/api/auth/confirm',
   '/api/auth/resetPassword',
   '/api/auth/signup',
-  '/api/auth/forgotPassword',
-  '/',
-  '/static/confirmSuccess',
-  '/static/error',
-  '/confirm'
+  '/api/auth/forgotPassword'
 ];
 
 function isUnprotected(path: string) {
@@ -60,19 +52,6 @@ export async function middleware(request: NextRequest) {
   if (!user || error) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
-    return NextResponse.redirect(url);
-  }
-
-  // Check if user has a profile (replace with your logic as needed)
-  const { data } = await supabase.rpc('get_profile', {
-    current_user_id: user.id
-  });
-  const username = data ?? null;
-
-  if (!username && pathname !== '/setupProfile') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/setupProfile';
-    url.searchParams.set('redirectTo', encodeURIComponent(pathname));
     return NextResponse.redirect(url);
   }
 

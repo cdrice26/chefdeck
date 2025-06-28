@@ -6,7 +6,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 export async function GET(req: NextRequest) {
   try {
     const recipes = await getRecipes(req.headers.get('Authorization'));
-    if (!recipes || recipes.length === 0) {
+    if (!recipes) {
       return NextResponse.json(
         { data: [] },
         {
