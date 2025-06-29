@@ -26,16 +26,37 @@ export async function POST(req: NextRequest) {
   });
 
   if (error || !data.session?.access_token) {
+    console.error('Could not refresh token.');
     return NextResponse.json(
       { error: { message: error?.message || 'Failed to refresh token' } },
       { status: 401 }
     );
   }
 
-  return clientType === 'web'
-    ? NextResponse.json({ message: 'success' })
-    : NextResponse.json({
-        accessToken: data.session.access_token,
-        refreshToken: data.session.refresh_token
-      });
+  const accessToken = data.session.access_token;
+  const newRefreshToken = data.session.refresh_token;
+
+  if (clientType !== 'web') {
+    return NextResponse.json({
+      accessToken,
+      refreshToken: newRefreshToken
+    });
+  }
+
+  const resp = NextResponse.json({ message: 'success' });
+  resp.cookies.set('accessToken', accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60
+  });
+  resp.cookies.set('refreshToken', newRefreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30
+  });
+  return resp;
 }
