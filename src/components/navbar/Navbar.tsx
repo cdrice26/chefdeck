@@ -56,7 +56,7 @@ const Navbar = () => {
         onClick={() => router.push('/')}
         className={
           scrolled
-            ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md h-full'
+            ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md h-full shadow-md'
             : '' + 'transition-all'
         }
       >
