@@ -70,7 +70,7 @@ const Schedule = () => {
     <div className='w-full h-full flex flex-col'>
       <h1 className='p-2 flex flex-row items-center justify-center gap-2 relative'>
         <button
-          className='h-full'
+          className='h-full px-3'
           onClick={() => {
             setYearInput(new Date().getFullYear());
             setMonth(new Date().getMonth());
@@ -79,7 +79,7 @@ const Schedule = () => {
           <IoHome size={20} />
         </button>
         <button
-          className='h-full'
+          className='h-full px-3'
           onClick={() => {
             if (month === 0) {
               setMonth(11);
@@ -108,7 +108,7 @@ const Schedule = () => {
           className='rounded-md border-gray-300 dark:border-white dark:bg-[#333] border-1 h-full p-1 flex-grow max-w-50'
         />
         <button
-          className='h-full'
+          className='h-full px-3'
           onClick={() => {
             if (month === 11) {
               setMonth(0);
