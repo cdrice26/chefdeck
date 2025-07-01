@@ -31,10 +31,19 @@ const useScheduledRecipes = (
     }
     const json = await resp.json();
     setScheduledRecipes(
-      json?.data?.map((schedule: ScheduleDisplay) => ({
-        ...schedule,
-        scheduledDate: new Date(schedule.scheduledDate)
-      }))
+      json?.data?.map((schedule: ScheduleDisplay) => {
+        const d = new Date(schedule.scheduledDate);
+        // Create a new Date with only year, month, day (time will be 00:00:00)
+        const dateOnly = new Date(
+          d.getUTCFullYear(),
+          d.getUTCMonth(),
+          d.getUTCDate()
+        );
+        return {
+          ...schedule,
+          scheduledDate: dateOnly
+        };
+      })
     );
   };
 
@@ -42,7 +51,7 @@ const useScheduledRecipes = (
     fetchScheduledRecipes();
   }, [startDate, endDate]);
 
-  return { scheduledRecipes, setStartDate, setEndDate };
+  return { scheduledRecipes, setStartDate, setEndDate, startDate, endDate };
 };
 
 export default useScheduledRecipes;

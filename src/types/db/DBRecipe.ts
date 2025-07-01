@@ -44,5 +44,6 @@ export interface DBScheduledRecipe {
   schedule_id: string;
   recipe_id: string;
   recipe_title: string;
+  recipe_color: string;
   scheduled_date: string;
 }

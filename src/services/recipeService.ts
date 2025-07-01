@@ -108,6 +108,7 @@ export const scheduleRecipe = async (
   } = await supabase.auth.getUser();
   const { error } = await supabase.rpc('upsert_scheduled_recipes', {
     p_user_id: user?.id,
+    p_recipe_id: recipeId,
     p_schedules: schedules.map((schedule) => ({
       id: schedule.id,
       recipe_id: recipeId,

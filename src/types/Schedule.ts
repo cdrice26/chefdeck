@@ -10,6 +10,7 @@ export interface ScheduleDisplay {
   scheduleId: string;
   recipeId: string;
   recipeTitle: string;
+  recipeColor: string;
   scheduledDate: Date;
 }
 

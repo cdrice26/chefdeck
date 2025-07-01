@@ -2,6 +2,7 @@ DROP FUNCTION IF EXISTS public.upsert_scheduled_recipes;
 
 CREATE OR REPLACE FUNCTION public.upsert_scheduled_recipes(
     p_user_id uuid,
+    p_recipe_id uuid,
     p_schedules jsonb
 )
 RETURNS void
@@ -11,7 +12,7 @@ SET search_path = public
 AS $function$
 BEGIN
     -- Delete all existing schedules for the user
-    DELETE FROM public.scheduled_recipes WHERE user_id = p_user_id;
+    DELETE FROM public.scheduled_recipes WHERE user_id = p_user_id AND recipe_id = p_recipe_id;
 
     -- Insert new schedules from the JSONB array
     INSERT INTO public.scheduled_recipes (id, recipe_id, user_id, date, repeat, repeat_end)
