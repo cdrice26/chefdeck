@@ -1,5 +1,6 @@
 import { scheduleRecipe } from '@/services/recipeService';
 import { Schedule } from '@/types/Schedule';
+import { getAccessToken } from '@/utils/authUtils';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -18,13 +19,13 @@ export async function POST(
       date: new Date(schedule?.date),
       endRepeat: new Date(schedule?.endRepeat)
     }));
-    console.log(schedules);
-    await scheduleRecipe(req.headers.get('Authorization'), id, schedules);
+    await scheduleRecipe(await getAccessToken(req), id, schedules);
     return NextResponse.json(
       { message: 'Recipe schedules updated successfully.' },
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return getErrorResponse(error as PostgrestError);
   }
 }

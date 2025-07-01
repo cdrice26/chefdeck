@@ -6,5 +6,12 @@ export interface Schedule {
   endRepeat: null | Date;
 }
 
+export interface ScheduleDisplay {
+  scheduleId: string;
+  recipeId: string;
+  recipeTitle: string;
+  scheduledDate: Date;
+}
+
 export const isValidRepeat = (repeat: string): repeat is Repeat =>
   ['none', 'weekly', 'monthly date', 'monthly day'].includes(repeat);

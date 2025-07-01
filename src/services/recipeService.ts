@@ -87,7 +87,7 @@ export const getRecipeSchedules = async (
   const {
     data: { user }
   } = await supabase.auth.getUser();
-  const { data, error } = await supabase.rpc('get_scheduled_recipes', {
+  const { data, error } = await supabase.rpc('get_schedules_for_recipe', {
     p_recipe_id: recipeId,
     p_user_id: user?.id
   });

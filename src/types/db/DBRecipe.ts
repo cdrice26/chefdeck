@@ -39,3 +39,10 @@ export interface DBSchedule {
   repeat: string;
   repeat_end: Date;
 }
+
+export interface DBScheduledRecipe {
+  schedule_id: string;
+  recipe_id: string;
+  recipe_title: string;
+  scheduled_date: string;
+}

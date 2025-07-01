@@ -31,7 +31,7 @@ export default function RecipePage() {
       addNotification('Failed to delete recipe.', 'error');
     } else {
       const json = await resp.json();
-      addNotification(json.message, 'success');
+      addNotification(json.data.message, 'success');
       router.push('/dashboard');
     }
   };
