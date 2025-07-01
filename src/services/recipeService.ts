@@ -2,6 +2,7 @@ import { createClientWithToken } from '@/utils/supabaseUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 import { parseRecipe, parseSchedules } from '@/models/recipeModel';
 import { Schedule } from '@/types/Schedule';
+import sharp from 'sharp';
 
 export const getRecipe = async (authToken: string | null, recipeId: string) => {
   const supabase = createClientWithToken(authToken ?? '');
@@ -139,6 +140,25 @@ export const createOrUpdateRecipe = async (
 ) => {
   const supabase = createClientWithToken(authToken ?? '');
 
+  const compressedImage = image
+    ? new File(
+        [
+          await sharp(Buffer.from(await image.arrayBuffer()))
+            .rotate()
+            .resize({
+              width: 1000,
+              height: 1000,
+              fit: sharp.fit.inside,
+              withoutEnlargement: true
+            })
+            .toFormat('jpeg', { quality: 70 })
+            .toBuffer()
+        ],
+        image.name.replace(/\.[^/.]+$/, '') + '.jpg',
+        { type: 'image/jpeg' }
+      )
+    : null;
+
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -150,8 +170,10 @@ export const createOrUpdateRecipe = async (
   }
 
   const imagePath =
-    (image?.size ?? 0) > 0 ? `${user.id}/${Date.now()}-${image?.name}` : null;
-  if ((image?.size ?? 0) > 0 && !imagePath) {
+    (compressedImage?.size ?? 0) > 0
+      ? `${user.id}/${Date.now()}-${compressedImage?.name}`
+      : null;
+  if ((compressedImage?.size ?? 0) > 0 && !imagePath) {
     return new Response(JSON.stringify({ error: 'Image upload failed' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' }
@@ -167,10 +189,12 @@ export const createOrUpdateRecipe = async (
   }
 
   const { error } = imagePath
-    ? await supabase.storage.from('images').upload(imagePath, image as Blob, {
-        cacheControl: '3600',
-        upsert: true
-      })
+    ? await supabase.storage
+        .from('images')
+        .upload(imagePath, compressedImage as Blob, {
+          cacheControl: '3600',
+          upsert: true
+        })
     : { error: null };
 
   if (error) {
