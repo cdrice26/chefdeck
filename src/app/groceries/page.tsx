@@ -35,7 +35,11 @@ const Groceries = () => {
       return;
     }
     const json = await resp.json();
-    setGroceries(json.data);
+    setGroceries(
+      json.data.sort((a: Ingredient, b: Ingredient) =>
+        a.name.localeCompare(b.name)
+      )
+    );
   };
 
   return (
