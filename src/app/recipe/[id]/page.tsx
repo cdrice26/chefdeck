@@ -42,6 +42,7 @@ export default function RecipePage() {
       className={`w-full h-full sm:w-[80%] sm:h-[80%] md:w-[70%] lg:w-[60%] z-[100] p-4 ${
         recipe?.color ? getColorClass(recipe?.color) : 'bg-white dark:bg-[#222]'
       } relative transition duration-300 justify-start`}
+      usePortal
     >
       <button
         className='absolute top-0 right-0 p-4'
