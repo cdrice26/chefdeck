@@ -165,9 +165,11 @@ export const createOrUpdateRecipe = async (
     data: { user }
   } = await supabase.auth.getUser();
   if (!user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' }
+    throw new PostgrestError({
+      message: 'Unauthorized',
+      details: 'User is not logged in.',
+      hint: 'Check that you are logged in.',
+      code: '401'
     });
   }
 
@@ -176,9 +178,11 @@ export const createOrUpdateRecipe = async (
       ? `${user.id}/${Date.now()}-${compressedImage?.name}`
       : null;
   if ((compressedImage?.size ?? 0) > 0 && !imagePath) {
-    return new Response(JSON.stringify({ error: 'Image upload failed' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' }
+    throw new PostgrestError({
+      message: 'Image upload failed',
+      details: 'Could not upload image',
+      hint: 'Check that your image is valid.',
+      code: '400'
     });
   }
 
