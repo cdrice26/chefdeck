@@ -8,7 +8,6 @@ import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
 import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
-import { IoClose } from 'react-icons/io5';
 
 export default function RecipePage() {
   useRequireAuth();
@@ -44,12 +43,6 @@ export default function RecipePage() {
       } relative transition duration-300 justify-start`}
       usePortal
     >
-      <button
-        className='absolute top-0 right-0 p-4'
-        onClick={() => router.push('/dashboard')}
-      >
-        <IoClose />
-      </button>
       {recipe ? (
         <>
           <h1 className='text-4xl font-bold flex flex-row flex-wrap justify-start'>

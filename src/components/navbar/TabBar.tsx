@@ -4,10 +4,12 @@ import SearchBar from './SearchBar';
 import { useState } from 'react';
 import { IoAdd, IoCalendar, IoHome, IoList, IoPerson } from 'react-icons/io5';
 import { IoMdListBox } from 'react-icons/io';
+import { useParams } from 'next/navigation';
 
 const TabBar = () => {
   const url = usePathname();
   const router = useRouter();
+  const { id } = useParams();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState<string>(searchParams.get('q') ?? '');
   const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
@@ -98,7 +100,9 @@ const TabBar = () => {
           <Tab
             label='Recipe'
             isActive={url.startsWith(`/recipe`)}
-            onClick={() => {}}
+            onClick={() => {
+              router.push(`/recipe/${id}`);
+            }}
             icon={<IoMdListBox />}
           />
         )}

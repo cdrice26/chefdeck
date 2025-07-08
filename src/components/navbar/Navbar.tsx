@@ -14,6 +14,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const isDark = useIsDark();
   const router = useRouter();
+  const pathname = usePathname();
 
   const { user, username, setUsername, fetchUser } = useAuth();
 
@@ -41,7 +42,13 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const showShadow = !scrolled;
+  const showShadow =
+    !scrolled &&
+    !(
+      pathname.startsWith('/recipe') &&
+      !pathname.endsWith('/schedule') &&
+      !pathname.endsWith('/edit')
+    );
   const buttonClasses =
     'shadow-md rounded-full p-4 px-6 bg-gray-100 dark:bg-[#222] hover:bg-gray-200 dark:hover:bg-[#333] text-nowrap';
 
@@ -55,7 +62,7 @@ const Navbar = () => {
         tabIndex={0}
         onClick={() => router.push('/')}
         className={
-          scrolled
+          !showShadow
             ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md h-full shadow-md'
             : '' + 'transition-all'
         }
