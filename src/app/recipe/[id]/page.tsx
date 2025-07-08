@@ -1,5 +1,6 @@
 'use client';
 
+import IngredientDisplay from '@/components/recipe/IngredientDisplay';
 import Modal from '@/components/ui/Modal';
 import { useNotification } from '@/context/NotificationContext';
 import useRecipe from '@/hooks/useRecipe';
@@ -88,13 +89,7 @@ export default function RecipePage() {
           <strong className='text-lg'>Ingredients:</strong>
           <ul className='list-disc ml-4'>
             {recipe?.ingredients?.map((ingredient) => (
-              <li key={ingredient?.id}>
-                <strong>
-                  {ingredient?.amount === 0 ? '' : ingredient?.amount}{' '}
-                  {ingredient?.unit === 'count' ? '' : ingredient?.unit}
-                </strong>{' '}
-                {ingredient?.name}
-              </li>
+              <IngredientDisplay key={ingredient.id} ingredient={ingredient} />
             ))}
           </ul>
           <strong className='text-lg'>Directions:</strong>
