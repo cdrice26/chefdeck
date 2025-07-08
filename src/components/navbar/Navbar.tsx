@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TabBar from './TabBar';
 import request from '@/utils/fetchUtils';
+import Image from 'next/image';
 
 const UserDropdown = dynamic(() => import('./UserDropdown'), { ssr: false });
 
@@ -63,14 +64,16 @@ const Navbar = () => {
         onClick={() => router.push('/')}
         className={
           !showShadow
-            ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md h-full shadow-md'
-            : '' + 'transition-all'
+            ? 'rounded-full dark:bg-[#222]/75 bg-gray-100/75 backdrop-blur-md h-full shadow-md px-4'
+            : 'px-4 transition-all'
         }
       >
-        <img
+        <Image
           src={isDark ? '/logo-darktheme.png' : '/logo.png'}
-          className='h-12'
-          alt='Cooky'
+          className='w-[100px]'
+          alt='ChefDeck'
+          width={80}
+          height={50}
         />
       </button>
       {user && (

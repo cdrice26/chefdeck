@@ -32,7 +32,7 @@ const RecipeCard = ({
       <h3 className='p-2 text-xl font-bold'>{recipe?.title}</h3>
       <Image
         loading='lazy'
-        src={recipe?.imgUrl ?? '/logo.png'}
+        src={recipe?.imgUrl ?? '/logo-icononly.png'}
         alt=''
         className='w-full h-[300px] object-cover'
         width={500}

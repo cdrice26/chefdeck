@@ -38,7 +38,7 @@ const Dashboard = () => {
     recipeId: string
   ) => {
     const target = event.target as HTMLImageElement;
-    target.src = '/logo.png'; // Fallback image
+    target.src = '/logo-icononly.png'; // Fallback image
     setTries((prevTries) =>
       prevTries.map((t) =>
         t.recipeId === recipeId ? { ...t, tries: t.tries + 1 } : t
