@@ -90,7 +90,8 @@ export default function RecipePage() {
             {recipe?.ingredients?.map((ingredient) => (
               <li key={ingredient?.id}>
                 <strong>
-                  {ingredient?.amount} {ingredient?.unit}
+                  {ingredient?.amount === 0 ? '' : ingredient?.amount}{' '}
+                  {ingredient?.unit === 'count' ? '' : ingredient?.unit}
                 </strong>{' '}
                 {ingredient?.name}
               </li>

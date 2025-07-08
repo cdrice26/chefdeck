@@ -9,9 +9,10 @@ CREATE OR REPLACE FUNCTION public.create_recipe(
     p_color text, 
     p_ingredients jsonb, 
     p_directions jsonb, 
-    p_tags jsonb
+    p_tags jsonb,
+    p_source_url text
 ) 
-RETURNS void
+RETURNS uuid
 LANGUAGE plpgsql
 SECURITY INVOKER
 SET search_path = public
@@ -22,13 +23,13 @@ DECLARE
     new_recipe_id uuid;
 BEGIN
     -- Insert the new recipe
-    INSERT INTO recipes (title, yield, minutes, img_url, user_id, color)
-    VALUES (p_title, p_yield_value, p_minutes, p_img_url, p_current_user_id, p_color)
+    INSERT INTO recipes (title, yield, minutes, img_url, user_id, color, source)
+    VALUES (p_title, p_yield_value, p_minutes, p_img_url, p_current_user_id, p_color, p_source_url)
     RETURNING id INTO new_recipe_id;
 
     -- Insert ingredients
     INSERT INTO ingredients (name, amount, unit, sequence, recipe_id)
-    SELECT (elem->>'name')::text, (elem->>'amount')::int, (elem->>'unit')::text, (elem->>'sequence')::int, new_recipe_id
+    SELECT (elem->>'name')::text, (elem->>'amount')::float, (elem->>'unit')::text, (elem->>'sequence')::int, new_recipe_id
     FROM jsonb_array_elements(p_ingredients) AS elem;
 
     -- Insert directions
@@ -57,5 +58,7 @@ BEGIN
     INSERT INTO recipe_usage (user_id, recipe_id)
     VALUES (p_current_user_id, new_recipe_id)
     ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = NOW();
+
+    RETURN new_recipe_id;
 END;
 $function$;

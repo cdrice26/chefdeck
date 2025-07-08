@@ -35,7 +35,7 @@ BEGIN
     -- Update ingredients
     DELETE FROM ingredients WHERE recipe_id = p_id;
     INSERT INTO ingredients (name, amount, unit, sequence, recipe_id)
-    SELECT (elem->>'name')::text, (elem->>'amount')::int, (elem->>'unit')::text, (elem->>'sequence')::int, p_id
+    SELECT (elem->>'name')::text, (elem->>'amount')::float8, (elem->>'unit')::text, (elem->>'sequence')::int, p_id
     FROM jsonb_array_elements(p_ingredients) AS elem;
 
     -- Update directions

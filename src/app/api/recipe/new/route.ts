@@ -31,6 +31,7 @@ export const POST = async (req: NextRequest) => {
     );
     return NextResponse.json(updateData, { status: 200 });
   } catch (err) {
+    console.log(err);
     return getErrorResponse(err as PostgrestError);
   }
 };

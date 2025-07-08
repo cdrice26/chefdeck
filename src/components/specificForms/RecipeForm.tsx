@@ -208,6 +208,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
                 placeholder='Amount'
                 type='number'
                 min='0'
+                step='any'
                 value={ingredient?.amount ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleIngredientChange(

@@ -136,28 +136,30 @@ export const createOrUpdateRecipe = async (
   directions: string[],
   tags: string[],
   color: string,
-  id: string | null = null
+  id: string | null = null,
+  sourceUrl: string | null = null
 ) => {
   const supabase = createClientWithToken(authToken ?? '');
 
-  const compressedImage = image
-    ? new File(
-        [
-          await sharp(Buffer.from(await image.arrayBuffer()))
-            .rotate()
-            .resize({
-              width: 1000,
-              height: 1000,
-              fit: sharp.fit.inside,
-              withoutEnlargement: true
-            })
-            .toFormat('jpeg', { quality: 70 })
-            .toBuffer()
-        ],
-        image.name.replace(/\.[^/.]+$/, '') + '.jpg',
-        { type: 'image/jpeg' }
-      )
-    : null;
+  const compressedImage =
+    image && image?.size > 0
+      ? new File(
+          [
+            await sharp(Buffer.from(await image.arrayBuffer()))
+              .rotate()
+              .resize({
+                width: 1000,
+                height: 1000,
+                fit: sharp.fit.inside,
+                withoutEnlargement: true
+              })
+              .toFormat('jpeg', { quality: 70 })
+              .toBuffer()
+          ],
+          image.name.replace(/\.[^/.]+$/, '') + '.jpg',
+          { type: 'image/jpeg' }
+        )
+      : null;
 
   const {
     data: { user }
@@ -221,11 +223,12 @@ export const createOrUpdateRecipe = async (
       p_tags: tags,
       p_color: color
     },
-    ...(id ? { p_id: id } : {})
+    ...(id ? { p_id: id } : {}),
+    ...(id ? {} : { p_source_url: sourceUrl })
   };
 
   // Call the stored procedure
-  const { error: procedureError } = await supabase.rpc(
+  const { error: procedureError, data: recipeId } = await supabase.rpc(
     id ? 'update_recipe' : 'create_recipe',
     args
   );
@@ -250,7 +253,10 @@ export const createOrUpdateRecipe = async (
   }
 
   return {
-    data: { message: `Recipe ${id ? 'updated' : 'created'} successfully.` }
+    data: {
+      message: `Recipe ${id ? 'updated' : 'created'} successfully.`,
+      recipeId
+    }
   };
 };
 

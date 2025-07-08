@@ -14,7 +14,7 @@ export const zipArrays = (
   const maxLength = Math.max(names.length, amounts.length, units.length);
   return Array.from({ length: maxLength }, (_, index) => ({
     name: names[index],
-    amount: parseInt(amounts[index]) ?? 0,
+    amount: parseFloat(amounts[index]) ?? 0,
     unit: units[index],
     sequence: index + 1
   }));
