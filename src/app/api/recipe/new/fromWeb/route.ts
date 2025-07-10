@@ -18,7 +18,12 @@ export const POST = async (req: NextRequest) => {
     const resp = await fetch(
       `${process.env.PYTHON_API_URL}/scrape-recipe?url=${encodeURIComponent(
         url
-      )}`
+      )}`,
+      {
+        headers: {
+          'X-API-Key': process.env.PYTHON_API_KEY ?? ''
+        }
+      }
     );
     if (!resp.ok) {
       if (resp.status === 429) {

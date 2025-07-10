@@ -33,7 +33,8 @@ export const getGroceries = async (
   const resp = await fetch(`${process.env.PYTHON_API_URL}/merge-ingredients`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-API-Key': process.env.PYTHON_API_KEY ?? ''
     },
     body: JSON.stringify(toSend)
   });
