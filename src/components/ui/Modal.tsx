@@ -1,3 +1,5 @@
+'use client';
+
 import { createPortal } from 'react-dom';
 
 interface ModalProps {
@@ -10,7 +12,7 @@ const Modal = ({ children, className = '', usePortal = false }: ModalProps) =>
   usePortal ? (
     createPortal(
       <div className='fixed inset-0 flex items-center justify-center backdrop-blur-md'>
-        <div className='fixed inset-0 bg-black opacity-50' />
+        <div className='fixed inset-0 bg-black opacity-50 my-[50px]' />
         <div
           className={`p-4 rounded shadow-lg flex flex-col gap-2 ${className} relative overflow-y-auto`}
         >
