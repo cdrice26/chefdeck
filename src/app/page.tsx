@@ -70,7 +70,7 @@ export default function Home() {
             <div className='p-6 bg-white dark:bg-black rounded-lg shadow-md'>
               <h3 className='text-xl font-bold'>Organize Recipes</h3>
               <p className='mt-2 text-gray-600 dark:text-gray-400'>
-                Categorize your recipes for easy access and organization.
+                Tag your recipes for easy access and organization.
               </p>
             </div>
           </div>
