@@ -32,7 +32,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
   return (
     <Modal
       usePortal
-      className='bg-white dark:bg-[#222] w-[90%] justify-center items-center'
+      className='bg-white dark:bg-[#222] w-[90%] justify-center items-center overflow-y-auto'
     >
       <SearchBarRenderer
         query={query}
@@ -50,6 +50,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
           onChangeTags(selected as TagOption[]);
         }}
         onBlur={onClose}
+        usePortal
       />
       <Button onClick={onClose}>Close</Button>
     </Modal>

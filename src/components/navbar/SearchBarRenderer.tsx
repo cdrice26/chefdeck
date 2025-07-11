@@ -15,6 +15,7 @@ interface SearchBarRendererProps {
     actionMeta: ActionMeta<{ label: string; value: string }>
   ) => void;
   onBlur: () => void;
+  usePortal?: boolean;
 }
 
 const SearchBarRenderer = ({
@@ -23,7 +24,8 @@ const SearchBarRenderer = ({
   query,
   handleInputChange,
   handleChange,
-  onBlur
+  onBlur,
+  usePortal = false
 }: SearchBarRendererProps) => {
   const isDark = useIsDark();
 
@@ -51,6 +53,7 @@ const SearchBarRenderer = ({
       }}
       isClearable
       onBlur={onBlur}
+      menuPortalTarget={usePortal ? document.body : undefined}
     />
   );
 };
