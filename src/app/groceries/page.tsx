@@ -3,12 +3,21 @@
 import Button from '@/components/forms/Button';
 import Input from '@/components/forms/Input';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
-import IngredientDisplay from '@/components/recipe/IngredientDisplay';
+import GroceryList from '@/components/groceries/GroceryList';
 import { useNotification } from '@/context/NotificationContext';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import { Ingredient } from '@/types/Recipe';
 import request from '@/utils/fetchUtils';
+import printComponent from '@/utils/printUtils';
 import { useState } from 'react';
+
+const today = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 const Groceries = () => {
   useRequireAuth();
@@ -42,25 +51,45 @@ const Groceries = () => {
     );
   };
 
+  const handlePrint = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      printComponent(<GroceryList groceries={groceries} />, 'Print Groceries');
+    } catch (e) {
+      addNotification(
+        "Couldn't print groceries, please try again later.",
+        'error'
+      );
+      return;
+    }
+  };
+
   return (
     <ResponsiveForm onSubmit={handleSubmit}>
       <h1 className='font-bold text-2xl mb-4'>Grocery List</h1>
       <div className='flex flex-col sm:flex-row gap-4 justify-start max-w-lg w-full'>
         <label className='flex flex-row w-full items-center gap-2'>
           <span className='whitespace-nowrap'>From:</span>
-          <Input type='date' name='fromDate' className='w-full' />
+          <Input
+            type='date'
+            name='fromDate'
+            className='w-full'
+            defaultValue={today()}
+          />
         </label>
         <label className='flex flex-row w-full items-center gap-2'>
           <span className='whitespace-nowrap'>To:</span>
-          <Input type='date' name='toDate' className='w-full' />
+          <Input
+            type='date'
+            name='toDate'
+            className='w-full'
+            defaultValue={today()}
+          />
         </label>
         <Button>Get</Button>
       </div>
-      <ul>
-        {groceries.map((g, i) => (
-          <IngredientDisplay key={i} ingredient={g} />
-        ))}
-      </ul>
+      <GroceryList groceries={groceries} />
+      {groceries ? <Button onClick={handlePrint}>Print</Button> : <></>}
     </ResponsiveForm>
   );
 };

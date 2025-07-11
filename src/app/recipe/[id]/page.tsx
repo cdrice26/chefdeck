@@ -5,6 +5,7 @@ import { useNotification } from '@/context/NotificationContext';
 import useRecipe from '@/hooks/useRecipe';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
+import printComponent from '@/utils/printUtils';
 import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
 import { createRoot } from 'react-dom/client';
@@ -45,42 +46,15 @@ export default function RecipePage() {
       return;
     }
 
-    const printWindow = window.open('', '_blank');
-
-    if (printWindow)
-      printWindow.document.head.innerHTML = `
-        <title>Print Recipe</title>
-        <style>
-          body { font-family: Arial, sans-serif; }
-        </style>
-      `;
-
-    const printDiv = document.createElement('div');
-    printWindow?.document.body.appendChild(printDiv);
-
-    const printRoot = createRoot(printDiv);
-    printRoot.render(<RecipeDetails recipe={recipe} />);
-
-    if (printWindow === null || printWindow === undefined) {
+    try {
+      printComponent(<RecipeDetails recipe={recipe} />, 'Print Recipe');
+    } catch (e) {
       addNotification(
         "Couldn't print recipe, please try again later.",
         'error'
       );
       return;
     }
-
-    // Use MutationObserver to detect when the content is rendered
-    const observer = new MutationObserver(() => {
-      // Check if the printDiv has child nodes
-      if (printDiv.childNodes.length > 0) {
-        printWindow.print(); // Call the print function
-        printWindow.close(); // Close the print window after printing
-        observer.disconnect(); // Stop observing
-      }
-    });
-
-    // Start observing the printDiv for child nodes
-    observer.observe(printDiv, { childList: true, subtree: true });
   };
 
   return (
