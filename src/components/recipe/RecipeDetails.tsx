@@ -2,22 +2,13 @@
 
 import { Recipe } from '@/types/Recipe';
 import { getButtonColorClass } from '@/utils/styles/colorUtils';
-import router from 'next/router';
 import IngredientDisplay from './IngredientDisplay';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
-  id: string;
-  handleDelete: (id: string) => void;
-  handlePrint: (id: string) => void;
 }
 
-const RecipeDetails = ({
-  recipe,
-  id,
-  handleDelete,
-  handlePrint
-}: RecipeDetailsProps) => (
+const RecipeDetails = ({ recipe }: RecipeDetailsProps) => (
   <>
     <h1 className='text-4xl font-bold flex flex-row flex-wrap justify-start'>
       {recipe?.title}
@@ -66,40 +57,6 @@ const RecipeDetails = ({
         <li key={direction?.id}>{direction?.content}</li>
       ))}
     </ul>
-    <div className='flex flex-row flex-wrap gap-4 mt-4'>
-      <button
-        className={`rounded-full px-6 py-2 ${getButtonColorClass(
-          recipe?.color
-        )}`}
-        onClick={() => handleDelete(id)}
-      >
-        Delete
-      </button>
-      <button
-        className={`rounded-full px-6 py-2 ${getButtonColorClass(
-          recipe?.color
-        )}`}
-        onClick={() => router.push(`/recipe/${id}/schedule`)}
-      >
-        Manage Schedules
-      </button>
-      <button
-        className={`rounded-full px-6 py-2 ${getButtonColorClass(
-          recipe?.color
-        )}`}
-        onClick={() => handlePrint(id)}
-      >
-        Print
-      </button>
-      <button
-        className={`rounded-full px-6 py-2 ${getButtonColorClass(
-          recipe?.color
-        )}`}
-        onClick={() => router.push(`/recipe/${id}/edit`)}
-      >
-        Edit
-      </button>
-    </div>
   </>
 );
 
