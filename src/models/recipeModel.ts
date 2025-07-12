@@ -26,16 +26,16 @@ export const parseRecipe =
     sourceUrl: recipe.source,
     color: isValidColor(recipe.color) ? recipe.color : 'white',
     ingredients: recipe.ingredients
-      .sort((a, b) => a.sequence - b.sequence)
-      .map((ingredient: DBIngredient) => ({
+      ?.sort((a, b) => a.sequence - b.sequence)
+      ?.map((ingredient: DBIngredient) => ({
         id: ingredient.id,
         name: ingredient.name,
         amount: ingredient.amount,
         unit: ingredient.unit
       })),
     directions: recipe.directions
-      .sort((a, b) => a.sequence - b.sequence)
-      .map((direction: DBDirection) => ({
+      ?.sort((a, b) => a.sequence - b.sequence)
+      ?.map((direction: DBDirection) => ({
         id: direction.id,
         content: direction.content
       })),
@@ -44,7 +44,7 @@ export const parseRecipe =
   });
 
 export const parseSchedules = (schedules: DBSchedule[]): Schedule[] =>
-  schedules.map((schedule) => ({
+  schedules?.map((schedule) => ({
     id: schedule.id,
     recipeId: schedule.recipe_id,
     date: schedule.date,

@@ -6,7 +6,18 @@ import { asyncMap } from '@/utils/arrayUtils';
 import { createClientWithToken } from '@/utils/supabaseUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 
-export const getRecipes = async (authToken: string | null) => {
+type GetRecipesOptions = {
+  page: number;
+  limit: number;
+  q?: string;
+  tags?: string[];
+};
+
+export const getRecipes = async (
+  authToken: string | null,
+  options: GetRecipesOptions = { page: 1, limit: 20 }
+) => {
+  const { page, limit, q, tags } = options;
   const supabase = createClientWithToken(authToken ?? '');
   const {
     data: { user }
@@ -19,9 +30,16 @@ export const getRecipes = async (authToken: string | null) => {
       hint: 'Please log in to access your recipes'
     });
   }
+
+  // Call your stored procedure instead of querying the table directly
   const { data, error } = await supabase.rpc('get_recipes', {
-    in_user_id: user?.id
+    p_user_id: user.id,
+    p_page: page,
+    p_limit: limit,
+    p_q: q || null,
+    p_tags: tags && tags.length > 0 ? tags : null
   });
+
   const recipes: Recipe[] =
     data && data?.length > 0 ? await asyncMap(data, parseRecipe(supabase)) : [];
   if (error) {

@@ -6,7 +6,19 @@ import { getAccessToken } from '@/utils/authUtils';
 
 export async function GET(req: NextRequest) {
   try {
-    const recipes = await getRecipes(await getAccessToken(req));
+    const { searchParams } = new URL(req.url);
+
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const q = searchParams.get('q') || '';
+    const tags = searchParams.get('tags')?.split(',').filter(Boolean) || [];
+
+    const recipes = await getRecipes(await getAccessToken(req), {
+      page,
+      limit,
+      q,
+      tags
+    });
     if (!recipes) {
       return NextResponse.json(
         { data: [] },
@@ -23,6 +35,7 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (error: any) {
+    console.error('Error in GET /api/recipes:', error);
     return getErrorResponse(error as PostgrestError);
   }
 }
