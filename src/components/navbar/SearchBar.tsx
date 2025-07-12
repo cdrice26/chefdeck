@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { MultiValue, ActionMeta } from 'react-select';
 import SearchModal from '@/components/specificForms/SearchModal';
@@ -31,48 +31,34 @@ const SearchBar = ({
   const [isModalOpen, setModalOpen] = useState(false);
 
   // Only tags are in the value, never the query
-  const selectValue: TagOption[] = tags ?? [];
+  const selectValue = useMemo(() => tags ?? [], [tags]);
 
   // When a tag is selected, remove its text from the query if present
   const handleChange = (
     selected: MultiValue<TagOption>,
     actionMeta: ActionMeta<TagOption>
   ) => {
-    if (actionMeta.action === 'select-option' && actionMeta.option) {
-      const newTag = actionMeta.option as TagOption;
-      const tagLabel = newTag.label.trim();
-
-      // Find the substring in the query that matches the tag label and is closest to the cursor (input end)
-      // We'll remove the closest match to the end of the input (since that's what react-select matched)
-      const lowerQuery = query.toLowerCase();
-      const lowerTag = tagLabel.toLowerCase();
-
-      // Find all occurrences
-      let matchIndex = -1;
-      let lastIndex = -1;
-      let idx = lowerQuery.indexOf(lowerTag);
-      while (idx !== -1) {
-        lastIndex = idx;
-        idx = lowerQuery.indexOf(lowerTag, idx + 1);
-      }
-      matchIndex = lastIndex;
-
-      let newQuery = query;
-      if (matchIndex !== -1) {
-        newQuery =
-          query.slice(0, matchIndex) +
-          query.slice(matchIndex + tagLabel.length);
-        newQuery = newQuery.replace(/\s{2,}/g, ' ').trim();
-      }
-
-      onQueryChange(newQuery);
-    }
     if (actionMeta.action === 'clear') {
       onChangeTags([]);
       onQueryChange('');
       return;
     }
+
+    let newQuery = query;
+    (selected as TagOption[]).forEach((tag) => {
+      // Remove any word in the query that is a prefix of the tag label (case-insensitive)
+      newQuery = newQuery
+        .split(/\s+/)
+        .filter((word) => {
+          // Keep the word if it is NOT a prefix of the tag label
+          return !tag.label.toLowerCase().startsWith(word.toLowerCase());
+        })
+        .join(' ');
+    });
+    newQuery = newQuery.replace(/\s+/g, ' ').trim();
+
     onChangeTags(selected as TagOption[]);
+    onQueryChange(newQuery);
   };
 
   const handleInputChange = (input: string, { action }: { action: string }) => {
