@@ -19,31 +19,38 @@ function isUnprotected(path: string) {
 }
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const pathname = request.nextUrl.pathname;
 
   if (isUnprotected(pathname)) {
     return NextResponse.next();
   }
 
-  const supabase = createClientWithToken(await getAccessToken(request));
+  try {
+    const accessToken = await getAccessToken(request);
+    const supabase = createClientWithToken(accessToken);
 
-  const {
-    data: { user },
-    error
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error
+    } = await supabase.auth.getUser();
 
-  if (!user || error) {
+    if (!user || error) {
+      return NextResponse.json(
+        { error: { message: 'Unauthorized' } },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.next();
+  } catch (err) {
+    console.error('Middleware error:', err);
     return NextResponse.json(
-      { error: { message: 'Unauthorized' } },
-      { status: 401 }
+      { error: { message: 'Internal server error' } },
+      { status: 500 }
     );
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
-  ]
+  matcher: ['/api/:path*']
 };
