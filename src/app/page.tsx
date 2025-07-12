@@ -1,24 +1,20 @@
-import Head from 'next/head';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-[#111]'>
-      <Head>
-        <title>ChefDeck - Manage Your Recipes</title>
-        <meta
-          name='description'
-          content='ChefDeck helps you manage your recipes, schedule them, generate grocery lists, and organize them.'
-        />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
       <header className='text-center mb-10'>
         <h1 className='text-5xl font-bold text-gray-800 dark:text-gray-100'>
           Welcome to ChefDeck
         </h1>
         <p className='mt-4 text-lg text-gray-600 dark:text-gray-400'>
           Your ultimate recipe management tool.
+        </p>
+        <p className='mt-2 text-lg text-red-500'>
+          NOTICE: This project is currently in development and is not yet ready
+          for production use. In additon, the backend does not have sufficient
+          resources for public use at the moment, so new signups are disabled.
+          Please check back later for updates.
         </p>
       </header>
 
