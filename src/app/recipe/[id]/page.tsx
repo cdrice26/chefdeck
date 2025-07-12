@@ -58,13 +58,13 @@ export default function RecipePage() {
   };
 
   return (
-    <div className='w-full h-full flex justify-center'>
+    <div className='flex flex-1 min-h-0 justify-center items-center w-full'>
       <div
-        className={`w-full h-full sm:w-[80%] sm:h-[80%] md:w-[70%] lg:w-[60%] p-4 ${
+        className={`w-full sm:w-[80%] md:w-[70%] lg:w-[60%] max-h-[80vh] p-4 ${
           recipe?.color
             ? getColorClass(recipe?.color)
             : 'bg-white dark:bg-[#222]'
-        } relative transition duration-300 justify-start my-[50px] overflow-y-auto sm:rounded-lg shadow-md`}
+        } relative transition duration-300 justify-start my-[50px] sm:rounded-lg shadow-md overflow-y-auto`}
       >
         {recipe ? (
           <>
