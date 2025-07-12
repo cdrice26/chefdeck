@@ -90,6 +90,15 @@ const Groceries = () => {
       </div>
       <GroceryList groceries={groceries} />
       {groceries ? <Button onClick={handlePrint}>Print</Button> : <></>}
+      <div className='text-xs text-gray-500 mt-4'>
+        Grocery list generation depends on WordNet. WordNet is a registered
+        trademark of Princeton University. ChefDeck is neither associated with
+        nor endorsed by Princeton University.
+      </div>
+      <div className='text-xs text-gray-500'>
+        Princeton University "About WordNet." WordNet. Princeton University.
+        2010.
+      </div>
     </ResponsiveForm>
   );
 };
