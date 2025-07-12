@@ -2683,7 +2683,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 │  └─ copyright: Copyright 2013 Thorsten Lorenz. . All rights reserved.
 ├─ cooky@0.1.0
-│  ├─ licenses: UNLICENSED
+│  ├─ licenses: [1m[31mUNLICENSED[39m[22m
 │  ├─ private: true
 │  ├─ name: cooky
 │  ├─ version: 0.1.0
@@ -4823,4 +4823,3 @@ OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
    └─ copyright: Copyright 2018 Eemeli Aro <eemeli@gmail.com>
-
