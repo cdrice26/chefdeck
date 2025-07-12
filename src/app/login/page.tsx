@@ -47,7 +47,6 @@ const Login = () => {
       setError(data.error || 'Login failed');
       return;
     }
-    console.log('Login successful:', res);
 
     await fetchUser();
     router.push('/dashboard');
