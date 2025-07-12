@@ -1,8 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ChefDeck
 
-## Getting Started
+This is a recipe manager app. It allows you to keep track of your recipes, assign tags to them, search through them, schedule them, and even generate your grocery list. You can add recipes manually or from the web (just please don't steal any recipes you don't have permission to use). 
 
-First, run the development server:
+## Configuration
+
+You'll need both this and the [Python API](https://github.com/cdrice26/chefdeck-python-api) checked out. You'll then need to configure the following environment variables:
+
+- `SUPABASE_URL` - URL of your supabase database. You can use the sql scripts in the db folder to set up the tables and procedures.
+- `SUPABASE_ANON_KEY` - Your supabase anon key.
+- `SUPABASE_SERVICE_ROLE_KEY` - Your supabase service role key. Used only for account deletion.
+- `NEXT_PUBLIC_SITE_URL` - The URL of your website. This will be http://localhost:3000 in development.
+- `PYTHON_API_URL` - URL of your Python API instance.
+- `PYTHON_API_KEY` - API key for the Python API - pick something and set the API key variable in that project, then make this one the same thing.
+
+## Running a Dev Server
+
+This is a Next.js app, so assuming you have the Python API running following the instructions in that repo, all you need to do is run the npm project:
 
 ```bash
 npm run dev
@@ -15,22 +28,3 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
