@@ -1,10 +1,11 @@
 import Tab from './Tab';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchBar from './SearchBar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoAdd, IoCalendar, IoHome, IoList, IoPerson } from 'react-icons/io5';
 import { IoMdListBox } from 'react-icons/io';
 import { useParams } from 'next/navigation';
+import removeTagPrefixesFromQuery from '@/utils/searchUtils';
 
 const TabBar = () => {
   const url = usePathname();
@@ -51,16 +52,20 @@ const TabBar = () => {
 
   const handleTagsChange = (newTags: { label: string; value: string }[]) => {
     setTags(newTags);
+    setQuery((prevQuery) => removeTagPrefixesFromQuery(prevQuery, newTags));
+  };
 
+  useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', query);
-    if (newTags.length > 0) {
-      params.set('tags', newTags.map((t) => t.value).join(','));
+    if (tags.length > 0) {
+      params.set('tags', tags.map((t) => t.value).join(','));
     } else {
       params.delete('tags');
     }
     router.replace(url + '?' + params.toString(), {});
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, tags]);
 
   return (
     <div className='flex flex-row justify-center items-center gap-4'>
