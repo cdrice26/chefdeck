@@ -7,8 +7,6 @@ import request from '@/utils/fetchUtils';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useRef } from 'react';
 
-const PAGE_SIZE = 20;
-
 const Dashboard = () => {
   const router = useRouter();
   useRequireAuth();
