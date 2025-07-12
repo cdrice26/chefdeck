@@ -1,27 +1,7 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import request from '@/utils/fetchUtils';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const res = await request('/api/auth/checkAuth', 'GET');
-      if (!res.ok) {
-        return;
-      }
-      const data = await res.json();
-      if (data?.data?.user) {
-        router.replace('/dashboard');
-      }
-    };
-    checkAuth();
-  }, [router]);
-
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-[#111]'>
       <Head>
@@ -101,6 +81,21 @@ export default function Home() {
           <a href='https://github.com/cdrice26/chefdeck' className='underline'>
             Github
           </a>
+          .
+        </p>
+        <p className='text-gray-600 dark:text-gray-400'>
+          This project is licensed under the{' '}
+          <a
+            href='https://github.com/cdrice26/chefdeck/blob/main/LICENSE'
+            className='underline'
+          >
+            MIT License
+          </a>
+          . It also uses third-party libraries and tools, each under their own
+          license. They can be viewed{' '}
+          <Link href='/licenses' className='underline'>
+            here
+          </Link>
           .
         </p>
       </footer>
