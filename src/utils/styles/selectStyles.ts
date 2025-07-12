@@ -11,17 +11,40 @@ const getSelectStyles = (
     'color': isDarkMode ? 'white' : 'black',
     'borderRadius': isRounded ? '50px' : '4px',
     'minWidth': minWidth,
+    'width': '100%',
+    'flexWrap': 'wrap',
+    'display': 'flex',
+    'alignItems': 'center',
     '&:hover': {
       borderColor: isRounded ? 'none' : isDarkMode ? 'white' : 'black'
     }
   }),
-  menu: (provided: any) => ({
+  valueContainer: (provided: any) => ({
     ...provided,
-    backgroundColor: isDarkMode ? '#333' : 'white'
+    flex: 1,
+    minWidth: 0,
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: 4
+  }),
+  input: (provided: any) => ({
+    ...provided,
+    color: isDarkMode ? 'white' : 'black',
+    flexGrow: 1, // allow input to grow
+    flexShrink: 1, // allow input to shrink
+    flexBasis: '60px', // minimum size before shrinking
+    minWidth: '60px', // allow shrinking to 0 if needed
+    width: 'auto', // <--- Prevents input from being forced to 100%,
+    display: 'flex',
+    alignItems: 'center'
   }),
   multiValue: (provided: any) => ({
     ...provided,
-    backgroundColor: isDarkMode ? '#444' : '#e0e0e0' // Adjust for selected items
+    backgroundColor: isDarkMode ? '#444' : '#e0e0e0',
+    flexShrink: 1, // <--- Allow tags to shrink
+    minWidth: 0, // <--- Allow tags to shrink to zero if needed
+    maxWidth: '100%'
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
@@ -42,10 +65,6 @@ const getSelectStyles = (
   singleValue: (provided: any) => ({
     ...provided,
     color: isDarkMode ? 'white' : 'black' // Single selected value text color
-  }),
-  input: (provided: any) => ({
-    ...provided,
-    color: isDarkMode ? 'white' : 'black' // Input text color
   }),
   noOptionsMessage: (provided: any) => ({
     ...provided,

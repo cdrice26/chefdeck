@@ -5,6 +5,7 @@ import SearchModal from '@/components/specificForms/SearchModal';
 import useAvailableTags from '@/hooks/useAvailableTags';
 import SearchBarRenderer from './SearchBarRenderer';
 import Tab from './Tab';
+import removeTagPrefixesFromQuery from '@/utils/searchUtils';
 
 interface TagOption {
   label: string;
@@ -43,22 +44,7 @@ const SearchBar = ({
       onQueryChange('');
       return;
     }
-
-    let newQuery = query;
-    (selected as TagOption[]).forEach((tag) => {
-      // Remove any word in the query that is a prefix of the tag label (case-insensitive)
-      newQuery = newQuery
-        .split(/\s+/)
-        .filter((word) => {
-          // Keep the word if it is NOT a prefix of the tag label
-          return !tag.label.toLowerCase().startsWith(word.toLowerCase());
-        })
-        .join(' ');
-    });
-    newQuery = newQuery.replace(/\s+/g, ' ').trim();
-
     onChangeTags(selected as TagOption[]);
-    onQueryChange(newQuery);
   };
 
   const handleInputChange = (input: string, { action }: { action: string }) => {

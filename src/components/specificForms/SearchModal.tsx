@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../forms/Button';
 import Modal from '@/components/ui/Modal';
 import SearchBarRenderer from '../navbar/SearchBarRenderer';
+import removeTagPrefixesFromQuery from '@/utils/searchUtils';
 
 interface TagOption {
   label: string;
