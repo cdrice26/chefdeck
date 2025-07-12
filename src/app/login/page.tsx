@@ -4,7 +4,6 @@ import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import request from '@/utils/fetchUtils';
 
@@ -21,7 +20,6 @@ import request from '@/utils/fetchUtils';
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { fetchUser } = useAuth();
 
   /**
    * Handles form submission for user login.
@@ -48,7 +46,6 @@ const Login = () => {
       return;
     }
 
-    await fetchUser();
     router.push('/dashboard');
   };
 
