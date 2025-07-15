@@ -42,3 +42,36 @@ export const getTags = async (authToken: string | null): Promise<string[]> => {
 
   return tags;
 };
+
+export const deleteTag = async (
+  authToken: string | null,
+  tagValue: string
+): Promise<void> => {
+  const supabase = createClientWithToken(authToken ?? '');
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+  if (user === null) {
+    throw new PostgrestError({
+      message: 'Unauthorized',
+      code: '401',
+      details: 'User is not authenticated',
+      hint: 'Please log in to delete a tag'
+    });
+  }
+
+  const { error } = await supabase.rpc('delete_tag', {
+    current_user_id: user.id,
+    tag_value: tagValue
+  });
+
+  if (error) {
+    throw new PostgrestError({
+      message: 'Error deleting tag',
+      code: error.code || '500',
+      details: error.message,
+      hint: 'Check your database connection or the delete_tag function'
+    });
+  }
+};

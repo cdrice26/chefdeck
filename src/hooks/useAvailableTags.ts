@@ -18,7 +18,7 @@ const useAvailableTags = () => {
     fetchAvailableTags();
   }, []);
 
-  return availableTags;
+  return { availableTags, refetch: fetchAvailableTags };
 };
 
 export default useAvailableTags;

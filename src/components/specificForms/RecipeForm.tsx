@@ -40,7 +40,7 @@ interface StatePair {
 
 const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
-  const availableTags = useAvailableTags();
+  const { availableTags } = useAvailableTags();
 
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
