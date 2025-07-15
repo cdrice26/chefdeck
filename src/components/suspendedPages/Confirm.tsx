@@ -18,6 +18,7 @@ export default function Confirm() {
   const [message, setMessage] = useState<string>('');
   const [password, setPassword] = useState('');
   const [resetError, setResetError] = useState<string>('');
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type');
@@ -41,6 +42,7 @@ export default function Confirm() {
       if (resp.ok) {
         if (type === 'recovery') {
           setStatus('reset');
+          setAccessToken(data.accessToken || null);
         } else {
           setStatus('success');
           addNotification('Confirmation successful!', 'success');
@@ -67,11 +69,14 @@ export default function Confirm() {
     e.preventDefault();
     setResetError('');
     setStatus('loading');
-    const res = await request(
-      '/api/auth/resetPassword',
-      'POST',
-      JSON.stringify({ token_hash, password })
-    );
+    const res = await fetch('/api/auth/resetPassword', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ password })
+    });
     const data = await res.json();
     if (res.ok) {
       setStatus('success');
