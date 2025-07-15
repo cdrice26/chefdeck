@@ -5,7 +5,6 @@ import SearchModal from '@/components/specificForms/SearchModal';
 import useAvailableTags from '@/hooks/useAvailableTags';
 import SearchBarRenderer from './SearchBarRenderer';
 import Tab from './Tab';
-import removeTagPrefixesFromQuery from '@/utils/searchUtils';
 
 interface TagOption {
   label: string;
