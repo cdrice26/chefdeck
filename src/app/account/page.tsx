@@ -123,6 +123,9 @@ const AccountPage = () => {
       return;
     }
 
+    await fetchUser();
+    router.push('/');
+
     setPasswordMessage('Password changed successfully');
     setPasswordError(null);
   };
