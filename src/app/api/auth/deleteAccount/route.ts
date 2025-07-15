@@ -53,6 +53,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const userId = user.id;
+
     // Delete user
     const { error: deleteError } = await adminSupabase.auth.admin.deleteUser(
       user?.id
@@ -66,7 +68,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Optionally, sign out the user (invalidate session)
+    // Delete user's images from storage
+    const { data: images, error: imagesError } = await adminSupabase.storage
+      .from('images')
+      .list(userId, { limit: 1000 });
+
+    if (imagesError) {
+      console.log(imagesError);
+    } else {
+      const { error: deleteImagesError } = await adminSupabase.storage
+        .from('images')
+        .remove(images.map((image) => `${userId}/${image?.name ?? ''}`));
+
+      if (deleteImagesError) {
+        console.log(deleteImagesError);
+      }
+    }
+
+    // Sign out the user (invalidate session)
     await clientSupabase.auth.signOut();
 
     return NextResponse.json({ message: 'Account deleted successfully' });

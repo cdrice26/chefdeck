@@ -1,14 +1,21 @@
 import { getAccessToken } from '@/utils/authUtils';
-import { requireAuth } from '@/utils/requireAuth';
 import { createClientWithToken } from '@/utils/supabaseUtils';
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  const user = await requireAuth('Bearer ' + (await getAccessToken(request)));
-
   const { username } = await request.json();
 
   const supabase = createClientWithToken(await getAccessToken(request));
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { error } = await supabase.rpc('upsert_profile', {
     p_user_id: user?.id,
     p_username: username
