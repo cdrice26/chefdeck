@@ -1,6 +1,4 @@
-import { getAccessToken } from '@/utils/authUtils';
-import { createClientWithToken } from '@/utils/supabaseUtils';
-import { type EmailOtpType } from '@supabase/supabase-js';
+import { createClient, type EmailOtpType } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -15,8 +13,12 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const supabase = createClientWithToken(await getAccessToken(request));
-  const { error } = await supabase.auth.verifyOtp({ type, token_hash });
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!
+  );
+  const { data, error } = await supabase.auth.verifyOtp({ type, token_hash });
+  const session = data?.session;
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
@@ -29,6 +31,7 @@ export async function GET(request: NextRequest) {
       type === 'recovery'
         ? 'Token valid, please set a new password.'
         : 'Confirmation successful.',
-    type
+    type,
+    accessToken: session?.access_token
   });
 }

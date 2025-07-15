@@ -1,32 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClientWithToken } from '@/utils/supabaseUtils';
-import { getAccessToken } from '@/utils/authUtils';
 
 export async function POST(req: NextRequest) {
   try {
-    const { token_hash, password } = await req.json();
+    const accessToken = req.headers
+      .get('Authorization')
+      ?.replace('Bearer ', '');
+    const { password } = await req.json();
 
-    if (!token_hash || !password) {
+    if (!accessToken || !password) {
       return NextResponse.json(
-        { error: 'Token and new password are required.' },
+        { error: 'Missing token or password.' },
         { status: 400 }
       );
     }
 
-    const supabase = createClientWithToken(await getAccessToken(req));
+    const response = await fetch(
+      `${process.env.SUPABASE_URL}/auth/v1/user?apikey=${process.env.SUPABASE_ANON_KEY}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password })
+      }
+    );
 
-    // Use the token to update the user's password
-    const { error } = await supabase.auth.updateUser({
-      password
-    });
+    const data = await response.json();
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+    console.log(data);
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: data.error || 'Failed to update password.' },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({
-      message: 'Password has been reset successfully.'
-    });
+    return NextResponse.json({ message: 'Password reset successfully.' });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error.' },
