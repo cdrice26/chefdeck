@@ -4,14 +4,16 @@ import { getAccessToken } from '@/utils/authUtils';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    const { email, password } = await req.json();
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
 
+    const access_token = await getAccessToken(req);
+
     // Create Supabase client with SSR cookies for authentication
-    const supabase = createClientWithToken(await getAccessToken(req));
+    const supabase = createClientWithToken(access_token);
 
     // Get current user
     const {
@@ -22,8 +24,18 @@ export async function POST(req: NextRequest) {
     if (userError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user.email!,
+      password
+    });
 
-    // Update email
+    if (signInError) {
+      return NextResponse.json(
+        { error: 'Current password is incorrect.' },
+        { status: 400 }
+      );
+    }
+
     const { error: updateError } = await supabase.auth.updateUser(
       {
         email
