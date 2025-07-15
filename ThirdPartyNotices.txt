@@ -1246,34 +1246,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 │  └─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
-├─ @next/env@15.3.2
+├─ @next/env@15.4.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ publisher: Next.js Team
 │  ├─ email: support@vercel.com
 │  ├─ name: @next/env
-│  ├─ version: 15.3.2
+│  ├─ version: 15.4.1
 │  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@next/env/README.md
 │  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@next/env
 │  └─ licenseText: # `@next/env`
 
 Next.js' util for loading dotenv files in with the proper priorities
-├─ @next/swc-darwin-arm64@15.3.2
+├─ @next/swc-darwin-arm64@15.4.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ name: @next/swc-darwin-arm64
-│  ├─ version: 15.3.2
+│  ├─ version: 15.4.1
 │  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64/README.md
 │  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64
 │  └─ licenseText: # `@next/swc-darwin-arm64`
 
 This is the **aarch64-apple-darwin** binary for `@next/swc`
-├─ @supabase/auth-js@2.70.0
+├─ @supabase/auth-js@2.71.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/auth-js
 │  ├─ publisher: Supabase
 │  ├─ name: @supabase/auth-js
-│  ├─ version: 2.70.0
+│  ├─ version: 2.71.0
 │  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@supabase/auth-js/LICENSE
 │  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@supabase/auth-js
 │  ├─ licenseText: MIT License
@@ -1628,12 +1628,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-├─ @supabase/supabase-js@2.50.5
+├─ @supabase/supabase-js@2.51.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/supabase-js
 │  ├─ publisher: Supabase
 │  ├─ name: @supabase/supabase-js
-│  ├─ version: 2.50.5
+│  ├─ version: 2.51.0
 │  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@supabase/supabase-js/LICENSE
 │  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@supabase/supabase-js
 │  ├─ licenseText: MIT License
@@ -1658,22 +1658,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 │  └─ copyright: Copyright (c) 2020 Supabase
-├─ @swc/counter@0.1.3
-│  ├─ licenses: Apache-2.0
-│  ├─ repository: https://github.com/swc-project/pkgs
-│  ├─ publisher: 강동윤
-│  ├─ email: kdy1997.dev@gmail.com
-│  ├─ name: @swc/counter
-│  ├─ version: 0.1.3
-│  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@swc/counter/README.md
-│  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@swc/counter
-│  └─ licenseText: # @swc/couter
-
-Download counter for swc packages.
-
-This package does not contain any code. It is used solely to track number of downloads of npm packages like `@swc/core` and `@next/swc`. If you are building a huge project using SWC, please consider depending on this package. It will not add any code to your bundle, but it will help us determine the number of users of SWC.
-
-Counting is done by npm, just like other packages.
 ├─ @swc/helpers@0.5.15
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/swc-project/swc
@@ -1885,11 +1869,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 │  └─ copyright: Copyright 2024 SWC contributors.
-├─ @types/node@20.19.7
+├─ @types/node@20.19.8
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
 │  ├─ name: @types/node
-│  ├─ version: 20.19.7
+│  ├─ version: 20.19.8
 │  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@types/node/LICENSE
 │  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/@types/node
 │  └─ licenseText: MIT License
@@ -2083,35 +2067,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-├─ busboy@1.6.0
-│  ├─ licenses: MIT
-│  ├─ repository: https://github.com/mscdex/busboy
-│  ├─ publisher: Brian White
-│  ├─ email: mscdex@mscdex.net
-│  ├─ name: busboy
-│  ├─ version: 1.6.0
-│  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/busboy/LICENSE
-│  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/busboy
-│  ├─ licenseText: Copyright Brian White. All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
-│  └─ copyright: Copyright Brian White. All rights reserved.
 ├─ callsites@3.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/callsites
@@ -2704,8 +2659,8 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 │  ├─ email: david.dave.clark@gmail.com
 │  ├─ name: cosmiconfig
 │  ├─ version: 7.1.0
-│  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/babel-plugin-macros/node_modules/cosmiconfig/LICENSE
-│  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/babel-plugin-macros/node_modules/cosmiconfig
+│  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/cosmiconfig/LICENSE
+│  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/cosmiconfig
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 David Clark
@@ -3579,11 +3534,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 │  └─ copyright: Copyright 2017 Andrey Sitnik <andrey@sitnik.ru>
-├─ next@15.3.2
+├─ next@15.4.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ name: next
-│  ├─ version: 15.3.2
+│  ├─ version: 15.4.1
 │  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/next/license.md
 │  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/next
 │  ├─ licenseText: The MIT License (MIT)
@@ -4490,35 +4445,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-├─ streamsearch@1.1.0
-│  ├─ licenses: MIT
-│  ├─ repository: https://github.com/mscdex/streamsearch
-│  ├─ publisher: Brian White
-│  ├─ email: mscdex@mscdex.net
-│  ├─ name: streamsearch
-│  ├─ version: 1.1.0
-│  ├─ licenseFile: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/streamsearch/LICENSE
-│  ├─ path: /Users/caleb/Development/ChefDeck/chefdeck/node_modules/streamsearch
-│  ├─ licenseText: Copyright Brian White. All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.
-│  └─ copyright: Copyright Brian White. All rights reserved.
 ├─ styled-jsx@5.1.6
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/styled-jsx
