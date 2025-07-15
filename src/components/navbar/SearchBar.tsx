@@ -27,7 +27,7 @@ const SearchBar = ({
   tags = [],
   onChangeTags = () => {}
 }: SearchBarProps) => {
-  const tagOptions = useAvailableTags();
+  const { availableTags: tagOptions } = useAvailableTags();
 
   const [isModalOpen, setModalOpen] = useState(false);
 

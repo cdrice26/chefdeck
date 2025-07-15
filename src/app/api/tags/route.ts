@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
+        'Cache-Control': 'no-cache' // No caching for GET requests to ensure fresh data
       }
     });
   } catch (error: any) {
