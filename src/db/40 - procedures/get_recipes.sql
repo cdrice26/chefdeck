@@ -24,6 +24,7 @@ CREATE OR REPLACE FUNCTION public.get_recipes(
     tags jsonb
 )
 LANGUAGE plpgsql
+SET search_path = public
 AS $$
 BEGIN
     RETURN QUERY
