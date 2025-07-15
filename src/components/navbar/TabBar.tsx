@@ -44,7 +44,8 @@ const TabBar = () => {
       } else {
         params.delete('tags');
       }
-      router.replace(url + '?' + params.toString(), {});
+      const newUrl = url + '?' + params.toString();
+      if (newUrl !== window.location.href) router.replace(newUrl, {});
     }, 300);
 
     setTypingTimeout(timeout);
@@ -56,6 +57,7 @@ const TabBar = () => {
   };
 
   useEffect(() => {
+    if (url !== '/dashboard') return;
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', query);
     if (tags.length > 0) {
