@@ -135,6 +135,7 @@ const AccountPage = () => {
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     if (!email) {
       setEmailError('Please enter an email address');
@@ -144,7 +145,7 @@ const AccountPage = () => {
     const response = await request(
       '/api/auth/updateEmail',
       'POST',
-      JSON.stringify({ email })
+      JSON.stringify({ email, password })
     );
 
     if (!response.ok) {
@@ -225,7 +226,8 @@ const AccountPage = () => {
         <Button type='submit'>Change Password</Button>
       </Section>
       <Section name='Update Email' onFormSubmit={handleUpdateEmail}>
-        <Input name='email' placeholder='Email' />
+        <Input name='password' type='password' placeholder='Password' />
+        <Input name='email' type='email' placeholder='Email' />
         {emailError && <p className='text-red-500'>{emailError}</p>}
         {emailMessage && <p className='text-green-500'>{emailMessage}</p>}
         <Button type='submit'>Update Email</Button>
