@@ -28,8 +28,6 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json();
 
-    console.log(data);
-
     if (!response.ok) {
       return NextResponse.json(
         { error: data.error || 'Failed to update password.' },
