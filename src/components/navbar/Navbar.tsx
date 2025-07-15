@@ -36,6 +36,10 @@ const Navbar = () => {
     }
   };
 
+  const handleTagsClick = () => {
+    router.push('/manageTags');
+  };
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -87,6 +91,7 @@ const Navbar = () => {
             user={{ ...user, username: username ?? user.email }}
             onClickAccount={handleAccountClick}
             onClickLogout={logout}
+            onClickTags={handleTagsClick}
           />
         ) : (
           <>

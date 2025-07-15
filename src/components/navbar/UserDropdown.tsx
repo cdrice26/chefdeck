@@ -13,6 +13,7 @@ interface UserDropdownProps {
   user: { email: string; username?: string } | null;
   onClickAccount: () => void;
   onClickLogout: () => void;
+  onClickTags: () => void;
 }
 
 const userDropdownStyles: (
@@ -101,11 +102,13 @@ const userDropdownStyles: (
 const UserDropdown = ({
   user,
   onClickAccount,
-  onClickLogout
+  onClickLogout,
+  onClickTags
 }: UserDropdownProps) => {
   const options: OptionType[] = [
     { value: 'Account', label: 'Account' },
-    { value: 'Logout', label: 'Logout' }
+    { value: 'Logout', label: 'Logout' },
+    { value: 'Tags', label: 'Manage Tags' }
   ];
 
   // Show user's email/username as placeholder
@@ -121,6 +124,7 @@ const UserDropdown = ({
     if (!option) return;
     if (option.value === 'Account') onClickAccount();
     if (option.value === 'Logout') onClickLogout();
+    if (option.value === 'Tags') onClickTags();
   };
 
   return (
