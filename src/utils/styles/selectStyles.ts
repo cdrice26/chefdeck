@@ -12,20 +12,27 @@ const getSelectStyles = (
     'borderRadius': isRounded ? '50px' : '4px',
     'minWidth': minWidth,
     'width': '100%',
-    'flexWrap': 'wrap',
+    'flexWrap': 'nowrap',
     'display': 'flex',
+    'flexDirection': 'row',
     'alignItems': 'center',
     '&:hover': {
       borderColor: isRounded ? 'none' : isDarkMode ? 'white' : 'black'
-    }
+    },
+    'whiteSpace': 'nowrap',
+    'overflow': 'hidden',
+    'textOverflow': 'ellipsis'
   }),
   valueContainer: (provided: any) => ({
     ...provided,
     flex: 1,
     minWidth: 0,
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     alignItems: 'center',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     gap: 4
   }),
   input: (provided: any) => ({
@@ -33,8 +40,8 @@ const getSelectStyles = (
     color: isDarkMode ? 'white' : 'black',
     flexGrow: 1, // allow input to grow
     flexShrink: 1, // allow input to shrink
-    flexBasis: '60px', // minimum size before shrinking
-    minWidth: '60px', // allow shrinking to 0 if needed
+    flexBasis: '60px', // allow input to shrink to fit content
+    minWidth: minWidth, // allow shrinking to 0 if needed
     width: 'auto', // <--- Prevents input from being forced to 100%,
     display: 'flex',
     alignItems: 'center'
@@ -73,6 +80,12 @@ const getSelectStyles = (
   loadingMessage: (provided: any) => ({
     ...provided,
     color: isDarkMode ? 'white' : 'black' // Loading message color
+  }),
+  menu: (provided: any) => ({
+    ...provided,
+    backgroundColor: isDarkMode ? '#333' : 'white',
+    color: isDarkMode ? 'white' : 'black',
+    zIndex: 1000 // Ensure the menu appears above other elements
   }),
   option: (provided: any, state: { isFocused: boolean }) => ({
     ...provided,
