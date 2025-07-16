@@ -39,6 +39,7 @@ const SearchBarRenderer = ({
       onChange={handleChange}
       placeholder='Search or select tags...'
       classNamePrefix='react-select'
+      className='w-full'
       styles={getSelectStyles(isDark, true, '300px')}
       components={{
         DropdownIndicator: () => <IoSearch className='mx-2 text-gray-400' />

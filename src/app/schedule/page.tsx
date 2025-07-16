@@ -95,6 +95,8 @@ const Schedule = () => {
           onChange={(option) => setMonth((option as { value: number })?.value)}
           className='box-border h-full flex-grow max-w-100'
           styles={getSelectStyles(isDark)}
+          isSearchable={false}
+          isClearable={false}
         />
         <input
           type='number'
