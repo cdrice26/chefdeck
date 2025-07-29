@@ -44,11 +44,11 @@ const CreatePage = () => {
       <div className='text-red-500'>
         <strong>DISCLAIMER:</strong> By importing a recipe from the web, you
         certify that you have the appropriate rights to save a copy of the
-        recipe via automated means. Cooky will display the source URL with your
-        imported recipe and you will not be permitted to share it via Cooky's
-        services to encourage others to obtain it from the original source.
-        Cooky assumes no responsibility for fraudulent use of this service, nor
-        for the content you choose to import.
+        recipe via automated means. ChefDeck will display the source URL with
+        your imported recipe and you will not be permitted to share it via
+        ChefDeck's services to encourage others to obtain it from the original
+        source. ChefDeck assumes no responsibility for fraudulent use of this
+        service, nor for the content you choose to import.
       </div>
       <label className='flex flex-row gap-2 items-center'>
         <span className='text-nowrap'>I Agree </span>
