@@ -37,7 +37,8 @@ export const POST = async (req: NextRequest) => {
       if (resp.status === 403) {
         return NextResponse.json({
           error: {
-            message: "That website doesn't permit Cooky to access its recipes."
+            message:
+              "That website doesn't permit ChefDeck to access its recipes."
           }
         });
       }
