@@ -33,8 +33,10 @@ const CreatePage = () => {
     if (!resp.ok) {
       const json = await resp.json();
       addNotification(json.error.message, 'error');
+      return;
     }
     const json = await resp.json();
+    console.log(json);
     router.push(`/recipe/${json.data.recipeId}/edit`);
   };
 
