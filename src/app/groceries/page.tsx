@@ -67,7 +67,7 @@ const Groceries = () => {
   return (
     <ResponsiveForm onSubmit={handleSubmit}>
       <h1 className='font-bold text-2xl mb-4'>Grocery List</h1>
-      <h1 className='text-red'>
+      <h1 className='text-red-500'>
         Grocery list generation is currently unavailable. We are currently
         exploring options to restore it.
       </h1>

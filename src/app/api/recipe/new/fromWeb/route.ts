@@ -7,12 +7,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: NextRequest) => {
   /* TEMP */
-  return NextResponse.json({
-    error: {
-      message:
-        'Sorry, but we had to remove this functionality. Please add your recipe manually until we can find another automated solution.'
-    }
-  });
+  return NextResponse.json(
+    {
+      error: {
+        message:
+          'Sorry, but we had to remove this functionality. Please add your recipe manually until we can find another automated solution.'
+      }
+    },
+    { status: 503 }
+  );
   /* END TEMP */
 
   // const formData = await req.json();
