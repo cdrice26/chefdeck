@@ -4,7 +4,7 @@ This is a recipe manager app. It allows you to keep track of your recipes, assig
 
 ## Configuration
 
-You'll need copies of both this and the [Python API](https://github.com/cdrice26/chefdeck-python-api). You'll then need to configure the following environment variables:
+You'll need the repo cloned. You'll then need to configure the following environment variables:
 
 - `SUPABASE_URL` - URL of your supabase database. You can use the sql scripts in the db folder to set up the tables and procedures.
 - `SUPABASE_ANON_KEY` - Your supabase anon key.
