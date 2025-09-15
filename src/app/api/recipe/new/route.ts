@@ -29,6 +29,7 @@ export const POST = async (req: NextRequest) => {
       directions,
       tags,
       color,
+      null,
       sourceUrl
     );
     return NextResponse.json(updateData, { status: 200 });
