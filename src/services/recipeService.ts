@@ -141,21 +141,42 @@ export const createOrUpdateRecipe = async (
 ) => {
   const supabase = createClientWithToken(authToken ?? '');
 
+  const buffer =
+    image !== null
+      ? await sharp(Buffer.from(await image.arrayBuffer()))
+          .rotate()
+          .resize({
+            width: 1000,
+            height: 1000,
+            fit: sharp.fit.inside,
+            withoutEnlargement: true
+          })
+          .toFormat('jpeg', { quality: 70 })
+          .toBuffer()
+      : null;
+
+  const arrayBuffer =
+    buffer !== null
+      ? buffer.buffer.slice(
+          buffer.byteOffset,
+          buffer.byteOffset + buffer.byteLength
+        )
+      : null;
+
+  function ensureArrayBuffer(
+    buffer: ArrayBuffer | SharedArrayBuffer
+  ): ArrayBuffer {
+    if (buffer instanceof ArrayBuffer) {
+      return buffer;
+    }
+    // Convert SharedArrayBuffer to ArrayBuffer
+    return new ArrayBuffer(); // creates a copy as a valid ArrayBuffer
+  }
+
   const compressedImage =
-    image && image?.size > 0
+    image && image.size > 0
       ? new File(
-          [
-            await sharp(Buffer.from(await image.arrayBuffer()))
-              .rotate()
-              .resize({
-                width: 1000,
-                height: 1000,
-                fit: sharp.fit.inside,
-                withoutEnlargement: true
-              })
-              .toFormat('jpeg', { quality: 70 })
-              .toBuffer()
-          ],
+          [ensureArrayBuffer(arrayBuffer ?? new ArrayBuffer(0))],
           image.name.replace(/\.[^/.]+$/, '') + '.jpg',
           { type: 'image/jpeg' }
         )

@@ -15,6 +15,7 @@ const getRecipeUpdateData = (formData: FormData) => {
     ingredientAmounts,
     ingredientUnits
   );
+  const sourceUrl = formData.get('sourceUrl')?.toString() || null;
   const color = formData.get('color')?.toString() || 'white';
 
   return {
@@ -25,7 +26,8 @@ const getRecipeUpdateData = (formData: FormData) => {
     image,
     directions,
     tags,
-    color
+    color,
+    sourceUrl
   };
 };
 

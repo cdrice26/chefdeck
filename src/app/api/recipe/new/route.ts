@@ -15,7 +15,8 @@ export const POST = async (req: NextRequest) => {
     image,
     directions,
     tags,
-    color
+    color,
+    sourceUrl
   } = getRecipeUpdateData(formData);
   try {
     const updateData = await createOrUpdateRecipe(
@@ -27,7 +28,8 @@ export const POST = async (req: NextRequest) => {
       image,
       directions,
       tags,
-      color
+      color,
+      sourceUrl
     );
     return NextResponse.json(updateData, { status: 200 });
   } catch (err) {
