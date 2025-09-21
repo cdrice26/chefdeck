@@ -142,7 +142,7 @@ export const createOrUpdateRecipe = async (
   const supabase = createClientWithToken(authToken ?? '');
 
   const buffer =
-    image !== null
+    image !== null && image !== undefined && image.size > 0
       ? await sharp(Buffer.from(await image.arrayBuffer()))
           .rotate()
           .resize({
