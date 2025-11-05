@@ -5,7 +5,13 @@ import { getAccessToken } from '@/utils/authUtils';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 
-export const POST = async (req: NextRequest) => {
+/**
+ * Handles POST requests to create or update a recipe. If an error occurs, it returns an error response.
+ *
+ * @param {NextRequest} req - The incoming request object containing form data.
+ * @returns {Promise<NextResponse>} A response containing the updated recipe data or an error response.
+ */
+export const POST = async (req: NextRequest): Promise<NextResponse> => {
   const formData = await req.formData();
   const {
     title,
