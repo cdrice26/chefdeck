@@ -1246,23 +1246,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 │  └─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
-├─ @next/env@15.4.1
+├─ @next/env@15.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ publisher: Next.js Team
 │  ├─ email: support@vercel.com
 │  ├─ name: @next/env
-│  ├─ version: 15.4.1
+│  ├─ version: 15.5.3
 │  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@next/env/README.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@next/env
 │  └─ licenseText: # `@next/env`
 
 Next.js' util for loading dotenv files in with the proper priorities
-├─ @next/swc-darwin-arm64@15.4.1
+├─ @next/swc-darwin-arm64@15.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ name: @next/swc-darwin-arm64
-│  ├─ version: 15.4.1
+│  ├─ version: 15.5.3
 │  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64/README.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64
 │  └─ licenseText: # `@next/swc-darwin-arm64`
@@ -3534,11 +3534,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 │  └─ copyright: Copyright 2017 Andrey Sitnik <andrey@sitnik.ru>
-├─ next@15.4.1
+├─ next@15.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ name: next
-│  ├─ version: 15.4.1
+│  ├─ version: 15.5.3
 │  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/next/license.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/next
 │  ├─ licenseText: The MIT License (MIT)
