@@ -59,7 +59,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky z-100 top-0 p-5 relative flex flex-row justify-between transition-shadow items-center ${
+      className={`sticky z-100 top-0 p-5 flex flex-row justify-between transition-shadow items-center ${
         showShadow ? 'shadow-lg' : ''
       }`}
     >
@@ -74,18 +74,18 @@ const Navbar = () => {
       >
         <Image
           src={isDark ? '/logo-darktheme.png' : '/logo.png'}
-          className='w-[100px]'
-          alt='ChefDeck'
+          className="w-[100px]"
+          alt="ChefDeck"
           width={80}
           height={50}
         />
       </button>
       {user && (
-        <div className='hidden lg:flex'>
+        <div className="hidden lg:flex">
           <TabBar />
         </div>
       )}
-      <div className='flex flex-row gap-4'>
+      <div className="flex flex-row gap-4">
         {user ? (
           <UserDropdown
             user={{ ...user, username: username ?? user.email }}
