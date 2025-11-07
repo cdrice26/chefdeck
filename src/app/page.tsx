@@ -2,6 +2,36 @@ import Card from '@/components/ui/Card';
 import Link from 'next/link';
 import Image from 'next/image';
 
+function FeatureCard({
+  title,
+  description,
+  imgPath,
+  imgAlt
+}: {
+  title: string;
+  description: string;
+  imgPath: string;
+  imgAlt: string;
+}) {
+  return (
+    <Card className="p-4 flex flex-col gap-2">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+        {title}
+      </h2>
+      <p>{description}</p>
+      <div className="flex justify-center items-center bg-white rounded-lg w-full h-full overflow-hidden">
+        <Image
+          src={imgPath}
+          alt={imgAlt}
+          layout="responsive"
+          width={40}
+          height={30}
+        />
+      </div>
+    </Card>
+  );
+}
+
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-10">
@@ -27,64 +57,30 @@ export default function Home() {
             Features
           </h2>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-            <Card className="p-4 flex flex-col">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-                Manage Recipes
-              </h2>
-              <p>Easily add, edit, and delete your favorite recipes.</p>
-              <Image
-                src="/update.png"
-                alt="Screenshot of Update Recipe Screen"
-                layout="responsive"
-                width={40}
-                height={30}
-              />
-            </Card>
-            <Card className="p-4 flex flex-col">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-                Schedule Meals
-              </h2>
-              <p>Plan your meals for the week and never run out of ideas.</p>
-              <Image
-                src="/schedule.png"
-                alt="Screenshot of Update Recipe Screen"
-                layout="responsive"
-                width={40}
-                height={30}
-              />
-            </Card>
-            <Card className="p-4 flex flex-col">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-                Generate Grocery Lists
-              </h2>
-              <p>
-                Automatically create grocery lists based on your scheduled
-                meals.
-              </p>
-              <Image
-                src="/groceries.png"
-                alt="Screenshot of Update Recipe Screen"
-                layout="responsive"
-                width={40}
-                height={30}
-              />
-            </Card>
-            <Card className="p-4 flex flex-col">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-                Organize Recipes
-              </h2>
-              <p>
-                Tag your recipes with relevant keywords to easily find them
-                later.
-              </p>
-              <Image
-                src="/tags.png"
-                alt="Screenshot of Update Recipe Screen"
-                layout="responsive"
-                width={40}
-                height={30}
-              />
-            </Card>
+            <FeatureCard
+              imgPath="/update.png"
+              imgAlt="Screenshot of Update Recipe Screen"
+              title="Manage Recipes"
+              description="Easily add, edit, and delete your favorite recipes."
+            />
+            <FeatureCard
+              imgPath="/schedule.png"
+              imgAlt="Screenshot of Schedule Meals Screen"
+              title="Schedule Meals"
+              description="Plan your meals for the week and never run out of ideas."
+            />
+            <FeatureCard
+              imgPath="/groceries.png"
+              imgAlt="Screenshot of Generate Grocery Lists Screen"
+              title="Generate Grocery Lists"
+              description="Automatically create grocery lists based on your scheduled meals."
+            />
+            <FeatureCard
+              imgPath="/tags.png"
+              imgAlt="Screenshot of Organize Recipes Screen"
+              title="Organize Recipes"
+              description="Tag your recipes with relevant keywords to easily find them later."
+            />
           </div>
         </section>
 
