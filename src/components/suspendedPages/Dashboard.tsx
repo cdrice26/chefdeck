@@ -77,16 +77,16 @@ const Dashboard = () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className='m-4'>
-        <h1 className='text-2xl font-bold mb-4'>Your Recipes</h1>
+      <div className="m-4">
+        <h1 className="text-2xl font-bold mb-4">Your Recipes</h1>
         {error ? (
-          <div className='flex flex-col w-full h-full items-center justify-center'>
-            <h1 className='text-xl font-bold'>Error loading recipes</h1>
+          <div className="flex flex-col w-full h-full items-center justify-center">
+            <h1 className="text-xl font-bold">Error loading recipes</h1>
             <p>Please try again later.</p>
           </div>
         ) : (
           <>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {recipes.map((recipe) => (
                 <RecipeCard
                   key={recipe.id}
@@ -100,7 +100,7 @@ const Dashboard = () => {
             {(hasMore || loading) && (
               <div
                 ref={loaderRef}
-                className='flex justify-center py-4'
+                className="flex justify-center py-4"
                 style={{
                   visibility: hasMore ? 'visible' : 'hidden',
                   height: 40
@@ -110,14 +110,14 @@ const Dashboard = () => {
               </div>
             )}
             {loading && page === 1 && (
-              <div className='flex flex-col items-center justify-center'>
-                <h2 className='text-lg'>Loading Recipes...</h2>
+              <div className="flex flex-col items-center justify-center">
+                <h2 className="text-lg">Loading Recipes...</h2>
                 <p>We're getting your cookbook ready!</p>
               </div>
             )}
             {!loading && recipes.length === 0 && (
-              <div className='flex flex-col items-center justify-center'>
-                <h2 className='text-lg'>No recipes found</h2>
+              <div className="flex flex-col items-center justify-center">
+                <h2 className="text-lg">No recipes found</h2>
                 <p>Start adding your recipes!</p>
               </div>
             )}

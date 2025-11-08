@@ -33,13 +33,13 @@ export default async function RootLayout({
   return (
     <AuthProvider>
       <NotificationProvider>
-        <html lang='en'>
+        <html lang="en">
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen relative flex flex-col`}
           >
             <NotificationWrapper />
             <Navbar />
-            <div className='flex-grow pb-16 sm:pb-0 relative'>{children}</div>
+            <div className="flex-grow pb-16 lg:pb-0 relative">{children}</div>
             <BottomNavigation />
           </body>
         </html>

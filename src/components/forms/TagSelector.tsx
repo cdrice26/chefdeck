@@ -42,16 +42,16 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   };
 
   return (
-    <label className='flex flex-row items-center gap-3'>
-      Tags:
+    <label className="flex flex-col gap-3">
+      <div>Tags:</div>
       <CreatableSelect
         isMulti
         options={options}
         value={value}
         onChange={handleChange}
         onCreateOption={handleCreate}
-        className='flex-grow'
-        placeholder='Select or create options...'
+        className="flex-grow"
+        placeholder="Select or create options..."
         styles={getSelectStyles(isDark)} // Apply custom styles here
       />
     </label>

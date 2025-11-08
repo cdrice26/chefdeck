@@ -22,12 +22,12 @@ const ColorSelector = ({ defaultValue }: { defaultValue?: Color }) => {
 
   return (
     <>
-      <label className='flex flex-row gap-4 items-center'>
+      <label className="flex flex-row flex-wrap gap-4 items-center">
         Color:
         {COLORS.map((name) => (
           <Button
             key={name}
-            type='button'
+            type="button"
             onClick={() =>
               handleColorSelect(isValidColor(name) ? name : 'white')
             }
@@ -45,7 +45,7 @@ const ColorSelector = ({ defaultValue }: { defaultValue?: Color }) => {
           </Button>
         ))}
       </label>
-      <input type='hidden' name='color' value={selectedColor} />
+      <input type="hidden" name="color" value={selectedColor} />
     </>
   );
 };

@@ -8,7 +8,6 @@ import request from '@/utils/fetchUtils';
 import printComponent from '@/utils/printUtils';
 import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
-import { createRoot } from 'react-dom/client';
 
 export default function RecipePage() {
   useRequireAuth();
@@ -58,18 +57,18 @@ export default function RecipePage() {
   };
 
   return (
-    <div className='flex flex-1 justify-center items-center w-full'>
+    <div className="flex flex-1 justify-center items-center w-full">
       <div
-        className={`w-full sm:w-[80%] md:w-[70%] lg:w-[60%] h-full sm:h-auto sm:max-h-[80vh] p-4 ${
+        className={`w-full sm:w-[80%] md:w-[70%] lg:w-[60%] h-full sm:h-auto p-4 ${
           recipe?.color
             ? getColorClass(recipe?.color)
             : 'bg-white dark:bg-[#222]'
-        } relative transition duration-300 justify-start my-[50px] sm:rounded-lg shadow-md sm:overflow-y-auto`}
+        } relative transition duration-300 justify-start my-[50px] sm:rounded-lg shadow-md`}
       >
         {recipe ? (
           <>
             <RecipeDetails recipe={recipe} />
-            <div className='flex flex-row flex-wrap gap-4 mt-4'>
+            <div className="flex flex-row flex-wrap gap-4 mt-4">
               <button
                 className={`rounded-full px-6 py-2 ${getButtonColorClass(
                   recipe?.color
@@ -105,7 +104,7 @@ export default function RecipePage() {
             </div>
           </>
         ) : (
-          <div className='w-full h-full flex justify-center items-center text-4xl font-bold'>
+          <div className="w-full h-full flex justify-center items-center text-4xl font-bold">
             Loading Recipe...
           </div>
         )}
