@@ -11,9 +11,16 @@ import {
 import { isValidRepeat, Schedule } from '@/types/Schedule';
 
 /**
- * Converts a database recipe into a recipe object the application can use
- * @param supabase - Supabase client to use to fetch the image URL
- * @returns A function that takes a DBRecipe and outputs a Recipe that can be used by the application
+ * Convert a DBRecipe into the application-friendly Recipe shape.
+ *
+ * This factory returns an async mapper function that transforms a database
+ * recipe record (`DBRecipe`) into the application-level `Recipe`. The mapper
+ * will fetch the image URL for the recipe using the provided Supabase client
+ * and will normalize/validate fields (for example, ensuring a valid color and
+ * sorting ingredients/directions by their sequence).
+ *
+ * @param supabase - SupabaseClient instance used to fetch image URLs for recipes.
+ * @returns A function that accepts a DBRecipe and returns a Promise resolving to a Recipe.
  */
 export const parseRecipe =
   (supabase: SupabaseClient) =>
@@ -43,6 +50,16 @@ export const parseRecipe =
     tags: recipe?.tags
   });
 
+/**
+ * Parse an array of DBSchedule records into Schedule objects used by the app.
+ *
+ * Converts raw schedule rows from the database into the application's Schedule
+ * shape, validating the `repeat` value and converting field names to the
+ * expected camelCase property names.
+ *
+ * @param schedules - Array of DBSchedule records from the database.
+ * @returns An array of Schedule objects with normalized fields and validated repeat values.
+ */
 export const parseSchedules = (schedules: DBSchedule[]): Schedule[] =>
   schedules?.map((schedule) => ({
     id: schedule.id,

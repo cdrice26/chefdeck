@@ -13,6 +13,23 @@ type GetRecipesOptions = {
   tags?: string[];
 };
 
+/**
+ * Retrieve a paginated list of recipes for the authenticated user.
+ *
+ * This function initializes a Supabase client using the provided auth token,
+ * validates that a user is present, calls a stored procedure to fetch recipes
+ * with optional search and tag filters, parses the DB rows into application
+ * Recipe objects using `parseRecipe`, and returns the resulting array.
+ *
+ * @param authToken - The authentication token used to initialize the Supabase client (may be null).
+ * @param options - Pagination and filter options:
+ *   - page: page number to fetch
+ *   - limit: number of items per page
+ *   - q: optional search query
+ *   - tags: optional array of tags to filter by
+ * @returns Promise resolving to an array of parsed `Recipe` objects.
+ * @throws PostgrestError when the user is not authenticated or when the RPC reports an error.
+ */
 export const getRecipes = async (
   authToken: string | null,
   options: GetRecipesOptions = { page: 1, limit: 20 }
@@ -53,6 +70,19 @@ export const getRecipes = async (
   return recipes;
 };
 
+/**
+ * Retrieve scheduled recipes for the authenticated user within a date range.
+ *
+ * Uses the provided auth token to initialize Supabase, validates the user,
+ * calls the `get_scheduled_recipes` RPC, and maps each returned DB row to the
+ * application's scheduled recipe representation via `parseScheduledRecipe`.
+ *
+ * @param authToken - The authentication token used to initialize the Supabase client (may be null).
+ * @param fromDate - Inclusive start date for the scheduled recipe query.
+ * @param toDate - Inclusive end date for the scheduled recipe query.
+ * @returns Promise resolving to an array of parsed scheduled recipe objects.
+ * @throws PostgrestError when the user is not authenticated or when the RPC reports an error.
+ */
 export const getScheduledRecipes = async (
   authToken: string | null,
   fromDate: Date,

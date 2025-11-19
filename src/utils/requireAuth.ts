@@ -2,11 +2,16 @@ import { User } from '@supabase/supabase-js';
 import { createClientWithToken } from './supabaseUtils';
 
 /**
- * Checks if the request is authenticated using Supabase session.
- * If not authenticated, throws an error.
- * If authenticated, returns the user object.
+ * Ensure a server-side request is authenticated and return the Supabase user.
  *
- * @returns {Promise<User>} NextResponse if unauthorized, otherwise the user object.
+ * This helper initializes a Supabase client using the provided access token,
+ * attempts to read the current session/user, and throws an error when the
+ * request is not authenticated. Callers can use this in server-side logic to
+ * enforce authentication.
+ *
+ * @param authToken - Optional access token used to initialize the Supabase client.
+ * @returns {Promise<User>} A Promise that resolves to the authenticated Supabase `User`.
+ * @throws Error when authentication fails or no user is present (the thrown error may be a Supabase/PostgREST error).
  */
 export async function requireAuth(authToken: string | null): Promise<User> {
   const supabase = createClientWithToken(authToken ?? '');

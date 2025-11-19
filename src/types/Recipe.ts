@@ -1,5 +1,15 @@
+/**
+ * Type definitions for recipe-related data structures.
+ *
+ * These interfaces describe the shapes used across the application for
+ * ingredients, directions, and recipe objects.
+ */
+
 import { Color } from '@/utils/styles/colorUtils';
 
+/**
+ * Represents an ingredient
+ */
 export interface Ingredient {
   id: string;
   name: string;
@@ -7,6 +17,9 @@ export interface Ingredient {
   unit: string;
 }
 
+/**
+ * Represents a direction
+ */
 export interface Direction {
   id: string;
   content: string;

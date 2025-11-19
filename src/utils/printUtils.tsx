@@ -1,7 +1,23 @@
 import { JSX } from 'react';
 import { createRoot } from 'react-dom/client';
 
-const printComponent = (component: JSX.Element, title: string) => {
+/**
+ * Render a React component into a new popup window and print it once rendered.
+ *
+ * This utility opens a new browser window, injects a simple head with the
+ * provided `title`, renders the provided React element into a newly created
+ * container within that window, and uses a MutationObserver to detect when the
+ * DOM has been populated so it can trigger printing and then close the window.
+ *
+ * Important notes:
+ * - Must be executed in a browser environment where `window` and `document` are available.
+ * - The function does not return a value; it triggers printing as a side-effect.
+ *
+ * @param component - The React JSX element to render and print.
+ * @param title - The title to set for the print window (used inside the window <title> tag).
+ * @returns void
+ */
+const printComponent = (component: JSX.Element, title: string): void => {
   const printWindow = window.open('', '_blank');
 
   if (printWindow)
@@ -19,7 +35,7 @@ const printComponent = (component: JSX.Element, title: string) => {
   printRoot.render(component);
 
   if (printWindow === null || printWindow === undefined) {
-    throw new Error();
+    throw new Error('Failed to open print window');
   }
 
   // Use MutationObserver to detect when the content is rendered

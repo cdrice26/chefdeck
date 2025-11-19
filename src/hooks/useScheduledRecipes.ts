@@ -10,6 +10,18 @@ const lastDay = new Date(
   0
 );
 
+/**
+ * Hook to load scheduled recipes within a date range.
+ *
+ * @param initialStartDate - Initial start date to query scheduled recipes. Defaults to the first day of the current month.
+ * @param initialEndDate - Initial end date to query scheduled recipes. Defaults to the last day of the current month.
+ * @returns An object containing:
+ *  - `scheduledRecipes`: ScheduleDisplay[] — the list of scheduled recipes for the current date range
+ *  - `setStartDate`: (date: Date) => void — setter for the start date
+ *  - `setEndDate`: (date: Date) => void — setter for the end date
+ *  - `startDate`: Date — the current start date
+ *  - `endDate`: Date — the current end date
+ */
 const useScheduledRecipes = (
   initialStartDate: Date = firstDay,
   initialEndDate: Date = lastDay
@@ -21,6 +33,11 @@ const useScheduledRecipes = (
   const [endDate, setEndDate] = useState(initialEndDate);
   const { addNotification } = useNotification();
 
+  /**
+   * Fetch scheduled recipes for the current `startDate` and `endDate` and update state.
+   *
+   * @returns A promise that resolves when the scheduled recipes have been fetched and state updated.
+   */
   const fetchScheduledRecipes = async () => {
     const resp = await request(
       `/api/recipes/scheduled?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,

@@ -4,6 +4,22 @@ import request from '@/utils/fetchUtils';
 
 const PAGE_SIZE = 20;
 
+/**
+ * Custom hook to fetch recipes with pagination and optional filters.
+ *
+ * The hook automatically loads pages of recipes and deduplicates results when
+ * appending subsequent pages. It resets state when `query` or `tags` change.
+ *
+ * @param query - Search query string used to filter recipes.
+ * @param tags - Array of tag strings to filter recipes by.
+ * @returns An object containing:
+ *  - `recipes`: current list of Recipe items
+ *  - `page`: current page number
+ *  - `setPage`: function to update the page number
+ *  - `hasMore`: whether there are more pages to load
+ *  - `loading`: whether a fetch is in progress
+ *  - `error`: error message if the last fetch failed
+ */
 export default function usePaginatedRecipes(query: string, tags: string[]) {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState(1);

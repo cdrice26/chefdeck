@@ -2,6 +2,13 @@ import parseTags from '@/models/tagsModel';
 import { PostgrestError } from '@supabase/supabase-js';
 import { createClientWithToken } from '@/utils/supabaseUtils';
 
+/**
+ * Fetch available tags for the authenticated user.
+ *
+ * @param authToken - Auth token used to initialize the Supabase client (may be null).
+ * @returns Promise resolving to an array of tag strings.
+ * @throws PostgrestError when authentication fails or the RPC returns an error.
+ */
 export const getTags = async (authToken: string | null): Promise<string[]> => {
   const supabase = createClientWithToken(authToken ?? '');
 
@@ -43,6 +50,14 @@ export const getTags = async (authToken: string | null): Promise<string[]> => {
   return tags;
 };
 
+/**
+ * Delete a tag for the authenticated user.
+ *
+ * @param authToken - Auth token used to initialize the Supabase client (may be null).
+ * @param tagValue - The tag value to delete.
+ * @returns Promise that resolves when the deletion completes.
+ * @throws PostgrestError when authentication fails or the RPC returns an error.
+ */
 export const deleteTag = async (
   authToken: string | null,
   tagValue: string

@@ -4,6 +4,14 @@ import { parseRecipe, parseSchedules } from '@/models/recipeModel';
 import { Schedule } from '@/types/Schedule';
 import sharp from 'sharp';
 
+/**
+ * Retrieve a single recipe by ID for the authenticated user.
+ *
+ * @param authToken - The authentication token (may be null; a client will be created accordingly).
+ * @param recipeId - The ID of the recipe to fetch.
+ * @returns A Promise resolving to the parsed Recipe object.
+ * @throws PostgrestError when the stored procedure fails or the recipe is not found.
+ */
 export const getRecipe = async (authToken: string | null, recipeId: string) => {
   const supabase = createClientWithToken(authToken ?? '');
   const { data, error } = await supabase.rpc('get_recipe_by_id', {
@@ -35,6 +43,14 @@ export const getRecipe = async (authToken: string | null, recipeId: string) => {
   return recipe;
 };
 
+/**
+ * Obtain a signed image URL for a recipe's image.
+ *
+ * @param authToken - The authentication token to initialize the Supabase client.
+ * @param recipeId - The ID of the recipe whose image URL should be retrieved.
+ * @returns A Promise resolving to a signed image URL string (valid for a short time).
+ * @throws PostgrestError when the recipe or image cannot be found or when storage access fails.
+ */
 export const getRecipeImageUrl = async (
   authToken: string | null,
   recipeId: string
@@ -80,6 +96,14 @@ export const getRecipeImageUrl = async (
   return data.signedUrl;
 };
 
+/**
+ * Fetch schedules associated with a recipe for the authenticated user.
+ *
+ * @param authToken - The authentication token to initialize the Supabase client.
+ * @param recipeId - The ID of the recipe whose schedules will be fetched.
+ * @returns A Promise resolving to an array of Schedule objects.
+ * @throws PostgrestError when the underlying RPC call fails.
+ */
 export const getRecipeSchedules = async (
   authToken: string | null,
   recipeId: string
@@ -98,6 +122,15 @@ export const getRecipeSchedules = async (
   return parseSchedules(data);
 };
 
+/**
+ * Upsert (create or update) schedules for a given recipe for the authenticated user.
+ *
+ * @param authToken - The authentication token used to initialize the Supabase client.
+ * @param recipeId - The ID of the recipe to schedule.
+ * @param schedules - Array of Schedule objects to upsert for the recipe.
+ * @returns A Promise that resolves when the schedules have been upserted.
+ * @throws PostgrestError when the RPC call fails.
+ */
 export const scheduleRecipe = async (
   authToken: string | null,
   recipeId: string,
@@ -121,6 +154,28 @@ export const scheduleRecipe = async (
   if (error) throw error;
 };
 
+/**
+ * Create a new recipe or update an existing one, including optional image upload and compression.
+ *
+ * Behavior:
+ *  - Compresses/normalizes an uploaded image (if present), uploads it to storage,
+ *  - Calls the appropriate stored procedure (`create_recipe` or `update_recipe`) with normalized args,
+ *  - On procedure failure, attempts to remove any newly uploaded image.
+ *
+ * @param authToken - Authentication token to initialize Supabase client.
+ * @param title - Recipe title.
+ * @param ingredients - Array of ingredient objects (with name, amount, unit and sequence).
+ * @param yieldValue - Number of servings/yield.
+ * @param time - Preparation/cook time in minutes.
+ * @param image - Optional image File to upload for the recipe.
+ * @param directions - Array of direction strings for the recipe steps.
+ * @param tags - Array of tag strings associated with the recipe.
+ * @param color - Color identifier for UI theming.
+ * @param id - Optional recipe ID; if provided the function will update that recipe, otherwise it will create a new recipe.
+ * @param sourceUrl - Optional source URL for the recipe (used when creating a new recipe).
+ * @returns A Promise resolving to an object containing a success message and the recipeId returned by the procedure.
+ * @throws PostgrestError when authentication fails, image upload fails, or the stored procedure returns an error.
+ */
 export const createOrUpdateRecipe = async (
   authToken: string | null,
   title: string,
@@ -285,6 +340,14 @@ export const createOrUpdateRecipe = async (
   };
 };
 
+/**
+ * Delete a recipe and its associated image (if any) for the authenticated user.
+ *
+ * @param authToken - Authentication token used to initialize the Supabase client.
+ * @param recipeId - The ID of the recipe to delete.
+ * @returns A Promise that resolves when the recipe (and its image) have been deleted.
+ * @throws PostgrestError when the delete RPC fails or authentication is missing.
+ */
 export const deleteRecipe = async (
   authToken: string | null,
   recipeId: string
