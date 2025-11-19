@@ -7,7 +7,31 @@ import {
   isValidColor
 } from '@/utils/styles/colorUtils';
 
-const ColorSelector = ({ defaultValue }: { defaultValue?: Color }) => {
+/**
+ * ColorSelector component.
+ *
+ * Renders a list of color buttons (based on `COLORS`) and exposes the selected
+ * color as a hidden form input named `color`. The component accepts an optional
+ * `defaultValue` which will be used to initialize the selection if it is a valid
+ * color according to `isValidColor`.
+ *
+ * Props:
+ * - `defaultValue?: Color` - Optional initial color to select.
+ *
+ * Behavior:
+ * - Clicking a color button updates the locally selected color state.
+ * - The selected color is kept in a hidden `<input name="color" />` so the value
+ *   will be submitted with an enclosing form.
+ *
+ * @param {{ defaultValue?: Color }} props - Component props.
+ * @returns {JSX.Element} The color selector UI and hidden input.
+ *
+ * @example
+ * // <ColorSelector defaultValue="red" />
+ */
+const ColorSelector: React.FC<{ defaultValue?: Color }> = ({
+  defaultValue
+}) => {
   const [selectedColor, setSelectedColor] = useState(defaultValue ?? 'white');
 
   const handleColorSelect = (color: Color) => {

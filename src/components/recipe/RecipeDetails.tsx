@@ -4,13 +4,26 @@ import { Recipe } from '@/types/Recipe';
 import { getButtonColorClass } from '@/utils/styles/colorUtils';
 import IngredientDisplay from './IngredientDisplay';
 
+/**
+ * RecipeDetails component.
+ *
+ * Renders full details for a recipe including title, tags, metadata (yield/time/source),
+ * an optional image, the list of ingredients (formatted) and the step-by-step directions.
+ *
+ * Props:
+ * - `recipe` (Recipe): The recipe object to display. Expected fields include `title`, `tags`,
+ *   `servings`, `minutes`, `sourceUrl`, `imgUrl`, `ingredients`, and `directions`.
+ *
+ * @param {Recipe} props.recipe - The recipe to render.
+ * @returns {JSX.Element} The rendered recipe details UI.
+ */
 interface RecipeDetailsProps {
   recipe: Recipe;
 }
 
 const RecipeDetails = ({ recipe }: RecipeDetailsProps) => (
   <>
-    <h1 className='text-4xl font-bold flex flex-row flex-wrap justify-start'>
+    <h1 className="text-4xl font-bold flex flex-row flex-wrap justify-start">
       {recipe?.title}
       {(recipe?.tags?.length ?? 0) > 0 &&
         recipe?.tags?.map((tag, index) => (
@@ -25,7 +38,7 @@ const RecipeDetails = ({ recipe }: RecipeDetailsProps) => (
           </div>
         ))}
     </h1>
-    <ul className='flex flex-row items-center justify-start gap-2'>
+    <ul className="flex flex-row items-center justify-start gap-2">
       <li>
         <strong>Yield:</strong> {recipe?.servings} Servings
       </li>
@@ -42,17 +55,17 @@ const RecipeDetails = ({ recipe }: RecipeDetailsProps) => (
     {recipe?.imgUrl && (
       <img
         src={recipe?.imgUrl}
-        className='max-h-[300px] max-w-[500px] w-auto rounded-lg object-cover'
+        className="max-h-[300px] max-w-[500px] w-auto rounded-lg object-cover"
       />
     )}
-    <strong className='text-lg'>Ingredients:</strong>
-    <ul className='list-disc ml-4'>
+    <strong className="text-lg">Ingredients:</strong>
+    <ul className="list-disc ml-4">
       {recipe?.ingredients?.map((ingredient) => (
         <IngredientDisplay key={ingredient.id} ingredient={ingredient} />
       ))}
     </ul>
-    <strong className='text-lg'>Directions:</strong>
-    <ul className='list-disc ml-4'>
+    <strong className="text-lg">Directions:</strong>
+    <ul className="list-disc ml-4">
       {recipe?.directions?.map((direction) => (
         <li key={direction?.id}>{direction?.content}</li>
       ))}

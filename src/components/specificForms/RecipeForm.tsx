@@ -38,6 +38,29 @@ interface StatePair {
   setter: React.Dispatch<React.SetStateAction<any>>;
 }
 
+/**
+ * RecipeForm component
+ *
+ * A controlled form component for creating or updating a recipe. The form uses
+ * drag-and-drop for ordering ingredients and directions (via @dnd-kit) and
+ * exposes a `handleSubmit` callback that receives a populated `FormData`
+ * instance containing all form values and appended tags.
+ *
+ * Key behavior:
+ * - If a `recipe` prop is provided, the form will initialize fields (ingredients,
+ *   directions, tags) from that object to support updates.
+ * - Ingredients and directions are sortable and can be added/removed dynamically.
+ * - Tags are managed via the `TagSelector` (creatable multi-select) and appended
+ *   to the submitted FormData as `tags[]`.
+ * - Color selection is handled via `ColorSelector` and included as a hidden `color` field.
+ *
+ * Props:
+ * - `handleSubmit` (formData: FormData) => void : Callback invoked with the prepared FormData when the form is submitted.
+ * - `recipe?` (Recipe | null) : Optional existing recipe to populate the form for editing.
+ *
+ * @param {RecipeFormProps} props - Component props
+ * @returns {JSX.Element} The rendered recipe form
+ */
 const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
   const { availableTags } = useAvailableTags();
@@ -145,13 +168,13 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
 
   return (
     <ResponsiveForm onSubmit={handleSubmitInternal}>
-      {recipe && <input type='hidden' name='id' value={recipe.id} readOnly />}
-      <h1 className='text-2xl font-bold'>{recipe ? 'Update' : 'New'} Recipe</h1>
+      {recipe && <input type="hidden" name="id" value={recipe.id} readOnly />}
+      <h1 className="text-2xl font-bold">{recipe ? 'Update' : 'New'} Recipe</h1>
       <label>
         Recipe Name:{' '}
         <Input
-          name='title'
-          placeholder='Name'
+          name="title"
+          placeholder="Name"
           defaultValue={recipe?.title}
           required
         />
@@ -159,24 +182,24 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
       <label>
         Yield:{' '}
         <Input
-          name='yield'
-          placeholder='Yield'
-          type='number'
-          min='1'
+          name="yield"
+          placeholder="Yield"
+          type="number"
+          min="1"
           defaultValue={recipe?.servings}
           required
         />
       </label>
       <label>
-        Image (Optional): <Input name='image' type='file' />
+        Image (Optional): <Input name="image" type="file" />
       </label>
       <label>
         Time (in minutes):{' '}
         <Input
-          name='time'
-          placeholder='Time'
-          type='number'
-          min='1'
+          name="time"
+          placeholder="Time"
+          type="number"
+          min="1"
           defaultValue={recipe?.minutes}
           required
         />
@@ -196,7 +219,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
             <SortableItem key={ingredient.id} id={ingredient.id}>
               <Input
                 name={`ingredientNames`}
-                placeholder='Ingredient Name'
+                placeholder="Ingredient Name"
                 value={ingredient?.name ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleIngredientChange(index, 'name', e.target.value)
@@ -205,10 +228,10 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
               />
               <Input
                 name={`ingredientAmounts`}
-                placeholder='Amount'
-                type='number'
-                min='0'
-                step='any'
+                placeholder="Amount"
+                type="number"
+                min="0"
+                step="any"
                 value={ingredient?.amount ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleIngredientChange(
@@ -221,20 +244,20 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
               />
               <Input
                 name={`ingredientUnits`}
-                placeholder='Unit (e.g., cups, grams)'
+                placeholder="Unit (e.g., cups, grams)"
                 value={ingredient?.unit ?? ''}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleIngredientChange(index, 'unit', e.target.value)
                 }
               />
-              <Button type='button' onClick={() => removeIngredient(index)}>
+              <Button type="button" onClick={() => removeIngredient(index)}>
                 Remove
               </Button>
             </SortableItem>
           ))}
         </SortableContext>
       </DndContext>
-      <Button type='button' onClick={addIngredient}>
+      <Button type="button" onClick={addIngredient}>
         Add Ingredient
       </Button>
 
@@ -259,14 +282,14 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
                 }
                 required
               />
-              <Button type='button' onClick={() => removeDirection(index)}>
+              <Button type="button" onClick={() => removeDirection(index)}>
                 Remove
               </Button>
             </SortableItem>
           ))}
         </SortableContext>
       </DndContext>
-      <Button type='button' onClick={addDirection}>
+      <Button type="button" onClick={addDirection}>
         Add Direction
       </Button>
       <ColorSelector defaultValue={recipe?.color} />
@@ -275,7 +298,7 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
         onChange={setTags}
         initialOptions={availableTags}
       />
-      <Button type='submit'>{recipe ? 'Update' : 'Submit'} Recipe</Button>
+      <Button type="submit">{recipe ? 'Update' : 'Submit'} Recipe</Button>
     </ResponsiveForm>
   );
 };

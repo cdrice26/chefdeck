@@ -18,6 +18,27 @@ interface SearchBarRendererProps {
   usePortal?: boolean;
 }
 
+/**
+ * SearchBarRenderer component.
+ *
+ * Renders the react-select multi-select input used by `SearchBar`. The component
+ * accepts a controlled `inputValue` for free-text searching and a set of tag
+ * options to choose from. Filtering behavior is customized so that a tag is
+ * shown if any word from the input matches the tag label (case-insensitive,
+ * partial match).
+ *
+ * Props:
+ * - tagOptions: available tag options to display in the dropdown.
+ * - selectValue: currently selected tag options.
+ * - query: current input value for the select's input.
+ * - handleInputChange: called when the user types into the input.
+ * - handleChange: called when the selected options change.
+ * - onBlur: called when the select loses focus.
+ * - usePortal: optional flag to render the menu in a portal (defaults to false).
+ *
+ * @param {SearchBarRendererProps} props - Component props.
+ * @returns {JSX.Element} The rendered Select component.
+ */
 const SearchBarRenderer = ({
   tagOptions,
   selectValue,
@@ -37,12 +58,12 @@ const SearchBarRenderer = ({
       inputValue={query}
       onInputChange={handleInputChange}
       onChange={handleChange}
-      placeholder='Search or select tags...'
-      classNamePrefix='react-select'
-      className='w-full'
+      placeholder="Search or select tags..."
+      classNamePrefix="react-select"
+      className="w-full"
       styles={getSelectStyles(isDark, true, '300px')}
       components={{
-        DropdownIndicator: () => <IoSearch className='mx-2 text-gray-400' />
+        DropdownIndicator: () => <IoSearch className="mx-2 text-gray-400" />
       }}
       filterOption={(option, input) => {
         // Show tag if ANY word in the input matches the tag label (case-insensitive, partial match)

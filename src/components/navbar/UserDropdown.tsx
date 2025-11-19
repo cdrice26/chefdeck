@@ -30,8 +30,8 @@ const userDropdownStyles: (
         ? 'rgba(34, 34, 34, 0.75)'
         : 'rgba(229, 231, 235, 0.75)' // dark:hover:bg-[#333] or hover:bg-gray-200
       : isDark
-      ? 'rgba(34, 34, 34, 0.75)'
-      : 'rgba(243, 244, 246, 0.75)', // dark:bg-[#222] or bg-gray-100
+        ? 'rgba(34, 34, 34, 0.75)'
+        : 'rgba(243, 244, 246, 0.75)', // dark:bg-[#222] or bg-gray-100
     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', // shadow-md
     border: 'none',
     cursor: 'pointer',
@@ -56,28 +56,28 @@ const userDropdownStyles: (
     state: { isFocused: boolean; isSelected: boolean }
   ) => ({
     ...provided,
-    'backgroundColor': state.isFocused
+    backgroundColor: state.isFocused
       ? isDark
         ? 'rgba(85, 85, 85, 0.5)'
         : 'rgba(240, 240, 240, 0.5)' // Background color when focused
       : 'transparent', // Background color when not focused
-    'color': state.isSelected
+    color: state.isSelected
       ? 'white' // Text color when selected
       : state.isFocused
-      ? isDark
-        ? 'white'
-        : 'black' // Text color when focused
-      : isDark
-      ? 'white'
-      : 'black', // Text color when not focused
+        ? isDark
+          ? 'white'
+          : 'black' // Text color when focused
+        : isDark
+          ? 'white'
+          : 'black', // Text color when not focused
     ':active': {
       backgroundColor: state.isFocused
         ? isDark
           ? '#555'
           : '#f0f0f0'
         : isDark
-        ? '#333'
-        : 'white'
+          ? '#333'
+          : 'white'
     }
   }),
   placeholder: (base) => ({
@@ -99,6 +99,29 @@ const userDropdownStyles: (
   })
 });
 
+/**
+ * UserDropdown component.
+ *
+ * A small react-select-based user menu that displays account-related actions such as
+ * navigating to the account page, logging out, or managing tags. The component
+ * shows the user's username or email as the placeholder when a user object is provided.
+ *
+ * Props:
+ * - `user`: optional object with `email` and `username` used as the select placeholder.
+ * - `onClickAccount`: callback invoked when the "Account" option is selected.
+ * - `onClickLogout`: callback invoked when the "Logout" option is selected.
+ * - `onClickTags`: callback invoked when the "Manage Tags" option is selected.
+ *
+ * Notes:
+ * - The component uses `react-select` with custom styling adapted to dark mode.
+ * - Selections are immediately reset (the component does not maintain a persistent selected value).
+ *
+ * @param {UserDropdownProps} props - Component properties.
+ * @returns {JSX.Element} The rendered user dropdown select.
+ *
+ * @example
+ * // <UserDropdown user={user} onClickAccount={gotoAccount} onClickLogout={logout} onClickTags={manageTags} />
+ */
 const UserDropdown = ({
   user,
   onClickAccount,
@@ -134,7 +157,7 @@ const UserDropdown = ({
       onChange={handleChange}
       placeholder={placeholder}
       isSearchable={false}
-      menuPlacement='bottom'
+      menuPlacement="bottom"
       styles={userDropdownStyles(isDark)}
     />
   );

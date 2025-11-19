@@ -8,6 +8,25 @@ import Button from '@/components/forms/Button';
 import { useNotification } from '@/context/NotificationContext';
 import request from '@/utils/fetchUtils';
 
+/**
+ * Confirm component.
+ *
+ * Handles account confirmation and password recovery flows. It reads the query
+ * parameters `token_hash`, `type`, and an optional `next` from the URL, and then
+ * verifies the token by calling the backend confirmation endpoint.
+ *
+ * Behavior:
+ * - If `type === 'recovery'`, the component shows a password reset form and uses
+ *   a temporary access token returned from the backend to authorize the reset.
+ * - Otherwise (e.g. account confirmation), it shows a success message, pushes a
+ *   notification, and redirects to the `next` URL when verification succeeds.
+ * - Errors are surfaced to the user via inline messages and the local component state.
+ *
+ * The component uses `Card` for layout and `Input`/`Button` for the reset form UI.
+ *
+ * @component
+ * @returns {JSX.Element} The confirmation UI which may show status messages or a reset form.
+ */
 export default function Confirm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -73,7 +92,7 @@ export default function Confirm() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`
       },
       body: JSON.stringify({ password })
     });
@@ -89,26 +108,26 @@ export default function Confirm() {
   };
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
-      <Card className='p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto'>
+    <div className="w-full h-full flex justify-center items-center">
+      <Card className="p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto">
         {status === 'loading' && <p>Confirming...</p>}
         {status === 'success' && <p>{message}</p>}
         {status === 'error' && <p style={{ color: 'red' }}>{message}</p>}
         {status === 'reset' && (
-          <form onSubmit={handleReset} className='flex flex-col gap-4'>
+          <form onSubmit={handleReset} className="flex flex-col gap-4">
             <p>Set a new password:</p>
             <Input
-              type='password'
+              type="password"
               value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPassword(e.target.value)
               }
-              placeholder='New password'
+              placeholder="New password"
               required
               minLength={6}
             />
-            <Button type='submit'>Reset Password</Button>
-            {resetError && <p className='text-red-500'>{resetError}</p>}
+            <Button type="submit">Reset Password</Button>
+            {resetError && <p className="text-red-500">{resetError}</p>}
           </form>
         )}
       </Card>

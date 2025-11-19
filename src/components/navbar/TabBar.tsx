@@ -7,7 +7,31 @@ import { IoMdListBox } from 'react-icons/io';
 import { useParams } from 'next/navigation';
 import removeTagPrefixesFromQuery from '@/utils/searchUtils';
 
-const TabBar = () => {
+/**
+ * TabBar component.
+ *
+ * Renders the primary navigation tabs, an inline search bar (when on the dashboard),
+ * and synchronizes search query and tag state with the URL. It performs debounced
+ * updates to the URL while the user types, supports tag selection, and exposes
+ * navigation actions for routes like Recipes, New Recipe, Schedule, Groceries, etc.
+ *
+ * Behavior:
+ * - Reads the current path, search params, and (when available) route params.
+ * - Keeps an internal `query` and `tags` state which are reflected in the URL.
+ * - Debounces query updates to avoid excessive navigation calls while typing.
+ * - When on the dashboard, the search select is shown inline; otherwise it is omitted.
+ *
+ * No props are required for this component; it uses Next.js navigation hooks
+ * and relies on parent-level URL/search-param behavior for persistence.
+ *
+ * @component
+ * @returns {JSX.Element} The navigation tabs and optional search UI.
+ *
+ * @example
+ * // Rendered internally in the Navbar when a user is authenticated:
+ * // <TabBar />
+ */
+const TabBar: React.FC = () => {
   const url = usePathname();
   const router = useRouter();
   const { id } = useParams();
@@ -70,17 +94,17 @@ const TabBar = () => {
   }, [query, tags]);
 
   return (
-    <div className='flex flex-row justify-center items-center gap-4'>
-      <ul className='flex flex-row justify-between items-center gap-4 bg-gray-100/75 backdrop-blur-md rounded-full p-2 shadow-md dark:bg-[#222]/75'>
+    <div className="flex flex-row justify-center items-center gap-4">
+      <ul className="flex flex-row justify-between items-center gap-4 bg-gray-100/75 backdrop-blur-md rounded-full p-2 shadow-md dark:bg-[#222]/75">
         <Tab
-          label='Recipes'
+          label="Recipes"
           isActive={url === '/dashboard'}
           onClick={() => router.push('/dashboard')}
           icon={<IoHome />}
         />
         {(url === '/dashboard' || url === '/create') && (
           <Tab
-            label='New Recipe'
+            label="New Recipe"
             isActive={url === '/create'}
             onClick={() => router.push('/create')}
             icon={<IoAdd />}
@@ -97,7 +121,7 @@ const TabBar = () => {
         )}
         {url === '/account' && (
           <Tab
-            label='Account'
+            label="Account"
             isActive={true}
             onClick={() => {}}
             icon={<IoPerson />}
@@ -105,7 +129,7 @@ const TabBar = () => {
         )}
         {url.startsWith('/recipe') && (
           <Tab
-            label='Recipe'
+            label="Recipe"
             isActive={url.startsWith(`/recipe`)}
             onClick={() => {
               router.push(`/recipe/${id}`);
@@ -114,13 +138,13 @@ const TabBar = () => {
           />
         )}
         <Tab
-          label='Schedule'
+          label="Schedule"
           isActive={url === '/schedule'}
           onClick={() => router.push('/schedule')}
           icon={<IoCalendar />}
         />
         <Tab
-          label='Groceries'
+          label="Groceries"
           isActive={url === '/groceries'}
           onClick={() => router.push('/groceries')}
           icon={<IoList />}

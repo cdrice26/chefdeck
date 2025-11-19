@@ -7,6 +7,21 @@ import request from '@/utils/fetchUtils';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useRef, Suspense } from 'react';
 
+/**
+ * Dashboard component.
+ *
+ * Renders the user's recipe grid with infinite scroll, robust image error/retry logic,
+ * and handles loading / error states. The component relies on `usePaginatedRecipes`
+ * for fetching paginated recipe data and `useRequireAuth` to ensure the user is authenticated.
+ *
+ * Behavior:
+ * - Implements an intersection observer on a loader element to trigger fetching additional pages.
+ * - Maintains a retry counter for image loading failures and requests updated image URLs when needed.
+ * - Displays appropriate UI for loading, empty state, and error conditions.
+ *
+ * @component
+ * @returns {JSX.Element} The dashboard UI containing recipe cards, loader, and status messages.
+ */
 const Dashboard = () => {
   const router = useRouter();
   useRequireAuth();

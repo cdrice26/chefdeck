@@ -4,19 +4,51 @@ import React, { useState, useEffect } from 'react';
 import { MultiValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-// Define the type for the option
+/**
+ * OptionType represents a selectable option for the TagSelector.
+ *
+ * @property {string} value - The value of the option (used internally / submitted).
+ * @property {string} label - The display label shown to the user.
+ */
 export interface OptionType {
   value: string;
   label: string;
 }
 
-// Define the props for the TagSelector component
+/**
+ * Props for the TagSelector component.
+ *
+ * - `initialOptions` optional initial list of available tag options.
+ * - `value` controlled array of currently selected options.
+ * - `onChange` callback invoked with the new selected array when selection changes.
+ */
 interface TagSelectorProps {
   initialOptions?: OptionType[];
   value: OptionType[];
   onChange: (value: OptionType[]) => void;
 }
 
+/**
+ * TagSelector component.
+ *
+ * A creatable multi-select UI for picking or creating tags. The component is
+ * controlled via the `value` prop and reports changes through `onChange`.
+ * Newly created options are appended to an internal options list so they appear
+ * in the dropdown for subsequent selections. Visual styling adapts to dark mode
+ * using `useIsDark` and `getSelectStyles`.
+ *
+ * Behavior:
+ * - `initialOptions` seeds the available options and is synchronized when that
+ *   prop changes.
+ * - `onChange` is called with the selected OptionType[] whenever the selection
+ *   changes or a new option is created.
+ *
+ * @param {TagSelectorProps} props - The component props.
+ * @returns {JSX.Element} The rendered creatable multi-select for tags.
+ *
+ * @example
+ * // <TagSelector initialOptions={[{ value: 'italian', label: 'Italian' }]} value={selected} onChange={setSelected} />
+ */
 const TagSelector: React.FC<TagSelectorProps> = ({
   initialOptions = [],
   onChange,

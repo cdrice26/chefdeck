@@ -11,7 +11,23 @@ import Image from 'next/image';
 
 const UserDropdown = dynamic(() => import('./UserDropdown'), { ssr: false });
 
-const Navbar = () => {
+/**
+ * Navbar component.
+ *
+ * Renders the top navigation including the logo, login/signup buttons or the
+ * authenticated user dropdown, and the primary `TabBar`. It responds to scroll
+ * events to toggle a shadow and uses Next.js client-side navigation for routing.
+ *
+ * Behavior:
+ * - Shows `TabBar` for authenticated users.
+ * - Displays a logo button that navigates to the home page.
+ * - Provides account, logout, and manage tags actions via `UserDropdown` when authenticated.
+ * - Uses `useIsDark` to select an appropriate logo for the current theme.
+ *
+ * @component
+ * @returns {JSX.Element} The app's navigation bar.
+ */
+const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const isDark = useIsDark();
   const router = useRouter();

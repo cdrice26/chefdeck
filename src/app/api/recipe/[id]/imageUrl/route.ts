@@ -2,9 +2,24 @@ import { getRecipeImageUrl } from '@/services/recipeService';
 import { getAccessToken } from '@/utils/authUtils';
 import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: any }) {
+/**
+ * Handles GET requests for recipe image URL.
+ *
+ * Expects `recipeId` as a path parameter in the request URL.
+ *
+ * @param {NextRequest} req - The incoming Next.js request object.
+ * @returns {Promise<NextResponse>} - A promise that resolves to a Next.js response object.
+ *
+ * @example
+ * // GET /api/recipe/123/imageUrl
+ * // Response: { data: [...] }
+ */
+export async function GET(
+  req: NextRequest,
+  { params }: { params: any }
+): Promise<NextResponse> {
   const { id: recipeId } = await params;
   if (!recipeId) {
     return new Response('Recipe ID is required', { status: 400 });

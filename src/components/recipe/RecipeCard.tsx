@@ -13,34 +13,46 @@ interface RecipeProps {
 }
 
 /**
- * A recipe card for the grid, with the title, image, and a "Details" button
- * @param {Object} props
- * @returns A card representing a recipe
+ * RecipeCard component.
+ *
+ * Presentational card that displays a recipe's title, image, tags, and a "Details" button.
+ *
+ * Props:
+ * - `recipe` (Recipe): The recipe object to render. Expected fields include `id`, `title`, `imgUrl`, `tags`, and `color`.
+ * - `onClick` ((id: string) => void): Callback invoked when the Details button is clicked; receives the recipe id.
+ * - `onImageError` ((e, id) => void): Invoked when the recipe image fails to load; receives the image event and recipe id.
+ * - `onImageLoad` ((id) => void): Invoked when the recipe image successfully loads; receives the recipe id.
+ *
+ * This component is purely presentational and forwards user interactions (button click, image events)
+ * to the provided callbacks so parent components can handle navigation or retry logic.
+ *
+ * @param {RecipeProps} props - Component props.
+ * @returns {JSX.Element} The rendered recipe card.
  */
-const RecipeCard = ({
+const RecipeCard: React.FC<RecipeProps> = ({
   recipe,
   onClick,
   onImageError,
   onImageLoad
-}: RecipeProps) => {
+}) => {
   return (
     <Card
       className={`flex flex-col items-center justify-between py-4 gap-4 relative ${getColorClass(
         recipe?.color
       )}`}
     >
-      <h3 className='p-2 text-xl font-bold'>{recipe?.title}</h3>
+      <h3 className="p-2 text-xl font-bold">{recipe?.title}</h3>
       <Image
-        loading='lazy'
+        loading="lazy"
         src={recipe?.imgUrl ?? '/logo-icononly.png'}
-        alt=''
-        className='w-full h-[300px] object-cover'
+        alt=""
+        className="w-full h-[300px] object-cover"
         width={500}
         height={300}
         onError={(e) => onImageError(e, recipe?.id)}
         onLoad={() => onImageLoad(recipe?.id)}
       />
-      <div className='flex flex-row flex-wrap gap-4'>
+      <div className="flex flex-row flex-wrap gap-4">
         {recipe?.tags &&
           recipe?.tags?.map((tag, index) => (
             <div
