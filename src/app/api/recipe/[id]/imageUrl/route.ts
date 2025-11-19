@@ -19,7 +19,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(
   req: NextRequest,
   { params }: { params: any }
-): Promise<NextResponse> {
+): Promise<Response> {
   const { id: recipeId } = await params;
   if (!recipeId) {
     return new Response('Recipe ID is required', { status: 400 });
