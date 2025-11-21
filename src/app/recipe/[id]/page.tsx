@@ -48,7 +48,10 @@ export default function RecipePage() {
     }
 
     try {
-      printComponent(<RecipeDetails recipe={recipe} />, 'Print Recipe');
+      printComponent(
+        <RecipeDetails recipe={recipe} error={null} isLoading={false} />,
+        'Print Recipe'
+      );
     } catch (e) {
       addNotification(
         "Couldn't print recipe, please try again later.",
