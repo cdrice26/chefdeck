@@ -11,7 +11,7 @@ export default function EditRecipePage() {
   const router = useRouter();
   useRequireAuth(router.replace);
   const { id } = useParams();
-  const recipe = useRecipe(id as string);
+  const { recipe, isLoading, error } = useRecipe(id as string);
   const { addNotification } = useNotification();
 
   const handleSubmit = async (e: FormData) => {
@@ -39,7 +39,10 @@ export default function EditRecipePage() {
 
   return (
     <div>
-      <RecipeForm handleSubmit={handleSubmit} recipe={recipe} />
+      <RecipeForm
+        handleSubmit={handleSubmit}
+        recipe={error || isLoading ? null : recipe}
+      />
     </div>
   );
 }

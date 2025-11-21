@@ -15,7 +15,7 @@ export default function RecipePage() {
 
   const { id } = useParams() as { id: string };
 
-  const recipe = useRecipe(id as string);
+  const { recipe, isLoading, error } = useRecipe(id as string);
   const { addNotification } = useNotification();
 
   const handleDelete = async () => {
@@ -69,7 +69,11 @@ export default function RecipePage() {
       >
         {recipe ? (
           <>
-            <RecipeDetails recipe={recipe} />
+            <RecipeDetails
+              recipe={recipe}
+              isLoading={isLoading}
+              error={error}
+            />
             <div className="flex flex-row flex-wrap gap-4 mt-4">
               <button
                 className={`rounded-full px-6 py-2 ${getButtonColorClass(

@@ -1,6 +1,12 @@
 import { Recipe } from '@/types/Recipe';
 import request from '@/utils/fetchUtils';
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+
+interface UseRecipeResponse {
+  recipe: Recipe | null;
+  isLoading: boolean;
+  error: Error | null;
+}
 
 /**
  * Hook that fetches and returns a single recipe by its identifier.
@@ -8,9 +14,7 @@ import { useState, useEffect } from 'react';
  * @param recipeId - The ID of the recipe to fetch from the API.
  * @returns The fetched Recipe object, or `null` when not loaded or not found.
  */
-const useRecipe = (recipeId: string): Recipe | null => {
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-
+const useRecipe = (recipeId: string): UseRecipeResponse => {
   /**
    * Fetch the recipe from the backend and update local state.
    *
@@ -19,14 +23,16 @@ const useRecipe = (recipeId: string): Recipe | null => {
   const fetchRecipe = async () => {
     const resp = await request(`/api/recipe/${recipeId}`, 'GET');
     const data = await resp.json();
-    setRecipe(data?.data?.recipe);
+    return data?.data?.recipe;
   };
 
-  useEffect(() => {
-    fetchRecipe();
-  }, [recipeId]);
+  const {
+    data: recipe,
+    isLoading,
+    error
+  } = useSWR(`/api/recipe/${recipeId}`, fetchRecipe);
 
-  return recipe;
+  return { recipe, isLoading, error };
 };
 
 export default useRecipe;
