@@ -1,4 +1,3 @@
-import { useAuth } from '@/context/AuthContext';
 import request from '@/utils/fetchUtils';
 import { useState } from 'react';
 
@@ -21,9 +20,17 @@ export interface Mutator {
   confirmPassword: string | null;
 }
 
-const useAccountMutator = (redirect: (url: string) => void): Mutator => {
-  const { fetchUser } = useAuth();
-
+/**
+ * Hook for managing account mutations
+ *
+ * @param redirect - A function to redirect to a new page
+ * @param fetchUser - A function to fetch the current user's data
+ * @returns An object containing functions and properties for managing account mutations
+ */
+const useAccountMutator = (
+  redirect: (url: string) => void,
+  fetchUser: () => Promise<void>
+): Mutator => {
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [usernameMessage, setUsernameMessage] = useState<string | null>(null);
 

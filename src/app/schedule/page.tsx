@@ -3,6 +3,7 @@
 import useIsDark from '@/hooks/useIsDark';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import useScheduledRecipes from '@/hooks/useScheduledRecipes';
+import { useNotification } from '@/context/NotificationContext';
 import { ScheduleDisplay } from '@/types/Schedule';
 import { getDatesBetween, getDaysInMonth, MONTHS } from '@/utils/dateUtils';
 import { getButtonColorClass, isValidColor } from '@/utils/styles/colorUtils';
@@ -17,8 +18,10 @@ const Select = dynamic(() => import('react-select'), { ssr: false });
 const Schedule = () => {
   const router = useRouter();
   useRequireAuth(router.replace);
+  const { addNotification } = useNotification();
   const { scheduledRecipes, setStartDate, setEndDate, startDate, endDate } =
-    useScheduledRecipes();
+    useScheduledRecipes(addNotification);
+
   const isDark = useIsDark();
 
   const [year, setYear] = useState(new Date().getFullYear());

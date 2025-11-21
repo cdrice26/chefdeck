@@ -25,7 +25,7 @@ import request from '@/utils/fetchUtils';
  * The component uses `Card` for layout and `Input`/`Button` for the reset form UI.
  *
  * @component
- * @returns {JSX.Element} The confirmation UI which may show status messages or a reset form.
+ * @returns The confirmation UI which may show status messages or a reset form.
  */
 export default function Confirm() {
   const router = useRouter();

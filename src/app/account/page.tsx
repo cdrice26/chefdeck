@@ -4,12 +4,15 @@ import Account from '@/components/pages/Account';
 import useAccountMutator from '@/hooks/useAccountMutator';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 const AccountPage = () => {
   const router = useRouter();
   useRequireAuth(router.replace);
 
-  const mutator = useAccountMutator(router.push);
+  const { fetchUser } = useAuth();
+
+  const mutator = useAccountMutator(router.push, fetchUser);
 
   return <Account {...mutator} />;
 };

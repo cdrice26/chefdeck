@@ -1,4 +1,4 @@
-import { useNotification } from '@/context/NotificationContext';
+import { NotificationKind } from '@/context/NotificationContext';
 import { ScheduleDisplay } from '@/types/Schedule';
 import request from '@/utils/fetchUtils';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ const lastDay = new Date(
 /**
  * Hook to load scheduled recipes within a date range.
  *
+ * @param addNotification - Function to add a notification.
  * @param initialStartDate - Initial start date to query scheduled recipes. Defaults to the first day of the current month.
  * @param initialEndDate - Initial end date to query scheduled recipes. Defaults to the last day of the current month.
  * @returns An object containing:
@@ -23,6 +24,7 @@ const lastDay = new Date(
  *  - `endDate`: Date — the current end date
  */
 const useScheduledRecipes = (
+  addNotification: (message: string, type: NotificationKind) => void,
   initialStartDate: Date = firstDay,
   initialEndDate: Date = lastDay
 ) => {
@@ -31,7 +33,6 @@ const useScheduledRecipes = (
   );
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState(initialEndDate);
-  const { addNotification } = useNotification();
 
   /**
    * Fetch scheduled recipes for the current `startDate` and `endDate` and update state.

@@ -24,6 +24,8 @@ export type NotificationType = {
   type: 'error' | 'info' | 'success';
 };
 
+export type NotificationKind = 'error' | 'info' | 'success';
+
 /**
  * React context that holds current notifications and functions to modify them.
  *
