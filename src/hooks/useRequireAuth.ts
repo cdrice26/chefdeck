@@ -33,5 +33,5 @@ export default function useRequireAuth(redirect: (url: string) => void) {
       }
     };
     checkAuth();
-  }, []);
+  });
 }
