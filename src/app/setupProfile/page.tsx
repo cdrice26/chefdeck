@@ -20,9 +20,9 @@ import useRequireAuth from '@/hooks/useRequireAuth';
  * @returns {JSX.Element} The rendered login page.
  */
 const Login = () => {
-  useRequireAuth();
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  useRequireAuth(router.replace);
+  const [error, setError] = useState<string | null>(null);
   const { fetchUser } = useAuth();
 
   /**
@@ -57,8 +57,8 @@ const Login = () => {
   return (
     <ResponsiveForm onSubmit={handleSubmit}>
       <h1>Setup Profile</h1>
-      <Input type='text' name='username' placeholder='Username' required />
-      <Button type='submit'>Save</Button>
+      <Input type="text" name="username" placeholder="Username" required />
+      <Button type="submit">Save</Button>
       {error && <div style={{ color: 'red' }}>{error}</div>}
     </ResponsiveForm>
   );

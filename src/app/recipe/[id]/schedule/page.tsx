@@ -23,15 +23,14 @@ const OPTIONS = [
 ];
 
 export default function ScheduleRecipePage() {
-  useRequireAuth();
+  const router = useRouter();
+  useRequireAuth(router.replace);
 
   const { id } = useParams() as { id: string };
 
   const { schedules, setSchedules } = useSchedules(id);
 
   const { addNotification } = useNotification();
-
-  const router = useRouter();
 
   const isDark = useIsDark();
 
@@ -91,15 +90,15 @@ export default function ScheduleRecipePage() {
 
   return (
     <ResponsiveForm onSubmit={() => {}}>
-      <h1 className='text-2xl font-bold'>Manage Schedules</h1>
+      <h1 className="text-2xl font-bold">Manage Schedules</h1>
       {schedules &&
         schedules?.map((schedule) => (
-          <Card className='p-4' key={schedule.id}>
-            <div className='flex flex-col gap-2'>
+          <Card className="p-4" key={schedule.id}>
+            <div className="flex flex-col gap-2">
               <label className={LABEL_CLASSES}>
                 Date:
                 <Input
-                  type='date'
+                  type="date"
                   value={
                     schedule.date instanceof Date
                       ? schedule.date?.toISOString().slice(0, 10)
@@ -129,14 +128,14 @@ export default function ScheduleRecipePage() {
                   onChange={(option) =>
                     onChangeValue('repeat', schedule.id, option?.value)
                   }
-                  className='w-full'
+                  className="w-full"
                 />
               </label>
               {schedule.repeat !== 'none' && schedule.repeat && (
                 <label className={LABEL_CLASSES}>
                   End On:{' '}
                   <Input
-                    type='date'
+                    type="date"
                     value={
                       schedule.endRepeat instanceof Date
                         ? schedule.endRepeat.toISOString().slice(0, 10)
@@ -155,9 +154,9 @@ export default function ScheduleRecipePage() {
                 </label>
               )}
               <Button
-                type='button'
+                type="button"
                 onClick={() => onDeleteSchedule(schedule.id)}
-                className='mt-2 bg-red-500 text-white'
+                className="mt-2 bg-red-500 text-white"
               >
                 Delete
               </Button>

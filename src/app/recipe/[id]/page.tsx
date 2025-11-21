@@ -10,9 +10,11 @@ import { getButtonColorClass, getColorClass } from '@/utils/styles/colorUtils';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function RecipePage() {
-  useRequireAuth();
-  const { id } = useParams() as { id: string };
   const router = useRouter();
+  useRequireAuth(router.replace);
+
+  const { id } = useParams() as { id: string };
+
   const recipe = useRecipe(id as string);
   const { addNotification } = useNotification();
 

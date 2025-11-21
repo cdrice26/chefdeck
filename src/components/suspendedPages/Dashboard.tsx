@@ -24,7 +24,7 @@ import { useEffect, useMemo, useState, useRef, Suspense } from 'react';
  */
 const Dashboard = () => {
   const router = useRouter();
-  useRequireAuth();
+  useRequireAuth(router.replace);
   const searchParams = useSearchParams();
 
   const [tries, setTries] = useState<{ recipeId: string; tries: number }[]>([]);

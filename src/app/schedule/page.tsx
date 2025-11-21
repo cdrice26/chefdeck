@@ -15,10 +15,10 @@ import { IoChevronBack, IoChevronForward, IoHome } from 'react-icons/io5';
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 const Schedule = () => {
-  useRequireAuth();
+  const router = useRouter();
+  useRequireAuth(router.replace);
   const { scheduledRecipes, setStartDate, setEndDate, startDate, endDate } =
     useScheduledRecipes();
-  const router = useRouter();
   const isDark = useIsDark();
 
   const [year, setYear] = useState(new Date().getFullYear());
@@ -67,10 +67,10 @@ const Schedule = () => {
   };
 
   return (
-    <div className='w-full h-full flex flex-col'>
-      <h1 className='p-2 flex flex-row items-center justify-center gap-2 relative'>
+    <div className="w-full h-full flex flex-col">
+      <h1 className="p-2 flex flex-row items-center justify-center gap-2 relative">
         <button
-          className='h-full px-3'
+          className="h-full px-3"
           onClick={() => {
             setYearInput(new Date().getFullYear());
             setMonth(new Date().getMonth());
@@ -79,7 +79,7 @@ const Schedule = () => {
           <IoHome size={20} />
         </button>
         <button
-          className='h-full px-3'
+          className="h-full px-3"
           onClick={() => {
             if (month === 0) {
               setMonth(11);
@@ -93,13 +93,13 @@ const Schedule = () => {
           options={MONTHS}
           value={MONTHS.find((mon) => mon.value === month)}
           onChange={(option) => setMonth((option as { value: number })?.value)}
-          className='box-border h-full flex-grow max-w-100'
+          className="box-border h-full flex-grow max-w-100"
           styles={getSelectStyles(isDark)}
           isSearchable={false}
           isClearable={false}
         />
         <input
-          type='number'
+          type="number"
           value={yearInput}
           onChange={(e: React.FormEvent<HTMLInputElement>) =>
             setYearInput(parseInt(e?.currentTarget?.value))
@@ -107,10 +107,10 @@ const Schedule = () => {
           onBlur={() => setYearInput(year)}
           min={1900}
           max={9999}
-          className='rounded-md border-gray-300 dark:border-white dark:bg-[#333] border-1 h-full p-1 flex-grow max-w-50'
+          className="rounded-md border-gray-300 dark:border-white dark:bg-[#333] border-1 h-full p-1 flex-grow max-w-50"
         />
         <button
-          className='h-full px-3'
+          className="h-full px-3"
           onClick={() => {
             if (month === 11) {
               setMonth(0);
@@ -121,9 +121,9 @@ const Schedule = () => {
           <IoChevronForward size={20} />
         </button>
       </h1>
-      <div className='grid grid-cols-7 w-full flex-grow'>
+      <div className="grid grid-cols-7 w-full flex-grow">
         {recipesOnDates.map((date, index) => (
-          <div key={index} className='w-full h-full p-1 overflow-y-auto'>
+          <div key={index} className="w-full h-full p-1 overflow-y-auto">
             <h1>{date?.date?.getDate() ?? ''}</h1>
             {date.recipes.map((recipe: ScheduleDisplay, index) => (
               <button

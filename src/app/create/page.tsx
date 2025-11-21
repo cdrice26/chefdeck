@@ -8,7 +8,7 @@ import useRequireAuth from '@/hooks/useRequireAuth';
 
 const CreatePage = () => {
   const router = useRouter();
-  useRequireAuth();
+  useRequireAuth(router.replace);
   const { addNotification } = useNotification();
 
   const handleSubmit = async (e: FormData) => {

@@ -16,18 +16,17 @@ interface SectionProps {
 }
 
 const Section = ({ children, name, onFormSubmit }: SectionProps) => (
-  <Card className='w-[95%] sm:w-1/2 p-4 flex flex-col gap-4'>
-    <h1 className='text-xl font-semibold'>{name}</h1>
-    <form className='flex flex-col gap-4' onSubmit={onFormSubmit}>
+  <Card className="w-[95%] sm:w-1/2 p-4 flex flex-col gap-4">
+    <h1 className="text-xl font-semibold">{name}</h1>
+    <form className="flex flex-col gap-4" onSubmit={onFormSubmit}>
       {children}
     </form>
   </Card>
 );
 
 const AccountPage = () => {
-  useRequireAuth();
-
   const router = useRouter();
+  useRequireAuth(router.replace);
 
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [usernameMessage, setUsernameMessage] = useState<string | null>(null);
@@ -193,56 +192,56 @@ const AccountPage = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4 items-center min-h-screen p-4'>
-      <h1 className='text-2xl font-bold'>My Account</h1>
-      <Section name='Update Username' onFormSubmit={handleUsernameChange}>
-        <Input name='username' placeholder='Username' />
-        {usernameError && <p className='text-red-500'>{usernameError}</p>}
-        {usernameMessage && <p className='text-green-500'>{usernameMessage}</p>}
-        <Button type='submit'>Update</Button>
+    <div className="flex flex-col gap-4 items-center min-h-screen p-4">
+      <h1 className="text-2xl font-bold">My Account</h1>
+      <Section name="Update Username" onFormSubmit={handleUsernameChange}>
+        <Input name="username" placeholder="Username" />
+        {usernameError && <p className="text-red-500">{usernameError}</p>}
+        {usernameMessage && <p className="text-green-500">{usernameMessage}</p>}
+        <Button type="submit">Update</Button>
       </Section>
-      <Section name='Change Password' onFormSubmit={handlePasswordChange}>
+      <Section name="Change Password" onFormSubmit={handlePasswordChange}>
         <Input
-          type='password'
-          name='currentPassword'
-          placeholder='Current Password'
+          type="password"
+          name="currentPassword"
+          placeholder="Current Password"
         />
         <Input
-          type='password'
-          name='newPassword'
+          type="password"
+          name="newPassword"
           onChange={onChangePassword}
           value={password ?? ''}
-          placeholder='New Password'
+          placeholder="New Password"
         />
         <Input
-          type='password'
-          name='confirmPassword'
+          type="password"
+          name="confirmPassword"
           onChange={onChangeConfirmPassword}
           value={confirmPassword ?? ''}
-          placeholder='Confirm New Password'
+          placeholder="Confirm New Password"
         />
-        {passwordError && <p className='text-red-500'>{passwordError}</p>}
-        {passwordMessage && <p className='text-green-500'>{passwordMessage}</p>}
-        <Button type='submit'>Change Password</Button>
+        {passwordError && <p className="text-red-500">{passwordError}</p>}
+        {passwordMessage && <p className="text-green-500">{passwordMessage}</p>}
+        <Button type="submit">Change Password</Button>
       </Section>
-      <Section name='Update Email' onFormSubmit={handleUpdateEmail}>
-        <Input name='password' type='password' placeholder='Password' />
-        <Input name='email' type='email' placeholder='Email' />
-        {emailError && <p className='text-red-500'>{emailError}</p>}
-        {emailMessage && <p className='text-green-500'>{emailMessage}</p>}
-        <Button type='submit'>Update Email</Button>
+      <Section name="Update Email" onFormSubmit={handleUpdateEmail}>
+        <Input name="password" type="password" placeholder="Password" />
+        <Input name="email" type="email" placeholder="Email" />
+        {emailError && <p className="text-red-500">{emailError}</p>}
+        {emailMessage && <p className="text-green-500">{emailMessage}</p>}
+        <Button type="submit">Update Email</Button>
       </Section>
-      <Section name='Delete Account' onFormSubmit={handleDeleteAccount}>
+      <Section name="Delete Account" onFormSubmit={handleDeleteAccount}>
         Deleting your account is permanent and cannot be undone. Please confirm
         your password to proceed.
         <Input
-          type='password'
-          name='confirmDelete'
-          placeholder='Type your password to confirm'
+          type="password"
+          name="confirmDelete"
+          placeholder="Type your password to confirm"
         />
-        {deleteError && <p className='text-red-500'>{deleteError}</p>}
-        {deleteMessage && <p className='text-green-500'>{deleteMessage}</p>}
-        <Button type='submit'>Delete Account</Button>
+        {deleteError && <p className="text-red-500">{deleteError}</p>}
+        {deleteMessage && <p className="text-green-500">{deleteMessage}</p>}
+        <Button type="submit">Delete Account</Button>
       </Section>
     </div>
   );

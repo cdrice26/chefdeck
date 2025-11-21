@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import request from '@/utils/fetchUtils';
 
@@ -12,17 +11,17 @@ import request from '@/utils/fetchUtils';
  * - if the user is authenticated but has not completed profile setup (no username), redirects to `/setupProfile`,
  * - otherwise populates auth state via `setUser` and `setUsername`.
  *
+ * @param {Function} redirect - Redirect function to be called if the user is not authenticated.
  * @returns void
  */
-export default function useRequireAuth() {
-  const router = useRouter();
+export default function useRequireAuth(redirect: (url: string) => void) {
   const { setUser, setUsername } = useAuth();
 
   useEffect(() => {
     const checkAuth = async () => {
       const res = await request('/api/auth/checkAuth', 'GET');
       if (!res.ok) {
-        router.replace('/login');
+        redirect('/login');
         return;
       }
       const json = await res.json();
@@ -30,9 +29,9 @@ export default function useRequireAuth() {
       setUsername(json.data.profile?.username ?? null);
       const username = json?.data?.profile?.username;
       if (!username) {
-        router.replace('/setupProfile');
+        redirect('/setupProfile');
       }
     };
     checkAuth();
-  }, [router]);
+  });
 }

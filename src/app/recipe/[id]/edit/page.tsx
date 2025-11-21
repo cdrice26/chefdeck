@@ -8,9 +8,9 @@ import request from '@/utils/fetchUtils';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function EditRecipePage() {
-  useRequireAuth();
-  const { id } = useParams();
   const router = useRouter();
+  useRequireAuth(router.replace);
+  const { id } = useParams();
   const recipe = useRecipe(id as string);
   const { addNotification } = useNotification();
 
