@@ -1,4 +1,4 @@
-import { PasswordMutator } from '@/hooks/usePasswordMutator';
+import { PasswordMutator } from '@/hooks/mutators/usePasswordMutator';
 import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';

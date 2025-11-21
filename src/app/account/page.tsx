@@ -1,7 +1,7 @@
 'use client';
 
 import Account from '@/components/pages/Account';
-import useAccountMutator from '@/hooks/useAccountMutator';
+import useAccountMutator from '@/hooks/mutators/useAccountMutator';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';

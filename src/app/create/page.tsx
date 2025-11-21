@@ -4,7 +4,7 @@ import RecipeForm from '@/components/specificForms/RecipeForm';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '@/context/NotificationContext';
 import useRequireAuth from '@/hooks/useRequireAuth';
-import useRecipeCreator from '@/hooks/useRecipeCreator';
+import useRecipeCreator from '@/hooks/mutators/useRecipeCreator';
 
 const CreatePage = () => {
   const router = useRouter();

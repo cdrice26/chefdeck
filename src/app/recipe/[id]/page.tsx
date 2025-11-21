@@ -2,7 +2,7 @@
 
 import RecipeDetails from '@/components/recipe/RecipeDetails';
 import { useNotification } from '@/context/NotificationContext';
-import useRecipe from '@/hooks/useRecipe';
+import useRecipe from '@/hooks/fetchers/useRecipe';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
 import printComponent from '@/utils/printUtils';

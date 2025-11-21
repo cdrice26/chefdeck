@@ -7,7 +7,7 @@ import Card from '@/components/ui/Card';
 import { useNotification } from '@/context/NotificationContext';
 import useIsDark from '@/hooks/useIsDark';
 import useRequireAuth from '@/hooks/useRequireAuth';
-import useSchedules from '@/hooks/useSchedules';
+import useSchedules from '@/hooks/fetchers/useSchedules';
 import request from '@/utils/fetchUtils';
 import getSelectStyles from '@/utils/styles/selectStyles';
 import { useParams, useRouter } from 'next/navigation';

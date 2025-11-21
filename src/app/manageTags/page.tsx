@@ -3,7 +3,7 @@
 import Button from '@/components/forms/Button';
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import { useNotification } from '@/context/NotificationContext';
-import useAvailableTags from '@/hooks/useAvailableTags';
+import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
 import { OptionType } from '@/components/forms/TagSelector';
 
 export default function ManageTagsPage() {

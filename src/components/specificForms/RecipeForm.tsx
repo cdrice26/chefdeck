@@ -22,7 +22,7 @@ import { v4 as uuid } from 'uuid';
 import ColorSelector from '../forms/ColorSelector';
 import { OptionType } from '../forms/TagSelector';
 import dynamic from 'next/dynamic';
-import useAvailableTags from '@/hooks/useAvailableTags';
+import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
 
 const TagSelector = dynamic(() => import('@/components/forms/TagSelector'), {
   ssr: false

@@ -2,7 +2,7 @@
 
 import RecipeForm from '@/components/specificForms/RecipeForm';
 import { useNotification } from '@/context/NotificationContext';
-import useRecipe from '@/hooks/useRecipe';
+import useRecipe from '@/hooks/fetchers/useRecipe';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
 import { useParams, useRouter } from 'next/navigation';

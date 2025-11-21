@@ -1,7 +1,7 @@
 import Input from '@/components/forms/Input';
 import Button from '@/components/forms/Button';
 import Section from '@/components/ui/AccountSection';
-import { Mutator } from '@/hooks/useAccountMutator';
+import { Mutator } from '@/hooks/mutators/useAccountMutator';
 
 const Account = ({
   handleUsernameChange,

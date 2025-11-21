@@ -2,7 +2,7 @@
 
 import useIsDark from '@/hooks/useIsDark';
 import useRequireAuth from '@/hooks/useRequireAuth';
-import useScheduledRecipes from '@/hooks/useScheduledRecipes';
+import useScheduledRecipes from '@/hooks/fetchers/useScheduledRecipes';
 import { useNotification } from '@/context/NotificationContext';
 import { ScheduleDisplay } from '@/types/Schedule';
 import { getDatesBetween, getDaysInMonth, MONTHS } from '@/utils/dateUtils';

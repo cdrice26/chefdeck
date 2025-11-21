@@ -1,7 +1,7 @@
 'use client';
 
 import RecipeCard from '@/components/recipe/RecipeCard';
-import usePaginatedRecipes from '@/hooks/usePaginatedRecipes';
+import usePaginatedRecipes from '@/hooks/fetchers/usePaginatedRecipes';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
 import { useSearchParams, useRouter } from 'next/navigation';
