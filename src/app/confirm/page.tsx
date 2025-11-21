@@ -1,4 +1,4 @@
-import Confirm from '@/components/suspendedPages/Confirm';
+import Confirm from '@/components/pages/Confirm';
 import { Suspense } from 'react';
 
 export default function ConfirmPage() {

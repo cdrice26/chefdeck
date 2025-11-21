@@ -1,6 +1,6 @@
 'use client';
 
-import Dashboard from '@/components/suspendedPages/Dashboard';
+import Dashboard from '@/components/pages/Dashboard';
 import { Suspense } from 'react';
 
 const DashboardPage = () => {
