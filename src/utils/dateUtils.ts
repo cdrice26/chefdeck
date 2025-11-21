@@ -58,3 +58,16 @@ export const MONTHS = [
   { value: 10, label: 'November' },
   { value: 11, label: 'December' }
 ];
+
+/**
+ * Get the YYYY-MM-DD formatted date for today
+ *
+ * @returns A formatted date for today
+ */
+export const today = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};

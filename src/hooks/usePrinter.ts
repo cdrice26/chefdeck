@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import { NotificationKind } from '@/context/NotificationContext';
 import { createRoot } from 'react-dom/client';
 
 /**
@@ -17,7 +17,7 @@ import { createRoot } from 'react-dom/client';
  * @param title - The title to set for the print window (used inside the window <title> tag).
  * @returns void
  */
-const printComponent = (component: JSX.Element, title: string): void => {
+const printComponent = (component: React.ReactNode, title: string): void => {
   const printWindow = window.open('', '_blank');
 
   if (printWindow)
@@ -52,4 +52,29 @@ const printComponent = (component: JSX.Element, title: string): void => {
   observer.observe(printDiv, { childList: true, subtree: true });
 };
 
-export default printComponent;
+/**
+ * A hook to print a React component
+ *
+ * @param addNotification - Function to add notification
+ * @param component - React component to print
+ * @returns A function to print the component
+ */
+const usePrinter =
+  (
+    addNotification: (message: string, type: NotificationKind) => void,
+    component: React.ReactNode
+  ) =>
+  (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      printComponent(component, 'Print Groceries');
+    } catch (e) {
+      addNotification(
+        "Couldn't print groceries, please try again later.",
+        'error'
+      );
+      return;
+    }
+  };
+
+export default usePrinter;
