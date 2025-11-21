@@ -70,13 +70,9 @@ export default function RecipePage() {
             : 'bg-white dark:bg-[#222]'
         } relative transition duration-300 justify-start my-[50px] sm:rounded-lg shadow-md`}
       >
-        {recipe ? (
-          <>
-            <RecipeDetails
-              recipe={recipe}
-              isLoading={isLoading}
-              error={error}
-            />
+        <>
+          <RecipeDetails recipe={recipe} isLoading={isLoading} error={error} />
+          {!(isLoading || error) && (
             <div className="flex flex-row flex-wrap gap-4 mt-4">
               <button
                 className={`rounded-full px-6 py-2 ${getButtonColorClass(
@@ -111,12 +107,8 @@ export default function RecipePage() {
                 Edit
               </button>
             </div>
-          </>
-        ) : (
-          <div className="w-full h-full flex justify-center items-center text-4xl font-bold">
-            Loading Recipe...
-          </div>
-        )}
+          )}
+        </>
       </div>
     </div>
   );

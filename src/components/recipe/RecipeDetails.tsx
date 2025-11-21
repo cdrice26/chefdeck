@@ -27,7 +27,9 @@ interface RecipeDetailsProps {
 
 const RecipeDetails = ({ recipe, isLoading, error }: RecipeDetailsProps) =>
   isLoading ? (
-    <div>Loading Recipe...</div>
+    <h1 className="text-4xl font-bold flex flex-row flex-wrap justify-start">
+      Loading Recipe...
+    </h1>
   ) : error ? (
     <div>Error Loading Recipe</div>
   ) : (

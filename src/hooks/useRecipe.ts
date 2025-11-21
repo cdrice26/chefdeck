@@ -3,7 +3,7 @@ import request from '@/utils/fetchUtils';
 import useSWR from 'swr';
 
 interface UseRecipeResponse {
-  recipe: Recipe | null;
+  recipe: Recipe;
   isLoading: boolean;
   error: Error | null;
 }
