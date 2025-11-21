@@ -1,6 +1,5 @@
-import { OptionType } from '@/components/forms/TagSelector';
 import request from '@/utils/fetchUtils';
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 /**
  * Custom hook that fetches available tags for tag selector components.
@@ -10,8 +9,6 @@ import { useEffect, useState } from 'react';
  *  - `refetch`: function to manually re-fetch the available tags
  */
 const useAvailableTags = () => {
-  const [availableTags, setAvailableTags] = useState<OptionType[]>([]);
-
   /**
    * Fetch available tags from the backend and update state.
    *
@@ -23,14 +20,17 @@ const useAvailableTags = () => {
       throw new Error('Failed to fetch tags');
     }
     const json = await response.json();
-    setAvailableTags(json);
+    return json;
   };
 
-  useEffect(() => {
-    fetchAvailableTags();
-  }, []);
+  const {
+    data: availableTags,
+    error,
+    isLoading,
+    mutate
+  } = useSWR('/api/tags', fetchAvailableTags);
 
-  return { availableTags, refetch: fetchAvailableTags };
+  return { availableTags, error, isLoading, refetch: mutate };
 };
 
 export default useAvailableTags;

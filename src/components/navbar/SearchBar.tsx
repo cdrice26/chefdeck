@@ -54,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   tags = [],
   onChangeTags = () => {}
 }) => {
-  const { availableTags: tagOptions } = useAvailableTags();
+  const { availableTags: tagOptions, isLoading, error } = useAvailableTags();
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -92,7 +92,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {/* Desktop Search Bar */}
       <div className="hidden xl:flex w-full">
         <SearchBarRenderer
-          tagOptions={tagOptions}
+          tagOptions={error || isLoading ? [] : tagOptions}
           selectValue={selectValue}
           query={query}
           handleInputChange={handleInputChange}

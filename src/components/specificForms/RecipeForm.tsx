@@ -63,7 +63,7 @@ interface StatePair {
  */
 const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
-  const { availableTags } = useAvailableTags();
+  const { availableTags, error, isLoading } = useAvailableTags();
 
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
@@ -293,11 +293,17 @@ const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
         Add Direction
       </Button>
       <ColorSelector defaultValue={recipe?.color} />
-      <TagSelector
-        value={tags}
-        onChange={setTags}
-        initialOptions={availableTags}
-      />
+      {error ? (
+        <div>Error Loading Tags.</div>
+      ) : isLoading ? (
+        <div>Loading Tags...</div>
+      ) : (
+        <TagSelector
+          value={tags}
+          onChange={setTags}
+          initialOptions={availableTags}
+        />
+      )}
       <Button type="submit">{recipe ? 'Update' : 'Submit'} Recipe</Button>
     </ResponsiveForm>
   );
