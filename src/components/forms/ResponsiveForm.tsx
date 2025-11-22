@@ -16,10 +16,10 @@ interface ResponsiveFormProps {
  * - `children` (React.ReactNode): The form fields and content to render inside the form.
  *
  * @component
- * @param {ResponsiveFormProps} props - The properties for the component.
- * @param {(e: React.FormEvent<HTMLFormElement>) => void} props.onSubmit - The form submit handler.
- * @param {React.ReactNode} props.children - The form's children to render.
- * @returns {JSX.Element} The rendered responsive form element.
+ * @param props - The properties for the component.
+ * @param props.onSubmit - The form submit handler.
+ * @param props.children - The form's children to render.
+ * @returns The rendered responsive form element.
  *
  * @example
  * // <ResponsiveForm onSubmit={handleSubmit}>
@@ -30,7 +30,7 @@ const ResponsiveForm: React.FC<ResponsiveFormProps> = ({
   onSubmit,
   children
 }) => (
-  <div className="w-full h-full flex justify-center items-center m-0 sm:m-4">
+  <div className="w-full h-full flex justify-center items-center p-0 sm:p-4">
     <Card
       className="p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto"
       squareOnMobile

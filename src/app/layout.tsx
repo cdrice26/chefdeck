@@ -35,7 +35,7 @@ export default async function RootLayout({
       <NotificationProvider>
         <html lang="en">
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen relative flex flex-col`}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-screen relative flex flex-col m-0`}
           >
             <NotificationWrapper />
             <Navbar />
