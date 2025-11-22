@@ -11,7 +11,7 @@ export default function ManageTagsPage() {
     useAvailableTags(request);
   const { addNotification } = useNotification();
 
-  const mutator = useTagsMutator(addNotification, refetch);
+  const mutator = useTagsMutator(request, addNotification, refetch);
 
   return (
     <ManageTags

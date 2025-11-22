@@ -1,14 +1,16 @@
 import { NotificationKind } from '@/context/NotificationContext';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 /**
  * Hook to create a new recipe.
  *
+ * @param request - Function to make HTTP requests.
  * @param redirect - Function to redirect to different page.
  * @param addNotification - Function to add a notification.
  * @returns an object with a handleSubmit function which takes a FormData object as input.
  */
 const useRecipeCreator = (
+  request: RequestFn,
   redirect: (url: string) => void,
   addNotification: (message: string, type: NotificationKind) => void
 ) => {

@@ -11,7 +11,7 @@ import request from '@/utils/fetchUtils';
 
 export default function ScheduleRecipePage() {
   const router = useRouter();
-  useRequireAuth(router.replace);
+  useRequireAuth(request, router.replace);
   const { id } = useParams() as { id: string };
   const { addNotification } = useNotification();
   const {
@@ -22,6 +22,7 @@ export default function ScheduleRecipePage() {
   } = useSchedules(request, addNotification, id);
   const isDark = useIsDark();
   const mutator = useScheduleMutator(
+    request,
     router.push,
     addNotification,
     id,

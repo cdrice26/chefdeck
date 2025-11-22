@@ -11,7 +11,7 @@ import request from '@/utils/fetchUtils';
 
 const GroceriesPage = () => {
   const router = useRouter();
-  useRequireAuth(router.replace);
+  useRequireAuth(request, router.replace);
   const { addNotification } = useNotification();
 
   const { groceries, handleGroceriesRequest } = useGroceries(

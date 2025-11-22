@@ -10,12 +10,17 @@ import { useParams, useRouter } from 'next/navigation';
 
 export default function EditRecipePage() {
   const router = useRouter();
-  useRequireAuth(router.replace);
+  useRequireAuth(request, router.replace);
   const { id } = useParams() as { id: string };
   const { recipe, isLoading, error } = useRecipe(request, id as string);
   const { addNotification } = useNotification();
 
-  const mutator = useRecipeEditMutator(router.push, addNotification, id);
+  const mutator = useRecipeEditMutator(
+    request,
+    router.push,
+    addNotification,
+    id
+  );
 
   return (
     <RecipeForm

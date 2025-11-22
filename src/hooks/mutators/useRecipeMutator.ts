@@ -1,5 +1,5 @@
 import { NotificationKind } from '@/context/NotificationContext';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 export interface RecipeMutator {
   handleDelete: () => Promise<void>;
@@ -10,6 +10,7 @@ export interface RecipeMutator {
 /**
  * Hook for handling recipe mutations.
  *
+ * @param request - Function to make HTTP requests
  * @param redirect - Function to redirect to new URL
  * @param addNotification - Function to add a notification
  * @param recipeId - ID of the recipe
@@ -19,6 +20,7 @@ export interface RecipeMutator {
  * - handleSchedule: Function to handle recipe scheduling
  */
 const useRecipeMutator = (
+  request: RequestFn,
   redirect: (url: string) => void,
   addNotification: (message: string, type: NotificationKind) => void,
   recipeId: string

@@ -1,6 +1,6 @@
 import { NotificationKind } from '@/context/NotificationContext';
+import RequestFn from '@/types/RequestFn';
 import { Schedule } from '@/types/Schedule';
-import request from '@/utils/fetchUtils';
 import { KeyedMutator } from 'swr';
 import { v4 as uuid } from 'uuid';
 
@@ -14,6 +14,7 @@ export interface ScheduleMutator {
 /**
  * Hook for managing schedules
  *
+ * @param request - Function to make HTTP requests
  * @param redirect - Function to redirect to new URL
  * @param addNotification - Function to add notification
  * @param recipeId - ID of the recipe to schedule
@@ -26,6 +27,7 @@ export interface ScheduleMutator {
  * - handleSubmit: Function to submit the form
  */
 const useScheduleMutator = (
+  request: RequestFn,
   redirect: (url: string) => void,
   addNotification: (message: string, type: NotificationKind) => void,
   recipeId: string,

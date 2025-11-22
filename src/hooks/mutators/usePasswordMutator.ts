@@ -1,4 +1,4 @@
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 import { useState } from 'react';
 
 export interface PasswordMutator {
@@ -10,12 +10,13 @@ export interface PasswordMutator {
 /**
  * A hook for managing password forget mutation operations.
  *
+ * @param request - A function that makes a request to the server.
  * @returns An object containing the following properties:
  *  - error: A string containing an error message, or null if no error occurred.
  *  - message: A string containing a success message, or null if no message was set.
  *  - handleSubmit: A function that handles form submission and updates the error and message states.
  */
-const usePasswordMutator = (): PasswordMutator => {
+const usePasswordMutator = (request: RequestFn): PasswordMutator => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 

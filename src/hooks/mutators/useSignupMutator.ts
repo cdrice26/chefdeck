@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import usePasswordValidator from '../validators/usePasswordValidator';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 export interface SignupMutator {
   error: string | null;
@@ -14,10 +14,20 @@ export interface SignupMutator {
 /**
  * Hook for handling user signup
  *
+ * @param request - A function to make HTTP requests
  * @param redirect - A function to redirect to a new URL
- * @returns
+ * @returns An object containing the following properties:
+ * - error: A string or null representing the error message
+ * - password: A string representing the password input value
+ * - confirmPassword: A string representing the confirm password input value
+ * - handleSignup: A function to handle the signup form submission
+ * - onChangePassword: A function to handle password input change
+ * - onChangeConfirmPassword: A function to handle confirm password input change
  */
-const useSignupMutator = (redirect: (url: string) => void): SignupMutator => {
+const useSignupMutator = (
+  request: RequestFn,
+  redirect: (url: string) => void
+): SignupMutator => {
   const [error, setError] = useState<string | null>(null);
 
   const {

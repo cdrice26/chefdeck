@@ -1,6 +1,6 @@
-import request from '@/utils/fetchUtils';
 import { useState } from 'react';
 import usePasswordValidator from '@/hooks/validators/usePasswordValidator';
+import RequestFn from '@/types/RequestFn';
 
 export interface Mutator {
   handleUsernameChange: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -24,11 +24,13 @@ export interface Mutator {
 /**
  * Hook for managing account mutations
  *
+ * @param request - A function to make HTTP requests
  * @param redirect - A function to redirect to a new page
  * @param fetchUser - A function to fetch the current user's data
  * @returns An object containing functions and properties for managing account mutations
  */
 const useAccountMutator = (
+  request: RequestFn,
   redirect: (url: string) => void,
   fetchUser: () => Promise<void>
 ): Mutator => {

@@ -12,7 +12,7 @@ import request from '@/utils/fetchUtils';
 
 export default function RecipePage() {
   const router = useRouter();
-  useRequireAuth(router.replace);
+  useRequireAuth(request, router.replace);
 
   const { id } = useParams() as { id: string };
 
@@ -25,7 +25,7 @@ export default function RecipePage() {
     'Print Recipe'
   );
 
-  const mutator = useRecipeMutator(router.push, addNotification, id);
+  const mutator = useRecipeMutator(request, router.push, addNotification, id);
 
   return (
     <Recipe

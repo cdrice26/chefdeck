@@ -1,4 +1,4 @@
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 import { useState } from 'react';
 
 export interface LoginMutator {
@@ -9,12 +9,16 @@ export interface LoginMutator {
 /**
  * Hook for handling login mutations.
  *
+ * @param request - A function to make HTTP requests
  * @param redirect - Function to redirect to new URL
  * @returns An object with the following properties:
  * - error: string | null - Error message or null if no error
  * - handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void> - Function to handle form submission
  */
-const useLoginMutator = (redirect: (url: string) => void) => {
+const useLoginMutator = (
+  request: RequestFn,
+  redirect: (url: string) => void
+) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

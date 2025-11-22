@@ -1,4 +1,4 @@
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 import { useState } from 'react';
 
 export interface ProfileMutator {
@@ -9,6 +9,7 @@ export interface ProfileMutator {
 /**
  * Hook to manage profile mutations
  *
+ * @param request - A function that makes a request to the server.
  * @param redirect - A function to redirect to a new page
  * @param fetchUser - A function to fetch the user data
  * @returns A profile mutator object containing:
@@ -16,6 +17,7 @@ export interface ProfileMutator {
  * - handleSubmit: A function to handle form submission
  */
 const useProfileMutator = (
+  request: RequestFn,
   redirect: (url: string) => void,
   fetchUser: () => Promise<void>
 ): ProfileMutator => {

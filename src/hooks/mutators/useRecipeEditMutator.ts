@@ -1,5 +1,5 @@
 import { NotificationKind } from '@/context/NotificationContext';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 export interface RecipeEditMutator {
   handleSubmit: (e: FormData) => Promise<void>;
@@ -8,6 +8,7 @@ export interface RecipeEditMutator {
 /**
  * Hook for handling recipe edit mutations.
  *
+ * @param request - Function to make HTTP requests
  * @param redirect - Function to redirect to a URL
  * @param addNotification - Function to add a notification
  * @param recipeId - ID of the recipe being edited
@@ -15,6 +16,7 @@ export interface RecipeEditMutator {
  * - handleSubmit: Function to handle recipe edit submission
  */
 const useRecipeEditMutator = (
+  request: RequestFn,
   redirect: (url: string) => void,
   addNotification: (message: string, type: NotificationKind) => void,
   recipeId: string

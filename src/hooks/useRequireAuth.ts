@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 /**
  * Hook that verifies the current user's authentication state and performs redirects as necessary.
@@ -11,10 +11,14 @@ import request from '@/utils/fetchUtils';
  * - if the user is authenticated but has not completed profile setup (no username), redirects to `/setupProfile`,
  * - otherwise populates auth state via `setUser` and `setUsername`.
  *
+ * @param {RequestFn} request - Request function to be called to check authentication.
  * @param {Function} redirect - Redirect function to be called if the user is not authenticated.
  * @returns void
  */
-export default function useRequireAuth(redirect: (url: string) => void) {
+export default function useRequireAuth(
+  request: RequestFn,
+  redirect: (url: string) => void
+) {
   const { setUser, setUsername } = useAuth();
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { NotificationKind } from '@/context/NotificationContext';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 export interface TagsMutator {
   handleDelete: (tagValue: string) => Promise<void>;
@@ -8,12 +8,14 @@ export interface TagsMutator {
 /**
  * Hook for handling tag mutations.
  *
+ * @param request - Function to make a request
  * @param addNotification - Function to add a notification
  * @param refetch - Function to refetch data
  * @returns An object with the following properties:
  * - handleDelete: Function to handle tag deletion
  */
 const useTagsMutator = (
+  request: RequestFn,
   addNotification: (message: string, type: NotificationKind) => void,
   refetch: () => void
 ): TagsMutator => {
