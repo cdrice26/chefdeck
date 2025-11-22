@@ -27,11 +27,7 @@ const usePasswordMutator = (request: RequestFn): PasswordMutator => {
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
 
-    const res = await request(
-      '/api/auth/forgotPassword',
-      'POST',
-      JSON.stringify({ email })
-    );
+    const res = await request('/api/auth/forgotPassword', 'POST', { email });
 
     if (!res.ok) {
       const data = await res.json();

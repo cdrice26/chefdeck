@@ -29,11 +29,7 @@ const useLoginMutator = (
     const email = formData.get('email');
     const password = formData.get('password');
 
-    const res = await request(
-      '/api/auth/login',
-      'POST',
-      JSON.stringify({ email, password })
-    );
+    const res = await request('/api/auth/login', 'POST', { email, password });
 
     if (!res.ok) {
       const data = await res.json();

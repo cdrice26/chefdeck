@@ -36,11 +36,11 @@ const refreshAccessToken = async (): Promise<boolean> => {
 const request = async (
   url: string,
   method: string,
-  body?: BodyInit
+  body?: FormData | object
 ): Promise<Response> => {
   let res = await fetch(url, {
     method,
-    body,
+    body: body instanceof FormData ? body : JSON.stringify(body),
     credentials: 'include',
     headers: {
       'X-Client-Type': 'web'
@@ -53,7 +53,7 @@ const request = async (
     if (accessToken) {
       res = await fetch(url, {
         method,
-        body,
+        body: body instanceof FormData ? body : JSON.stringify(body),
         credentials: 'include',
         headers: {
           'X-Client-Type': 'web'

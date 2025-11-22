@@ -59,11 +59,9 @@ const useAccountMutator = (
     const formData = new FormData(e.currentTarget);
     const username = formData.get('username');
 
-    const response = await request(
-      '/api/auth/setupProfile',
-      'POST',
-      JSON.stringify({ username })
-    );
+    const response = await request('/api/auth/setupProfile', 'POST', {
+      username
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -92,11 +90,10 @@ const useAccountMutator = (
       return;
     }
 
-    const response = await request(
-      '/api/auth/changePassword',
-      'POST',
-      JSON.stringify({ currentPassword, newPassword: password })
-    );
+    const response = await request('/api/auth/changePassword', 'POST', {
+      currentPassword,
+      newPassword: password
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -123,11 +120,10 @@ const useAccountMutator = (
       return;
     }
 
-    const response = await request(
-      '/api/auth/updateEmail',
-      'POST',
-      JSON.stringify({ email, password })
-    );
+    const response = await request('/api/auth/updateEmail', 'POST', {
+      email,
+      password
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -153,11 +149,9 @@ const useAccountMutator = (
       return;
     }
 
-    const response = await request(
-      '/api/auth/deleteAccount',
-      'POST',
-      JSON.stringify({ password: confirmDelete })
-    );
+    const response = await request('/api/auth/deleteAccount', 'POST', {
+      password: confirmDelete
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

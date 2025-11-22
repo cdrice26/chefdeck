@@ -47,11 +47,11 @@ const useSignupMutator = (
       return;
     }
 
-    const res = await request(
-      '/api/auth/signup',
-      'POST',
-      JSON.stringify({ email, password, confirmPassword })
-    );
+    const res = await request('/api/auth/signup', 'POST', {
+      email,
+      password,
+      confirmPassword
+    });
 
     if (!res.ok) {
       const data = await res.json();

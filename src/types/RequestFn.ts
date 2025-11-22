@@ -1,7 +1,7 @@
 type RequestFn = (
   url: string,
   method: string,
-  body?: BodyInit
+  body?: FormData | object
 ) => Promise<Response>;
 
 export default RequestFn;

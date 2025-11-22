@@ -83,7 +83,7 @@ const useScheduleMutator = (
       const res = await request(
         `/api/recipe/${recipeId}/schedules/update`,
         'POST',
-        JSON.stringify({ data: normalizedSchedules })
+        { data: normalizedSchedules }
       );
       if (!res.ok) {
         const json = await res.json();

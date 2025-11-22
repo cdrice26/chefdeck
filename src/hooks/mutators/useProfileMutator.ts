@@ -29,11 +29,7 @@ const useProfileMutator = (
     const formData = new FormData(e.currentTarget);
     const username = formData.get('username');
 
-    const res = await request(
-      '/api/auth/setupProfile',
-      'POST',
-      JSON.stringify({ username })
-    );
+    const res = await request('/api/auth/setupProfile', 'POST', { username });
 
     if (!res.ok) {
       const data = await res.json();
