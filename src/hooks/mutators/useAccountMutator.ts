@@ -1,5 +1,6 @@
 import request from '@/utils/fetchUtils';
 import { useState } from 'react';
+import usePasswordValidator from '@/hooks/validators/usePasswordValidator';
 
 export interface Mutator {
   handleUsernameChange: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -43,8 +44,12 @@ const useAccountMutator = (
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
 
-  const [password, setPassword] = useState<string | null>(null);
-  const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
+  const {
+    password,
+    confirmPassword,
+    onChangePassword,
+    onChangeConfirmPassword
+  } = usePasswordValidator(setPasswordError);
 
   const handleUsernameChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -164,32 +169,6 @@ const useAccountMutator = (
     await fetchUser();
 
     redirect('/');
-  };
-
-  const onChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
-    setPassword(e.currentTarget.value);
-    if (
-      e.currentTarget.value !== confirmPassword &&
-      e.currentTarget.value !== '' &&
-      confirmPassword !== ''
-    ) {
-      setPasswordError('Passwords do not match');
-    } else {
-      setPasswordError(null);
-    }
-  };
-
-  const onChangeConfirmPassword = (e: React.FormEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.currentTarget.value);
-    if (
-      e.currentTarget.value !== password &&
-      e.currentTarget.value !== '' &&
-      password !== ''
-    ) {
-      setPasswordError('Passwords do not match');
-    } else {
-      setPasswordError(null);
-    }
   };
 
   return {
