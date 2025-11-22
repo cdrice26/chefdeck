@@ -1,7 +1,7 @@
 import { NotificationKind } from '@/context/NotificationContext';
+import RequestFn from '@/types/RequestFn';
 import { ScheduleDisplay } from '@/types/Schedule';
 import { getDaysInMonth, getDatesBetween } from '@/utils/dateUtils';
-import request from '@/utils/fetchUtils';
 import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 
@@ -31,6 +31,7 @@ export interface ScheduledRecipes {
 /**
  * Hook to load scheduled recipes within a date range.
  *
+ * @param request - The request function to use for fetching the scheduled recipes.
  * @param addNotification - Function to add a notification.
  * @param initialStartDate - Initial start date to query scheduled recipes. Defaults to the first day of the current month.
  * @param initialEndDate - Initial end date to query scheduled recipes. Defaults to the last day of the current month.
@@ -45,6 +46,7 @@ export interface ScheduledRecipes {
  *  - `month`: number — the current month
  */
 const useScheduledRecipes = (
+  request: RequestFn,
   addNotification: (message: string, type: NotificationKind) => void,
   initialStartDate: Date = firstDay,
   initialEndDate: Date = lastDay

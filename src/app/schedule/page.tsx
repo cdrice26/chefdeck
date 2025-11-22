@@ -7,12 +7,13 @@ import useScheduledRecipes from '@/hooks/fetchers/useScheduledRecipes';
 import { useNotification } from '@/context/NotificationContext';
 import Schedule from '@/components/pages/Schedule';
 import useScheduleActions from '@/hooks/useScheduleActions';
+import request from '@/utils/fetchUtils';
 
 const SchedulePage = () => {
   const router = useRouter();
   useRequireAuth(router.replace);
   const { addNotification } = useNotification();
-  const data = useScheduledRecipes(addNotification);
+  const data = useScheduledRecipes(request, addNotification);
   const isDark = useIsDark();
   const { handleButtonClick } = useScheduleActions(router.push);
 

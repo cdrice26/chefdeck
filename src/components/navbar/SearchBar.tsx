@@ -5,6 +5,7 @@ import SearchModal from '@/components/specificForms/SearchModal';
 import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
 import SearchBarRenderer from './SearchBarRenderer';
 import Tab from './Tab';
+import request from '@/utils/fetchUtils';
 
 interface TagOption {
   label: string;
@@ -54,7 +55,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   tags = [],
   onChangeTags = () => {}
 }) => {
-  const { availableTags: tagOptions, isLoading, error } = useAvailableTags();
+  const {
+    availableTags: tagOptions,
+    isLoading,
+    error
+  } = useAvailableTags(request);
 
   const [isModalOpen, setModalOpen] = useState(false);
 

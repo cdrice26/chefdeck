@@ -38,7 +38,7 @@ const Dashboard = () => {
   );
 
   const { recipes, page, setPage, hasMore, loading, error } =
-    usePaginatedRecipes(query, tags);
+    usePaginatedRecipes(request, query, tags);
 
   // Infinite scroll loader with robust observer cleanup
   useEffect(() => {

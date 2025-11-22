@@ -1,6 +1,6 @@
 import { NotificationKind } from '@/context/NotificationContext';
 import { Ingredient } from '@/types/Recipe';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 import { useState } from 'react';
 
 export interface GroceriesFetcher {
@@ -13,12 +13,14 @@ export interface GroceriesFetcher {
 /**
  * A hook for fetching and managing the user's groceries.
  *
+ * @param request - The request function to use for fetching data.
  * @param addNotification - Function to add a notification
  * @returns an object containing the following properties:
  * - groceries: An array of Ingredient objects representing the user's groceries.
  * - handleGroceriesRequest: A function that handles the request for groceries.
  */
 const useGroceries = (
+  request: RequestFn,
   addNotification: (message: string, type: NotificationKind) => void
 ): GroceriesFetcher => {
   const [groceries, setGroceries] = useState<Ingredient[]>([]);

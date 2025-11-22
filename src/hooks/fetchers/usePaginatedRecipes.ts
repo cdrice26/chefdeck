@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Recipe } from '@/types/Recipe';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 
 const PAGE_SIZE = 20;
 
@@ -10,6 +10,7 @@ const PAGE_SIZE = 20;
  * The hook automatically loads pages of recipes and deduplicates results when
  * appending subsequent pages. It resets state when `query` or `tags` change.
  *
+ * @param request - The request function to use for fetching data.
  * @param query - Search query string used to filter recipes.
  * @param tags - Array of tag strings to filter recipes by.
  * @returns An object containing:
@@ -20,7 +21,11 @@ const PAGE_SIZE = 20;
  *  - `loading`: whether a fetch is in progress
  *  - `error`: error message if the last fetch failed
  */
-export default function usePaginatedRecipes(query: string, tags: string[]) {
+export default function usePaginatedRecipes(
+  request: RequestFn,
+  query: string,
+  tags: string[]
+) {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);

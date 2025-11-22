@@ -23,12 +23,14 @@ import ColorSelector from '../forms/ColorSelector';
 import { OptionType } from '../forms/TagSelector';
 import dynamic from 'next/dynamic';
 import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
+import RequestFn from '@/types/RequestFn';
 
 const TagSelector = dynamic(() => import('@/components/forms/TagSelector'), {
   ssr: false
 });
 
 interface RecipeFormProps {
+  request: RequestFn;
   handleSubmit: (e: FormData) => void;
   recipe?: Recipe | null;
 }
@@ -59,11 +61,15 @@ interface StatePair {
  * - `recipe?` (Recipe | null) : Optional existing recipe to populate the form for editing.
  *
  * @param {RecipeFormProps} props - Component props
- * @returns {JSX.Element} The rendered recipe form
+ * @returns The rendered recipe form
  */
-const RecipeForm = ({ handleSubmit, recipe = null }: RecipeFormProps) => {
+const RecipeForm = ({
+  request,
+  handleSubmit,
+  recipe = null
+}: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
-  const { availableTags, error, isLoading } = useAvailableTags();
+  const { availableTags, error, isLoading } = useAvailableTags(request);
 
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 

@@ -1,14 +1,15 @@
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 import useSWR from 'swr';
 
 /**
  * Custom hook that fetches available tags for tag selector components.
  *
+ * @param request - The request function to use for fetching data.
  * @returns An object containing:
  *  - `availableTags`: the current list of options for tag inputs
  *  - `refetch`: function to manually re-fetch the available tags
  */
-const useAvailableTags = () => {
+const useAvailableTags = (request: RequestFn) => {
   /**
    * Fetch available tags from the backend and update state.
    *

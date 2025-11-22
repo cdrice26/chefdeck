@@ -1,6 +1,6 @@
 import { NotificationKind } from '@/context/NotificationContext';
 import { Schedule } from '@/types/Schedule';
-import request from '@/utils/fetchUtils';
+import RequestFn from '@/types/RequestFn';
 import useSWR, { KeyedMutator } from 'swr';
 
 export interface ScheduleResponse {
@@ -13,6 +13,7 @@ export interface ScheduleResponse {
 /**
  * Hook to fetch and manage schedules for a given recipe.
  *
+ * @param request - Function to make HTTP requests.
  * @param addNotification - Function to add a notification.
  * @param recipeId - The ID of the recipe whose schedules will be loaded.
  * @returns An object containing:
@@ -20,6 +21,7 @@ export interface ScheduleResponse {
  *  - `setSchedules`: function to update schedules state
  */
 const useSchedules = (
+  request: RequestFn,
   addNotification: (message: string, type: NotificationKind) => void,
   recipeId: string
 ): ScheduleResponse => {

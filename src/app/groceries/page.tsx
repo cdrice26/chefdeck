@@ -7,13 +7,17 @@ import { useRouter } from 'next/navigation';
 import usePrinter from '@/hooks/usePrinter';
 import useGroceries from '@/hooks/fetchers/useGroceries';
 import Groceries from '@/components/pages/Groceries';
+import request from '@/utils/fetchUtils';
 
 const GroceriesPage = () => {
   const router = useRouter();
   useRequireAuth(router.replace);
   const { addNotification } = useNotification();
 
-  const { groceries, handleGroceriesRequest } = useGroceries(addNotification);
+  const { groceries, handleGroceriesRequest } = useGroceries(
+    request,
+    addNotification
+  );
 
   const handlePrint = usePrinter(
     addNotification,
