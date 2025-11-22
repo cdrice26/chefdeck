@@ -2,11 +2,8 @@
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/code-frame
-│  ├─ version: 7.27.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/code-frame/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/code-frame
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/code-frame/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -29,16 +26,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/code-frame
+│  └─ version: 7.27.1
 ├─ @babel/generator@7.28.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/generator
-│  ├─ version: 7.28.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/generator/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/generator
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/generator/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -61,16 +57,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/generator
+│  └─ version: 7.28.0
 ├─ @babel/helper-globals@7.28.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/helper-globals
-│  ├─ version: 7.28.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-globals/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/helper-globals
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-globals/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -93,16 +88,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/helper-globals
+│  └─ version: 7.28.0
 ├─ @babel/helper-module-imports@7.27.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/helper-module-imports
-│  ├─ version: 7.27.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-module-imports/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/helper-module-imports
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-module-imports/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -125,16 +119,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/helper-module-imports
+│  └─ version: 7.27.1
 ├─ @babel/helper-string-parser@7.27.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/helper-string-parser
-│  ├─ version: 7.27.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-string-parser/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/helper-string-parser
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-string-parser/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -157,16 +150,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/helper-string-parser
+│  └─ version: 7.27.1
 ├─ @babel/helper-validator-identifier@7.27.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/helper-validator-identifier
-│  ├─ version: 7.27.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-validator-identifier/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/helper-validator-identifier
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/helper-validator-identifier/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -189,16 +181,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/helper-validator-identifier
+│  └─ version: 7.27.1
 ├─ @babel/parser@7.28.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/parser
-│  ├─ version: 7.28.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/parser/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/parser
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/parser/LICENSE
 │  ├─ licenseText: Copyright (C) 2012-2014 by various contributors (see AUTHORS)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -218,16 +209,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (C) 2012-2014 by various contributors (see AUTHORS)
+│  ├─ copyright: Copyright (C) 2012-2014 by various contributors (see AUTHORS)
+│  ├─ name: @babel/parser
+│  └─ version: 7.28.0
 ├─ @babel/runtime@7.27.6
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/runtime
-│  ├─ version: 7.27.6
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/runtime/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/runtime
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/runtime/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -250,16 +240,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/runtime
+│  └─ version: 7.27.6
 ├─ @babel/template@7.27.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/template
-│  ├─ version: 7.27.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/template/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/template
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/template/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -282,16 +271,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/template
+│  └─ version: 7.27.2
 ├─ @babel/traverse@7.28.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/traverse
-│  ├─ version: 7.28.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/traverse/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/traverse
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/traverse/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -314,16 +302,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/traverse
+│  └─ version: 7.28.0
 ├─ @babel/types@7.28.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
-│  ├─ url: https://babel.dev/team
-│  ├─ name: @babel/types
-│  ├─ version: 7.28.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/types/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@babel/types
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@babel/types/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -346,15 +333,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+│  ├─ name: @babel/types
+│  └─ version: 7.28.1
 ├─ @dnd-kit/accessibility@3.1.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/clauderic/dnd-kit
 │  ├─ publisher: Claudéric Demers
-│  ├─ name: @dnd-kit/accessibility
-│  ├─ version: 3.1.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/accessibility/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@dnd-kit/accessibility
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/accessibility/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021, Claudéric Demers
@@ -376,15 +363,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ name: @dnd-kit/accessibility
+│  └─ version: 3.1.1
 ├─ @dnd-kit/core@6.3.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/clauderic/dnd-kit
 │  ├─ publisher: Claudéric Demers
-│  ├─ name: @dnd-kit/core
-│  ├─ version: 6.3.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/core/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@dnd-kit/core
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/core/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021, Claudéric Demers
@@ -406,15 +393,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ name: @dnd-kit/core
+│  └─ version: 6.3.1
 ├─ @dnd-kit/sortable@10.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/clauderic/dnd-kit
 │  ├─ publisher: Claudéric Demers
-│  ├─ name: @dnd-kit/sortable
-│  ├─ version: 10.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/sortable/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@dnd-kit/sortable
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/sortable/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021, Claudéric Demers
@@ -436,15 +423,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ name: @dnd-kit/sortable
+│  └─ version: 10.0.0
 ├─ @dnd-kit/utilities@3.2.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/clauderic/dnd-kit
 │  ├─ publisher: Claudéric Demers
-│  ├─ name: @dnd-kit/utilities
-│  ├─ version: 3.2.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/utilities/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@dnd-kit/utilities
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@dnd-kit/utilities/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021, Claudéric Demers
@@ -466,15 +453,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ copyright: Copyright (c) 2021, Claudéric Demers
+│  ├─ name: @dnd-kit/utilities
+│  └─ version: 3.2.2
 ├─ @emotion/babel-plugin@11.13.5
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/babel-plugin
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ publisher: Kye Hohenberger
-│  ├─ name: @emotion/babel-plugin
-│  ├─ version: 11.13.5
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/babel-plugin/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/babel-plugin
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/babel-plugin/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -496,14 +483,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/babel-plugin
+│  └─ version: 11.13.5
 ├─ @emotion/cache@11.14.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/cache
-│  ├─ name: @emotion/cache
-│  ├─ version: 11.14.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/cache/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/cache
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/cache/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -525,14 +512,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/cache
+│  └─ version: 11.14.0
 ├─ @emotion/hash@0.9.2
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/hash
-│  ├─ name: @emotion/hash
-│  ├─ version: 0.9.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/hash/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/hash
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/hash/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -554,14 +541,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/hash
+│  └─ version: 0.9.2
 ├─ @emotion/memoize@0.9.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/memoize
-│  ├─ name: @emotion/memoize
-│  ├─ version: 0.9.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/memoize/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/memoize
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/memoize/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -583,15 +570,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/memoize
+│  └─ version: 0.9.0
 ├─ @emotion/react@11.14.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/react
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ publisher: Emotion Contributors
-│  ├─ name: @emotion/react
-│  ├─ version: 11.14.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/react/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/react
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/react/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -613,14 +600,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/react
+│  └─ version: 11.14.0
 ├─ @emotion/serialize@1.3.3
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/serialize
-│  ├─ name: @emotion/serialize
-│  ├─ version: 1.3.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/serialize/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/serialize
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/serialize/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -642,14 +629,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/serialize
+│  └─ version: 1.3.3
 ├─ @emotion/sheet@1.4.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/sheet
-│  ├─ name: @emotion/sheet
-│  ├─ version: 1.4.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/sheet/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/sheet
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/sheet/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -671,14 +658,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/sheet
+│  └─ version: 1.4.0
 ├─ @emotion/unitless@0.10.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/unitless
-│  ├─ name: @emotion/unitless
-│  ├─ version: 0.10.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/unitless/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/unitless
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/unitless/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -700,14 +687,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/unitless
+│  └─ version: 0.10.0
 ├─ @emotion/use-insertion-effect-with-fallbacks@1.2.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/use-insertion-effect-with-fallbacks
-│  ├─ name: @emotion/use-insertion-effect-with-fallbacks
-│  ├─ version: 1.2.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/use-insertion-effect-with-fallbacks/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/use-insertion-effect-with-fallbacks
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/use-insertion-effect-with-fallbacks/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -729,14 +716,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/use-insertion-effect-with-fallbacks
+│  └─ version: 1.2.0
 ├─ @emotion/utils@1.4.2
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/utils
-│  ├─ name: @emotion/utils
-│  ├─ version: 1.4.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/utils/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/utils
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/utils/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -758,14 +745,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/utils
+│  └─ version: 1.4.2
 ├─ @emotion/weak-memoize@0.4.0
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/emotion-js/emotion/tree/main/packages/weak-memoize
-│  ├─ name: @emotion/weak-memoize
-│  ├─ version: 0.4.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/weak-memoize/LICENSE
+│  ├─ repository: https://github.com/emotion-js/emotion.git#main
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@emotion/weak-memoize
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@emotion/weak-memoize/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Emotion team and other contributors
@@ -787,15 +774,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ copyright: Copyright (c) Emotion team and other contributors
+│  ├─ name: @emotion/weak-memoize
+│  └─ version: 0.4.0
 ├─ @floating-ui/core@1.7.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/floating-ui/floating-ui
 │  ├─ publisher: atomiks
-│  ├─ name: @floating-ui/core
-│  ├─ version: 1.7.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@floating-ui/core/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@floating-ui/core
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@floating-ui/core/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021-present Floating UI contributors
@@ -816,15 +803,15 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2021-present Floating UI contributors
+│  ├─ copyright: Copyright (c) 2021-present Floating UI contributors
+│  ├─ name: @floating-ui/core
+│  └─ version: 1.7.2
 ├─ @floating-ui/dom@1.7.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/floating-ui/floating-ui
 │  ├─ publisher: atomiks
-│  ├─ name: @floating-ui/dom
-│  ├─ version: 1.7.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@floating-ui/dom/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@floating-ui/dom
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@floating-ui/dom/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021-present Floating UI contributors
@@ -845,15 +832,15 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2021-present Floating UI contributors
+│  ├─ copyright: Copyright (c) 2021-present Floating UI contributors
+│  ├─ name: @floating-ui/dom
+│  └─ version: 1.7.2
 ├─ @floating-ui/utils@0.2.10
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/floating-ui/floating-ui
 │  ├─ publisher: atomiks
-│  ├─ name: @floating-ui/utils
-│  ├─ version: 0.2.10
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@floating-ui/utils/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@floating-ui/utils
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@floating-ui/utils/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2021-present Floating UI contributors
@@ -874,17 +861,17 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2021-present Floating UI contributors
+│  ├─ copyright: Copyright (c) 2021-present Floating UI contributors
+│  ├─ name: @floating-ui/utils
+│  └─ version: 0.2.10
 ├─ @img/sharp-darwin-arm64@0.34.3
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/lovell/sharp
 │  ├─ publisher: Lovell Fuller
 │  ├─ email: npm@lovell.info
-│  ├─ name: @img/sharp-darwin-arm64
-│  ├─ version: 0.34.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@img/sharp-darwin-arm64/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@img/sharp-darwin-arm64
-│  └─ licenseText: Apache License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@img/sharp-darwin-arm64/LICENSE
+│  ├─ licenseText: Apache License
 Version 2.0, January 2004
 http://www.apache.org/licenses/
 
@@ -1075,16 +1062,16 @@ third-party archives.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+│  ├─ name: @img/sharp-darwin-arm64
+│  └─ version: 0.34.3
 ├─ @img/sharp-libvips-darwin-arm64@1.2.0
 │  ├─ licenses: LGPL-3.0-or-later
 │  ├─ repository: https://github.com/lovell/sharp-libvips
 │  ├─ publisher: Lovell Fuller
 │  ├─ email: npm@lovell.info
-│  ├─ name: @img/sharp-libvips-darwin-arm64
-│  ├─ version: 1.2.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@img/sharp-libvips-darwin-arm64/README.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@img/sharp-libvips-darwin-arm64
-│  └─ licenseText: # `@img/sharp-libvips-darwin-arm64`
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@img/sharp-libvips-darwin-arm64/README.md
+│  ├─ licenseText: # `@img/sharp-libvips-darwin-arm64`
 
 Prebuilt libvips and dependencies for use with sharp on macOS 64-bit ARM.
 
@@ -1130,15 +1117,15 @@ Use of libraries under the terms of the LGPLv3 is via the
 
 Please report any errors or omissions via
 https://github.com/lovell/sharp-libvips/issues/new
+│  ├─ name: @img/sharp-libvips-darwin-arm64
+│  └─ version: 1.2.0
 ├─ @jridgewell/gen-mapping@0.3.12
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/jridgewell/sourcemaps
 │  ├─ publisher: Justin Ridgewell
 │  ├─ email: justin@ridgewell.name
-│  ├─ name: @jridgewell/gen-mapping
-│  ├─ version: 0.3.12
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/gen-mapping/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@jridgewell/gen-mapping
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/gen-mapping/LICENSE
 │  ├─ licenseText: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1158,16 +1145,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
+│  ├─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
+│  ├─ name: @jridgewell/gen-mapping
+│  └─ version: 0.3.12
 ├─ @jridgewell/resolve-uri@3.1.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/jridgewell/resolve-uri
 │  ├─ publisher: Justin Ridgewell
 │  ├─ email: justin@ridgewell.name
-│  ├─ name: @jridgewell/resolve-uri
-│  ├─ version: 3.1.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/resolve-uri/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@jridgewell/resolve-uri
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/resolve-uri/LICENSE
 │  ├─ licenseText: Copyright 2019 Justin Ridgewell <jridgewell@google.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1187,16 +1174,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright 2019 Justin Ridgewell <jridgewell@google.com>
+│  ├─ copyright: Copyright 2019 Justin Ridgewell <jridgewell@google.com>
+│  ├─ name: @jridgewell/resolve-uri
+│  └─ version: 3.1.2
 ├─ @jridgewell/sourcemap-codec@1.5.4
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/jridgewell/sourcemaps
 │  ├─ publisher: Justin Ridgewell
 │  ├─ email: justin@ridgewell.name
-│  ├─ name: @jridgewell/sourcemap-codec
-│  ├─ version: 1.5.4
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/sourcemap-codec/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@jridgewell/sourcemap-codec
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/sourcemap-codec/LICENSE
 │  ├─ licenseText: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1216,16 +1203,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
+│  ├─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
+│  ├─ name: @jridgewell/sourcemap-codec
+│  └─ version: 1.5.4
 ├─ @jridgewell/trace-mapping@0.3.29
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/jridgewell/sourcemaps
 │  ├─ publisher: Justin Ridgewell
 │  ├─ email: justin@ridgewell.name
-│  ├─ name: @jridgewell/trace-mapping
-│  ├─ version: 0.3.29
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/trace-mapping/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@jridgewell/trace-mapping
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@jridgewell/trace-mapping/LICENSE
 │  ├─ licenseText: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1245,37 +1232,37 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
+│  ├─ copyright: Copyright 2024 Justin Ridgewell <justin@ridgewell.name>
+│  ├─ name: @jridgewell/trace-mapping
+│  └─ version: 0.3.29
 ├─ @next/env@15.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
 │  ├─ publisher: Next.js Team
 │  ├─ email: support@vercel.com
-│  ├─ name: @next/env
-│  ├─ version: 15.5.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@next/env/README.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@next/env
-│  └─ licenseText: # `@next/env`
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@next/env/README.md
+│  ├─ licenseText: # `@next/env`
 
 Next.js' util for loading dotenv files in with the proper priorities
+│  ├─ name: @next/env
+│  └─ version: 15.5.3
 ├─ @next/swc-darwin-arm64@15.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
-│  ├─ name: @next/swc-darwin-arm64
-│  ├─ version: 15.5.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64/README.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64
-│  └─ licenseText: # `@next/swc-darwin-arm64`
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@next/swc-darwin-arm64/README.md
+│  ├─ licenseText: # `@next/swc-darwin-arm64`
 
 This is the **aarch64-apple-darwin** binary for `@next/swc`
+│  ├─ name: @next/swc-darwin-arm64
+│  └─ version: 15.5.3
 ├─ @supabase/auth-js@2.71.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/auth-js
 │  ├─ publisher: Supabase
-│  ├─ name: @supabase/auth-js
-│  ├─ version: 2.71.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/auth-js/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/auth-js
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/auth-js/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2020 Supabase
@@ -1297,15 +1284,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2020 Supabase
+│  ├─ copyright: Copyright (c) 2020 Supabase
+│  ├─ name: @supabase/auth-js
+│  └─ version: 2.71.0
 ├─ @supabase/functions-js@2.4.5
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/functions-js
 │  ├─ publisher: Supabase
-│  ├─ name: @supabase/functions-js
-│  ├─ version: 2.4.5
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/functions-js/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/functions-js
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/functions-js/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2020 Supabase
@@ -1327,15 +1314,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2020 Supabase
+│  ├─ copyright: Copyright (c) 2020 Supabase
+│  ├─ name: @supabase/functions-js
+│  └─ version: 2.4.5
 ├─ @supabase/node-fetch@2.6.15
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/node-fetch
 │  ├─ publisher: David Frank
-│  ├─ name: @supabase/node-fetch
-│  ├─ version: 2.6.15
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/node-fetch/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/node-fetch
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/node-fetch/LICENSE.md
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2016 David Frank
@@ -1357,15 +1344,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2016 David Frank
+│  ├─ copyright: Copyright (c) 2016 David Frank
+│  ├─ name: @supabase/node-fetch
+│  └─ version: 2.6.15
 ├─ @supabase/postgrest-js@1.19.4
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/postgrest-js
 │  ├─ publisher: Supabase
-│  ├─ name: @supabase/postgrest-js
-│  ├─ version: 1.19.4
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/postgrest-js/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/postgrest-js
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/postgrest-js/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2020 Supabase
@@ -1387,15 +1374,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2020 Supabase
+│  ├─ copyright: Copyright (c) 2020 Supabase
+│  ├─ name: @supabase/postgrest-js
+│  └─ version: 1.19.4
 ├─ @supabase/realtime-js@2.11.15
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/realtime-js
 │  ├─ publisher: Supabase
-│  ├─ name: @supabase/realtime-js
-│  ├─ version: 2.11.15
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/realtime-js/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/realtime-js
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/realtime-js/LICENSE.md
 │  ├─ licenseText: # MIT License
 
 Copyright (c) 2020 Supabase
@@ -1418,16 +1405,16 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2020 Supabase
+│  ├─ copyright: Copyright (c) 2020 Supabase
+│  ├─ name: @supabase/realtime-js
+│  └─ version: 2.11.15
 ├─ @supabase/storage-js@2.7.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/storage-js
 │  ├─ publisher: Supabase
-│  ├─ name: @supabase/storage-js
-│  ├─ version: 2.7.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/storage-js/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/storage-js
-│  └─ licenseText: Apache License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/storage-js/LICENSE
+│  ├─ licenseText: Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -1628,14 +1615,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+│  ├─ name: @supabase/storage-js
+│  └─ version: 2.7.1
 ├─ @supabase/supabase-js@2.51.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/supabase/supabase-js
 │  ├─ publisher: Supabase
-│  ├─ name: @supabase/supabase-js
-│  ├─ version: 2.51.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/supabase-js/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@supabase/supabase-js
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@supabase/supabase-js/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2020 Supabase
@@ -1657,16 +1644,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2020 Supabase
+│  ├─ copyright: Copyright (c) 2020 Supabase
+│  ├─ name: @supabase/supabase-js
+│  └─ version: 2.51.0
 ├─ @swc/helpers@0.5.15
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/swc-project/swc
 │  ├─ publisher: 강동윤
 │  ├─ email: kdy1997.dev@gmail.com
-│  ├─ name: @swc/helpers
-│  ├─ version: 0.5.15
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@swc/helpers/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@swc/helpers
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@swc/helpers/LICENSE
 │  ├─ licenseText: Apache License
                         Version 2.0, January 2004
                      http://www.apache.org/licenses/
@@ -1868,15 +1855,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-│  └─ copyright: Copyright 2024 SWC contributors.
+│  ├─ copyright: Copyright 2024 SWC contributors.
+│  ├─ name: @swc/helpers
+│  └─ version: 0.5.15
 ├─ @types/node@20.19.8
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/node
-│  ├─ version: 20.19.8
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/node/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@types/node
-│  └─ licenseText: MIT License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/node/LICENSE
+│  ├─ licenseText: MIT License
 
     Copyright (c) Microsoft Corporation.
 
@@ -1897,14 +1884,14 @@ limitations under the License.
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+│  ├─ name: @types/node
+│  └─ version: 20.19.8
 ├─ @types/parse-json@4.0.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/parse-json
-│  ├─ version: 4.0.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/parse-json/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@types/parse-json
-│  └─ licenseText: MIT License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/parse-json/LICENSE
+│  ├─ licenseText: MIT License
 
     Copyright (c) Microsoft Corporation.
 
@@ -1925,14 +1912,14 @@ limitations under the License.
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+│  ├─ name: @types/parse-json
+│  └─ version: 4.0.2
 ├─ @types/phoenix@1.6.6
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/phoenix
-│  ├─ version: 1.6.6
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/phoenix/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@types/phoenix
-│  └─ licenseText: MIT License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/phoenix/LICENSE
+│  ├─ licenseText: MIT License
 
     Copyright (c) Microsoft Corporation.
 
@@ -1953,14 +1940,14 @@ limitations under the License.
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+│  ├─ name: @types/phoenix
+│  └─ version: 1.6.6
 ├─ @types/react-transition-group@4.4.12
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/react-transition-group
-│  ├─ version: 4.4.12
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/react-transition-group/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@types/react-transition-group
-│  └─ licenseText: MIT License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/react-transition-group/LICENSE
+│  ├─ licenseText: MIT License
 
     Copyright (c) Microsoft Corporation.
 
@@ -1981,14 +1968,14 @@ limitations under the License.
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+│  ├─ name: @types/react-transition-group
+│  └─ version: 4.4.12
 ├─ @types/react@19.1.8
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/react
-│  ├─ version: 19.1.8
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/react/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@types/react
-│  └─ licenseText: MIT License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/react/LICENSE
+│  ├─ licenseText: MIT License
 
     Copyright (c) Microsoft Corporation.
 
@@ -2009,14 +1996,14 @@ limitations under the License.
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+│  ├─ name: @types/react
+│  └─ version: 19.1.8
 ├─ @types/ws@8.18.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/DefinitelyTyped/DefinitelyTyped
-│  ├─ name: @types/ws
-│  ├─ version: 8.18.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/ws/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/@types/ws
-│  └─ licenseText: MIT License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/@types/ws/LICENSE
+│  ├─ licenseText: MIT License
 
     Copyright (c) Microsoft Corporation.
 
@@ -2037,17 +2024,16 @@ limitations under the License.
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+│  ├─ name: @types/ws
+│  └─ version: 8.18.1
 ├─ babel-plugin-macros@3.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/kentcdodds/babel-plugin-macros
 │  ├─ publisher: Kent C. Dodds
 │  ├─ email: me@kentcdodds.com
-│  ├─ url: https://kentcdodds.com
-│  ├─ name: babel-plugin-macros
-│  ├─ version: 3.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/babel-plugin-macros/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/babel-plugin-macros
-│  └─ licenseText: The MIT License (MIT)
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/babel-plugin-macros/LICENSE
+│  ├─ licenseText: The MIT License (MIT)
 Copyright (c) 2020 Kent C. Dodds
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -2067,16 +2053,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+│  ├─ name: babel-plugin-macros
+│  └─ version: 3.1.0
 ├─ callsites@3.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/callsites
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: sindresorhus.com
-│  ├─ name: callsites
-│  ├─ version: 3.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/callsites/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/callsites
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/callsites/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -2086,18 +2071,17 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ name: callsites
+│  └─ version: 3.1.0
 ├─ caniuse-lite@1.0.30001727
 │  ├─ licenses: CC-BY-4.0
 │  ├─ repository: https://github.com/browserslist/caniuse-lite
 │  ├─ publisher: Ben Briggs
 │  ├─ email: beneb.info@gmail.com
-│  ├─ url: http://beneb.info
-│  ├─ name: caniuse-lite
-│  ├─ version: 1.0.30001727
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/caniuse-lite/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/caniuse-lite
-│  └─ licenseText: Attribution 4.0 International
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/caniuse-lite/LICENSE
+│  ├─ licenseText: Attribution 4.0 International
 
 =======================================================================
 
@@ -2492,13 +2476,13 @@ the avoidance of doubt, this paragraph does not form part of the
 public licenses.
 
 Creative Commons may be contacted at creativecommons.org.
+│  ├─ name: caniuse-lite
+│  └─ version: 1.0.30001727
 ├─ chefdeck@0.1.0
 │  ├─ licenses: UNLICENSED
 │  ├─ private: true
-│  ├─ name: chefdeck
-│  ├─ version: 0.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/LICENSE
 │  ├─ path: /ChefDeck/chefdeck
+│  ├─ licenseFile: /ChefDeck/chefdeck/LICENSE
 │  ├─ licenseText: Copyright 2025 Caleb Rice
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -2506,22 +2490,22 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright 2025 Caleb Rice
+│  ├─ copyright: Copyright 2025 Caleb Rice
+│  ├─ name: chefdeck
+│  └─ version: 0.1.0
 ├─ client-only@0.0.1
 │  ├─ licenses: MIT
+│  ├─ path: /ChefDeck/chefdeck/node_modules/client-only
 │  ├─ name: client-only
 │  ├─ version: 0.0.1
-│  ├─ licenseFile: 
-│  └─ path: /ChefDeck/chefdeck/node_modules/client-only
+│  └─ licenseFile: 
 ├─ color-convert@2.0.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Qix-/color-convert
 │  ├─ publisher: Heather Arthur
 │  ├─ email: fayearthur@gmail.com
-│  ├─ name: color-convert
-│  ├─ version: 2.0.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color-convert/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/color-convert
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color-convert/LICENSE
 │  ├─ licenseText: Copyright (c) 2011-2016 Heather Arthur <fayearthur@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -2542,17 +2526,17 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2011-2016 Heather Arthur <fayearthur@gmail.com>
+│  ├─ copyright: Copyright (c) 2011-2016 Heather Arthur <fayearthur@gmail.com>
+│  ├─ name: color-convert
+│  └─ version: 2.0.1
 ├─ color-name@1.1.4
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/colorjs/color-name
 │  ├─ publisher: DY
 │  ├─ email: dfcreative@gmail.com
-│  ├─ name: color-name
-│  ├─ version: 1.1.4
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color-name/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/color-name
-│  └─ licenseText: The MIT License (MIT)
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color-name/LICENSE
+│  ├─ licenseText: The MIT License (MIT)
 Copyright (c) 2015 Dmitry Ivanov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -2560,15 +2544,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+│  ├─ name: color-name
+│  └─ version: 1.1.4
 ├─ color-string@1.9.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Qix-/color-string
 │  ├─ publisher: Heather Arthur
 │  ├─ email: fayearthur@gmail.com
-│  ├─ name: color-string
-│  ├─ version: 1.9.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color-string/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/color-string
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color-string/LICENSE
 │  ├─ licenseText: Copyright (c) 2011 Heather Arthur <fayearthur@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -2589,14 +2573,14 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2011 Heather Arthur <fayearthur@gmail.com>
+│  ├─ copyright: Copyright (c) 2011 Heather Arthur <fayearthur@gmail.com>
+│  ├─ name: color-string
+│  └─ version: 1.9.1
 ├─ color@4.2.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Qix-/color
-│  ├─ name: color
-│  ├─ version: 4.2.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/color
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/color/LICENSE
 │  ├─ licenseText: Copyright (c) 2012 Heather Arthur
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -2617,17 +2601,16 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2012 Heather Arthur
+│  ├─ copyright: Copyright (c) 2012 Heather Arthur
+│  ├─ name: color
+│  └─ version: 4.2.3
 ├─ convert-source-map@1.9.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/thlorenz/convert-source-map
 │  ├─ publisher: Thorsten Lorenz
 │  ├─ email: thlorenz@gmx.de
-│  ├─ url: http://thlorenz.com
-│  ├─ name: convert-source-map
-│  ├─ version: 1.9.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/convert-source-map/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/convert-source-map
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/convert-source-map/LICENSE
 │  ├─ licenseText: Copyright 2013 Thorsten Lorenz. 
 All rights reserved.
 
@@ -2651,16 +2634,16 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright 2013 Thorsten Lorenz. . All rights reserved.
+│  ├─ copyright: Copyright 2013 Thorsten Lorenz. . All rights reserved.
+│  ├─ name: convert-source-map
+│  └─ version: 1.9.0
 ├─ cosmiconfig@7.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/davidtheclark/cosmiconfig
 │  ├─ publisher: David Clark
 │  ├─ email: david.dave.clark@gmail.com
-│  ├─ name: cosmiconfig
-│  ├─ version: 7.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/cosmiconfig/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/cosmiconfig
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/cosmiconfig/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 David Clark
@@ -2682,16 +2665,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 David Clark
+│  ├─ copyright: Copyright (c) 2015 David Clark
+│  ├─ name: cosmiconfig
+│  └─ version: 7.1.0
 ├─ csstype@3.1.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/frenic/csstype
 │  ├─ publisher: Fredrik Nicol
 │  ├─ email: fredrik.nicol@gmail.com
-│  ├─ name: csstype
-│  ├─ version: 3.1.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/csstype/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/csstype
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/csstype/LICENSE
 │  ├─ licenseText: Copyright (c) 2017-2018 Fredrik Nicol
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -2711,16 +2694,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2017-2018 Fredrik Nicol
+│  ├─ copyright: Copyright (c) 2017-2018 Fredrik Nicol
+│  ├─ name: csstype
+│  └─ version: 3.1.3
 ├─ debug@4.4.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/debug-js/debug
 │  ├─ publisher: Josh Junon
-│  ├─ url: https://github.com/qix-
-│  ├─ name: debug
-│  ├─ version: 4.4.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/debug/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/debug
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/debug/LICENSE
 │  ├─ licenseText: (The MIT License)
 
 Copyright (c) 2014-2017 TJ Holowaychuk <tj@vision-media.ca>
@@ -2740,17 +2722,16 @@ LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE A
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014-2017 TJ Holowaychuk <tj@vision-media.ca>. Copyright (c) 2018-2021 Josh Junon
+│  ├─ copyright: Copyright (c) 2014-2017 TJ Holowaychuk <tj@vision-media.ca>. Copyright (c) 2018-2021 Josh Junon
+│  ├─ name: debug
+│  └─ version: 4.4.1
 ├─ dequal@2.0.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/lukeed/dequal
 │  ├─ publisher: Luke Edwards
 │  ├─ email: luke.edwards05@gmail.com
-│  ├─ url: https://lukeed.com
-│  ├─ name: dequal
-│  ├─ version: 2.0.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/dequal/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/dequal
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/dequal/license
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)
@@ -2772,17 +2753,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)
+│  ├─ copyright: Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)
+│  ├─ name: dequal
+│  └─ version: 2.0.3
 ├─ detect-libc@2.0.4
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/lovell/detect-libc
 │  ├─ publisher: Lovell Fuller
 │  ├─ email: npm@lovell.info
-│  ├─ name: detect-libc
-│  ├─ version: 2.0.4
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/detect-libc/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/detect-libc
-│  └─ licenseText: Apache License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/detect-libc/LICENSE
+│  ├─ licenseText: Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -2983,15 +2964,15 @@ THE SOFTWARE.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+│  ├─ name: detect-libc
+│  └─ version: 2.0.4
 ├─ dom-helpers@5.2.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/react-bootstrap/dom-helpers
 │  ├─ publisher: Jason Quense
 │  ├─ email: monastic.panic@gmail.com
-│  ├─ name: dom-helpers
-│  ├─ version: 5.2.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/dom-helpers/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/dom-helpers
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/dom-helpers/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 Jason Quense
@@ -3013,14 +2994,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 Jason Quense
+│  ├─ copyright: Copyright (c) 2015 Jason Quense
+│  ├─ name: dom-helpers
+│  └─ version: 5.2.1
 ├─ error-ex@1.3.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/qix-/node-error-ex
-│  ├─ name: error-ex
-│  ├─ version: 1.3.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/error-ex/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/error-ex
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/error-ex/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 JD Ballard
@@ -3042,17 +3023,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 JD Ballard
+│  ├─ copyright: Copyright (c) 2015 JD Ballard
+│  ├─ name: error-ex
+│  └─ version: 1.3.2
 ├─ escape-string-regexp@4.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/escape-string-regexp
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: https://sindresorhus.com
-│  ├─ name: escape-string-regexp
-│  ├─ version: 4.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/escape-string-regexp/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/escape-string-regexp
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/escape-string-regexp/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
@@ -3062,15 +3042,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+│  ├─ name: escape-string-regexp
+│  └─ version: 4.0.0
 ├─ find-root@1.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/js-n/find-root
 │  ├─ publisher: jsdnxx
-│  ├─ name: find-root
-│  ├─ version: 1.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/find-root/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/find-root
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/find-root/LICENSE.md
 │  ├─ licenseText: Copyright © 2017 jsdnxx
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -3078,16 +3058,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright © 2017 jsdnxx
+│  ├─ copyright: Copyright © 2017 jsdnxx
+│  ├─ name: find-root
+│  └─ version: 1.1.0
 ├─ function-bind@1.1.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Raynos/function-bind
 │  ├─ publisher: Raynos
 │  ├─ email: raynos2@gmail.com
-│  ├─ name: function-bind
-│  ├─ version: 1.1.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/function-bind/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/function-bind
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/function-bind/LICENSE
 │  ├─ licenseText: Copyright (c) 2013 Raynos.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -3107,16 +3087,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2013 Raynos.
+│  ├─ copyright: Copyright (c) 2013 Raynos.
+│  ├─ name: function-bind
+│  └─ version: 1.1.2
 ├─ hasown@2.0.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/inspect-js/hasOwn
 │  ├─ publisher: Jordan Harband
 │  ├─ email: ljharb@gmail.com
-│  ├─ name: hasown
-│  ├─ version: 2.0.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/hasown/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/hasown
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/hasown/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Jordan Harband and contributors
@@ -3138,16 +3118,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Jordan Harband and contributors
+│  ├─ copyright: Copyright (c) Jordan Harband and contributors
+│  ├─ name: hasown
+│  └─ version: 2.0.2
 ├─ hoist-non-react-statics@3.3.2
 │  ├─ licenses: BSD-3-Clause
 │  ├─ repository: https://github.com/mridgway/hoist-non-react-statics
 │  ├─ publisher: Michael Ridgway
 │  ├─ email: mcridgway@gmail.com
-│  ├─ name: hoist-non-react-statics
-│  ├─ version: 3.3.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/hoist-non-react-statics/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/hoist-non-react-statics
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/hoist-non-react-statics/LICENSE.md
 │  ├─ licenseText: Software License Agreement (BSD License)
 ========================================
 
@@ -3177,17 +3157,16 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-│  └─ copyright: Copyright (c) 2015, Yahoo! Inc. All rights reserved.. ----------------------------------------------------
+│  ├─ copyright: Copyright (c) 2015, Yahoo! Inc. All rights reserved.. ----------------------------------------------------
+│  ├─ name: hoist-non-react-statics
+│  └─ version: 3.3.2
 ├─ import-fresh@3.3.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/import-fresh
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: https://sindresorhus.com
-│  ├─ name: import-fresh
-│  ├─ version: 3.3.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/import-fresh/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/import-fresh
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/import-fresh/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
@@ -3197,16 +3176,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+│  ├─ name: import-fresh
+│  └─ version: 3.3.1
 ├─ is-arrayish@0.2.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/qix-/node-is-arrayish
 │  ├─ publisher: Qix
-│  ├─ url: http://github.com/qix-
-│  ├─ name: is-arrayish
-│  ├─ version: 0.2.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/is-arrayish/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/is-arrayish
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/is-arrayish/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 JD Ballard
@@ -3228,16 +3206,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 JD Ballard
+│  ├─ copyright: Copyright (c) 2015 JD Ballard
+│  ├─ name: is-arrayish
+│  └─ version: 0.2.1
 ├─ is-arrayish@0.3.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/qix-/node-is-arrayish
 │  ├─ publisher: Qix
-│  ├─ url: http://github.com/qix-
-│  ├─ name: is-arrayish
-│  ├─ version: 0.3.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/simple-swizzle/node_modules/is-arrayish/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/simple-swizzle/node_modules/is-arrayish
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/simple-swizzle/node_modules/is-arrayish/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 JD Ballard
@@ -3259,16 +3236,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 JD Ballard
+│  ├─ copyright: Copyright (c) 2015 JD Ballard
+│  ├─ name: is-arrayish
+│  └─ version: 0.3.2
 ├─ is-core-module@2.16.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/inspect-js/is-core-module
 │  ├─ publisher: Jordan Harband
 │  ├─ email: ljharb@gmail.com
-│  ├─ name: is-core-module
-│  ├─ version: 2.16.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/is-core-module/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/is-core-module
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/is-core-module/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2014 Dave Justice
@@ -3289,14 +3266,14 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014 Dave Justice
+│  ├─ copyright: Copyright (c) 2014 Dave Justice
+│  ├─ name: is-core-module
+│  └─ version: 2.16.1
 ├─ isows@1.0.7
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/wevm/isows
-│  ├─ name: isows
-│  ├─ version: 1.0.7
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/isows/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/isows
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/isows/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2023-present weth, LLC
@@ -3318,15 +3295,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2023-present weth, LLC
+│  ├─ copyright: Copyright (c) 2023-present weth, LLC
+│  ├─ name: isows
+│  └─ version: 1.0.7
 ├─ js-tokens@4.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/lydell/js-tokens
 │  ├─ publisher: Simon Lydell
-│  ├─ name: js-tokens
-│  ├─ version: 4.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/js-tokens/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/js-tokens
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/js-tokens/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2014, 2015, 2016, 2017, 2018 Simon Lydell
@@ -3348,16 +3325,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2014, 2015, 2016, 2017, 2018 Simon Lydell
+│  ├─ copyright: Copyright (c) 2014, 2015, 2016, 2017, 2018 Simon Lydell
+│  ├─ name: js-tokens
+│  └─ version: 4.0.0
 ├─ jsesc@3.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/mathiasbynens/jsesc
 │  ├─ publisher: Mathias Bynens
-│  ├─ url: https://mathiasbynens.be/
-│  ├─ name: jsesc
-│  ├─ version: 3.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/jsesc/LICENSE-MIT.txt
 │  ├─ path: /ChefDeck/chefdeck/node_modules/jsesc
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/jsesc/LICENSE-MIT.txt
 │  ├─ licenseText: Copyright Mathias Bynens <https://mathiasbynens.be/>
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -3378,16 +3354,16 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright Mathias Bynens <https://mathiasbynens.be/>
+│  ├─ copyright: Copyright Mathias Bynens <https://mathiasbynens.be/>
+│  ├─ name: jsesc
+│  └─ version: 3.1.0
 ├─ json-parse-even-better-errors@2.3.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/npm/json-parse-even-better-errors
 │  ├─ publisher: Kat Marchán
 │  ├─ email: kzm@zkat.tech
-│  ├─ name: json-parse-even-better-errors
-│  ├─ version: 2.3.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/json-parse-even-better-errors/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/json-parse-even-better-errors
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/json-parse-even-better-errors/LICENSE.md
 │  ├─ licenseText: Copyright 2017 Kat Marchán
 Copyright npm, Inc.
 
@@ -3413,16 +3389,16 @@ DEALINGS IN THE SOFTWARE.
 
 This library is a fork of 'better-json-errors' by Kat Marchán, extended and
 distributed under the terms of the MIT license above.
-│  └─ copyright: Copyright 2017 Kat Marchán. Copyright npm, Inc.
+│  ├─ copyright: Copyright 2017 Kat Marchán. Copyright npm, Inc.
+│  ├─ name: json-parse-even-better-errors
+│  └─ version: 2.3.1
 ├─ lines-and-columns@1.2.4
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/eventualbuddha/lines-and-columns
 │  ├─ publisher: Brian Donovan
 │  ├─ email: brian@donovans.cc
-│  ├─ name: lines-and-columns
-│  ├─ version: 1.2.4
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/lines-and-columns/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/lines-and-columns
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/lines-and-columns/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 Brian Donovan
@@ -3444,16 +3420,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 Brian Donovan
+│  ├─ copyright: Copyright (c) 2015 Brian Donovan
+│  ├─ name: lines-and-columns
+│  └─ version: 1.2.4
 ├─ loose-envify@1.4.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/zertosh/loose-envify
 │  ├─ publisher: Andres Suarez
 │  ├─ email: zertosh@gmail.com
-│  ├─ name: loose-envify
-│  ├─ version: 1.4.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/loose-envify/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/loose-envify
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/loose-envify/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 Andres Suarez <zertosh@gmail.com>
@@ -3475,16 +3451,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 Andres Suarez <zertosh@gmail.com>
+│  ├─ copyright: Copyright (c) 2015 Andres Suarez <zertosh@gmail.com>
+│  ├─ name: loose-envify
+│  └─ version: 1.4.0
 ├─ memoize-one@6.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/alexreardon/memoize-one
 │  ├─ publisher: Alex Reardon
 │  ├─ email: alexreardon@gmail.com
-│  ├─ name: memoize-one
-│  ├─ version: 6.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/memoize-one/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/memoize-one
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/memoize-one/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2019 Alexander Reardon
@@ -3506,14 +3482,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2019 Alexander Reardon
+│  ├─ copyright: Copyright (c) 2019 Alexander Reardon
+│  ├─ name: memoize-one
+│  └─ version: 6.0.0
 ├─ ms@2.1.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/ms
-│  ├─ name: ms
-│  ├─ version: 2.1.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/ms/license.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/ms
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/ms/license.md
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2020 Vercel, Inc.
@@ -3535,16 +3511,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2020 Vercel, Inc.
+│  ├─ copyright: Copyright (c) 2020 Vercel, Inc.
+│  ├─ name: ms
+│  └─ version: 2.1.3
 ├─ nanoid@3.3.11
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/ai/nanoid
 │  ├─ publisher: Andrey Sitnik
 │  ├─ email: andrey@sitnik.ru
-│  ├─ name: nanoid
-│  ├─ version: 3.3.11
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/nanoid/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/nanoid
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/nanoid/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright 2017 Andrey Sitnik <andrey@sitnik.ru>
@@ -3565,14 +3541,14 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright 2017 Andrey Sitnik <andrey@sitnik.ru>
+│  ├─ copyright: Copyright 2017 Andrey Sitnik <andrey@sitnik.ru>
+│  ├─ name: nanoid
+│  └─ version: 3.3.11
 ├─ next@15.5.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/next.js
-│  ├─ name: next
-│  ├─ version: 15.5.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/next/license.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/next
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/next/license.md
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2025 Vercel, Inc.
@@ -3594,17 +3570,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2025 Vercel, Inc.
+│  ├─ copyright: Copyright (c) 2025 Vercel, Inc.
+│  ├─ name: next
+│  └─ version: 15.5.3
 ├─ object-assign@4.1.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/object-assign
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: sindresorhus.com
-│  ├─ name: object-assign
-│  ├─ version: 4.1.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/object-assign/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/object-assign
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/object-assign/license
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -3626,17 +3601,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ name: object-assign
+│  └─ version: 4.1.1
 ├─ parent-module@1.0.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/parent-module
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: sindresorhus.com
-│  ├─ name: parent-module
-│  ├─ version: 1.0.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/parent-module/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/parent-module
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/parent-module/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -3646,17 +3620,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ name: parent-module
+│  └─ version: 1.0.1
 ├─ parse-json@5.2.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/parse-json
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: https://sindresorhus.com
-│  ├─ name: parse-json
-│  ├─ version: 5.2.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/parse-json/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/parse-json
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/parse-json/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
@@ -3666,16 +3639,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
+│  ├─ name: parse-json
+│  └─ version: 5.2.0
 ├─ path-parse@1.0.7
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/jbgutierrez/path-parse
 │  ├─ publisher: Javier Blanco
 │  ├─ email: http://jbgutierrez.info
-│  ├─ name: path-parse
-│  ├─ version: 1.0.7
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/path-parse/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/path-parse
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/path-parse/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 Javier Blanco
@@ -3697,17 +3670,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 Javier Blanco
+│  ├─ copyright: Copyright (c) 2015 Javier Blanco
+│  ├─ name: path-parse
+│  └─ version: 1.0.7
 ├─ path-type@4.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/path-type
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: sindresorhus.com
-│  ├─ name: path-type
-│  ├─ version: 4.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/path-type/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/path-type
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/path-type/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -3717,15 +3689,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ name: path-type
+│  └─ version: 4.0.0
 ├─ picocolors@1.1.1
 │  ├─ licenses: ISC
 │  ├─ repository: https://github.com/alexeyraspopov/picocolors
 │  ├─ publisher: Alexey Raspopov
-│  ├─ name: picocolors
-│  ├─ version: 1.1.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/picocolors/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/picocolors
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/picocolors/LICENSE
 │  ├─ licenseText: ISC License
 
 Copyright (c) 2021-2024 Oleksii Raspopov, Kostiantyn Denysov, Anton Verinov
@@ -3741,16 +3713,16 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-│  └─ copyright: Copyright (c) 2021-2024 Oleksii Raspopov, Kostiantyn Denysov, Anton Verinov
+│  ├─ copyright: Copyright (c) 2021-2024 Oleksii Raspopov, Kostiantyn Denysov, Anton Verinov
+│  ├─ name: picocolors
+│  └─ version: 1.1.1
 ├─ postcss@8.4.31
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/postcss/postcss
 │  ├─ publisher: Andrey Sitnik
 │  ├─ email: andrey@sitnik.ru
-│  ├─ name: postcss
-│  ├─ version: 8.4.31
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/next/node_modules/postcss/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/next/node_modules/postcss
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/next/node_modules/postcss/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
@@ -3771,14 +3743,14 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
+│  ├─ copyright: Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
+│  ├─ name: postcss
+│  └─ version: 8.4.31
 ├─ prop-types@15.8.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/facebook/prop-types
-│  ├─ name: prop-types
-│  ├─ version: 15.8.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/prop-types/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/prop-types
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/prop-types/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2013-present, Facebook, Inc.
@@ -3800,14 +3772,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2013-present, Facebook, Inc.
+│  ├─ copyright: Copyright (c) 2013-present, Facebook, Inc.
+│  ├─ name: prop-types
+│  └─ version: 15.8.1
 ├─ react-dom@19.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/facebook/react
-│  ├─ name: react-dom
-│  ├─ version: 19.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-dom/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/react-dom
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-dom/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -3829,14 +3801,127 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ name: react-dom
+│  └─ version: 19.1.0
+├─ react-icons@5.5.0
+│  ├─ licenses: MIT
+│  ├─ repository: https://github.com/react-icons/react-icons
+│  ├─ publisher: Goran Gajic
+│  ├─ path: /ChefDeck/chefdeck/node_modules/react-icons
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-icons/LICENSE
+│  ├─ licenseText: Copyright 2018 kamijin_fanta <kamijin@live.jp>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+Icons are taken from the other projects
+so please check each project licences accordingly.
+
+Circum Icons - https://circumicons.com/
+License: MPL-2.0 license https://github.com/Klarr-Agency/Circum-Icons/blob/main/LICENSE
+
+Font Awesome 5 - https://fontawesome.com/
+License: CC BY 4.0 License https://creativecommons.org/licenses/by/4.0/
+
+Font Awesome 6 - https://fontawesome.com/
+License: CC BY 4.0 License https://creativecommons.org/licenses/by/4.0/
+
+Ionicons 4 - https://ionicons.com/
+License: MIT https://github.com/ionic-team/ionicons/blob/master/LICENSE
+
+Ionicons 5 - https://ionicons.com/
+License: MIT https://github.com/ionic-team/ionicons/blob/master/LICENSE
+
+Material Design icons - http://google.github.io/material-design-icons/
+License: Apache License Version 2.0 https://github.com/google/material-design-icons/blob/master/LICENSE
+
+Typicons - http://s-ings.com/typicons/
+License: CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+
+Github Octicons icons - https://octicons.github.com/
+License: MIT https://github.com/primer/octicons/blob/master/LICENSE
+
+Feather - https://feathericons.com/
+License: MIT https://github.com/feathericons/feather/blob/master/LICENSE
+
+Lucide - https://lucide.dev/
+License: ISC https://github.com/lucide-icons/lucide/blob/main/LICENSE
+
+Game Icons - https://game-icons.net/
+License: CC BY 3.0 https://creativecommons.org/licenses/by/3.0/
+
+Weather Icons - https://erikflowers.github.io/weather-icons/
+License: SIL OFL 1.1 http://scripts.sil.org/OFL
+
+Devicons - https://vorillaz.github.io/devicons/
+License: MIT https://opensource.org/licenses/MIT
+
+Ant Design Icons - https://github.com/ant-design/ant-design-icons
+License: MIT https://opensource.org/licenses/MIT
+
+Bootstrap Icons - https://github.com/twbs/icons
+License: MIT https://opensource.org/licenses/MIT
+
+Remix Icon - https://github.com/Remix-Design/RemixIcon
+License: Apache License Version 2.0 http://www.apache.org/licenses/
+
+Flat Color Icons - https://github.com/icons8/flat-color-icons
+License: MIT https://opensource.org/licenses/MIT
+
+Grommet-Icons - https://github.com/grommet/grommet-icons
+License: Apache License Version 2.0 http://www.apache.org/licenses/
+
+Heroicons - https://github.com/tailwindlabs/heroicons
+License: MIT https://opensource.org/licenses/MIT
+
+Heroicons 2 - https://github.com/tailwindlabs/heroicons
+License: MIT https://opensource.org/licenses/MIT
+
+Simple Icons - https://simpleicons.org/
+License: CC0 1.0 Universal https://creativecommons.org/publicdomain/zero/1.0/
+
+Simple Line Icons - https://thesabbir.github.io/simple-line-icons/
+License: MIT https://opensource.org/licenses/MIT
+
+IcoMoon Free - https://github.com/Keyamoon/IcoMoon-Free
+License: CC BY 4.0 License https://github.com/Keyamoon/IcoMoon-Free/blob/master/License.txt
+
+BoxIcons - https://github.com/atisawd/boxicons
+License: MIT https://github.com/atisawd/boxicons/blob/master/LICENSE
+
+css.gg - https://github.com/astrit/css.gg
+License: MIT https://opensource.org/licenses/MIT
+
+VS Code Icons - https://github.com/microsoft/vscode-codicons
+License: CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
+
+Tabler Icons - https://github.com/tabler/tabler-icons
+License: MIT https://opensource.org/licenses/MIT
+
+Themify Icons - https://github.com/lykmapipo/themify-icons
+License: MIT https://github.com/thecreation/standard-icons/blob/master/modules/themify-icons/LICENSE
+
+Radix Icons - https://icons.radix-ui.com
+License: MIT https://github.com/radix-ui/icons/blob/master/LICENSE
+
+Phosphor Icons - https://github.com/phosphor-icons/core
+License: MIT https://github.com/phosphor-icons/core/blob/main/LICENSE
+
+Icons8 Line Awesome - https://icons8.com/line-awesome
+License: MIT https://github.com/icons8/line-awesome/blob/master/LICENSE.md
+│  ├─ copyright: Copyright 2018 kamijin_fanta <kamijin@live.jp>
+│  ├─ name: react-icons
+│  └─ version: 5.5.0
 ├─ react-is@16.13.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/facebook/react
-│  ├─ name: react-is
-│  ├─ version: 16.13.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-is/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/react-is
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-is/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Facebook, Inc. and its affiliates.
@@ -3858,15 +3943,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Facebook, Inc. and its affiliates.
+│  ├─ copyright: Copyright (c) Facebook, Inc. and its affiliates.
+│  ├─ name: react-is
+│  └─ version: 16.13.1
 ├─ react-select@5.10.2
 │  ├─ licenses: MIT
-│  ├─ repository: https://github.com/JedWatson/react-select/tree/master/packages/react-select
+│  ├─ repository: https://github.com/JedWatson/react-select.git#master
 │  ├─ publisher: Jed Watson
-│  ├─ name: react-select
-│  ├─ version: 5.10.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-select/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/react-select
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-select/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2022 Jed Watson
@@ -3888,14 +3973,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2022 Jed Watson
+│  ├─ copyright: Copyright (c) 2022 Jed Watson
+│  ├─ name: react-select
+│  └─ version: 5.10.2
 ├─ react-transition-group@4.4.5
 │  ├─ licenses: BSD-3-Clause
 │  ├─ repository: https://github.com/reactjs/react-transition-group
-│  ├─ name: react-transition-group
-│  ├─ version: 4.4.5
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-transition-group/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/react-transition-group
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react-transition-group/LICENSE
 │  ├─ licenseText: BSD 3-Clause License
 
 Copyright (c) 2018, React Community
@@ -3926,14 +4011,14 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-│  └─ copyright: Copyright (c) 2018, React Community. Forked from React (https://github.com/facebook/react) Copyright 2013-present, Facebook, Inc.. All rights reserved.
+│  ├─ copyright: Copyright (c) 2018, React Community. Forked from React (https://github.com/facebook/react) Copyright 2013-present, Facebook, Inc.. All rights reserved.
+│  ├─ name: react-transition-group
+│  └─ version: 4.4.5
 ├─ react@19.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/facebook/react
-│  ├─ name: react
-│  ├─ version: 19.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/react
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/react/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -3955,17 +4040,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ name: react
+│  └─ version: 19.1.0
 ├─ resolve-from@4.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/sindresorhus/resolve-from
 │  ├─ publisher: Sindre Sorhus
 │  ├─ email: sindresorhus@gmail.com
-│  ├─ url: sindresorhus.com
-│  ├─ name: resolve-from
-│  ├─ version: 4.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/resolve-from/license
 │  ├─ path: /ChefDeck/chefdeck/node_modules/resolve-from
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/resolve-from/license
 │  ├─ licenseText: MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -3975,17 +4059,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ copyright: Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+│  ├─ name: resolve-from
+│  └─ version: 4.0.0
 ├─ resolve@1.22.10
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/browserify/resolve
 │  ├─ publisher: James Halliday
 │  ├─ email: mail@substack.net
-│  ├─ url: http://substack.net
-│  ├─ name: resolve
-│  ├─ version: 1.22.10
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/resolve/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/resolve
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/resolve/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2012 James Halliday
@@ -4007,14 +4090,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2012 James Halliday
+│  ├─ copyright: Copyright (c) 2012 James Halliday
+│  ├─ name: resolve
+│  └─ version: 1.22.10
 ├─ scheduler@0.26.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/facebook/react
-│  ├─ name: scheduler
-│  ├─ version: 0.26.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/scheduler/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/scheduler
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/scheduler/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -4036,15 +4119,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ name: scheduler
+│  └─ version: 0.26.0
 ├─ semver@7.7.2
 │  ├─ licenses: ISC
 │  ├─ repository: https://github.com/npm/node-semver
 │  ├─ publisher: GitHub Inc.
-│  ├─ name: semver
-│  ├─ version: 7.7.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/semver/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/semver
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/semver/LICENSE
 │  ├─ licenseText: The ISC License
 
 Copyright (c) Isaac Z. Schlueter and Contributors
@@ -4060,17 +4143,17 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-│  └─ copyright: Copyright (c) Isaac Z. Schlueter and Contributors
+│  ├─ copyright: Copyright (c) Isaac Z. Schlueter and Contributors
+│  ├─ name: semver
+│  └─ version: 7.7.2
 ├─ sharp@0.34.3
 │  ├─ licenses: Apache-2.0
 │  ├─ repository: https://github.com/lovell/sharp
 │  ├─ publisher: Lovell Fuller
 │  ├─ email: npm@lovell.info
-│  ├─ name: sharp
-│  ├─ version: 0.34.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/sharp/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/sharp
-│  └─ licenseText: Apache License
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/sharp/LICENSE
+│  ├─ licenseText: Apache License
 Version 2.0, January 2004
 http://www.apache.org/licenses/
 
@@ -4261,15 +4344,14 @@ third-party archives.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+│  ├─ name: sharp
+│  └─ version: 0.34.3
 ├─ simple-swizzle@0.2.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/qix-/node-simple-swizzle
 │  ├─ publisher: Qix
-│  ├─ url: http://github.com/qix-
-│  ├─ name: simple-swizzle
-│  ├─ version: 0.2.2
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/simple-swizzle/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/simple-swizzle
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/simple-swizzle/LICENSE
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015 Josh Junon
@@ -4291,17 +4373,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015 Josh Junon
+│  ├─ copyright: Copyright (c) 2015 Josh Junon
+│  ├─ name: simple-swizzle
+│  └─ version: 0.2.2
 ├─ source-map-js@1.2.1
 │  ├─ licenses: BSD-3-Clause
 │  ├─ repository: https://github.com/7rulnik/source-map-js
 │  ├─ publisher: Valentin 7rulnik Semirulnik
 │  ├─ email: v7rulnik@gmail.com
-│  ├─ name: source-map-js
-│  ├─ version: 1.2.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/source-map-js/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/source-map-js
-│  └─ licenseText: Copyright (c) 2009-2011, Mozilla Foundation and contributors
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/source-map-js/LICENSE
+│  ├─ licenseText: Copyright (c) 2009-2011, Mozilla Foundation and contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -4328,16 +4410,16 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+│  ├─ name: source-map-js
+│  └─ version: 1.2.1
 ├─ source-map@0.5.7
 │  ├─ licenses: BSD-3-Clause
 │  ├─ repository: https://github.com/mozilla/source-map
 │  ├─ publisher: Nick Fitzgerald
 │  ├─ email: nfitzgerald@mozilla.com
-│  ├─ name: source-map
-│  ├─ version: 0.5.7
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/source-map/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/source-map
-│  └─ licenseText: Copyright (c) 2009-2011, Mozilla Foundation and contributors
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/source-map/LICENSE
+│  ├─ licenseText: Copyright (c) 2009-2011, Mozilla Foundation and contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -4364,13 +4446,13 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+│  ├─ name: source-map
+│  └─ version: 0.5.7
 ├─ styled-jsx@5.1.6
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/styled-jsx
-│  ├─ name: styled-jsx
-│  ├─ version: 5.1.6
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/styled-jsx/license.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/styled-jsx
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/styled-jsx/license.md
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2016-present Vercel, Inc.
@@ -4392,16 +4474,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2016-present Vercel, Inc.
+│  ├─ copyright: Copyright (c) 2016-present Vercel, Inc.
+│  ├─ name: styled-jsx
+│  └─ version: 5.1.6
 ├─ stylis@4.2.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/thysultan/stylis.js
 │  ├─ publisher: Sultan Tarimo
 │  ├─ email: sultantarimo@me.com
-│  ├─ name: stylis
-│  ├─ version: 4.2.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/stylis/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/stylis
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/stylis/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2016-present Sultan Tarimo
@@ -4423,16 +4505,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2016-present Sultan Tarimo
+│  ├─ copyright: Copyright (c) 2016-present Sultan Tarimo
+│  ├─ name: stylis
+│  └─ version: 4.2.0
 ├─ supports-preserve-symlinks-flag@1.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/inspect-js/node-supports-preserve-symlinks-flag
 │  ├─ publisher: Jordan Harband
 │  ├─ email: ljharb@gmail.com
-│  ├─ name: supports-preserve-symlinks-flag
-│  ├─ version: 1.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/supports-preserve-symlinks-flag/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/supports-preserve-symlinks-flag
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/supports-preserve-symlinks-flag/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2022 Inspect JS
@@ -4454,14 +4536,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2022 Inspect JS
+│  ├─ copyright: Copyright (c) 2022 Inspect JS
+│  ├─ name: supports-preserve-symlinks-flag
+│  └─ version: 1.0.0
 ├─ swr@2.3.6
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/vercel/swr
-│  ├─ name: swr
-│  ├─ version: 2.3.6
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/swr/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/swr
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/swr/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) 2023 Vercel, Inc.
@@ -4483,24 +4565,24 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) 2023 Vercel, Inc.
+│  ├─ copyright: Copyright (c) 2023 Vercel, Inc.
+│  ├─ name: swr
+│  └─ version: 2.3.6
 ├─ tr46@0.0.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Sebmaster/tr46.js
 │  ├─ publisher: Sebastian Mayr
 │  ├─ email: npm@smayr.name
+│  ├─ path: /ChefDeck/chefdeck/node_modules/tr46
 │  ├─ name: tr46
 │  ├─ version: 0.0.3
-│  ├─ licenseFile: 
-│  └─ path: /ChefDeck/chefdeck/node_modules/tr46
+│  └─ licenseFile: 
 ├─ tslib@2.8.1
 │  ├─ licenses: 0BSD
 │  ├─ repository: https://github.com/Microsoft/tslib
 │  ├─ publisher: Microsoft Corp.
-│  ├─ name: tslib
-│  ├─ version: 2.8.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/tslib/LICENSE.txt
 │  ├─ path: /ChefDeck/chefdeck/node_modules/tslib
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/tslib/LICENSE.txt
 │  ├─ licenseText: Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -4513,14 +4595,14 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
-│  └─ copyright: Copyright (c) Microsoft Corporation.
+│  ├─ copyright: Copyright (c) Microsoft Corporation.
+│  ├─ name: tslib
+│  └─ version: 2.8.1
 ├─ undici-types@6.21.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/nodejs/undici
-│  ├─ name: undici-types
-│  ├─ version: 6.21.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/undici-types/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/undici-types
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/undici-types/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Matteo Collina and Undici contributors
@@ -4542,14 +4624,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Matteo Collina and Undici contributors
+│  ├─ copyright: Copyright (c) Matteo Collina and Undici contributors
+│  ├─ name: undici-types
+│  └─ version: 6.21.0
 ├─ use-isomorphic-layout-effect@1.2.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Andarist/use-isomorphic-layout-effect
-│  ├─ name: use-isomorphic-layout-effect
-│  ├─ version: 1.2.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/use-isomorphic-layout-effect/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/use-isomorphic-layout-effect
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/use-isomorphic-layout-effect/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Mateusz Burzyński
@@ -4571,14 +4653,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Mateusz Burzyński
+│  ├─ copyright: Copyright (c) Mateusz Burzyński
+│  ├─ name: use-isomorphic-layout-effect
+│  └─ version: 1.2.1
 ├─ use-sync-external-store@1.6.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/facebook/react
-│  ├─ name: use-sync-external-store
-│  ├─ version: 1.6.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/use-sync-external-store/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/use-sync-external-store
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/use-sync-external-store/LICENSE
 │  ├─ licenseText: MIT License
 
 Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -4600,14 +4682,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-│  └─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+│  ├─ name: use-sync-external-store
+│  └─ version: 1.6.0
 ├─ uuid@11.1.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/uuidjs/uuid
-│  ├─ name: uuid
-│  ├─ version: 11.1.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/uuid/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/uuid
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/uuid/LICENSE.md
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2010-2020 Robert Kieffer and other contributors
@@ -4617,17 +4699,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2010-2020 Robert Kieffer and other contributors
+│  ├─ copyright: Copyright (c) 2010-2020 Robert Kieffer and other contributors
+│  ├─ name: uuid
+│  └─ version: 11.1.0
 ├─ webidl-conversions@3.0.1
 │  ├─ licenses: BSD-2-Clause
 │  ├─ repository: https://github.com/jsdom/webidl-conversions
 │  ├─ publisher: Domenic Denicola
 │  ├─ email: d@domenic.me
-│  ├─ url: https://domenic.me/
-│  ├─ name: webidl-conversions
-│  ├─ version: 3.0.1
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/webidl-conversions/LICENSE.md
 │  ├─ path: /ChefDeck/chefdeck/node_modules/webidl-conversions
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/webidl-conversions/LICENSE.md
 │  ├─ licenseText: # The BSD 2-Clause License
 
 Copyright (c) 2014, Domenic Denicola
@@ -4640,16 +4721,16 @@ Redistribution and use in source and binary forms, with or without modification,
 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-│  └─ copyright: Copyright (c) 2014, Domenic Denicola. All rights reserved.
+│  ├─ copyright: Copyright (c) 2014, Domenic Denicola. All rights reserved.
+│  ├─ name: webidl-conversions
+│  └─ version: 3.0.1
 ├─ whatwg-url@5.0.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/jsdom/whatwg-url
 │  ├─ publisher: Sebastian Mayr
 │  ├─ email: github@smayr.name
-│  ├─ name: whatwg-url
-│  ├─ version: 5.0.0
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/whatwg-url/LICENSE.txt
 │  ├─ path: /ChefDeck/chefdeck/node_modules/whatwg-url
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/whatwg-url/LICENSE.txt
 │  ├─ licenseText: The MIT License (MIT)
 
 Copyright (c) 2015–2016 Sebastian Mayr
@@ -4671,17 +4752,16 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2015–2016 Sebastian Mayr
+│  ├─ copyright: Copyright (c) 2015–2016 Sebastian Mayr
+│  ├─ name: whatwg-url
+│  └─ version: 5.0.0
 ├─ ws@8.18.3
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/websockets/ws
 │  ├─ publisher: Einar Otto Stangvik
 │  ├─ email: einaros@gmail.com
-│  ├─ url: http://2x.io
-│  ├─ name: ws
-│  ├─ version: 8.18.3
-│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/ws/LICENSE
 │  ├─ path: /ChefDeck/chefdeck/node_modules/ws
+│  ├─ licenseFile: /ChefDeck/chefdeck/node_modules/ws/LICENSE
 │  ├─ licenseText: Copyright (c) 2011 Einar Otto Stangvik <einaros@gmail.com>
 Copyright (c) 2013 Arnout Kazemier and contributors
 Copyright (c) 2016 Luigi Pinca and contributors
@@ -4702,16 +4782,16 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-│  └─ copyright: Copyright (c) 2011 Einar Otto Stangvik <einaros@gmail.com>. Copyright (c) 2013 Arnout Kazemier and contributors. Copyright (c) 2016 Luigi Pinca and contributors
+│  ├─ copyright: Copyright (c) 2011 Einar Otto Stangvik <einaros@gmail.com>. Copyright (c) 2013 Arnout Kazemier and contributors. Copyright (c) 2016 Luigi Pinca and contributors
+│  ├─ name: ws
+│  └─ version: 8.18.3
 └─ yaml@1.10.2
    ├─ licenses: ISC
    ├─ repository: https://github.com/eemeli/yaml
    ├─ publisher: Eemeli Aro
    ├─ email: eemeli@gmail.com
-   ├─ name: yaml
-   ├─ version: 1.10.2
-   ├─ licenseFile: /ChefDeck/chefdeck/node_modules/yaml/LICENSE
    ├─ path: /ChefDeck/chefdeck/node_modules/yaml
+   ├─ licenseFile: /ChefDeck/chefdeck/node_modules/yaml/LICENSE
    ├─ licenseText: Copyright 2018 Eemeli Aro <eemeli@gmail.com>
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
@@ -4725,5 +4805,13 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
 OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
-   └─ copyright: Copyright 2018 Eemeli Aro <eemeli@gmail.com>
+   ├─ copyright: Copyright 2018 Eemeli Aro <eemeli@gmail.com>
+   ├─ name: yaml
+   └─ version: 1.10.2
 
+
+--------------------------------------------------------------------------------
+react-icons (5.5.0)
+License: MIT
+Repository: https://github.com/react-icons/react-icons
+--------------------------------------------------------------------------------
