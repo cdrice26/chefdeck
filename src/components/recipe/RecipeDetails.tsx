@@ -34,11 +34,11 @@ const RecipeDetails = ({ recipe, isLoading, error }: RecipeDetailsProps) =>
     <div>Error Loading Recipe</div>
   ) : (
     <>
-      <h1 className="text-4xl font-bold flex flex-row flex-wrap justify-start">
-        {recipe?.title}
+      <h1 className="text-4xl font-bold">{recipe?.title}</h1>
+      <ul className="flex flex-row flex-wrap justify-start">
         {(recipe?.tags?.length ?? 0) > 0 &&
           recipe?.tags?.map((tag, index) => (
-            <div
+            <li
               className={`ml-2 px-4 py-1 rounded-full min-w-10 text-sm flex items-center justify-center ${getButtonColorClass(
                 recipe?.color,
                 false
@@ -46,9 +46,10 @@ const RecipeDetails = ({ recipe, isLoading, error }: RecipeDetailsProps) =>
               key={index}
             >
               {tag}
-            </div>
+            </li>
           ))}
-      </h1>
+      </ul>
+
       <ul className="flex flex-row items-center justify-start gap-2">
         <li>
           <strong>Yield:</strong> {recipe?.servings} Servings

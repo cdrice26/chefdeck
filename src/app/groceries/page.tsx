@@ -17,7 +17,8 @@ const GroceriesPage = () => {
 
   const handlePrint = usePrinter(
     addNotification,
-    <GroceryList groceries={groceries} />
+    <GroceryList groceries={groceries} />,
+    'Print Groceries'
   );
 
   return (

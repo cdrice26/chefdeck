@@ -62,17 +62,15 @@ const printComponent = (component: React.ReactNode, title: string): void => {
 const usePrinter =
   (
     addNotification: (message: string, type: NotificationKind) => void,
-    component: React.ReactNode
+    component: React.ReactNode,
+    title: string
   ) =>
   (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      printComponent(component, 'Print Groceries');
+      printComponent(component, title);
     } catch (e) {
-      addNotification(
-        "Couldn't print groceries, please try again later.",
-        'error'
-      );
+      addNotification("Couldn't print, please try again later.", 'error');
       return;
     }
   };
