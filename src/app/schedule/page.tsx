@@ -1,151 +1,24 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import useIsDark from '@/hooks/useIsDark';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import useScheduledRecipes from '@/hooks/fetchers/useScheduledRecipes';
 import { useNotification } from '@/context/NotificationContext';
-import { ScheduleDisplay } from '@/types/Schedule';
-import { getDatesBetween, getDaysInMonth, MONTHS } from '@/utils/dateUtils';
-import { getButtonColorClass, isValidColor } from '@/utils/styles/colorUtils';
-import getSelectStyles from '@/utils/styles/selectStyles';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { IoChevronBack, IoChevronForward, IoHome } from 'react-icons/io5';
+import Schedule from '@/components/pages/Schedule';
+import useScheduleActions from '@/hooks/useScheduleActions';
 
-const Select = dynamic(() => import('react-select'), { ssr: false });
-
-const Schedule = () => {
+const SchedulePage = () => {
   const router = useRouter();
   useRequireAuth(router.replace);
   const { addNotification } = useNotification();
-  const { scheduledRecipes, setStartDate, setEndDate, startDate, endDate } =
-    useScheduledRecipes(addNotification);
-
+  const data = useScheduledRecipes(addNotification);
   const isDark = useIsDark();
-
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [yearInput, setYearInput] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth());
-
-  useEffect(() => {
-    setStartDate(new Date(year, month, 1));
-    setEndDate(new Date(year, month, getDaysInMonth(year, month)));
-  }, [year, month]);
-
-  useEffect(() => {
-    if (yearInput < 10000 && yearInput >= 1900 && !isNaN(yearInput)) {
-      setYear(yearInput);
-    }
-  }, [yearInput]);
-
-  const recipesOnDates = useMemo(() => {
-    const daysBefore = startDate.getDay();
-    const daysAfter = 6 - endDate.getDay();
-    const daysInMonth = getDatesBetween(startDate, endDate);
-
-    return [
-      ...new Array(daysBefore)
-        .fill(null)
-        .map(() => ({ date: null, recipes: [] })),
-      ...daysInMonth.map((date) => ({
-        date,
-        recipes: scheduledRecipes.filter((recipe) => {
-          const s = recipe.scheduledDate;
-          return (
-            s.getFullYear() === date.getFullYear() &&
-            s.getMonth() === date.getMonth() &&
-            s.getDate() === date.getDate()
-          );
-        })
-      })),
-      ...new Array(daysAfter)
-        .fill(null)
-        .map(() => ({ date: null, recipes: [] }))
-    ];
-  }, [scheduledRecipes, startDate, endDate]);
-
-  const handleButtonClick = (id: string) => {
-    router.push(`/recipe/${id}`);
-  };
+  const { handleButtonClick } = useScheduleActions(router.push);
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <h1 className="p-2 flex flex-row items-center justify-center gap-2 relative">
-        <button
-          className="h-full px-3"
-          onClick={() => {
-            setYearInput(new Date().getFullYear());
-            setMonth(new Date().getMonth());
-          }}
-        >
-          <IoHome size={20} />
-        </button>
-        <button
-          className="h-full px-3"
-          onClick={() => {
-            if (month === 0) {
-              setMonth(11);
-              setYearInput((oldYear) => oldYear - 1);
-            } else setMonth((oldMonth) => oldMonth - 1);
-          }}
-        >
-          <IoChevronBack size={20} />
-        </button>
-        <Select
-          options={MONTHS}
-          value={MONTHS.find((mon) => mon.value === month)}
-          onChange={(option) => setMonth((option as { value: number })?.value)}
-          className="box-border h-full flex-grow max-w-100"
-          styles={getSelectStyles(isDark)}
-          isSearchable={false}
-          isClearable={false}
-        />
-        <input
-          type="number"
-          value={yearInput}
-          onChange={(e: React.FormEvent<HTMLInputElement>) =>
-            setYearInput(parseInt(e?.currentTarget?.value))
-          }
-          onBlur={() => setYearInput(year)}
-          min={1900}
-          max={9999}
-          className="rounded-md border-gray-300 dark:border-white dark:bg-[#333] border-1 h-full p-1 flex-grow max-w-50"
-        />
-        <button
-          className="h-full px-3"
-          onClick={() => {
-            if (month === 11) {
-              setMonth(0);
-              setYearInput((oldYear) => oldYear + 1);
-            } else setMonth((oldMonth) => oldMonth + 1);
-          }}
-        >
-          <IoChevronForward size={20} />
-        </button>
-      </h1>
-      <div className="grid grid-cols-7 w-full flex-grow">
-        {recipesOnDates.map((date, index) => (
-          <div key={index} className="w-full h-full p-1 overflow-y-auto">
-            <h1>{date?.date?.getDate() ?? ''}</h1>
-            {date.recipes.map((recipe: ScheduleDisplay, index) => (
-              <button
-                key={index}
-                className={`${getButtonColorClass(
-                  isValidColor(recipe?.recipeColor)
-                    ? recipe?.recipeColor
-                    : 'white'
-                )} w-full p-1 rounded-lg text-left shadow-md text-xs md:text-lg hyphens-auto`}
-                onClick={() => handleButtonClick(recipe?.recipeId)}
-              >
-                {recipe?.recipeTitle}
-              </button>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
+    <Schedule {...data} isDark={isDark} handleButtonClick={handleButtonClick} />
   );
 };
 
-export default Schedule;
+export default SchedulePage;
