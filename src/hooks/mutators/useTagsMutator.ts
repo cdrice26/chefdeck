@@ -5,6 +5,14 @@ export interface TagsMutator {
   handleDelete: (tagValue: string) => Promise<void>;
 }
 
+/**
+ * Hook for handling tag mutations.
+ *
+ * @param addNotification - Function to add a notification
+ * @param refetch - Function to refetch data
+ * @returns An object with the following properties:
+ * - handleDelete: Function to handle tag deletion
+ */
 const useTagsMutator = (
   addNotification: (message: string, type: NotificationKind) => void,
   refetch: () => void

@@ -6,6 +6,14 @@ export interface LoginMutator {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
+/**
+ * Hook for handling login mutations.
+ *
+ * @param redirect - Function to redirect to new URL
+ * @returns An object with the following properties:
+ * - error: string | null - Error message or null if no error
+ * - handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void> - Function to handle form submission
+ */
 const useLoginMutator = (redirect: (url: string) => void) => {
   const [error, setError] = useState<string | null>(null);
 

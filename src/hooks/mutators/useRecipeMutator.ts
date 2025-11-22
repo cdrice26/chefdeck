@@ -7,6 +7,17 @@ export interface RecipeMutator {
   handleSchedule: () => void;
 }
 
+/**
+ * Hook for handling recipe mutations.
+ *
+ * @param redirect - Function to redirect to new URL
+ * @param addNotification - Function to add a notification
+ * @param recipeId - ID of the recipe
+ * @returns An object with the following properties:
+ * - handleDelete: Function to handle recipe deletion
+ * - handleEdit: Function to handle recipe editing
+ * - handleSchedule: Function to handle recipe scheduling
+ */
 const useRecipeMutator = (
   redirect: (url: string) => void,
   addNotification: (message: string, type: NotificationKind) => void,
