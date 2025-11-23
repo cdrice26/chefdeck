@@ -10,6 +10,9 @@ You'll need the repo cloned. You'll then need to configure the following environ
 - `SUPABASE_ANON_KEY` - Your supabase anon key.
 - `SUPABASE_SERVICE_ROLE_KEY` - Your supabase service role key. Used only for account deletion.
 - `NEXT_PUBLIC_SITE_URL` - The URL of your website. This will be http://localhost:3000 in development.
+- `PYTHON_API_URL` - URL of the Python API, used mostly for generating grocery lists. If you don't want to use this feature, you don't need it.
+
+You'll also need the [Python API](https://github.com/cdrice26/chefdeck-python-api) cloned and running if you're using the grocery list feature.
 
 ## Running a Dev Server
 
