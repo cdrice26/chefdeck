@@ -1,0 +1,40 @@
+{
+  "name": "chefdeck-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tauri desktop shell with a Vite + React frontend for ChefDeck",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"tauri dev --no-update-notifier\"",
+    "dev:vite": "vite",
+    "dev:tauri": "tauri dev",
+    "preview": "vite preview",
+    "build": "vite build && tauri build",
+    "tauri:build": "tauri build",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tauri-apps/api": "^2.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@tauri-apps/cli": "^2.0.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "prettier": "^3.0.0",
+    "concurrently": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true
+    }
+  }
+}

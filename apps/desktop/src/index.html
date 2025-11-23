@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChefDeck — Desktop</title>
+
+    <!-- Recommended for Tauri apps when loading resources from the filesystem -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' data:;">
+
+    <!-- Theme color for some desktop environments / taskbars -->
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <!-- Fallback favicon (optional) -->
+    <link rel="icon" href="./assets/icon.png" type="image/png" />
+
+    <!-- Note:
+         - Vite will handle module resolution for `/main.tsx` when the dev server is running.
+         - This file is placed in `src/` (the Vite root). The entry module referenced below is `main.tsx`.
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <noscript>
+      This application requires JavaScript. Please enable JavaScript in your browser or run the desktop build.
+    </noscript>
+
+    <script type="module" src="/main.tsx"></script>
+  </body>
+</html>
