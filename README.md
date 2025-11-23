@@ -1,15 +1,16 @@
 # ChefDeck — Monorepo (Turborepo)
 
-This repository contains ChefDeck as a monorepo. I moved the existing Next.js web app into `apps/web` and added a minimal Tauri + Vite + React desktop renderer scaffold in `apps/desktop`. This README explains the repository layout, how to run each app for development, and what you must do to finish the desktop/native setup.
+> Note: This README is a mostly temporary, mostly AI-generated memo for use in initial setup of the desktop app. It will be replaced later.
+
+This repository contains ChefDeck as a monorepo. The Next.js web app is in `apps/web` and a minimal Tauri + Vite + React desktop renderer scaffold is in `apps/desktop`.
 
 ---
 
 ## Quick summary
 
-- The Next.js web application (original app) now lives at: `apps/web`
+- The Next.js web application (original app) is at: `apps/web`
 - The desktop renderer (Vite + React) lives at: `apps/desktop/src`
 - Minimal Tauri config placeholder: `apps/desktop/src-tauri/tauri.conf.json`
-  - You must run `tauri init` to produce native code and fully initialize Tauri
 - Root orchestrator is Turborepo: top-level scripts run dev/build across workspaces
 
 ---
@@ -36,7 +37,7 @@ Top-level folders you should care about:
 ## Prerequisites
 
 - Node.js (LTS recommended; Node >= 18)
-- A package manager (npm is fine; `pnpm` is recommended for monorepos)
+- A package manager
 - For Tauri (desktop):
   - Rust toolchain (install via `rustup`)
   - Platform-specific native build tools:
