@@ -1,13 +1,9 @@
 'use client';
 
-import { useNotification } from '@/context/NotificationContext';
-import useIsDark from '@/hooks/useIsDark';
 import useRequireAuth from '@/hooks/useRequireAuth';
-import useSchedules from '@/hooks/fetchers/useSchedules';
 import { useParams, useRouter } from 'next/navigation';
-import useScheduleMutator from '@/hooks/mutators/useScheduleMutator';
-import ManageSchedules from '@/components/pages/MangeSchedules';
 import request from '@/utils/fetchUtils';
+import { useNotification, useSchedules, useIsDark, useScheduleMutator, ManageSchedules } from 'chefdeck-shared';
 
 export default function ScheduleRecipePage() {
   const router = useRouter();

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { IoAdd, IoCalendar, IoHome, IoList, IoPerson } from 'react-icons/io5';
 import { IoMdListBox } from 'react-icons/io';
 import { useParams } from 'next/navigation';
-import removeTagPrefixesFromQuery from '@/utils/searchUtils';
+import { removeTagPrefixesFromQuery } from 'chefdeck-shared';
 
 /**
  * TabBar component.

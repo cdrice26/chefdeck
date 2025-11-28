@@ -1,4 +1,4 @@
-import { OptionType } from '@/components/forms/TagSelector';
+import { OptionType } from 'chefdeck-shared/server';
 import { DBTag } from '@/types/db/DBTag';
 
 /**

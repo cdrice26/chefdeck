@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,              // allow output
+    "outDir": "dist",             // compiled files go here
+    "declaration": true,          // generate .d.ts
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "moduleResolution": "node",   // safer for libraries
+    "isolatedModules": true,
+    "jsx": "preserve",            // let Next/Vite handle JSX
+    "skipLibCheck": true,
+    "incremental": false
+  },
+  "include": ["src"],
+  "exclude": ["src/types", "**/*.test.ts", "**/*.spec.ts"]
+}

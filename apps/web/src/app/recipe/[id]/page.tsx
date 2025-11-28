@@ -1,14 +1,9 @@
 'use client';
 
-import RecipeDetails from '@/components/recipe/RecipeDetails';
-import { useNotification } from '@/context/NotificationContext';
-import useRecipe from '@/hooks/fetchers/useRecipe';
 import useRequireAuth from '@/hooks/useRequireAuth';
-import usePrinter from '@/hooks/usePrinter';
 import { useParams, useRouter } from 'next/navigation';
-import useRecipeMutator from '@/hooks/mutators/useRecipeMutator';
-import Recipe from '@/components/pages/Recipe';
 import request from '@/utils/fetchUtils';
+import { useRecipe, useNotification, usePrinter, RecipeDetails, useRecipeMutator, Recipe } from 'chefdeck-shared';
 
 export default function RecipePage() {
   const router = useRouter();

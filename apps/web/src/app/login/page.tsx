@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import useLoginMutator from '@/hooks/mutators/useLoginMutator';
-import Login from '@/components/pages/Login';
+import { useLoginMutator, Login } from 'chefdeck-shared';
 import request from '@/utils/fetchUtils';
 
 const LoginPage = () => {

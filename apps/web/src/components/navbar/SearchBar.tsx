@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { MultiValue, ActionMeta } from 'react-select';
-import SearchModal from '@/components/specificForms/SearchModal';
-import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
+import SearchModal from './SearchModal';
+import { useAvailableTags } from 'chefdeck-shared';
 import SearchBarRenderer from './SearchBarRenderer';
 import Tab from './Tab';
 import request from '@/utils/fetchUtils';

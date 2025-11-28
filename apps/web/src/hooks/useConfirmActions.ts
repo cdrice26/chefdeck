@@ -1,4 +1,4 @@
-import { NotificationKind } from '@/context/NotificationContext';
+import { NotificationKind } from 'chefdeck-shared';
 import RequestFn from '@/types/RequestFn';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

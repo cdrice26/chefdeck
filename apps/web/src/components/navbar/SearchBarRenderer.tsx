@@ -2,8 +2,7 @@
 
 import Select, { MultiValue, ActionMeta } from 'react-select';
 import { IoSearch } from 'react-icons/io5';
-import useIsDark from '@/hooks/useIsDark';
-import getSelectStyles from '@/utils/styles/selectStyles';
+import { useIsDark, getSelectStyles } from 'chefdeck-shared';
 
 interface SearchBarRendererProps {
   tagOptions: { label: string; value: string }[];

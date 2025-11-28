@@ -1,6 +1,5 @@
-import Input from '@/components/forms/Input';
-import Button from '@/components/forms/Button';
-import Section from '@/components/ui/AccountSection';
+import { Input, Button } from 'chefdeck-shared';
+import Section from '@/components/AccountSection';
 import { Mutator } from '@/hooks/mutators/useAccountMutator';
 
 const Account = ({

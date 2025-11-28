@@ -1,13 +1,11 @@
 'use client';
 
-import usePaginatedRecipes from '@/hooks/fetchers/usePaginatedRecipes';
-import useImageRefetcher from '@/hooks/fetchers/useImageRefetcher';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
+import { usePaginatedRecipes, useImageRefetcher, useInfiniteScroll, Dashboard } from 'chefdeck-shared';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useMemo, useRef } from 'react';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import Dashboard from '@/components/pages/Dashboard';
+
 
 /**
  * Dashboard component.

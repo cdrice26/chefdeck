@@ -1,7 +1,5 @@
-import Input from '@/components/forms/Input';
-import Button from '@/components/forms/Button';
-import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import { ProfileMutator } from '@/hooks/mutators/useProfileMutator';
+import { ResponsiveForm, Input, Button } from 'chefdeck-shared';
 
 const SetupProfile = ({ handleSubmit, error }: ProfileMutator) => (
   <ResponsiveForm onSubmit={handleSubmit}>

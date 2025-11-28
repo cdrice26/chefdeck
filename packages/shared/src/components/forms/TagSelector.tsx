@@ -1,5 +1,5 @@
 import useIsDark from '@/hooks/useIsDark';
-import getSelectStyles from '@/utils/styles/selectStyles';
+import getSelectStyles from '@/utils/styles/getSelectStyles';
 import React, { useState, useEffect } from 'react';
 import { MultiValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';

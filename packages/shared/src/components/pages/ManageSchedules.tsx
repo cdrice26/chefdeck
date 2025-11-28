@@ -1,6 +1,6 @@
 import { ScheduleMutator } from '@/hooks/mutators/useScheduleMutator';
 import { Schedule } from '@/types/Schedule';
-import getSelectStyles from '@/utils/styles/selectStyles';
+import getSelectStyles from '@/utils/styles/getSelectStyles';
 import Input from '../forms/Input';
 import Select from 'react-select';
 import Button from '../forms/Button';

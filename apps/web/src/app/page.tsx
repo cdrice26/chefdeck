@@ -1,4 +1,4 @@
-import Card from '@/components/ui/Card';
+import { Card } from 'chefdeck-shared/server';
 import Link from 'next/link';
 import Image from 'next/image';
 

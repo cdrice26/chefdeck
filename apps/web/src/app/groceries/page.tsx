@@ -1,13 +1,10 @@
 'use client';
 
-import GroceryList from '@/components/groceries/GroceryList';
-import { useNotification } from '@/context/NotificationContext';
 import useRequireAuth from '@/hooks/useRequireAuth';
 import { useRouter } from 'next/navigation';
-import usePrinter from '@/hooks/usePrinter';
-import useGroceries from '@/hooks/fetchers/useGroceries';
-import Groceries from '@/components/pages/Groceries';
 import request from '@/utils/fetchUtils';
+import { useNotification, useGroceries, usePrinter, GroceryList, Groceries } from 'chefdeck-shared';
+
 
 const GroceriesPage = () => {
   const router = useRouter();

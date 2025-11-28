@@ -4,8 +4,7 @@ import './globals.css';
 import Navbar from '@/components/navbar/Navbar';
 import { AuthProvider } from '@/context/AuthContext';
 import BottomNavigation from '@/components/navbar/BottomNavigation';
-import { NotificationProvider } from '@/context/NotificationContext';
-import NotificationWrapper from '@/components/notifications/NotificationWrapper';
+import { NotificationProvider, NotificationWrapper } from 'chefdeck-shared/server';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

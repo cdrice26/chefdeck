@@ -1,6 +1,8 @@
 {
-  "version": 2,
-  "builds": [{ "src": "apps/web/package.json", "use": "@vercel/next" }],
-  "devCommand": "npm --prefix apps/web run dev",
-  "routes": []
+    "version": 2,
+    "builds": [{ "src": "apps/web/package.json", "use": "@vercel/next" }],
+    "devCommand": "npm run dev --workspace apps/web",
+    "buildCommand": "npm run build --workspace apps/web",
+    "rootDirectory": "apps/web",
+    "routes": []
 }

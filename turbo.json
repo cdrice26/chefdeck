@@ -1,46 +1,33 @@
 {
-  "$schema": "https://turborepo.org/schema.json",
-  "globalDependencies": [
-    "package.json",
-    "pnpm-lock.yaml",
-    "pnpm-workspace.yaml",
-    "apps/web/package.json",
-    "apps/desktop/package.json"
-  ],
-  "tasks": {
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "dev:web": {
-      "cache": false,
-      "outputs": []
-    },
-    "dev:desktop": {
-      "cache": false,
-      "outputs": []
-    },
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [
-        ".next/**",
-        "dist/**",
-        "build/**",
-        "apps/desktop/src-tauri/target/**"
-      ]
-    },
-    "start": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "lint": {
-      "outputs": []
-    },
-    "test": {
-      "outputs": []
-    },
-    "format": {
-      "outputs": []
+    "$schema": "https://turborepo.org/schema.json",
+    "globalDependencies": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml"
+    ],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "build/**",
+                "apps/desktop/src-tauri/target/**"
+            ]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true,
+            "dependsOn": ["^build"]
+        },
+        "lint": {
+            "outputs": []
+        },
+        "test": {
+            "outputs": []
+        },
+        "format": {
+            "outputs": []
+        }
     }
-  }
 }

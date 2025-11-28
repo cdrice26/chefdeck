@@ -1,6 +1,6 @@
 'use client';
 
-import useIsDark from '@/hooks/useIsDark';
+import { useIsDark } from 'chefdeck-shared';
 import { useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 

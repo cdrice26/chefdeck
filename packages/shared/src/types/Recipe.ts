@@ -5,7 +5,7 @@
  * ingredients, directions, and recipe objects.
  */
 
-import { Color } from 'chefdeck-shared';
+import { Color } from '@/utils/styles/colorUtils';
 
 /**
  * Represents an ingredient

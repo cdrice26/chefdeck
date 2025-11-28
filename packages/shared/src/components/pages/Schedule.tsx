@@ -5,7 +5,7 @@ import {
 import { ScheduleDisplay } from '@/types/Schedule';
 import { MONTHS } from '@/utils/dateUtils';
 import { getButtonColorClass, isValidColor } from '@/utils/styles/colorUtils';
-import getSelectStyles from '@/utils/styles/selectStyles';
+import getSelectStyles from '@/utils/styles/getSelectStyles';
 import dynamic from 'next/dynamic';
 import { IoHome, IoChevronBack, IoChevronForward } from 'react-icons/io5';
 

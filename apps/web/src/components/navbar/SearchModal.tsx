@@ -1,6 +1,5 @@
 import React from 'react';
-import Button from '../forms/Button';
-import Modal from '@/components/ui/Modal';
+import { Button, Modal } from 'chefdeck-shared';
 import SearchBarRenderer from '../navbar/SearchBarRenderer';
 
 interface TagOption {

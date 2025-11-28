@@ -1,7 +1,5 @@
 import { SignupMutator } from '@/hooks/mutators/useSignupMutator';
-import Input from '../forms/Input';
-import Button from '../forms/Button';
-import ResponsiveForm from '../forms/ResponsiveForm';
+import { ResponsiveForm, Input, Button } from 'chefdeck-shared';
 
 const SignUp = ({
   password,
