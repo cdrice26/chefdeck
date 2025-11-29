@@ -1,6 +1,6 @@
 {
-    "version": 2,
-    "builds": [{ "src": "apps/web/package.json", "use": "@vercel/next" }],
     "devCommand": "turbo run dev:web",
-    "buildCommand": "turbo run build --filter=chefdeck-web"
+    "installCommand": "npm install --workspaces",
+    "buildCommand": "turbo run build --filter=chefdeck-web",
+    "outputDirectory": "apps/web/.next"
 }
