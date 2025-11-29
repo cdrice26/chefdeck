@@ -2,5 +2,5 @@
     "version": 2,
     "builds": [{ "src": "apps/web/package.json", "use": "@vercel/next" }],
     "devCommand": "turbo run dev:web",
-    "buildCommand": "turbo run build --filter=web"
+    "buildCommand": "turbo run build --filter=chefdeck-web"
 }
