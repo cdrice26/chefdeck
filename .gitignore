@@ -45,6 +45,6 @@ next-env.d.ts
 **/scripts/*.sh
 .vercel
 
-.turbo
+**/.turbo
 
 **/dist
