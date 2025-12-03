@@ -77,24 +77,29 @@ export default function RootPage() {
     if (rx <= 0.5 || ry <= 0.5) {
       ctx.rect(x, y, w, h);
     } else {
-      // Rounded rectangle using arcTo
-      const rrx = rx;
-      const rry = ry;
+      // Rounded rectangle using arcTo (uses a single arc radius that's the min of rx/ry)
+      const rArc = Math.min(rx, ry);
       const x2 = x + w;
       const y2 = y + h;
 
-      ctx.moveTo(x + rrx, y);
-      ctx.lineTo(x2 - rrx, y);
-      ctx.quadraticCurveTo(x2, y, x2, y + rry);
-
-      ctx.lineTo(x2, y2 - rry);
-      ctx.quadraticCurveTo(x2, y2, x2 - rrx, y2);
-
-      ctx.lineTo(x + rrx, y2);
-      ctx.quadraticCurveTo(x, y2, x, y2 - rry);
-
-      ctx.lineTo(x, y + rry);
-      ctx.quadraticCurveTo(x, y, x + rrx, y);
+      // Start at top-left + radius
+      ctx.moveTo(x + rArc, y);
+      // Top edge
+      ctx.lineTo(x2 - rArc, y);
+      // Top-right corner
+      ctx.arcTo(x2, y, x2, y + rArc, rArc);
+      // Right edge
+      ctx.lineTo(x2, y2 - rArc);
+      // Bottom-right corner
+      ctx.arcTo(x2, y2, x2 - rArc, y2, rArc);
+      // Bottom edge
+      ctx.lineTo(x + rArc, y2);
+      // Bottom-left corner
+      ctx.arcTo(x, y2, x, y2 - rArc, rArc);
+      // Left edge
+      ctx.lineTo(x, y + rArc);
+      // Top-left corner
+      ctx.arcTo(x, y, x + rArc, y, rArc);
     }
     ctx.closePath();
     ctx.fill();
