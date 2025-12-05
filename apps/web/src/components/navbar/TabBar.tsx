@@ -25,7 +25,7 @@ import { removeTagPrefixesFromQuery } from 'chefdeck-shared';
  * and relies on parent-level URL/search-param behavior for persistence.
  *
  * @component
- * @returns {JSX.Element} The navigation tabs and optional search UI.
+ * @returns The navigation tabs and optional search UI.
  *
  * @example
  * // Rendered internally in the Navbar when a user is authenticated:
