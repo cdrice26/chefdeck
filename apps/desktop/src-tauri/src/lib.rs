@@ -1,8 +1,15 @@
-use tauri::{LogicalPosition, TitleBarStyle, WebviewUrl, WebviewWindowBuilder};
+mod database;
+
+use tauri::{LogicalPosition, TitleBarStyle, WebviewUrl, WebviewWindowBuilder, Manager};
 #[cfg(target_os = "windows")]
 use window_vibrancy::apply_blur;
 #[cfg(target_os = "macos")]
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
+use crate::database::create::setup_db;
+
+struct AppState {
+    db: database::Db,
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -47,6 +54,12 @@ pub fn run() {
                         .build(),
                 )?;
             }
+
+            tauri::async_runtime::block_on(async move {
+                let db = setup_db(&app).await;
+                app.manage(AppState { db });
+            });
+
             Ok(())
         })
         .run(tauri::generate_context!())
