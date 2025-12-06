@@ -15,14 +15,15 @@ BEGIN
     DELETE FROM public.scheduled_recipes WHERE user_id = p_user_id AND recipe_id = p_recipe_id;
 
     -- Insert new schedules from the JSONB array
-    INSERT INTO public.scheduled_recipes (id, recipe_id, user_id, date, repeat, repeat_end)
+    INSERT INTO public.scheduled_recipes (id, recipe_id, user_id, date, repeat, repeat_end, last_updated)
     SELECT
         (item->>'id')::uuid,
         (item->>'recipe_id')::uuid,
         p_user_id,
         (item->>'date')::date,
         item->>'repeat',
-        (item->>'repeat_end')::date
+        (item->>'repeat_end')::date,
+        now()
     FROM jsonb_array_elements(p_schedules) AS arr(item);
 END;
 $function$;

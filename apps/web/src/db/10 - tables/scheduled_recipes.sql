@@ -10,7 +10,8 @@ CREATE TABLE public.scheduled_recipes (
     user_id uuid NOT NULL,
     date date NOT NULL,
     repeat text,
-    repeat_end DATE
+    repeat_end DATE,
+    last_updated TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 
