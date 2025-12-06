@@ -1,39 +1,41 @@
 import { platform } from '@tauri-apps/plugin-os';
 import SidebarButton from './SidebarButton';
 import { IoCalendar, IoHome, IoList } from 'react-icons/io5';
-import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router';
 
 export default function Sidebar({
   ref
 }: {
   ref: React.RefObject<HTMLDivElement | null>;
 }) {
-  const [selectedPage, setSelectedPage] = useState('Recipes');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const pages = [
     {
       label: 'Recipes',
-      icon: IoHome,
-      onClick: () => setSelectedPage('Recipes')
+      icon: IoHome
     },
     {
       label: 'Schedule',
-      icon: IoCalendar,
-      onClick: () => setSelectedPage('Schedule')
+      icon: IoCalendar
     },
     {
       label: 'Groceries',
-      icon: IoList,
-      onClick: () => setSelectedPage('Groceries')
+      icon: IoList
     }
   ];
+
+  const handlePageChange = (label: string) => {
+    navigate(`/${label === 'Recipes' ? '' : label.toLowerCase()}`);
+  };
 
   return (
     <div
       ref={ref}
       className={`flex flex-col w-64 p-2 h-full ${
         platform() === 'macos'
-          ? 'rounded-[20px] border-white dark:border-[#505050] border drop-shadow-xl bg-[#ffffffcc] dark:bg-[#202020cc]'
+          ? 'rounded-[20px] border-white dark:border-[#505050] border drop-shadow-xl bg-[#ffffffaa] dark:bg-[#202020aa]'
           : 'border-r border-r-gray-100 dark:border-r-[#505050]'
       }`}
     >
@@ -44,8 +46,11 @@ export default function Sidebar({
             key={page.label}
             icon={page.icon}
             label={page.label}
-            onClick={page.onClick}
-            selected={selectedPage === page.label}
+            onClick={() => handlePageChange(page.label)}
+            selected={
+              location.pathname === `/${page.label.toLowerCase()}` ||
+              (location.pathname === '/' && page.label === 'Recipes')
+            }
           />
         ))}
       </div>

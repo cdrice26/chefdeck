@@ -1,12 +1,15 @@
 import { Outlet } from 'react-router';
 import Sidebar from '../ui/Sidebar';
 import { platform } from '@tauri-apps/plugin-os';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Toolbar from '../ui/Toolbar';
 
 export default function RootPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [dragWidth, setDragWidth] = useState(0);
 
   const pxToNum = (px: string) => Number(px.replace('px', '')) || 0;
 
@@ -125,16 +128,41 @@ export default function RootPage() {
     }
   }, [draw]);
 
+  useEffect(() => {
+    if (platform() !== 'macos') return;
+
+    const sidebarNode = sidebarRef.current;
+    const contentNode = contentRef.current;
+    if (!sidebarNode || !contentNode) return;
+
+    const ro = new ResizeObserver(() => {
+      const w = contentNode.getBoundingClientRect().width;
+      setDragWidth(window.innerWidth - Math.round(w));
+    });
+
+    ro.observe(sidebarNode);
+
+    // Initialize once so your drag region width is correct on mount
+    const initialW = contentNode.getBoundingClientRect().width;
+    setDragWidth(window.innerWidth - Math.round(initialW));
+
+    return () => {
+      ro.unobserve(sidebarNode);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <div
-        className="w-full h-10 fixed top-0 left-0 z-50"
+        className="h-10 fixed top-0 left-0 z-50 inset-0 outline-red-900"
+        style={{ width: dragWidth + 'px' }}
         data-tauri-drag-region
       ></div>
 
       <div
         ref={containerRef}
-        className={`relative w-full h-full flex ${platform() === 'macos' && 'p-2'} overflow-hidden bg-transparent`}
+        className={`relative w-full h-full flex gap-2 ${platform() === 'macos' && 'p-2'} overflow-hidden bg-transparent`}
       >
         {/* Overlay canvas that creates the hole */}
         <canvas
@@ -145,8 +173,10 @@ export default function RootPage() {
         {/* Foreground UI */}
         <Sidebar ref={sidebarRef} />
         <div
-          className={`flex-1 ${platform() !== 'macos' && 'bg-white dark:bg-[#202020]'}`}
+          ref={contentRef}
+          className={`flex-1 z-10 ${platform() !== 'macos' && 'bg-white dark:bg-[#202020]'}`}
         >
+          <Toolbar />
           <Outlet />
         </div>
       </div>
