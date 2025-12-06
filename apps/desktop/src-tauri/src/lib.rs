@@ -16,6 +16,11 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_os::init())
         .setup(|app| {
+            tauri::async_runtime::block_on(async {
+                let db = setup_db(app).await;
+                app.manage(AppState { db });
+            });
+
             let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("ChefDeck")
                 .transparent(true)
@@ -54,11 +59,6 @@ pub fn run() {
                         .build(),
                 )?;
             }
-
-            tauri::async_runtime::block_on(async move {
-                let db = setup_db(&app).await;
-                app.manage(AppState { db });
-            });
 
             Ok(())
         })
