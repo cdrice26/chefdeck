@@ -1,7 +1,7 @@
 import { platform } from '@tauri-apps/plugin-os';
 import SidebarButton from './SidebarButton';
-import { IoCalendar, IoHome, IoList } from 'react-icons/io5';
 import { useNavigate, useLocation } from 'react-router';
+import { IoIosCalendar, IoIosHome, IoIosList } from 'react-icons/io';
 
 export default function Sidebar({
   ref
@@ -14,15 +14,15 @@ export default function Sidebar({
   const pages = [
     {
       label: 'Recipes',
-      icon: IoHome
+      icon: IoIosHome
     },
     {
       label: 'Schedule',
-      icon: IoCalendar
+      icon: IoIosCalendar
     },
     {
       label: 'Groceries',
-      icon: IoList
+      icon: IoIosList
     }
   ];
 
@@ -35,7 +35,7 @@ export default function Sidebar({
       ref={ref}
       className={`flex flex-col w-64 p-2 h-full ${
         platform() === 'macos'
-          ? 'rounded-[20px] border-white dark:border-[#505050] border drop-shadow-xl bg-[#ffffffaa] dark:bg-[#202020aa]'
+          ? 'rounded-[20px] border-white dark:border-[#505050] border drop-shadow-2xl bg-[#ffffffaa] dark:bg-[#202020aa]'
           : 'border-r border-r-gray-100 dark:border-r-[#505050]'
       }`}
     >

@@ -1,6 +1,11 @@
 import { platform } from '@tauri-apps/plugin-os';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { IoPerson } from 'react-icons/io5';
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoIosPerson,
+  IoIosSearch
+} from 'react-icons/io';
+import { IoAddCircleOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router';
 
 export default function Toolbar() {
@@ -14,10 +19,9 @@ export default function Toolbar() {
       }`}
     >
       <div
-        data-tauri-drag-region="false"
         className={`p-1 h-full flex gap-2 justify-center items-center ${
           platform() === 'macos'
-            ? 'rounded-full border border-white dark:border-[#303030] bg-[#eeeeee] dark:bg-[#151515]'
+            ? 'rounded-full border border-white dark:border-[#303030] bg-[#fefefe] dark:bg-[#151515] drop-shadow-2xl'
             : ''
         }`}
       >
@@ -35,26 +39,40 @@ export default function Toolbar() {
         </button>
       </div>
       <div className="flex h-full flex-row gap-2 items-center justify-center">
-        <input
-          data-tauri-drag-region="false"
-          className={`p-2 h-full flex gap-2 justify-center items-center text-sm text-black dark:text-white outline-none font-light ${
+        <div
+          className={`p-1 h-full flex gap-2 justify-center items-center ${
             platform() === 'macos'
-              ? 'rounded-full border border-white dark:border-[#303030] bg-[#eeeeee] dark:bg-[#151515]'
-              : 'rounded-lg bg-gray-100 dark:bg-[#505050]'
-          }`}
-          placeholder="Search"
-          type="text"
-        />
-        <button
-          className={`p-2 h-full flex gap-2 justify-center items-center ${
-            platform() === 'macos'
-              ? 'rounded-full border border-white dark:border-[#303030] bg-[#eeeeee] dark:bg-[#151515]'
+              ? 'rounded-full border border-white dark:border-[#303030] bg-[#fefefe] dark:bg-[#151515] drop-shadow-2xl'
               : ''
           }`}
-          onClick={() => {}}
         >
-          <IoPerson className="pointer-events-none text-black dark:text-white" />
-        </button>
+          <button
+            className="rounded-full h-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
+            onClick={() => navigate(-1)}
+          >
+            <IoAddCircleOutline className="pointer-events-none text-black dark:text-white" />
+          </button>
+          <button
+            className="rounded-full h-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
+            onClick={() => navigate(-1)}
+          >
+            <IoIosPerson className="pointer-events-none text-black dark:text-white" />
+          </button>
+        </div>
+        <div
+          className={`p-1 h-full flex gap-2 justify-center items-center text-sm text-black dark:text-white outline-none font-light ${
+            platform() === 'macos'
+              ? 'rounded-full border border-white dark:border-[#303030] bg-[#fefefe] dark:bg-[#151515] drop-shadow-2xl'
+              : 'rounded-lg bg-gray-100 dark:bg-[#505050]'
+          }`}
+        >
+          <IoIosSearch className="pointer-events-none text-black dark:text-white" />
+          <input
+            className="py-1 pr-1 outline-none h-full"
+            placeholder="Search"
+            type="text"
+          />
+        </div>
       </div>
     </div>
   );
