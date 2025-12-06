@@ -1,17 +1,17 @@
 DROP FUNCTION IF EXISTS public.update_recipe;
 
 CREATE OR REPLACE FUNCTION public.update_recipe(
-    p_id uuid, 
-    p_title text, 
-    p_yield_value smallint, 
-    p_minutes integer, 
-    p_img_url text, 
-    p_current_user_id uuid, 
-    p_color text, 
-    p_ingredients jsonb, 
-    p_directions jsonb, 
+    p_id uuid,
+    p_title text,
+    p_yield_value smallint,
+    p_minutes integer,
+    p_img_url text,
+    p_current_user_id uuid,
+    p_color text,
+    p_ingredients jsonb,
+    p_directions jsonb,
     p_tags jsonb
-) 
+)
 RETURNS void
 SET search_path = public, pg_catalog
 SECURITY INVOKER
@@ -29,7 +29,8 @@ BEGIN
             WHEN p_img_url IS NOT NULL THEN p_img_url
             ELSE img_url
         END,
-        color = p_color
+        color = p_color,
+        last_updated = now()
     WHERE id = p_id AND user_id = p_current_user_id;
 
     -- Update ingredients
@@ -53,7 +54,7 @@ BEGIN
         ON CONFLICT (user_id, name) DO NOTHING;  -- Avoid inserting duplicates
 
         -- Get the tag_id for the current tag name
-        SELECT id INTO tag_id 
+        SELECT id INTO tag_id
         FROM user_tags ut
         WHERE ut.user_id = p_current_user_id AND ut.name = tag_name;
 
