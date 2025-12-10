@@ -21,19 +21,18 @@ import SortableItem from '../forms/SortableItem';
 import { v4 as uuid } from 'uuid';
 import ColorSelector from '../forms/ColorSelector';
 import { OptionType } from '../forms/TagSelector';
-import dynamic from '@/utils/dynamicUtils';
 import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
 import RequestFn from '@/types/RequestFn';
-
-const TagSelector = dynamic(() => import('@/components/forms/TagSelector'), {
-  ssr: false
-});
 
 interface RecipeFormProps {
   request: RequestFn;
   handleSubmit: (e: FormData) => void;
   recipe?: Recipe | null;
-  center?: boolean;
+  TagSelector: React.FC<{
+    value: OptionType[];
+    onChange: React.Dispatch<React.SetStateAction<OptionType[]>>;
+    initialOptions: OptionType[];
+  }>;
 }
 
 interface StatePair {
@@ -60,6 +59,8 @@ interface StatePair {
  * Props:
  * - `handleSubmit` (formData: FormData) => void : Callback invoked with the prepared FormData when the form is submitted.
  * - `recipe?` (Recipe | null) : Optional existing recipe to populate the form for editing.
+ * - `TagSelector` (TagSelectorProps) : Reference to the TagSelector component.
+ * - `request` : Reference to the request function.
  *
  * @param {RecipeFormProps} props - Component props
  * @returns The rendered recipe form
@@ -68,7 +69,7 @@ const RecipeForm = ({
   request,
   handleSubmit,
   recipe = null,
-  center = true
+  TagSelector
 }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
   const { availableTags, error, isLoading } = useAvailableTags(request);

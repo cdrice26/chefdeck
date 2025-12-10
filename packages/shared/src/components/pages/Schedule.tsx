@@ -6,14 +6,12 @@ import { ScheduleDisplay } from '@/types/Schedule';
 import { MONTHS } from '@/utils/dateUtils';
 import { getButtonColorClass, isValidColor } from '@/utils/styles/colorUtils';
 import getSelectStyles from '@/utils/styles/getSelectStyles';
-import dynamic from '@/utils/dynamicUtils';
 import { IoHome, IoChevronBack, IoChevronForward } from 'react-icons/io5';
-
-const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface ScheduleProps extends ScheduledRecipes {
   handleButtonClick: (id: string) => void;
   isDark: boolean;
+  SelectComponent: (props: any) => React.ReactNode;
 }
 
 const Schedule = ({
@@ -26,7 +24,8 @@ const Schedule = ({
   yearInput,
   month,
   handleButtonClick,
-  isDark
+  isDark,
+  SelectComponent
 }: ScheduleProps) => (
   <>
     <div className="w-full h-full flex flex-col">
@@ -51,7 +50,7 @@ const Schedule = ({
         >
           <IoChevronBack size={20} />
         </button>
-        <Select
+        <SelectComponent
           options={MONTHS}
           value={MONTHS.find((mon) => mon.value === month)}
           onChange={(option: { value: number }) => setMonth(option.value)}
