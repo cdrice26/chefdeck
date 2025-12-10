@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@source "../../../packages/shared/src/**/*.{js,ts,jsx,tsx}";
 
 html,
 body,
@@ -6,4 +7,149 @@ body,
   background: transparent;
   height: 100vh;
   margin: 0;
+  overflow: hidden;
+}
+
+@layer utilities {
+  .text-shadow-sm {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  .text-shadow-lg {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+  }
+  .text-shadow-none {
+    text-shadow: none;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme {
+  --color-white-normal: rgb(230, 230, 230);
+  --color-green-normal: rgb(172, 227, 172);
+  --color-yellow-normal: rgb(253, 253, 192);
+  --color-orange-normal: rgb(247, 206, 156);
+  --color-red-normal: rgb(249, 190, 190);
+  --color-purple-normal: rgb(231, 179, 253);
+  --color-blue-normal: lightblue;
+
+  --color-button-white-normal: rgb(210, 210, 210);
+  --color-button-white-hover: rgb(190, 190, 190);
+  --color-button-white-active: rgb(170, 170, 170);
+
+  --color-button-green-normal: rgb(152, 207, 152);
+  --color-button-green-hover: rgb(132, 187, 132);
+  --color-button-green-active: rgb(112, 167, 112);
+
+  --color-button-yellow-normal: rgb(233, 233, 172);
+  --color-button-yellow-hover: rgb(213, 213, 152);
+  --color-button-yellow-active: rgb(193, 193, 132);
+
+  --color-button-orange-normal: rgb(227, 186, 136);
+  --color-button-orange-hover: rgb(207, 166, 116);
+  --color-button-orange-active: rgb(177, 146, 96);
+
+  --color-button-red-normal: rgb(229, 170, 170);
+  --color-button-red-hover: rgb(209, 150, 150);
+  --color-button-red-active: rgb(189, 130, 130);
+
+  --color-button-purple-normal: rgb(211, 159, 233);
+  --color-button-purple-hover: rgb(191, 139, 213);
+  --color-button-purple-active: rgb(171, 119, 193);
+
+  --color-button-blue-normal: rgb(153, 196, 210);
+  --color-button-blue-hover: rgb(133, 176, 190);
+  --color-button-blue-active: rgb(113, 156, 170);
+
+  --color-white-normal-dark: rgb(70, 70, 70); /* Darker background for white */
+  --color-green-normal-dark: rgb(54, 97, 54); /* Darker green */
+  --color-yellow-normal-dark: rgb(148, 148, 84); /* Darker yellow */
+  --color-orange-normal-dark: rgb(148, 122, 97); /* Darker orange */
+  --color-red-normal-dark: rgb(148, 54, 54); /* Darker red */
+  --color-purple-normal-dark: rgb(122, 44, 122); /* Darker purple */
+  --color-blue-normal-dark: rgb(54, 97, 122); /* Darker blue */
+
+  --color-button-white-normal-dark: rgb(
+    70,
+    70,
+    70
+  ); /* Darker button background */
+  --color-button-white-hover-dark: rgb(90, 90, 90); /* Darker hover */
+  --color-button-white-active-dark: rgb(110, 110, 110); /* Darker active */
+
+  --color-button-green-normal-dark: rgb(34, 77, 34); /* Darker button green */
+  --color-button-green-hover-dark: rgb(54, 97, 54); /* Darker hover */
+  --color-button-green-active-dark: rgb(74, 117, 74); /* Darker active */
+
+  --color-button-yellow-normal-dark: rgb(
+    128,
+    128,
+    64
+  ); /* Darker button yellow */
+  --color-button-yellow-hover-dark: rgb(148, 148, 84); /* Darker hover */
+  --color-button-yellow-active-dark: rgb(168, 168, 104); /* Darker active */
+
+  --color-button-orange-normal-dark: rgb(
+    128,
+    102,
+    77
+  ); /* Darker button orange */
+  --color-button-orange-hover-dark: rgb(148, 122, 97); /* Darker hover */
+  --color-button-orange-active-dark: rgb(168, 142, 117); /* Darker active */
+
+  --color-button-red-normal-dark: rgb(128, 34, 34); /* Darker button red */
+  --color-button-red-hover-dark: rgb(148, 54, 54); /* Darker hover */
+  --color-button-red-active-dark: rgb(168, 74, 74); /* Darker active */
+
+  --color-button-purple-normal-dark: rgb(
+    102,
+    34,
+    102
+  ); /* Darker button purple */
+  --color-button-purple-hover-dark: rgb(122, 54, 122); /* Darker hover */
+  --color-button-purple-active-dark: rgb(142, 74, 142); /* Darker active */
+
+  --color-button-blue-normal-dark: rgb(34, 77, 102); /* Darker button blue */
+  --color-button-blue-hover-dark: rgb(54, 97, 122); /* Darker hover */
+  --color-button-blue-active-dark: rgb(74, 117, 142); /* Darker active */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100vh;
+}
+
+.background-cupcakes {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.1)),
+    url('/cupcakes.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.background-cutlery {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.1)),
+    url('/cutlery.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

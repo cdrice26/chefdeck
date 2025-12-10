@@ -14,7 +14,7 @@ export default function Toolbar() {
   return (
     <div
       data-tauri-drag-region={platform() === 'macos'}
-      className={`sticky flex flex-row items-center justify-between ${
+      className={`sticky flex flex-row items-center justify-between z-10 ${
         platform() !== 'macos' ? 'bg-white dark:bg-[#202020] shadow-md' : ''
       }`}
     >
@@ -48,13 +48,13 @@ export default function Toolbar() {
         >
           <button
             className="rounded-full h-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/create')}
           >
             <IoAddCircleOutline className="pointer-events-none text-black dark:text-white" />
           </button>
           <button
             className="rounded-full h-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
-            onClick={() => navigate(-1)}
+            onClick={() => {}}
           >
             <IoIosPerson className="pointer-events-none text-black dark:text-white" />
           </button>

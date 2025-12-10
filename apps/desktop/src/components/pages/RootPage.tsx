@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router';
-import Sidebar from '../ui/Sidebar';
+import Sidebar from '../navigation/Sidebar';
 import { platform } from '@tauri-apps/plugin-os';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Toolbar from '../ui/Toolbar';
+import Toolbar from '../navigation/Toolbar';
+import { NotificationProvider, NotificationWrapper } from 'chefdeck-shared';
 
 export default function RootPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -153,7 +154,8 @@ export default function RootPage() {
   }, []);
 
   return (
-    <>
+    <NotificationProvider>
+      <NotificationWrapper />
       <div
         className="h-10 fixed top-0 left-0 z-50 inset-0 outline-red-900"
         style={{ width: dragWidth + 'px' }}
@@ -174,12 +176,16 @@ export default function RootPage() {
         <Sidebar ref={sidebarRef} />
         <div
           ref={contentRef}
-          className={`flex-1 z-10 ${platform() !== 'macos' && 'bg-white dark:bg-[#202020]'}`}
+          className={`flex-1 flex flex-col z-10 ${platform() !== 'macos' && 'bg-white dark:bg-[#202020]'}`}
         >
           <Toolbar />
-          <Outlet />
+          <div className="flex-1 min-h-0 overflow-y-auto relative">
+            <div className="w-full">
+              <Outlet />
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </NotificationProvider>
   );
 }

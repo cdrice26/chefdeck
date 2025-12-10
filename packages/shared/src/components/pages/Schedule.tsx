@@ -6,7 +6,7 @@ import { ScheduleDisplay } from '@/types/Schedule';
 import { MONTHS } from '@/utils/dateUtils';
 import { getButtonColorClass, isValidColor } from '@/utils/styles/colorUtils';
 import getSelectStyles from '@/utils/styles/getSelectStyles';
-import dynamic from 'next/dynamic';
+import dynamic from '@/utils/dynamicUtils';
 import { IoHome, IoChevronBack, IoChevronForward } from 'react-icons/io5';
 
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -54,7 +54,7 @@ const Schedule = ({
         <Select
           options={MONTHS}
           value={MONTHS.find((mon) => mon.value === month)}
-          onChange={(option) => setMonth((option as { value: number })?.value)}
+          onChange={(option: { value: number }) => setMonth(option.value)}
           className="box-border h-full flex-grow max-w-100"
           styles={getSelectStyles(isDark)}
           isSearchable={false}

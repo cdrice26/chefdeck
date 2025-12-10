@@ -21,7 +21,7 @@ import SortableItem from '../forms/SortableItem';
 import { v4 as uuid } from 'uuid';
 import ColorSelector from '../forms/ColorSelector';
 import { OptionType } from '../forms/TagSelector';
-import dynamic from 'next/dynamic';
+import dynamic from '@/utils/dynamicUtils';
 import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
 import RequestFn from '@/types/RequestFn';
 
@@ -33,6 +33,7 @@ interface RecipeFormProps {
   request: RequestFn;
   handleSubmit: (e: FormData) => void;
   recipe?: Recipe | null;
+  center?: boolean;
 }
 
 interface StatePair {
@@ -66,7 +67,8 @@ interface StatePair {
 const RecipeForm = ({
   request,
   handleSubmit,
-  recipe = null
+  recipe = null,
+  center = true
 }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
   const { availableTags, error, isLoading } = useAvailableTags(request);

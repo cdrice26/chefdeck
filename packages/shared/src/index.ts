@@ -50,6 +50,7 @@ export { default as usePrinter } from "./hooks/usePrinter";
 export { default as useScheduleActions } from "./hooks/useScheduleActions";
 export * from "./server";
 export * from "./utils/dateUtils";
+export { default as dynamicUtils } from "./utils/dynamicUtils";
 export { default as removeTagPrefixesFromQuery } from "./utils/removeTagPrefixesFromQuery";
 export * from "./utils/styles/colorUtils";
 export { default as getSelectStyles } from "./utils/styles/getSelectStyles";

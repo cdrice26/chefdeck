@@ -3,7 +3,6 @@ import Card from '../ui/Card';
 import { Recipe } from '@/types/Recipe';
 import Button from '../forms/Button';
 import { getColorClass, getButtonColorClass } from '@/utils/styles/colorUtils';
-import Image from 'next/image';
 
 interface RecipeProps {
   recipe: Recipe;
@@ -42,7 +41,7 @@ const RecipeCard: React.FC<RecipeProps> = ({
       )}`}
     >
       <h3 className="p-2 text-xl font-bold">{recipe?.title}</h3>
-      <Image
+      <img
         loading="lazy"
         src={recipe?.imgUrl ?? '/logo-icononly.png'}
         alt=""

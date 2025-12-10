@@ -5,6 +5,7 @@ import RootPage from './components/pages/RootPage';
 import RecipesPage from './components/pages/RecipesPage';
 import SchedulePage from './components/pages/SchedulePage';
 import GroceriesPage from './components/pages/GroceriesPage';
+import AddRecipePage from './components/pages/AddRecipePage';
 
 const MemoryRouterSafe = MemoryRouter as unknown as React.ComponentType<
   React.PropsWithChildren<Record<string, unknown>>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(rootElement).render(
           <RouteSafe index element={<RecipesPage />} />
           <RouteSafe path="schedule" element={<SchedulePage />} />
           <RouteSafe path="groceries" element={<GroceriesPage />} />
+          <RouteSafe path="create" element={<AddRecipePage />} />
         </RouteSafe>
       </RoutesSafe>
     </MemoryRouterSafe>

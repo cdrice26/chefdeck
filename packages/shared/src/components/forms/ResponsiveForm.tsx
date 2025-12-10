@@ -32,7 +32,7 @@ const ResponsiveForm: React.FC<ResponsiveFormProps> = ({
 }) => (
   <div className="w-full h-full flex justify-center items-center p-0 sm:p-4">
     <Card
-      className="p-4 w-full h-full sm:w-1/2 sm:min-h-1/2 sm:h-auto"
+      className="p-4 w-full h-full xl:w-1/2 sm:min-h-1/2 sm:h-auto"
       squareOnMobile
     >
       <form onSubmit={onSubmit} className="flex flex-col gap-4 relative">
