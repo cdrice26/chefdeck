@@ -49,6 +49,7 @@ export { default as useIsDark } from "./hooks/useIsDark";
 export { default as usePrinter } from "./hooks/usePrinter";
 export { default as useScheduleActions } from "./hooks/useScheduleActions";
 export * from "./server";
+export * from "./utils/arrayUtils";
 export * from "./utils/dateUtils";
 export { default as removeTagPrefixesFromQuery } from "./utils/removeTagPrefixesFromQuery";
 export * from "./utils/styles/colorUtils";

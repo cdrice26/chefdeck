@@ -1,4 +1,4 @@
-import { zipArrays } from '../utils/arrayUtils';
+import { zipArrays } from 'chefdeck-shared/server';
 
 /**
  * Parse a FormData object from the recipe update form into a plain object.

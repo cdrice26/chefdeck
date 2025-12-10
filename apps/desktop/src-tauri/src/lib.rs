@@ -1,11 +1,11 @@
 mod database;
 
-use tauri::{LogicalPosition, TitleBarStyle, WebviewUrl, WebviewWindowBuilder, Manager};
+use crate::database::create::setup_db;
+use tauri::{LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder};
 #[cfg(target_os = "windows")]
 use window_vibrancy::apply_blur;
 #[cfg(target_os = "macos")]
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
-use crate::database::create::setup_db;
 
 struct AppState {
     db: database::Db,
@@ -14,6 +14,7 @@ struct AppState {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
         .setup(|app| {
             tauri::async_runtime::block_on(async {

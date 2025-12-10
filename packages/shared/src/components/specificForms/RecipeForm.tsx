@@ -1,3 +1,5 @@
+'use client';
+
 import ResponsiveForm from '@/components/forms/ResponsiveForm';
 import Input from '@/components/forms/Input';
 import { Direction, Ingredient, Recipe } from '@/types/Recipe';
@@ -33,7 +35,7 @@ interface RecipeFormProps {
     onChange: React.Dispatch<React.SetStateAction<OptionType[]>>;
     initialOptions: OptionType[];
   }>;
-  FileInput?: React.FC<{ name: string; type: string }>;
+  FileInput?: React.FC<{ name?: string; type?: string }>;
 }
 
 interface StatePair {

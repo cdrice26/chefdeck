@@ -2,7 +2,7 @@ import { parseRecipe } from '@/models/recipeModel';
 import { parseScheduledRecipe } from '@/models/scheduledRecipesModel';
 import { DBScheduledRecipe } from '@/types/db/DBRecipe';
 import { Recipe } from '@/types/Recipe';
-import { asyncMap } from '@/utils/arrayUtils';
+import { asyncMap } from 'chefdeck-shared/server';
 import { createClientWithToken } from '@/utils/supabaseUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 

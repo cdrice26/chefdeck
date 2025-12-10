@@ -1,7 +1,7 @@
-use tauri::{Manager, App};
 use crate::database::Db;
-use sqlx::sqlite::{Sqlite, SqlitePoolOptions};
 use sqlx::migrate::MigrateDatabase;
+use sqlx::sqlite::{Sqlite, SqlitePoolOptions};
+use tauri::{App, Manager};
 
 pub async fn setup_db(app: &App) -> Db {
     let mut path = app.path().app_data_dir().expect("failed to get data_dir");
