@@ -33,6 +33,7 @@ interface RecipeFormProps {
     onChange: React.Dispatch<React.SetStateAction<OptionType[]>>;
     initialOptions: OptionType[];
   }>;
+  FileInput?: React.FC<{ name: string; type: string }>;
 }
 
 interface StatePair {
@@ -69,7 +70,8 @@ const RecipeForm = ({
   request,
   handleSubmit,
   recipe = null,
-  TagSelector
+  TagSelector,
+  FileInput = Input
 }: RecipeFormProps) => {
   const [tags, setTags] = useState<OptionType[]>([]);
   const { availableTags, error, isLoading } = useAvailableTags(request);
@@ -200,7 +202,7 @@ const RecipeForm = ({
         />
       </label>
       <label>
-        Image (Optional): <Input name="image" type="file" />
+        Image (Optional): <FileInput name="image" type="file" />
       </label>
       <label>
         Time (in minutes):{' '}
