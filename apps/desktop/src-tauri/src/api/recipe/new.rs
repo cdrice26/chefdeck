@@ -64,6 +64,8 @@ async fn insert_recipe_data(
     color: String,
     ingredients: Vec<Ingredient>,
     directions: Vec<String>,
+    tags: Vec<String>,
+    source_url: Option<String>
 ) -> Result<i64, sqlx::Error> {
     // Insert recipe
     let row = sqlx::query_file!(
@@ -72,7 +74,8 @@ async fn insert_recipe_data(
         yield_value,
         time,
         image_path,
-        color
+        color,
+        source_url
     )
     .fetch_one(&mut **tx)
     .await?;
@@ -84,6 +87,7 @@ async fn insert_recipe_data(
         let sequence = (i + 1) as i64;
         sqlx::query_file!(
             "db/insert_ingredient.sql",
+            recipe_id,
             recipe_id,
             ingredient.name,
             ingredient.amount,
@@ -100,8 +104,34 @@ async fn insert_recipe_data(
         sqlx::query_file!(
             "db/insert_direction.sql",
             recipe_id,
+            recipe_id,
             direction,
             sequence
+        )
+        .fetch_one(&mut **tx)
+        .await?;
+    }
+
+    let mut tag_ids: Vec<i64> = Vec::new();
+
+    // Make sure user has all tags defined and get tag IDs
+    for tag in tags.iter() {
+        let tag_id = sqlx::query_file!(
+            "db/insert_user_tag.sql",
+            tag
+        )
+        .fetch_one(&mut **tx)
+        .await?;
+        tag_ids.push(tag_id.id);
+    }
+
+    // Insert into recipe tags table
+    for tag_id in tag_ids.iter() {
+        sqlx::query_file!(
+            "db/insert_recipe_tags.sql",
+            recipe_id,
+            recipe_id,
+            tag_id
         )
         .fetch_one(&mut **tx)
         .await?;
@@ -150,6 +180,8 @@ pub async fn api_recipe_new(
         color,
         ingredients,
         directions,
+        tags,
+        source_url
     )
     .await.string_err();
 

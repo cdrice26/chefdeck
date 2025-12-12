@@ -1,3 +1,5 @@
+DELETE FROM directions WHERE recipe_id = ?;
+
 INSERT INTO directions (recipe_id, content, sequence)
-VALUES ($1, $2, $3)
+VALUES (?, ?, ?)
 RETURNING id;
