@@ -1,7 +1,9 @@
 mod database;
+mod api;
+mod errors;
 
 use crate::database::create::setup_db;
-use tauri::{LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder};
+use tauri::{LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder, generate_handler};
 #[cfg(target_os = "windows")]
 use window_vibrancy::apply_blur;
 #[cfg(target_os = "macos")]
@@ -16,11 +18,10 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
+        .invoke_handler(generate_handler![api::recipe::new::api_recipe_new])
         .setup(|app| {
-            tauri::async_runtime::block_on(async {
-                let db = setup_db(app).await;
-                app.manage(AppState { db });
-            });
+            let db = tauri::async_runtime::block_on(async { setup_db(app).await });
+            app.manage(AppState { db });
 
             let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("ChefDeck")

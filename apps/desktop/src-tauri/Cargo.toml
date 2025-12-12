@@ -27,3 +27,6 @@ window-vibrancy = "0.7.1"
 tauri-plugin-os = "2"
 sqlx = { version = "0.8.6", features = ["macros", "runtime-tokio", "sqlite"] }
 tauri-plugin-dialog = "2"
+image = "0.25.6"
+uuid = { version = "1.19.0", features = ["v4"] }
+libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }

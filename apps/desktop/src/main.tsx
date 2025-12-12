@@ -28,6 +28,7 @@ ReactDOM.createRoot(rootElement).render(
       <RoutesSafe>
         <RouteSafe path="/" element={<RootPage />}>
           <RouteSafe index element={<RecipesPage />} />
+          <RouteSafe path="dashboard" element={<RecipesPage />} />
           <RouteSafe path="schedule" element={<SchedulePage />} />
           <RouteSafe path="groceries" element={<GroceriesPage />} />
           <RouteSafe path="create" element={<AddRecipePage />} />

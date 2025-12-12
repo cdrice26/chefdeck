@@ -122,6 +122,12 @@ body,
   --color-button-blue-active-dark: rgb(74, 117, 142); /* Darker active */
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground: #ededed;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
