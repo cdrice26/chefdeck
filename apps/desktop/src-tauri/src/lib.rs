@@ -1,6 +1,8 @@
 mod database;
 mod api;
 mod errors;
+#[macro_use]
+mod macros;
 
 use crate::database::create::setup_db;
 use tauri::{LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder, generate_handler};

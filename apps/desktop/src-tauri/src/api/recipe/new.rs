@@ -7,6 +7,7 @@ use serde::Deserialize;
 use std::fs;
 use crate::AppState;
 use crate::errors::StringifySqlxError;
+use crate::macros::run_tx;
 
 #[derive(Deserialize)]
 pub struct Ingredient {
@@ -169,26 +170,18 @@ pub async fn api_recipe_new(
         None
     };
 
-    let mut tx = db.begin().await.map_err(|e| e.to_string())?;
+    let recipe_id = run_tx!(db, |tx| insert_recipe_data(
+            tx,
+            title,
+            yield_value,
+            time,
+            image_path,
+            color,
+            ingredients,
+            directions,
+            tags,
+            source_url
+        ));
 
-    let recipe_id = insert_recipe_data(
-        &mut tx,
-        title,
-        yield_value,
-        time,
-        image_path,
-        color,
-        ingredients,
-        directions,
-        tags,
-        source_url
-    )
-    .await.string_err();
-
-    let commit_result = tx.commit().await.string_err();
-
-    match commit_result {
-        Ok(_) => recipe_id,
-        Err(e) => Err(e),
-    }
+    recipe_id
 }
