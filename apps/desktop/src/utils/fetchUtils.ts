@@ -52,12 +52,25 @@ const getRecipeUpdateData = (formData: FormData) => {
   };
 };
 
+const objectifyParams = (params: URLSearchParams) =>
+  Object.fromEntries(params.entries());
+
+const parseUrl = (url: string) => {
+  const [base, paramsStr] = url.split('?');
+  const paths = base.split('/');
+  const id = paths.find((path) => path.match(/^[0-9]+$/));
+  const fnName = paths.slice(1).join('_');
+  const params = {
+    ...(id !== undefined ? { id } : {}),
+    ...objectifyParams(new URLSearchParams(paramsStr))
+  };
+  return { fnName, params };
+};
+
 export const request: RequestFn = async (url, _method, body) => {
   try {
-    const result = await invoke(
-      url.slice(1).replace(/\//g, '_'),
-      (body as InvokeArgs) ?? {}
-    );
+    const { fnName, params } = parseUrl(url);
+    const result = await invoke(fnName, { ...body, ...params } as InvokeArgs);
     return {
       json: () => Promise.resolve(result as object),
       text: () => Promise.resolve((result as object | string).toString()),
@@ -65,6 +78,7 @@ export const request: RequestFn = async (url, _method, body) => {
       status: 200
     };
   } catch (error) {
+    console.error(error);
     return {
       json: () => Promise.resolve(error as object),
       text: () => Promise.resolve((error as object | string).toString()),
