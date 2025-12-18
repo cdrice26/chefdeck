@@ -52,9 +52,25 @@ const getRecipeUpdateData = (formData: FormData) => {
   };
 };
 
+/**
+ * Converts URLSearchParams to a plain object
+ *
+ * @param params The URLSearchParams object to parse
+ * @returns The params as a plain object
+ */
 const objectifyParams = (params: URLSearchParams) =>
   Object.fromEntries(params.entries());
 
+/**
+ * Takes a url and converts it into a format that can be used for Tauri IPC requests.
+ * * Search parameters are converted to a plain object, `params`.
+ * * The first numeric path segment is used as the `id` parameter
+ *   (this is the only url path parameter used in ChefDeck).
+ * * The remaining path segments are joined with underscores to form the `fnName`.
+ *
+ * @param url The URL to parse
+ * @returns The parsed URL components, fnName and params.
+ */
 const parseUrl = (url: string) => {
   const [base, paramsStr] = url.split('?');
   const paths = base.split('/');
@@ -67,6 +83,14 @@ const parseUrl = (url: string) => {
   return { fnName, params };
 };
 
+/**
+ * Makes Tauri IPC requests
+ *
+ * @param url - The URL of the corresponding web page. This is used to determine the function name and parameters.
+ * @param _method - The HTTP method to use for the request. This is not used in Tauri IPC requests.
+ * @param body - The request body. This is converted to a plain object for use in the Tauri IPC request.
+ * @returns A promise that resolves to the result of the Tauri IPC request.
+ */
 export const request: RequestFn = async (url, _method, body) => {
   try {
     const { fnName, params } = parseUrl(url);
@@ -88,6 +112,15 @@ export const request: RequestFn = async (url, _method, body) => {
   }
 };
 
+/**
+ * Makes Tauri IPC requests from FormData. Specific to recipe creation and update requests at the moment
+ * as these are the only requests in ChefDeck that use FormData (required due to the image submissions).
+ *
+ * @param url - The URL of the corresponding web page. This is used to determine the function name and parameters.
+ * @param _method - The HTTP method to use for the request. This is not used in Tauri IPC requests.
+ * @param body - The FormData object containing the recipe data.
+ * @returns A promise that resolves to the result of the Tauri IPC request.
+ */
 export const requestFromFormData: RequestFn = async (url, _method, body) => {
   if (!(body instanceof FormData)) {
     throw new Error('Body must be a FormData object');
