@@ -164,7 +164,7 @@ export default function RootPage() {
 
       <div
         ref={containerRef}
-        className={`relative w-full h-full flex gap-2 ${platform() === 'macos' && 'p-2'} overflow-hidden bg-transparent`}
+        className={`relative w-full h-full flex ${platform() === 'macos' ? 'gap-2 p-2' : 'bg-white dark:bg-[#202020]'} overflow-hidden bg-transparent`}
       >
         {/* Overlay canvas that creates the hole */}
         <canvas
@@ -176,7 +176,7 @@ export default function RootPage() {
         <Sidebar ref={sidebarRef} />
         <div
           ref={contentRef}
-          className={`flex-1 flex flex-col z-10 ${platform() !== 'macos' && 'bg-white dark:bg-[#202020]'}`}
+          className={`flex-1 flex flex-col z-10`}
         >
           <Toolbar />
           <div className="flex-1 min-h-0 overflow-y-auto relative">
