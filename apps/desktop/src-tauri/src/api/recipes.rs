@@ -1,7 +1,13 @@
+use serde::Serialize;
 use sqlx::{Sqlite, Transaction, Pool};
 use tauri::State;
 use crate::{macros::run_tx, AppState, database::types::{Ingredient, Direction, RawRecipe, Recipe, RecipeTag}};
 use crate::errors::StringifySqlxError;
+
+#[derive(Serialize)]
+pub struct RecipesReturnType {
+    data: Vec<Recipe>
+}
 
 async fn get_ingredients(
     tx: &mut Transaction<'_, Sqlite>,
@@ -83,27 +89,30 @@ async fn fetch_recipes_with_tx(
     limit: u32,
     q: String,
     tags: String,
-) -> Result<Vec<Recipe>, String> {
+) -> Result<RecipesReturnType, String> {
     // run_tx! resolves inside this async fn
     let recipes = run_tx!(db, |tx| get_recipes(tx, page, limit, q, tags));
 
-    recipes
+    match recipes {
+        Ok(recipes) => Ok(RecipesReturnType { data: recipes }),
+        Err(err) => Err(err.to_string())
+    }
 }
 
 #[tauri::command]
 pub async fn api_recipes(
     state: State<'_, AppState>,
-    page: String,
-    limit: String,
-    q: String,
-    tags: String
-) -> Result<Vec<Recipe>, String> {
+    page: Option<String>,
+    limit: Option<String>,
+    q: Option<String>,
+    tags: Option<String>
+) -> Result<RecipesReturnType, String> {
     let db = &state.db;
 
-    let page = page.parse::<u32>().unwrap_or(1);
-    let limit = limit.parse::<u32>().unwrap_or(20);
-    let q = q.parse::<String>().unwrap_or(String::new());
-    let tags = tags.parse::<String>().unwrap_or(String::new());
+    let page = page.unwrap_or(String::new()).parse().unwrap_or(1);
+    let limit = limit.unwrap_or(String::new()).parse().unwrap_or(20);
+    let q = q.unwrap_or(String::new());
+    let tags = tags.unwrap_or(String::new());
 
     let recipes = fetch_recipes_with_tx(db, page, limit, q, tags).await;
 
