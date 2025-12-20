@@ -3,18 +3,11 @@ use sqlx::{Sqlite, Transaction};
 use tauri::{AppHandle, State, Manager};
 use image::{ImageReader, imageops};
 use uuid::Uuid;
-use serde::Deserialize;
 use std::fs;
 use crate::AppState;
 use crate::errors::StringifySqlxError;
 use crate::macros::run_tx;
-
-#[derive(Deserialize)]
-pub struct Ingredient {
-    pub name: String,
-    pub amount: u32,
-    pub unit: String,
-}
+use crate::database::types::Ingredient;
 
 fn process_image(image: Option<&str>, new_location: &PathBuf) {
     // If no image path is provided, exit early

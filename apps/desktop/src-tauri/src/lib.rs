@@ -20,7 +20,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
-        .invoke_handler(generate_handler![api::recipe::new::api_recipe_new])
+        .invoke_handler(generate_handler![api::recipe::new::api_recipe_new, api::recipes::api_recipes])
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });
             app.manage(AppState { db });

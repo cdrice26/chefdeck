@@ -1,0 +1,111 @@
+use sqlx::{Sqlite, Transaction, Pool};
+use tauri::State;
+use crate::{macros::run_tx, AppState, database::types::{Ingredient, Direction, RawRecipe, Recipe, RecipeTag}};
+use crate::errors::StringifySqlxError;
+
+async fn get_ingredients(
+    tx: &mut Transaction<'_, Sqlite>,
+    recipe_id: i64
+) -> Result<Vec<Ingredient>, sqlx::Error> {
+    let ingredients = sqlx::query_file_as!(Ingredient, "db/get_ingredients.sql", recipe_id)
+        .fetch_all(&mut **tx)
+        .await?;
+    Ok(ingredients)
+}
+
+async fn get_directions(
+    tx: &mut Transaction<'_, Sqlite>,
+    recipe_id: i64
+) -> Result<Vec<Direction>, sqlx::Error> {
+    let directions = sqlx::query_file_as!(Direction, "db/get_directions.sql", recipe_id)
+        .fetch_all(&mut **tx)
+        .await?;
+    Ok(directions)
+}
+
+async fn get_recipe_tags(
+    tx: &mut Transaction<'_, Sqlite>,
+    recipe_id: i64
+) -> Result<Vec<RecipeTag>, sqlx::Error> {
+    let recipe_tags = sqlx::query_file_as!(RecipeTag, "db/get_recipe_tags.sql", recipe_id)
+        .fetch_all(&mut **tx)
+        .await?;
+    Ok(recipe_tags)
+}
+
+async fn transform_recipe(r: RawRecipe, tx: &mut Transaction<'_, Sqlite>) -> Result<Recipe, sqlx::Error> {
+    let r_id = match r.id {
+        Some(id) => id,
+        None => return Err(sqlx::Error::RowNotFound),
+    };
+
+    let ingredients = get_ingredients(tx, r_id).await?;
+    let directions = get_directions(tx, r_id).await?;
+    let tags = get_recipe_tags(tx, r_id).await?;
+
+    Ok(Recipe {
+        id: r.id,
+        title: r.title.unwrap_or(String::new()),
+        servings: r.r#yield.unwrap_or(0),
+        minutes: r.minutes.unwrap_or(0),
+        img_url: r.img_url,
+        source_url: r.source,
+        color: r.color.unwrap_or(String::new()),
+        tags,
+        ingredients,
+        directions,
+        last_viewed: r.last_viewed,
+    })
+}
+
+async fn get_recipes(
+    tx: &mut Transaction<'_, Sqlite>,
+    page: u32,
+    limit: u32,
+    q: String,
+    tags: String
+) -> Result<Vec<Recipe>, sqlx::Error> {
+    let raw_recipes = sqlx::query_file_as!(RawRecipe, "db/get_recipes.sql", q, tags, page, limit)
+        .fetch_all(&mut **tx)
+        .await?;
+    let mut recipes = Vec::with_capacity(raw_recipes.len());
+
+    for r in raw_recipes {
+        recipes.push(transform_recipe(r, tx).await?);
+    }
+
+    Ok(recipes)
+}
+
+async fn fetch_recipes_with_tx(
+    db: &Pool<Sqlite>,
+    page: u32,
+    limit: u32,
+    q: String,
+    tags: String,
+) -> Result<Vec<Recipe>, String> {
+    // run_tx! resolves inside this async fn
+    let recipes = run_tx!(db, |tx| get_recipes(tx, page, limit, q, tags));
+
+    recipes
+}
+
+#[tauri::command]
+pub async fn api_recipes(
+    state: State<'_, AppState>,
+    page: String,
+    limit: String,
+    q: String,
+    tags: String
+) -> Result<Vec<Recipe>, String> {
+    let db = &state.db;
+
+    let page = page.parse::<u32>().unwrap_or(1);
+    let limit = limit.parse::<u32>().unwrap_or(20);
+    let q = q.parse::<String>().unwrap_or(String::new());
+    let tags = tags.parse::<String>().unwrap_or(String::new());
+
+    let recipes = fetch_recipes_with_tx(db, page, limit, q, tags).await;
+
+    recipes
+}
