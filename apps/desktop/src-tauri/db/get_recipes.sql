@@ -18,7 +18,7 @@ LEFT JOIN
     recipe_usage ru ON r.id = ru.recipe_id
 WHERE ($1 IS NULL OR r.title LIKE '%' || $1 || '%')
     AND (
-        $2 IS NULL OR
+        $2 IS NULL OR $2 = '' OR
         EXISTS (
             SELECT 1 FROM recipe_tags rt
             JOIN user_tags ut ON ut.id = rt.tag_id

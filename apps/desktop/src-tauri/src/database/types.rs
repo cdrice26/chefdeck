@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Ingredient {
     pub name: String,
     pub amount: f64,
@@ -8,13 +8,13 @@ pub struct Ingredient {
     pub id: Option<i64>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Direction {
     pub id: Option<i64>,
     pub content: String,
 }
 
-#[derive(sqlx::FromRow)]
+#[derive(sqlx::FromRow, Debug)]
 pub struct RawRecipe {
     pub id: Option<i64>,
     pub title: Option<String>,
@@ -27,13 +27,13 @@ pub struct RawRecipe {
     pub last_viewed: Option<chrono::NaiveDateTime>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct RecipeTag {
     pub id: Option<i64>,
     pub name: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Recipe {
     pub id: Option<i64>,
     pub title: String,
