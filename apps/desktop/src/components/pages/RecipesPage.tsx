@@ -1,10 +1,9 @@
 import {
   Dashboard,
-  useImageRefetcher,
   useInfiniteScroll,
   usePaginatedRecipes
 } from 'chefdeck-shared';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { request } from '../../utils/fetchUtils';
 
@@ -21,11 +20,6 @@ export default function RecipesPage() {
   const { recipes, page, setPage, hasMore, loading, error } =
     usePaginatedRecipes(request, query, tags);
 
-  useEffect(() => {
-    console.log(recipes, loading, error);
-  });
-  const { handleImageError, handleImageLoad } = useImageRefetcher(request);
-
   const loaderRef = useRef<HTMLDivElement | null>(null);
   useInfiniteScroll(loaderRef, hasMore, loading, setPage, recipes?.length);
 
@@ -38,8 +32,8 @@ export default function RecipesPage() {
       loaderRef={loaderRef}
       error={error}
       redirect={navigate}
-      handleImageError={handleImageError}
-      handleImageLoad={handleImageLoad}
+      handleImageError={() => {}}
+      handleImageLoad={() => {}}
     />
   );
 }

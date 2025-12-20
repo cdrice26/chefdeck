@@ -94,7 +94,6 @@ const parseUrl = (url: string) => {
 export const request: RequestFn = async (url, _method, body) => {
   try {
     const { fnName, params } = parseUrl(url);
-    console.log(fnName, params);
     const result = await invoke(fnName, { ...body, ...params } as InvokeArgs);
     return {
       json: () => Promise.resolve(result as object),
