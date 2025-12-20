@@ -34,6 +34,7 @@ pub struct RecipeTag {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct Recipe {
     pub id: Option<i64>,
     pub title: String,
