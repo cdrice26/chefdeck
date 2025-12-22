@@ -131,6 +131,14 @@ async fn insert_recipe_data(
         .await?;
     }
 
+    // Insert recipe usage record
+    sqlx::query_file!(
+        "db/insert_recipe_usage.sql",
+        recipe_id
+    )
+    .fetch_one(&mut **tx)
+    .await?;
+
     Ok(recipe_id)
 }
 
