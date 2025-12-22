@@ -14,19 +14,6 @@ pub struct Direction {
     pub content: String,
 }
 
-#[derive(sqlx::FromRow, Debug)]
-pub struct RawRecipe {
-    pub id: Option<i64>,
-    pub title: Option<String>,
-    #[sqlx(rename = "yield")]
-    pub r#yield: Option<i64>,
-    pub minutes: Option<i64>,
-    pub img_url: Option<String>,
-    pub source: Option<String>,
-    pub color: Option<String>,
-    pub last_viewed: Option<chrono::NaiveDateTime>,
-}
-
 #[derive(Deserialize, Serialize, Debug)]
 pub struct RecipeTag {
     pub id: Option<i64>,

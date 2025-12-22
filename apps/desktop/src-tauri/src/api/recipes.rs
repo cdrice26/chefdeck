@@ -1,8 +1,9 @@
 use serde::Serialize;
 use sqlx::{Sqlite, Transaction, Pool};
 use tauri::State;
-use crate::{macros::run_tx, AppState, database::types::{Ingredient, Direction, RawRecipe, Recipe, RecipeTag}};
+use crate::{macros::run_tx, types::{raw_db::{RawRecipe, RecipeContext}, response_bodies::{Direction, Ingredient, Recipe, RecipeTag}}, AppState};
 use crate::errors::StringifySqlxError;
+use crate::types::parser::Parsable;
 
 #[derive(Serialize)]
 pub struct RecipesReturnType {
@@ -49,18 +50,10 @@ async fn transform_recipe(r: RawRecipe, tx: &mut Transaction<'_, Sqlite>) -> Res
     let directions = get_directions(tx, r_id).await?;
     let tags = get_recipe_tags(tx, r_id).await?;
 
-    Ok(Recipe {
-        id: r.id,
-        title: r.title.unwrap_or(String::new()),
-        servings: r.r#yield.unwrap_or(0),
-        minutes: r.minutes.unwrap_or(0),
-        img_url: r.img_url,
-        source_url: r.source,
-        color: r.color.unwrap_or(String::new()),
-        tags,
+    r.parse(RecipeContext {
         ingredients,
         directions,
-        last_viewed: r.last_viewed,
+        tags,
     })
 }
 

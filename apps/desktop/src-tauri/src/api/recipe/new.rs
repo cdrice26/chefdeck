@@ -7,7 +7,7 @@ use std::fs;
 use crate::AppState;
 use crate::errors::StringifySqlxError;
 use crate::macros::run_tx;
-use crate::database::types::Ingredient;
+use crate::types::response_bodies::Ingredient;
 
 fn process_image(image: Option<&str>, new_location: &PathBuf) {
     // If no image path is provided, exit early

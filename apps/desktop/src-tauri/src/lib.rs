@@ -3,6 +3,8 @@ mod api;
 mod errors;
 #[macro_use]
 mod macros;
+mod types;
+
 
 use crate::database::create::setup_db;
 use tauri::{LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder, generate_handler};
