@@ -1,13 +1,13 @@
-use std::path::PathBuf;
-use sqlx::{Sqlite, Transaction};
-use tauri::{AppHandle, State, Manager};
-use image::{ImageReader, imageops};
-use uuid::Uuid;
-use std::fs;
-use crate::AppState;
 use crate::errors::StringifySqlxError;
 use crate::macros::run_tx;
 use crate::types::response_bodies::Ingredient;
+use crate::AppState;
+use image::{imageops, ImageReader};
+use sqlx::{Sqlite, Transaction};
+use std::fs;
+use std::path::PathBuf;
+use tauri::{AppHandle, Manager, State};
+use uuid::Uuid;
 
 fn process_image(image: Option<&str>, new_location: &PathBuf) {
     // If no image path is provided, exit early
@@ -59,7 +59,7 @@ async fn insert_recipe_data(
     ingredients: Vec<Ingredient>,
     directions: Vec<String>,
     tags: Vec<String>,
-    source_url: Option<String>
+    source_url: Option<String>,
 ) -> Result<i64, sqlx::Error> {
     // Insert recipe
     let row = sqlx::query_file!(
@@ -110,34 +110,23 @@ async fn insert_recipe_data(
 
     // Make sure user has all tags defined and get tag IDs
     for tag in tags.iter() {
-        let tag_id = sqlx::query_file!(
-            "db/insert_user_tag.sql",
-            tag
-        )
-        .fetch_one(&mut **tx)
-        .await?;
+        let tag_id = sqlx::query_file!("db/insert_user_tag.sql", tag)
+            .fetch_one(&mut **tx)
+            .await?;
         tag_ids.push(tag_id.id);
     }
 
     // Insert into recipe tags table
     for tag_id in tag_ids.iter() {
-        sqlx::query_file!(
-            "db/insert_recipe_tags.sql",
-            recipe_id,
-            recipe_id,
-            tag_id
-        )
-        .fetch_one(&mut **tx)
-        .await?;
+        sqlx::query_file!("db/insert_recipe_tags.sql", recipe_id, recipe_id, tag_id)
+            .fetch_one(&mut **tx)
+            .await?;
     }
 
     // Insert recipe usage record
-    sqlx::query_file!(
-        "db/insert_recipe_usage.sql",
-        recipe_id
-    )
-    .fetch_one(&mut **tx)
-    .await?;
+    sqlx::query_file!("db/insert_recipe_usage.sql", recipe_id)
+        .fetch_one(&mut **tx)
+        .await?;
 
     Ok(recipe_id)
 }
@@ -172,17 +161,17 @@ pub async fn api_recipe_new(
     };
 
     let recipe_id = run_tx!(db, |tx| insert_recipe_data(
-            tx,
-            title,
-            yield_value,
-            time,
-            image_path,
-            color,
-            ingredients,
-            directions,
-            tags,
-            source_url
-        ));
+        tx,
+        title,
+        yield_value,
+        time,
+        image_path,
+        color,
+        ingredients,
+        directions,
+        tags,
+        source_url
+    ));
 
     recipe_id
 }

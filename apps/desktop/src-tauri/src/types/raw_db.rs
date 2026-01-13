@@ -1,4 +1,7 @@
-use super::{parser::Parsable, response_bodies::{Direction, Ingredient, Recipe, RecipeTag}};
+use super::{
+    parser::Parsable,
+    response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
+};
 
 #[derive(sqlx::FromRow, Debug)]
 pub struct RawRecipe {

@@ -7,6 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 
+  server: { watch: { ignored: ['**/src-tauri/target/**', '**/target/**'] } },
+
   resolve: {
     alias: {
       // Ensure the desktop build resolves to the single React/react-dom copy

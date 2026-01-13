@@ -1,13 +1,14 @@
-mod database;
 mod api;
+mod database;
 mod errors;
 #[macro_use]
 mod macros;
 mod types;
 
-
 use crate::database::create::setup_db;
-use tauri::{LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder, generate_handler};
+use tauri::{
+    generate_handler, LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder,
+};
 #[cfg(target_os = "windows")]
 use window_vibrancy::apply_blur;
 #[cfg(target_os = "macos")]
@@ -20,9 +21,13 @@ struct AppState {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_stronghold::Builder::new(|pass| todo!()).build())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
-        .invoke_handler(generate_handler![api::recipe::new::api_recipe_new, api::recipes::api_recipes])
+        .invoke_handler(generate_handler![
+            api::recipe::new::api_recipe_new,
+            api::recipes::api_recipes
+        ])
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });
             app.manage(AppState { db });

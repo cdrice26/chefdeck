@@ -54,7 +54,7 @@ export default function Toolbar() {
           </button>
           <button
             className="rounded-full h-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
-            onClick={() => {}}
+            onClick={() => navigate('/profile')}
           >
             <IoIosPerson className="pointer-events-none text-black dark:text-white" />
           </button>
