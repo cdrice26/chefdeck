@@ -21,7 +21,7 @@ struct AppState {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_stronghold::Builder::new(|pass| todo!()).build())
+
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
         .invoke_handler(generate_handler![
@@ -31,6 +31,37 @@ pub fn run() {
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });
             app.manage(AppState { db });
+
+            // Initialize Stronghold using Argon2 KDF and a salt file stored in the
+            // application's local data directory. If the salt file doesn't exist yet,
+            // create it with secure random bytes and restrictive permissions before
+            // registering the plugin.
+            let salt_path = app
+                .path()
+                .app_local_data_dir()
+                .expect("could not resolve app local data path")
+                .join("salt.txt");
+            if let Some(parent) = salt_path.parent() {
+                std::fs::create_dir_all(parent)?;
+            }
+            if !salt_path.exists() {
+                // Generate a 32-byte random salt using the OS RNG via getrandom
+                let mut salt = [0u8; 32];
+                getrandom::getrandom(&mut salt).map_err(|e| {
+                    std::io::Error::new(std::io::ErrorKind::Other, format!("getrandom failed: {}", e))
+                })?;
+                std::fs::write(&salt_path, &salt)?;
+                // On Unix, set file permissions to 0o600
+                #[cfg(unix)]
+                {
+                    use std::os::unix::fs::PermissionsExt;
+                    let mut perms = std::fs::metadata(&salt_path)?.permissions();
+                    perms.set_mode(0o600);
+                    std::fs::set_permissions(&salt_path, perms)?;
+                }
+            }
+            app.handle()
+                .plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
 
             let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("ChefDeck")
