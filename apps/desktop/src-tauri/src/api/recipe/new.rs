@@ -1,4 +1,4 @@
-use crate::errors::StringifySqlxError;
+use crate::errors::StringifyError;
 use crate::macros::run_tx;
 use crate::types::response_bodies::Ingredient;
 use crate::AppState;

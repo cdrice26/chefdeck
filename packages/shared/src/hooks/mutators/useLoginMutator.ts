@@ -20,7 +20,6 @@ const useLoginMutator = (
   redirect: (url: string) => void
 ) => {
   const [error, setError] = useState<string | null>(null);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);

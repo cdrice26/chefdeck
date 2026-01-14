@@ -1,4 +1,4 @@
-use crate::errors::StringifySqlxError;
+use crate::errors::StringifyError;
 use crate::types::parser::Parsable;
 use crate::{
     macros::run_tx,

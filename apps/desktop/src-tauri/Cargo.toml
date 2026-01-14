@@ -32,7 +32,7 @@ image = "0.25.6"
 uuid = { version = "1.19.0", features = ["v4"] }
 libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
 chrono = { version = "0.4.42", features = ["serde"] }
-tauri-plugin-stronghold = "2"
-
-[profile.dev.package.scrypt]
-opt-level = 3
+reqwest = { version = "0.13.1", features = ["json"] }
+dotenv = "0.15.0"
+tokio = "1.49.0"
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
