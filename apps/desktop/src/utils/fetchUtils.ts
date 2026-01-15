@@ -62,6 +62,15 @@ const objectifyParams = (params: URLSearchParams) =>
   Object.fromEntries(params.entries());
 
 /**
+ * Converts a camelCase string to snake_case
+ *
+ * @param str - The camelCase string to convert to snake_case
+ * @returns The string in snake_case
+ */
+const camelToSnake = (str: string) =>
+  str.replace(/([A-Z])/g, '_$1').toLowerCase();
+
+/**
  * Takes a url and converts it into a format that can be used for Tauri IPC requests.
  * * Search parameters are converted to a plain object, `params`.
  * * The first numeric path segment is used as the `id` parameter
@@ -94,7 +103,10 @@ const parseUrl = (url: string) => {
 export const request: RequestFn = async (url, _method, body) => {
   try {
     const { fnName, params } = parseUrl(url);
-    const result = await invoke(fnName, { ...body, ...params } as InvokeArgs);
+    const result = await invoke(camelToSnake(fnName), {
+      ...body,
+      ...params
+    } as InvokeArgs);
     return {
       json: () => Promise.resolve(result as object),
       text: () => Promise.resolve((result as object | string).toString()),

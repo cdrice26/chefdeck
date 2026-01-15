@@ -8,7 +8,6 @@ const REFRESH_TOKEN_KEY: &str = "refresh_token";
 pub enum AuthVaultError {
     Keyring(keyring::Error),
     Io(std::io::Error),
-    Other(String),
 }
 
 impl std::fmt::Display for AuthVaultError {
@@ -16,7 +15,6 @@ impl std::fmt::Display for AuthVaultError {
         match self {
             AuthVaultError::Keyring(e) => write!(f, "keyring error: {}", e),
             AuthVaultError::Io(e) => write!(f, "io error: {}", e),
-            AuthVaultError::Other(s) => write!(f, "{}", s),
         }
     }
 }

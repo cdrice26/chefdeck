@@ -2,7 +2,12 @@ pub mod recipe;
 pub mod recipes;
 pub mod auth;
 
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct GenericResponse<T> {
+    pub data: T
+}
 
 #[derive(Serialize)]
 pub struct SuccessResponse {

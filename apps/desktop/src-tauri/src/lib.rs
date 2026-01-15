@@ -29,7 +29,8 @@ pub fn run() {
         .invoke_handler(generate_handler![
             api::recipe::new::api_recipe_new,
             api::recipes::api_recipes,
-            api::auth::login::api_auth_login
+            api::auth::login::api_auth_login,
+            api::auth::check_auth::api_auth_check_auth
         ])
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });

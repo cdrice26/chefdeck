@@ -1,4 +1,4 @@
-use crate::token_keyring::{self, AuthVaultError};
+use crate::token_keyring::AuthVaultError;
 
 pub trait StringifyError<T> {
     fn string_err(self) -> Result<T, String>;
