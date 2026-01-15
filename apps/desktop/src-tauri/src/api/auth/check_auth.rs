@@ -23,7 +23,7 @@ pub struct CheckAuthResponse {
 }
 
 async fn refresh_access_token(state: &State<'_, AppState>) -> Result<(), String> {
-    let refresh_token = get_refresh_token().string_err()?.expect("Refresh token not found");
+    let refresh_token = get_refresh_token().string_err()?.ok_or("Refresh token not found")?;
     let client = reqwest::Client::new();
     let response = client.post(format!("{}/auth/refreshToken", std::env::var("API_URL").unwrap_or_default()))
         .header("x-refresh-token", refresh_token)

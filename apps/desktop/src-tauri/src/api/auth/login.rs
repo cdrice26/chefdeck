@@ -32,8 +32,8 @@ pub async fn api_auth_login(state: State<'_, AppState>, email: String, password:
         let mut access_token_mutex = state.access_token.lock().await;
         *access_token_mutex = Some(rjson.data.access_token);
         token_keyring::store_refresh_token(rjson.data.refresh_token.as_str()).string_err()?;
-        Ok(SuccessResponse { message: "Login successful".to_string() })
+        Ok(SuccessResponse::new("Login successful".to_string()))
     } else {
-        Err(ErrorResponse { error: "Login failed".to_string() })
+        Err(ErrorResponse::new("Login failed".to_string()))
     }
 }
