@@ -7,6 +7,7 @@ import SchedulePage from './components/pages/SchedulePage';
 import GroceriesPage from './components/pages/GroceriesPage';
 import AddRecipePage from './components/pages/AddRecipePage';
 import ProfilePage from './components/pages/ProfilePage';
+import { NotificationProvider } from 'chefdeck-shared';
 
 const MemoryRouterSafe = MemoryRouter as unknown as React.ComponentType<
   React.PropsWithChildren<Record<string, unknown>>
@@ -25,17 +26,19 @@ if (!rootElement) throw new Error('Root element not found');
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <MemoryRouterSafe>
-      <RoutesSafe>
-        <RouteSafe path="/" element={<RootPage />}>
-          <RouteSafe index element={<RecipesPage />} />
-          <RouteSafe path="dashboard" element={<RecipesPage />} />
-          <RouteSafe path="schedule" element={<SchedulePage />} />
-          <RouteSafe path="groceries" element={<GroceriesPage />} />
-          <RouteSafe path="create" element={<AddRecipePage />} />
-          <RouteSafe path="profile" element={<ProfilePage />} />
-        </RouteSafe>
-      </RoutesSafe>
-    </MemoryRouterSafe>
+    <NotificationProvider>
+      <MemoryRouterSafe>
+        <RoutesSafe>
+          <RouteSafe path="/" element={<RootPage />}>
+            <RouteSafe index element={<RecipesPage />} />
+            <RouteSafe path="dashboard" element={<RecipesPage />} />
+            <RouteSafe path="schedule" element={<SchedulePage />} />
+            <RouteSafe path="groceries" element={<GroceriesPage />} />
+            <RouteSafe path="create" element={<AddRecipePage />} />
+            <RouteSafe path="profile" element={<ProfilePage />} />
+          </RouteSafe>
+        </RoutesSafe>
+      </MemoryRouterSafe>
+    </NotificationProvider>
   </React.StrictMode>
 );

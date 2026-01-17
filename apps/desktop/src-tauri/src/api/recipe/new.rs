@@ -1,26 +1,22 @@
-use crate::errors::StringifyError;
+use crate::{api::GenericResponse, errors::StringifyError};
 use crate::macros::run_tx;
 use crate::types::response_bodies::Ingredient;
 use crate::AppState;
 use crate::request::refresh_access_token;
+use crate::types::cloud_structs::RecipeFormData;
 use image::{imageops, ImageReader};
 use sqlx::{Sqlite, Transaction};
 use std::fs;
 use std::path::PathBuf;
-use tauri::{AppHandle, Manager, State};
+use tauri::{AppHandle, Manager, State, Emitter};
 use uuid::Uuid;
 use reqwest::{StatusCode, Response};
+use serde::Deserialize;
 
-struct RecipeData {
-    pub title: String,
-    pub yield_value: u32,
-    pub time: u32,
-    pub image_path: Option<String>,
-    pub color: String,
-    pub ingredients: Vec<Ingredient>,
-    pub directions: Vec<String>,
-    pub tags: Vec<String>,
-    pub source_url: Option<String>,
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct NewRecipeResponse {
+    pub recipe_id: String,
 }
 
 fn process_image(image: Option<&str>, new_location: &PathBuf) {
@@ -145,11 +141,18 @@ async fn insert_recipe_data(
     Ok(recipe_id)
 }
 
+async fn update_cloud_parent_id(tx: &mut Transaction<'_, Sqlite>, recipe_id: i64, online_recipe_id: &str) -> Result<(), sqlx::Error> {
+    sqlx::query_file!("db/update_cloud_parent_id.sql", online_recipe_id, recipe_id)
+        .execute(&mut **tx)
+        .await?;
+    Ok(())
+}
+
 async fn do_post_request(
     state: &State<'_, AppState>,
     client: &reqwest::Client,
     endpoint: &str,
-    recipe: &RecipeData,
+    recipe: &RecipeFormData,
 ) -> Result<Response, String> {
     let api_url = std::env::var("API_URL").unwrap_or_default();
     let access_token_guard = state.access_token.lock().await;
@@ -157,7 +160,7 @@ async fn do_post_request(
 
     let mut form = reqwest::multipart::Form::new()
         .text("title", recipe.title.clone())
-        .text("yieldValue", recipe.yield_value.to_string())
+        .text("yield", recipe.yield_value.to_string())
         .text("time", recipe.time.to_string())
         .text("color", recipe.color.clone());
 
@@ -213,7 +216,7 @@ async fn do_post_request(
     req.multipart(form).send().await.string_err()
 }
 
-async fn post(app: AppHandle, endpoint: &str, recipe: RecipeData) -> Result<Response, String> {
+async fn post(app: &AppHandle, endpoint: &str, recipe: RecipeFormData) -> Result<Response, String> {
     let state: State<AppState> = app.state();
 
     let client = reqwest::Client::new();
@@ -230,6 +233,27 @@ async fn post(app: AppHandle, endpoint: &str, recipe: RecipeData) -> Result<Resp
         }
     } else {
         Ok(resp)
+    }
+}
+
+async fn add_to_cloud(app: &AppHandle, recipe_id: i64, recipe: RecipeFormData) -> Result<(), String> {
+    let state = app.state::<AppState>();
+    let db = &state.db;
+    let resp = post(&app, "/recipe/new", recipe).await;
+    match resp {
+        Ok(resp) => {
+            let resp_data: GenericResponse<NewRecipeResponse> = resp.json().await.string_err()?;
+            let online_recipe_id = resp_data.data.recipe_id;
+            let update_resp = run_tx!(db, |tx| update_cloud_parent_id(tx, recipe_id, online_recipe_id.as_str()));
+            if update_resp.is_err() {
+                Err(update_resp.err().unwrap().to_string())
+            } else {
+                Ok(())
+            }
+        }
+        Err(_) => {
+            Err(String::from("Failed to add recipe to cloud"))
+        }
     }
 }
 
@@ -277,7 +301,6 @@ pub async fn api_recipe_new(
 
     let should_request = {
         let access_token_mutex = state.access_token.lock().await;
-        log::debug!("Access token: {:?}", access_token_mutex);
         if let Some(_) = access_token_mutex.as_ref() {
             true
         } else {
@@ -286,8 +309,9 @@ pub async fn api_recipe_new(
     };
 
     if should_request {
+        if let Ok(recipe_id) = recipe_id {
         tauri::async_runtime::spawn(async move {
-            let resp = post(app, "/api/recipe/new", RecipeData {
+            let cloud_result = add_to_cloud(&app, recipe_id, RecipeFormData {
                 title,
                 yield_value,
                 time,
@@ -298,10 +322,10 @@ pub async fn api_recipe_new(
                 tags,
                 source_url
             }).await;
-            if let Err(err) = resp {
-                log::error!("Failed to post recipe: {}", err);
+            if let Err(err) = cloud_result {
+                let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
             }
-        });
+        });}
     }
 
     recipe_id

@@ -3,7 +3,12 @@ import Sidebar from '../navigation/Sidebar';
 import { platform } from '@tauri-apps/plugin-os';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Toolbar from '../navigation/Toolbar';
-import { NotificationProvider, NotificationWrapper } from 'chefdeck-shared';
+import {
+  NotificationProvider,
+  NotificationWrapper,
+  useNotification
+} from 'chefdeck-shared';
+import { useTauriListener } from '../../hooks/useTauriListener';
 
 export default function RootPage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -11,6 +16,8 @@ export default function RootPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [dragWidth, setDragWidth] = useState(0);
+
+  const { addNotification } = useNotification();
 
   const pxToNum = (px: string) => Number(px.replace('px', '')) || 0;
 
@@ -153,8 +160,12 @@ export default function RootPage() {
     };
   }, []);
 
+  useTauriListener('new_recipe_cloud_error', (event) => {
+    addNotification(event.payload, 'error');
+  });
+
   return (
-    <NotificationProvider>
+    <>
       <NotificationWrapper />
       <div
         className="h-10 fixed top-0 left-0 z-50 inset-0 outline-red-900"
@@ -174,10 +185,7 @@ export default function RootPage() {
 
         {/* Foreground UI */}
         <Sidebar ref={sidebarRef} />
-        <div
-          ref={contentRef}
-          className={`flex-1 flex flex-col z-10`}
-        >
+        <div ref={contentRef} className={`flex-1 flex flex-col z-10`}>
           <Toolbar />
           <div className="flex-1 min-h-0 overflow-y-auto relative">
             <div className="w-full">
@@ -186,6 +194,6 @@ export default function RootPage() {
           </div>
         </div>
       </div>
-    </NotificationProvider>
+    </>
   );
 }
