@@ -1,4 +1,4 @@
-use tauri::State;
+use tauri::{State, Manager, AppHandle};
 use reqwest::{StatusCode, Response};
 use serde::Deserialize;
 use crate::AppState;
@@ -76,14 +76,15 @@ async fn do_post_request(
 }
 
 /// Public GET wrapper: tries once, if unauthorized attempts to refresh token and retries.
-pub async fn get(state: &State<'_, AppState>, endpoint: &str) -> Result<Response, String> {
+pub async fn get(app: AppHandle, endpoint: &str) -> Result<Response, String> {
+    let state: State<AppState> = app.state();
     let client = reqwest::Client::new();
-    let mut resp = do_get_request(state, &client, endpoint).await?;
+    let mut resp = do_get_request(&state, &client, endpoint).await?;
 
     if resp.status() == StatusCode::UNAUTHORIZED {
         // Try to refresh and retry once
-        refresh_access_token(state).await?;
-        resp = do_get_request(state, &client, endpoint).await?;
+        refresh_access_token(&state).await?;
+        resp = do_get_request(&state, &client, endpoint).await?;
         if resp.status() == StatusCode::UNAUTHORIZED {
             Err("Failed to refresh access token".to_string())
         } else {
@@ -95,14 +96,15 @@ pub async fn get(state: &State<'_, AppState>, endpoint: &str) -> Result<Response
 }
 
 /// Public POST wrapper: tries once, if unauthorized attempts to refresh token and retries.
-pub async fn post(state: &State<'_, AppState>, endpoint: &str, body: &str) -> Result<Response, String> {
+pub async fn post(app: AppHandle, endpoint: &str, body: &str) -> Result<Response, String> {
+    let state: State<AppState> = app.state();
     let client = reqwest::Client::new();
-    let mut resp = do_post_request(state, &client, endpoint, body).await?;
+    let mut resp = do_post_request(&state, &client, endpoint, body).await?;
 
     if resp.status() == StatusCode::UNAUTHORIZED {
         // Try to refresh and retry once
-        refresh_access_token(state).await?;
-        resp = do_post_request(state, &client, endpoint, body).await?;
+        refresh_access_token(&state).await?;
+        resp = do_post_request(&state, &client, endpoint, body).await?;
         if resp.status() == StatusCode::UNAUTHORIZED {
             Err("Failed to refresh access token".to_string())
         } else {
