@@ -1,16 +1,10 @@
 use reqwest::Response;
 use serde::{Deserialize, Serialize};
 use tauri::State;
-use crate::{token_keyring::{get_refresh_token, store_refresh_token}, AppState};
+use crate::AppState;
 use crate::errors::StringifyError;
 use crate::api::GenericResponse;
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct RefreshTokenResponse {
-    access_token: String,
-    refresh_token: String
-}
+use crate::request::refresh_access_token;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Profile {
@@ -20,26 +14,6 @@ pub struct Profile {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CheckAuthResponse {
     pub profile: Profile
-}
-
-async fn refresh_access_token(state: &State<'_, AppState>) -> Result<(), String> {
-    let refresh_token = get_refresh_token().string_err()?.ok_or("Refresh token not found")?;
-    let client = reqwest::Client::new();
-    let response = client.post(format!("{}/auth/refreshToken", std::env::var("API_URL").unwrap_or_default()))
-        .header("x-refresh-token", refresh_token)
-        .send()
-        .await.string_err()?;
-
-    if response.status().is_success() {
-        let new_tokens: RefreshTokenResponse = response.json().await.string_err()?;
-
-        let mut access_token = state.access_token.lock().await;
-        *access_token = Some(new_tokens.access_token);
-        store_refresh_token(new_tokens.refresh_token.as_str()).string_err()?;
-        Ok(())
-    } else {
-        Err("Failed to refresh access token".to_string())
-    }
 }
 
 async fn make_auth_request(access_token: &str) -> Result<Response, String> {
@@ -93,6 +67,8 @@ pub async fn api_auth_check_auth(state: State<'_, AppState>) -> Result<GenericRe
     if response.status().is_success() {
         parse_response(response).await
     } else {
+        let mut access_token_mutex = state.access_token.lock().await;
+        *access_token_mutex = None;
         Err("Not authenticated".to_string())
     }
 }

@@ -5,6 +5,7 @@ mod errors;
 mod macros;
 mod types;
 mod token_keyring;
+mod request;
 
 use crate::database::create::setup_db;
 use tauri::{
