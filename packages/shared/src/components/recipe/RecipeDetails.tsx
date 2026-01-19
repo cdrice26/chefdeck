@@ -77,11 +77,11 @@ const RecipeDetails = ({ recipe, isLoading, error }: RecipeDetailsProps) =>
         ))}
       </ul>
       <strong className="text-lg">Directions:</strong>
-      <ul className="list-disc ml-4">
+      <ol className="list-decimal ml-4">
         {recipe?.directions?.map((direction) => (
           <li key={direction?.id}>{direction?.content}</li>
         ))}
-      </ul>
+      </ol>
     </>
   );
 
