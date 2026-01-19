@@ -1,6 +1,8 @@
 use crate::token_keyring::AuthVaultError;
 
+/// Trait for converting errors into strings.
 pub trait StringifyError<T> {
+    /// Converts an error into a string.
     fn string_err(self) -> Result<T, String>;
 }
 

@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+/// Represents an ingredient.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Ingredient {
     pub name: String,
@@ -8,18 +9,21 @@ pub struct Ingredient {
     pub id: Option<i64>,
 }
 
+/// Represents a direction.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Direction {
     pub id: Option<i64>,
     pub content: String,
 }
 
+/// Represents a keyword tag on a recipe.
 #[derive(Deserialize, Serialize, Debug)]
 pub struct RecipeTag {
     pub id: Option<i64>,
     pub name: Option<String>,
 }
 
+/// Represents a recipe.
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Recipe {

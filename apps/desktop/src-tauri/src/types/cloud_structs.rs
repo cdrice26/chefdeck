@@ -1,5 +1,6 @@
 use crate::types::response_bodies::Ingredient;
 
+/// Represents the form data for creating a new recipe in the cloud database.
 pub struct RecipeFormData {
     pub title: String,
     pub yield_value: u32,
