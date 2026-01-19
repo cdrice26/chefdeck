@@ -44,6 +44,53 @@ interface StatePair {
 }
 
 /**
+ * Replace unicode fractions with their decimal equivalents in a given string
+ *
+ * @param str - The string to replace the fractions in
+ * @returns - str with fractions replaced by their decimal equivalents
+ */
+function replaceUnicodeFractions(str: string, decimals: number = 3) {
+  const fractionMap: Record<string, number> = {
+    '¼': 1 / 4,
+    '½': 1 / 2,
+    '¾': 3 / 4,
+    '⅐': 1 / 7,
+    '⅑': 1 / 9,
+    '⅒': 1 / 10,
+    '⅓': 1 / 3,
+    '⅔': 2 / 3,
+    '⅕': 1 / 5,
+    '⅖': 2 / 5,
+    '⅗': 3 / 5,
+    '⅘': 4 / 5,
+    '⅙': 1 / 6,
+    '⅚': 5 / 6,
+    '⅛': 1 / 8,
+    '⅜': 3 / 8,
+    '⅝': 5 / 8,
+    '⅞': 7 / 8
+  };
+
+  const round = (value: number) => Number(value.toFixed(decimals));
+
+  // Handle mixed numbers like "1⅖"
+  str = str.replace(
+    /(\d+)([\u00BC-\u00BE\u2150-\u215E])/g,
+    (_: string, whole: string, frac: string) => {
+      const value = Number(whole) + fractionMap[frac];
+      return round(value).toString();
+    }
+  );
+
+  // Handle standalone fractions
+  str = str.replace(/[\u00BC-\u00BE\u2150-\u215E]/g, (m) =>
+    round(fractionMap[m]).toString()
+  );
+
+  return str;
+}
+
+/**
  * RecipeForm component
  *
  * A controlled form component for creating or updating a recipe. The form uses
@@ -105,10 +152,56 @@ const RecipeForm = ({
     setIngredients(updatedIngredients);
   };
 
+  const handleIngredientPaste = (
+    index: number,
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
+    if (ingredients[index].name !== '') {
+      return;
+    }
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    const ingredientsToAdd = text.split('\n').map((ingredient) => ({
+      id: uuid(),
+      amount: (() => {
+        const amountStr = replaceUnicodeFractions(ingredient.split(' ')[0]);
+        const amount = parseFloat(amountStr);
+        return isNaN(amount) ? 1 : amount;
+      })(),
+      unit: ingredient.split(' ')[1],
+      name: ingredient.split(' ').slice(2).join(' ')
+    }));
+    setIngredients((ingredients) => [
+      ...ingredients.slice(0, index),
+      ...ingredientsToAdd,
+      ...ingredients.slice(index + 1)
+    ]);
+  };
+
   const handleDirectionChange = (index: number, value: string) => {
     const updatedDirections = [...directions];
     updatedDirections[index].content = value;
     setDirections(updatedDirections);
+  };
+
+  const handleDirectionPaste = (
+    index: number,
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
+    if (directions[index].content !== '') {
+      return;
+    }
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    const directionsToAdd = text.split('\n').map((direction) => ({
+      id: uuid(),
+      content: direction
+    }));
+    setDirections((directions) => [
+      ...directions.slice(0, index),
+      ...directionsToAdd,
+      ...directions.slice(index + 1)
+    ]);
   };
 
   const addItem =
@@ -237,6 +330,9 @@ const RecipeForm = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleIngredientChange(index, 'name', e.target.value)
                 }
+                onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                  handleIngredientPaste(index, e);
+                }}
                 required
               />
               <Input
@@ -293,6 +389,9 @@ const RecipeForm = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleDirectionChange(index, e.target.value)
                 }
+                onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                  handleDirectionPaste(index, e);
+                }}
                 required
               />
               <Button type="button" onClick={() => removeDirection(index)}>
