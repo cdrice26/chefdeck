@@ -1,6 +1,7 @@
 pub mod recipe;
 pub mod recipes;
 pub mod auth;
+pub mod sync_data;
 
 use serde::{Serialize, Deserialize};
 

@@ -3,13 +3,18 @@ import {
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosPerson,
-  IoIosSearch
+  IoIosSearch,
+  IoIosSync
 } from 'react-icons/io';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../../hooks/useAuth';
+import { useSync } from '../../hooks/useSync';
 
 export default function Toolbar() {
   const navigate = useNavigate();
+  const username = useAuth();
+  const { sync } = useSync();
 
   return (
     <div
@@ -58,6 +63,16 @@ export default function Toolbar() {
           >
             <IoIosPerson className="pointer-events-none text-black dark:text-white" />
           </button>
+          {username && (
+            <button
+              className="rounded-full h-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
+              onClick={() => {
+                sync();
+              }}
+            >
+              <IoIosSync className="pointer-events-none text-black dark:text-white" />
+            </button>
+          )}
         </div>
         <div
           className={`p-1 h-full flex gap-2 justify-center items-center text-sm text-black dark:text-white outline-none font-light ${

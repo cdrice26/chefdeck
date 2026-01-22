@@ -38,4 +38,6 @@ pub struct Recipe {
     pub directions: Vec<Direction>,
     pub tags: Vec<RecipeTag>,
     pub last_viewed: Option<chrono::NaiveDateTime>,
+    pub last_updated: Option<chrono::NaiveDateTime>,
+    pub cloud_parent_id: Option<String>,
 }

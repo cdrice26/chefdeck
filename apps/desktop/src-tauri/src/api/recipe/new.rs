@@ -1,3 +1,4 @@
+use crate::api::auth::check_auth::get_username;
 use crate::{api::GenericResponse, errors::StringifyError};
 use crate::macros::run_tx;
 use crate::types::response_bodies::Ingredient;
@@ -141,8 +142,8 @@ async fn insert_recipe_data(
     Ok(recipe_id)
 }
 
-async fn update_cloud_parent_id(tx: &mut Transaction<'_, Sqlite>, recipe_id: i64, online_recipe_id: &str) -> Result<(), sqlx::Error> {
-    sqlx::query_file!("db/update_cloud_parent_id.sql", online_recipe_id, recipe_id)
+async fn insert_cloud_parent_id(tx: &mut Transaction<'_, Sqlite>, recipe_id: i64, username: &str, online_recipe_id: &str) -> Result<(), sqlx::Error> {
+    sqlx::query_file!("db/insert_cloud_id.sql", recipe_id, username, online_recipe_id)
         .execute(&mut **tx)
         .await?;
     Ok(())
@@ -244,7 +245,8 @@ async fn add_to_cloud(app: &AppHandle, recipe_id: i64, recipe: RecipeFormData) -
         Ok(resp) => {
             let resp_data: GenericResponse<NewRecipeResponse> = resp.json().await.string_err()?;
             let online_recipe_id = resp_data.data.recipe_id;
-            let update_resp = run_tx!(db, |tx| update_cloud_parent_id(tx, recipe_id, online_recipe_id.as_str()));
+            let username = get_username(&state).await?;
+            let update_resp = run_tx!(db, |tx| insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str()));
             if update_resp.is_err() {
                 Err(update_resp.err().unwrap().to_string())
             } else {
@@ -322,7 +324,8 @@ pub async fn api_recipe_new(
                 tags,
                 source_url
             }).await;
-            if let Err(_) = cloud_result {
+            if let Err(err) = cloud_result {
+                println!("{}", err);
                 let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
             }
         });}

@@ -29,9 +29,7 @@ async fn parse_response(response: Response) -> Result<GenericResponse<CheckAuthR
     Ok(data)
 }
 
-#[tauri::command]
-pub async fn api_auth_check_auth(state: State<'_, AppState>) -> Result<GenericResponse<CheckAuthResponse>, String> {
-    // PHASE 1: Check if we need to refresh before making the request
+pub async fn check_auth(state: &State<'_, AppState>) -> Result<GenericResponse<CheckAuthResponse>, String> {
     let needs_refresh = {
         let access_token = state.access_token.lock().await;
         access_token.is_none()
@@ -71,4 +69,13 @@ pub async fn api_auth_check_auth(state: State<'_, AppState>) -> Result<GenericRe
         *access_token_mutex = None;
         Err("Not authenticated".to_string())
     }
+}
+
+pub async fn get_username(state: &State<'_, AppState>) -> Result<String, String> {
+    Ok(check_auth(&state).await?.data.profile.username)
+}
+
+#[tauri::command]
+pub async fn api_auth_check_auth(state: State<'_, AppState>) -> Result<GenericResponse<CheckAuthResponse>, String> {
+    check_auth(&state).await
 }

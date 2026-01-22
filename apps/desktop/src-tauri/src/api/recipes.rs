@@ -1,5 +1,6 @@
 use crate::errors::StringifyError;
 use crate::types::parser::Parsable;
+use crate::types::raw_db::HasId;
 use crate::{
     macros::run_tx,
     types::{
@@ -47,11 +48,11 @@ async fn get_recipe_tags(
     Ok(recipe_tags)
 }
 
-async fn transform_recipe(
-    r: RawRecipe,
+pub async fn transform_recipe<T: Parsable<Context = RecipeContext, Output = Recipe> + HasId>(
+    r: T,
     tx: &mut Transaction<'_, Sqlite>,
 ) -> Result<Recipe, sqlx::Error> {
-    let r_id = match r.id {
+    let r_id = match r.id() {
         Some(id) => id,
         None => return Err(sqlx::Error::RowNotFound),
     };
