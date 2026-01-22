@@ -322,7 +322,7 @@ pub async fn api_recipe_new(
                 tags,
                 source_url
             }).await;
-            if let Err(err) = cloud_result {
+            if let Err(_) = cloud_result {
                 let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
             }
         });}
