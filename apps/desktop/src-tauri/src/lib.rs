@@ -29,6 +29,7 @@ pub fn run() {
         .plugin(tauri_plugin_os::init())
         .invoke_handler(generate_handler![
             api::recipe::new::api_recipe_new,
+            api::recipe::api_recipe,
             api::recipes::api_recipes,
             api::auth::login::api_auth_login,
             api::auth::check_auth::api_auth_check_auth,

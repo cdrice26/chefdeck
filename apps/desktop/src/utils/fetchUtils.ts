@@ -84,9 +84,12 @@ const parseUrl = (url: string) => {
   const [base, paramsStr] = url.split('?');
   const paths = base.split('/');
   const id = paths.find((path) => path.match(/^[0-9]+$/));
-  const fnName = paths.slice(1).join('_');
+  const fnName = paths
+    .slice(1)
+    .filter((path) => path !== id)
+    .join('_');
   const params = {
-    ...(id !== undefined ? { id } : {}),
+    ...(id !== undefined ? { id: parseInt(id) } : {}),
     ...objectifyParams(new URLSearchParams(paramsStr))
   };
   return { fnName, params };

@@ -8,6 +8,7 @@ import GroceriesPage from './components/pages/GroceriesPage';
 import AddRecipePage from './components/pages/AddRecipePage';
 import ProfilePage from './components/pages/ProfilePage';
 import { NotificationProvider } from 'chefdeck-shared';
+import RecipePage from './components/pages/RecipePage';
 
 const MemoryRouterSafe = MemoryRouter as unknown as React.ComponentType<
   React.PropsWithChildren<Record<string, unknown>>
@@ -36,6 +37,9 @@ ReactDOM.createRoot(rootElement).render(
             <RouteSafe path="groceries" element={<GroceriesPage />} />
             <RouteSafe path="create" element={<AddRecipePage />} />
             <RouteSafe path="profile" element={<ProfilePage />} />
+            <RouteSafe path="recipe/:id">
+              <RouteSafe index element={<RecipePage />} />
+            </RouteSafe>
           </RouteSafe>
         </RoutesSafe>
       </MemoryRouterSafe>

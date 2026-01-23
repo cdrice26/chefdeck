@@ -1,22 +1,18 @@
 use crate::errors::StringifyError;
 use crate::types::parser::Parsable;
-use crate::types::raw_db::HasId;
+use crate::types::raw_db::RawRecipeCommon;
 use crate::{
     macros::run_tx,
     types::{
-        raw_db::{RawRecipe, RecipeContext},
+        raw_db::{RawRecipeWithLastViewed, RecipeContext},
         response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
     },
     AppState,
 };
-use serde::Serialize;
 use sqlx::{Pool, Sqlite, Transaction};
 use tauri::State;
 
-#[derive(Serialize)]
-pub struct RecipesReturnType {
-    data: Vec<Recipe>,
-}
+use super::GenericResponse;
 
 async fn get_ingredients(
     tx: &mut Transaction<'_, Sqlite>,
@@ -48,7 +44,15 @@ async fn get_recipe_tags(
     Ok(recipe_tags)
 }
 
-pub async fn transform_recipe<T: Parsable<Context = RecipeContext, Output = Recipe> + HasId>(
+/// Transforms a raw database record into a Recipe, incorporating its ingredients, directions, and tags.
+///
+/// Parameters:
+/// - `r`: The raw database record to transform.
+/// - `tx`: The database transaction to use.
+///
+/// Returns:
+/// - A `Result` containing the transformed Recipe, or an error if the transformation fails.
+pub async fn transform_recipe<T: RawRecipeCommon>(
     r: T,
     tx: &mut Transaction<'_, Sqlite>,
 ) -> Result<Recipe, sqlx::Error> {
@@ -75,7 +79,7 @@ async fn get_recipes(
     q: String,
     tags: String,
 ) -> Result<Vec<Recipe>, sqlx::Error> {
-    let raw_recipes = sqlx::query_file_as!(RawRecipe, "db/get_recipes.sql", q, tags, page, limit)
+    let raw_recipes = sqlx::query_file_as!(RawRecipeWithLastViewed, "db/get_recipes.sql", q, tags, page, limit)
         .fetch_all(&mut **tx)
         .await?;
     let mut recipes = Vec::with_capacity(raw_recipes.len());
@@ -93,12 +97,12 @@ async fn fetch_recipes_with_tx(
     limit: u32,
     q: String,
     tags: String,
-) -> Result<RecipesReturnType, String> {
+) -> Result<GenericResponse<Vec<Recipe>>, String> {
     // run_tx! resolves inside this async fn
     let recipes = run_tx!(db, |tx| get_recipes(tx, page, limit, q, tags));
 
     match recipes {
-        Ok(recipes) => Ok(RecipesReturnType { data: recipes }),
+        Ok(recipes) => Ok(GenericResponse { data: recipes }),
         Err(err) => Err(err.to_string()),
     }
 }
@@ -110,7 +114,7 @@ pub async fn api_recipes(
     limit: Option<String>,
     q: Option<String>,
     tags: Option<String>,
-) -> Result<RecipesReturnType, String> {
+) -> Result<GenericResponse<Vec<Recipe>>, String> {
     let db = &state.db;
 
     let page = page.unwrap_or(String::new()).parse().unwrap_or(1);

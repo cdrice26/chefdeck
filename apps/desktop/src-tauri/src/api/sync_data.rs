@@ -25,15 +25,23 @@ async fn sync_recipes(state: &State<'_, AppState>) -> Result<(), String> {
     let local_recipes = run_tx!(&state.db, |tx| get_local_recipes(tx, username.as_str()))?;
 
     // Download recipes that only exist on the server
+    // Requires new API route to get recipes that don't match an existing cloud_parent_id
 
     // Delete recipes locally that have a cloud_parent_id but that don't exist on the server
+    // Requires new API route to check existence of each given a list of IDs
+    // Also requires deletion functionality to be in place
 
     // Upload recipes that don't exist on the server (error protection)
     let no_cloud_parent: Vec<&Recipe> = local_recipes.iter().filter(|r| r.cloud_parent_id.is_none()).collect();
 
     // Update recipes on the server that have a newer version stored locally
+    // Iterate through recipes with a cloud_parent_id, fetch recipe from server, compare dates,
+    // and update the server recipe if necessary
 
     // Update local recipes that have a newer version stored on the server
+    // Iterate through recipes with a cloud_parent_id, download the server version, compare dates,
+    // and update the local recipe if necessary
+    // Requires recipe update functionality to be in place
 
     Ok(())
 }
