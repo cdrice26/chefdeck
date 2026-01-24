@@ -23,10 +23,11 @@ const useRecipeMutator = (
   request: RequestFn,
   redirect: (url: string) => void,
   addNotification: (message: string, type: NotificationKind) => void,
-  recipeId: string
+  recipeId: string,
+  confirm: (message: string) => Promise<boolean>
 ) => {
   const handleDelete = async () => {
-    const confirmed = confirm(
+    const confirmed = await confirm(
       'Deleting a recipe is permanent and cannot be undone. Are you sure?'
     );
 

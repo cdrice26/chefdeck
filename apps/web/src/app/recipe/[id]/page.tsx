@@ -3,7 +3,14 @@
 import useRequireAuth from '@/hooks/useRequireAuth';
 import { useParams, useRouter } from 'next/navigation';
 import request from '@/utils/fetchUtils';
-import { useRecipe, useNotification, usePrinter, RecipeDetails, useRecipeMutator, Recipe } from 'chefdeck-shared';
+import {
+  useRecipe,
+  useNotification,
+  usePrinter,
+  RecipeDetails,
+  useRecipeMutator,
+  Recipe
+} from 'chefdeck-shared';
 
 export default function RecipePage() {
   const router = useRouter();
@@ -20,7 +27,13 @@ export default function RecipePage() {
     'Print Recipe'
   );
 
-  const mutator = useRecipeMutator(request, router.push, addNotification, id);
+  const mutator = useRecipeMutator(
+    request,
+    router.push,
+    addNotification,
+    id,
+    (message: string) => Promise.resolve(window.confirm(message))
+  );
 
   return (
     <Recipe

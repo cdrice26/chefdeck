@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM ingredients WHERE recipe_id = ?;\n\nINSERT INTO ingredients (recipe_id, name, amount, unit, sequence) VALUES (?, ?, ?, ?, ?) RETURNING id;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "9b435489fdbe0e0a0108efe2ac66a5a72209a58d53d3829a9b233e3e7c1d2a0c"
+}

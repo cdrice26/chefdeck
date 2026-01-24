@@ -10,6 +10,7 @@ import {
   useRecipeMutator,
   Recipe
 } from 'chefdeck-shared';
+import { confirm } from '@tauri-apps/plugin-dialog';
 
 export default function RecipePage() {
   const navigate = useNavigate();
@@ -25,7 +26,13 @@ export default function RecipePage() {
     'Print Recipe'
   );
 
-  const mutator = useRecipeMutator(request, navigate, addNotification, id);
+  const mutator = useRecipeMutator(
+    request,
+    navigate,
+    addNotification,
+    id,
+    confirm
+  );
 
   return (
     <Recipe

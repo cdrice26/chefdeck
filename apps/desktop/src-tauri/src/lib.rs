@@ -30,6 +30,7 @@ pub fn run() {
         .invoke_handler(generate_handler![
             api::recipe::new::api_recipe_new,
             api::recipe::api_recipe,
+            api::recipe::delete::api_recipe_delete,
             api::recipes::api_recipes,
             api::auth::login::api_auth_login,
             api::auth::check_auth::api_auth_check_auth,

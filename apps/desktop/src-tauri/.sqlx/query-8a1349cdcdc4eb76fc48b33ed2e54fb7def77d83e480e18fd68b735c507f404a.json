@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "-- $1 = query\n-- $2 = tags\n-- $3 = page\n-- $4 = limit\n\nSELECT\n    r.id,\n    r.title,\n    r.yield,\n    r.minutes,\n    r.img_url,\n    r.source,\n    r.color,\n    MAX(ru.last_viewed) AS last_viewed\nFROM\n    recipes r\nLEFT JOIN\n    recipe_usage ru ON r.id = ru.recipe_id\nWHERE ($1 IS NULL OR r.title LIKE '%' || $1 || '%')\n    AND (\n        $2 IS NULL OR\n        EXISTS (\n            SELECT 1 FROM recipe_tags rt\n            JOIN user_tags ut ON ut.id = rt.tag_id\n            WHERE rt.recipe_id = r.id AND $2 LIKE '%' || ut.name || '%'\n        )\n    )\nGROUP BY\n    r.id, r.title, r.yield, r.minutes, r.img_url, r.source, r.color\nORDER BY\n    MAX(ru.last_viewed) DESC, r.title ASC\nLIMIT $4 OFFSET ($3 - 1) * $4;\n",
+  "query": "-- $1 = query\n-- $2 = tags\n-- $3 = page\n-- $4 = limit\n\nSELECT\n    r.id,\n    r.title,\n    r.yield,\n    r.minutes,\n    r.img_url,\n    r.source,\n    r.color,\n    MAX(ru.last_viewed) AS last_viewed\nFROM\n    recipes r\nLEFT JOIN\n    recipe_usage ru ON r.id = ru.recipe_id\nWHERE ($1 IS NULL OR r.title LIKE '%' || $1 || '%')\n    AND (\n        $2 IS NULL OR $2 = '' OR\n        EXISTS (\n            SELECT 1 FROM recipe_tags rt\n            JOIN user_tags ut ON ut.id = rt.tag_id\n            WHERE rt.recipe_id = r.id AND $2 LIKE '%' || ut.name || '%'\n        )\n    )\nGROUP BY\n    r.id, r.title, r.yield, r.minutes, r.img_url, r.source, r.color\nORDER BY\n    MAX(ru.last_viewed) DESC, r.title ASC\nLIMIT $4 OFFSET ($3 - 1) * $4;\n",
   "describe": {
     "columns": [
       {
@@ -58,5 +58,5 @@
       true
     ]
   },
-  "hash": "e3d0e4dd86573c50687b603139061f21374f4f0975fd14e8cde8ed0d6303efb9"
+  "hash": "8a1349cdcdc4eb76fc48b33ed2e54fb7def77d83e480e18fd68b735c507f404a"
 }
