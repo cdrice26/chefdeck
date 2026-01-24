@@ -21,7 +21,7 @@ const Recipe = ({
 }: RecipeProps) => (
   <div className="flex flex-1 justify-center items-center w-full">
     <div
-      className={`w-full sm:w-[80%] md:w-[70%] lg:w-[60%] h-full sm:h-auto p-4 ${
+      className={`w-full min-w-[600px] sm:w-[80%] md:w-[70%] lg:w-[60%] h-full sm:h-auto p-4 ${
         recipe?.color ? getColorClass(recipe?.color) : 'bg-white dark:bg-[#222]'
       } relative transition duration-300 justify-start my-[50px] sm:rounded-lg shadow-md`}
     >

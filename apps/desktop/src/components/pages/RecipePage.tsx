@@ -11,6 +11,8 @@ import {
   Recipe
 } from 'chefdeck-shared';
 import { confirm } from '@tauri-apps/plugin-dialog';
+import { useMemo } from 'react';
+import { convertFileSrc } from '@tauri-apps/api/core';
 
 export default function RecipePage() {
   const navigate = useNavigate();
@@ -19,6 +21,17 @@ export default function RecipePage() {
 
   const { recipe, isLoading, error } = useRecipe(request, id as string);
   const { addNotification } = useNotification();
+
+  const updatedRecipe = useMemo(
+    () => ({
+      ...recipe,
+      imgUrl:
+        recipe?.imgUrl !== null && recipe?.imgUrl !== undefined
+          ? convertFileSrc(recipe?.imgUrl)
+          : null
+    }),
+    [recipe]
+  );
 
   const handlePrint = usePrinter(
     addNotification,
@@ -38,7 +51,7 @@ export default function RecipePage() {
     <Recipe
       {...mutator}
       handlePrint={handlePrint}
-      recipe={recipe}
+      recipe={updatedRecipe}
       isLoading={isLoading}
       error={error}
     />
