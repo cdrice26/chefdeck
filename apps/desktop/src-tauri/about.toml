@@ -7,5 +7,8 @@ accepted = [
     "Unicode-3.0",
     "BSD-2-Clause",
     "Zlib",
-    "NCSA"
+    "NCSA",
+    "ISC",
+    "OpenSSL",
+    "CDLA-Permissive-2.0"
 ]
