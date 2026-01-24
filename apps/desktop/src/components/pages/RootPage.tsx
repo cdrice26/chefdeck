@@ -3,11 +3,7 @@ import Sidebar from '../navigation/Sidebar';
 import { platform } from '@tauri-apps/plugin-os';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Toolbar from '../navigation/Toolbar';
-import {
-  NotificationProvider,
-  NotificationWrapper,
-  useNotification
-} from 'chefdeck-shared';
+import { NotificationWrapper, useNotification } from 'chefdeck-shared';
 import { useTauriListener } from '../../hooks/useTauriListener';
 
 export default function RootPage() {
@@ -161,6 +157,10 @@ export default function RootPage() {
   }, []);
 
   useTauriListener('new_recipe_cloud_error', (event) => {
+    addNotification(event.payload, 'error');
+  });
+
+  useTauriListener('delete_recipe_cloud_error', (event) => {
     addNotification(event.payload, 'error');
   });
 

@@ -75,8 +75,28 @@ async fn do_post_request(
     req.body(body.to_string()).send().await.string_err()
 }
 
+/// Internal helper to send a DELETE request with the current access token (if any).
+async fn do_delete_request(
+    state: &State<'_, AppState>,
+    client: &reqwest::Client,
+    endpoint: &str,
+) -> Result<Response, String> {
+    let api_url = std::env::var("API_URL").unwrap_or_default();
+    let access_token_guard = state.access_token.lock().await;
+    let token = access_token_guard.as_deref().unwrap_or("");
+
+    let req = client.delete(format!("{}{}", api_url, endpoint));
+    let req = if token.is_empty() {
+        req
+    } else {
+        req.header("Authorization", format!("Bearer {}", token))
+    };
+
+    req.send().await.string_err()
+}
+
 /// Public GET wrapper: tries once, if unauthorized attempts to refresh token and retries.
-pub async fn get(app: AppHandle, endpoint: &str) -> Result<Response, String> {
+pub async fn get(app: &AppHandle, endpoint: &str) -> Result<Response, String> {
     let state: State<AppState> = app.state();
     let client = reqwest::Client::new();
     let mut resp = do_get_request(&state, &client, endpoint).await?;
@@ -90,13 +110,15 @@ pub async fn get(app: AppHandle, endpoint: &str) -> Result<Response, String> {
         } else {
             Ok(resp)
         }
-    } else {
+    } else if resp.status() == StatusCode::OK {
         Ok(resp)
+    } else {
+        Err(format!("Unexpected status code: {}", resp.status()))
     }
 }
 
 /// Public POST wrapper: tries once, if unauthorized attempts to refresh token and retries.
-pub async fn post(app: AppHandle, endpoint: &str, body: &str) -> Result<Response, String> {
+pub async fn post(app: &AppHandle, endpoint: &str, body: &str) -> Result<Response, String> {
     let state: State<AppState> = app.state();
     let client = reqwest::Client::new();
     let mut resp = do_post_request(&state, &client, endpoint, body).await?;
@@ -110,7 +132,31 @@ pub async fn post(app: AppHandle, endpoint: &str, body: &str) -> Result<Response
         } else {
             Ok(resp)
         }
-    } else {
+    } else if resp.status() == StatusCode::OK {
         Ok(resp)
+    } else {
+        Err(format!("Unexpected status code: {}", resp.status()))
+    }
+}
+
+/// Public DELETE wrapper: tries once, if unauthorized attempts to refresh token and retries.
+pub async fn delete(app: &AppHandle, endpoint: &str) -> Result<Response, String> {
+    let state: State<AppState> = app.state();
+    let client = reqwest::Client::new();
+    let mut resp = do_delete_request(&state, &client, endpoint).await?;
+
+    if resp.status() == StatusCode::UNAUTHORIZED {
+        // Try to refresh and retry once
+        refresh_access_token(&state).await?;
+        resp = do_delete_request(&state, &client, endpoint).await?;
+        if resp.status() == StatusCode::UNAUTHORIZED {
+            Err("Failed to refresh access token".to_string())
+        } else {
+            Ok(resp)
+        }
+    } else if resp.status() == StatusCode::OK {
+        Ok(resp)
+    } else {
+        Err(format!("Unexpected status code: {}", resp.status()))
     }
 }
