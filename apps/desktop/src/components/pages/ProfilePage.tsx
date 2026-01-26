@@ -4,9 +4,9 @@ import { request } from '../../utils/fetchUtils';
 import { useNavigate } from 'react-router';
 
 export default function ProfilePage() {
-  const username = useAuth();
+  const { username, fetchUser } = useAuth();
   const navigate = useNavigate();
-  const loginMutator = useLoginMutator(request, navigate);
+  const { error, handleSubmit } = useLoginMutator(request, navigate);
 
   if (username) {
     return (
@@ -17,7 +17,10 @@ export default function ProfilePage() {
         <Button
           onClick={async () => {
             const resp = await request('/api/auth/logout', 'POST');
-            if (resp.ok) navigate('/');
+            if (resp.ok) {
+              navigate('/');
+              await fetchUser();
+            }
           }}
           className="mt-4"
         >
@@ -31,7 +34,14 @@ export default function ProfilePage() {
         <h1 className="text-2xl flex items-center justify-center">
           Sign in to ChefDeck to enable cloud syncing.
         </h1>
-        <Login {...loginMutator} hideLinks={true} />
+        <Login
+          error={error}
+          handleSubmit={async (e) => {
+            await handleSubmit(e);
+            await fetchUser();
+          }}
+          hideLinks={true}
+        />
       </>
     );
   }

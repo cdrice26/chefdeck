@@ -13,7 +13,7 @@ import { useSync } from '../../hooks/useSync';
 
 export default function Toolbar() {
   const navigate = useNavigate();
-  const username = useAuth();
+  const { username } = useAuth();
   const { sync } = useSync();
 
   return (

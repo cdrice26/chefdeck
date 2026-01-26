@@ -14,7 +14,7 @@ export default function SidebarButton({
   onClick,
   selected
 }: SidebarButtonProps) {
-  const Icon = icon as any;
+  const Icon = icon;
 
   return (
     <button
@@ -28,7 +28,9 @@ export default function SidebarButton({
       <Icon
         className={
           selected
-            ? platform() === 'macos' && 'text-blue-500'
+            ? platform() === 'macos'
+              ? 'text-blue-500'
+              : ''
             : 'text-black dark:text-white'
         }
       />
