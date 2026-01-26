@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM recipe_tags WHERE recipe_id = ?;\n\nINSERT INTO recipe_tags (recipe_id, tag_id)\nVALUES (?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "df8fff4c1b7ddbc403a16033a5833735dc9f5408b7ae10397d927052b14bee11"
+}

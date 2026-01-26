@@ -1,0 +1,35 @@
+{
+  "name": "chefdeck-shared",
+  "scripts": {
+    "generate-barrel": "node scripts/generate-barrel.js",
+    "build": "npm run generate-barrel && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "require": "./dist/server.js"
+    }
+  },
+  "peerDependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-select": "^5.10.2",
+    "swr": "^2.3.6",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "ts-morph": "^27.0.2",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM directions WHERE recipe_id = ?;\n\nINSERT INTO directions (recipe_id, content, sequence)\nVALUES (?, ?, ?)\nRETURNING id;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "f1d1d931e09c3baa00b5f9773af1dc60489007d37540343745738b086691b752"
+}

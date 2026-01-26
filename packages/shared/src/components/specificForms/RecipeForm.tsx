@@ -1,0 +1,424 @@
+'use client';
+
+import ResponsiveForm from '@/components/forms/ResponsiveForm';
+import Input from '@/components/forms/Input';
+import { Direction, Ingredient, Recipe } from '@/types/Recipe';
+import { useEffect, useState } from 'react';
+import Button from '../forms/Button';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable';
+import SortableItem from '../forms/SortableItem';
+import { v4 as uuid } from 'uuid';
+import ColorSelector from '../forms/ColorSelector';
+import { OptionType } from '../forms/TagSelector';
+import useAvailableTags from '@/hooks/fetchers/useAvailableTags';
+import RequestFn from '@/types/RequestFn';
+
+interface RecipeFormProps {
+  request: RequestFn;
+  handleSubmit: (e: FormData) => void;
+  recipe?: Recipe | null;
+  TagSelector: React.FC<{
+    value: OptionType[];
+    onChange: React.Dispatch<React.SetStateAction<OptionType[]>>;
+    initialOptions: OptionType[];
+  }>;
+  FileInput?: React.FC<{ name?: string; type?: string }>;
+}
+
+interface StatePair {
+  state: any;
+  setter: React.Dispatch<React.SetStateAction<any>>;
+}
+
+/**
+ * Replace unicode fractions with their decimal equivalents in a given string
+ *
+ * @param str - The string to replace the fractions in
+ * @returns - str with fractions replaced by their decimal equivalents
+ */
+function replaceUnicodeFractions(str: string, decimals: number = 3) {
+  const fractionMap: Record<string, number> = {
+    '¼': 1 / 4,
+    '½': 1 / 2,
+    '¾': 3 / 4,
+    '⅐': 1 / 7,
+    '⅑': 1 / 9,
+    '⅒': 1 / 10,
+    '⅓': 1 / 3,
+    '⅔': 2 / 3,
+    '⅕': 1 / 5,
+    '⅖': 2 / 5,
+    '⅗': 3 / 5,
+    '⅘': 4 / 5,
+    '⅙': 1 / 6,
+    '⅚': 5 / 6,
+    '⅛': 1 / 8,
+    '⅜': 3 / 8,
+    '⅝': 5 / 8,
+    '⅞': 7 / 8
+  };
+
+  const round = (value: number) => Number(value.toFixed(decimals));
+
+  // Handle mixed numbers like "1⅖"
+  str = str.replace(
+    /(\d+)([\u00BC-\u00BE\u2150-\u215E])/g,
+    (_: string, whole: string, frac: string) => {
+      const value = Number(whole) + fractionMap[frac];
+      return round(value).toString();
+    }
+  );
+
+  // Handle standalone fractions
+  str = str.replace(/[\u00BC-\u00BE\u2150-\u215E]/g, (m) =>
+    round(fractionMap[m]).toString()
+  );
+
+  return str;
+}
+
+/**
+ * RecipeForm component
+ *
+ * A controlled form component for creating or updating a recipe. The form uses
+ * drag-and-drop for ordering ingredients and directions (via @dnd-kit) and
+ * exposes a `handleSubmit` callback that receives a populated `FormData`
+ * instance containing all form values and appended tags.
+ *
+ * Key behavior:
+ * - If a `recipe` prop is provided, the form will initialize fields (ingredients,
+ *   directions, tags) from that object to support updates.
+ * - Ingredients and directions are sortable and can be added/removed dynamically.
+ * - Tags are managed via the `TagSelector` (creatable multi-select) and appended
+ *   to the submitted FormData as `tags[]`.
+ * - Color selection is handled via `ColorSelector` and included as a hidden `color` field.
+ *
+ * Props:
+ * - `handleSubmit` (formData: FormData) => void : Callback invoked with the prepared FormData when the form is submitted.
+ * - `recipe?` (Recipe | null) : Optional existing recipe to populate the form for editing.
+ * - `TagSelector` (TagSelectorProps) : Reference to the TagSelector component.
+ * - `request` : Reference to the request function.
+ *
+ * @param {RecipeFormProps} props - Component props
+ * @returns The rendered recipe form
+ */
+const RecipeForm = ({
+  request,
+  handleSubmit,
+  recipe = null,
+  TagSelector,
+  FileInput = Input
+}: RecipeFormProps) => {
+  const [tags, setTags] = useState<OptionType[]>([]);
+  const { availableTags, error, isLoading } = useAvailableTags(request);
+
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+  const ingredientSensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const [directions, setDirections] = useState<Direction[]>([]);
+
+  const directionsSensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const handleIngredientChange = (
+    index: number,
+    field: keyof Ingredient,
+    value: string | number
+  ) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index] = {
+      ...updatedIngredients[index],
+      [field]: value
+    };
+    setIngredients(updatedIngredients);
+  };
+
+  const handleIngredientPaste = (
+    index: number,
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
+    if (ingredients[index].name !== '') {
+      return;
+    }
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    const ingredientsToAdd = text.split('\n').map((ingredient) => ({
+      id: uuid(),
+      amount: (() => {
+        const amountStr = replaceUnicodeFractions(ingredient.split(' ')[0]);
+        const amount = parseFloat(amountStr);
+        return isNaN(amount) ? 1 : amount;
+      })(),
+      unit: ingredient.split(' ')[1],
+      name: ingredient.split(' ').slice(2).join(' ')
+    }));
+    setIngredients((ingredients) => [
+      ...ingredients.slice(0, index),
+      ...ingredientsToAdd,
+      ...ingredients.slice(index + 1)
+    ]);
+  };
+
+  const handleDirectionChange = (index: number, value: string) => {
+    const updatedDirections = [...directions];
+    updatedDirections[index].content = value;
+    setDirections(updatedDirections);
+  };
+
+  const handleDirectionPaste = (
+    index: number,
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
+    if (directions[index].content !== '') {
+      return;
+    }
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    const directionsToAdd = text.split('\n').map((direction) => ({
+      id: uuid(),
+      content: direction
+    }));
+    setDirections((directions) => [
+      ...directions.slice(0, index),
+      ...directionsToAdd,
+      ...directions.slice(index + 1)
+    ]);
+  };
+
+  const addItem =
+    ({ state, setter }: StatePair) =>
+    () =>
+      setter([...state, { id: uuid(), content: '' }]);
+
+  const addIngredient = addItem({ state: ingredients, setter: setIngredients });
+  const addDirection = addItem({ state: directions, setter: setDirections });
+
+  const removeItem =
+    ({ state, setter }: StatePair) =>
+    (index: number) => {
+      setter(state.filter((_: any, i: number) => i !== index));
+    };
+
+  const removeIngredient = removeItem({
+    state: ingredients,
+    setter: setIngredients
+  });
+  const removeDirection = removeItem({
+    state: directions,
+    setter: setDirections
+  });
+
+  const handleDrag =
+    ({ state, setter }: StatePair) =>
+    (event: any) => {
+      const { active, over } = event;
+
+      if (active && over) {
+        const oldIndex = state.findIndex((item: any) => item.id === active.id);
+        const newIndex = state.findIndex((item: any) => item.id === over.id);
+
+        if (oldIndex !== newIndex) {
+          setter((items: any[]) => {
+            return arrayMove(items, oldIndex, newIndex);
+          });
+        }
+      }
+    };
+
+  const handleIngredientDrag = handleDrag({
+    state: ingredients,
+    setter: setIngredients
+  });
+
+  const handleDirectionDrag = handleDrag({
+    state: directions,
+    setter: setDirections
+  });
+
+  const handleSubmitInternal = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    tags.forEach((tag) => formData.append('tags[]', tag.value));
+
+    handleSubmit(formData);
+  };
+
+  useEffect(() => {
+    if (recipe) {
+      setIngredients(recipe.ingredients || []);
+      setDirections(recipe.directions || []);
+      setTags(recipe.tags?.map((tag) => ({ label: tag, value: tag })) || []);
+    }
+  }, [recipe]);
+
+  return (
+    <ResponsiveForm onSubmit={handleSubmitInternal}>
+      {recipe && <input type="hidden" name="id" value={recipe.id} readOnly />}
+      <h1 className="text-2xl font-bold">{recipe ? 'Update' : 'New'} Recipe</h1>
+      <label>
+        Recipe Name:{' '}
+        <Input
+          name="title"
+          placeholder="Name"
+          defaultValue={recipe?.title}
+          required
+        />
+      </label>
+      <label>
+        Yield:{' '}
+        <Input
+          name="yield"
+          placeholder="Yield"
+          type="number"
+          min="1"
+          defaultValue={recipe?.servings}
+          required
+        />
+      </label>
+      <label>
+        Image (Optional): <FileInput name="image" type="file" />
+      </label>
+      <label>
+        Time (in minutes):{' '}
+        <Input
+          name="time"
+          placeholder="Time"
+          type="number"
+          min="1"
+          defaultValue={recipe?.minutes}
+          required
+        />
+      </label>
+
+      <h2>Ingredients</h2>
+      <DndContext
+        sensors={ingredientSensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleIngredientDrag}
+      >
+        <SortableContext
+          items={ingredients.map((ingredient) => ingredient.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {ingredients.map((ingredient, index) => (
+            <SortableItem key={ingredient.id} id={ingredient.id}>
+              <Input
+                name={`ingredientNames`}
+                placeholder="Ingredient Name"
+                value={ingredient?.name ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleIngredientChange(index, 'name', e.target.value)
+                }
+                onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                  handleIngredientPaste(index, e);
+                }}
+                required
+              />
+              <Input
+                name={`ingredientAmounts`}
+                placeholder="Amount"
+                type="number"
+                min="0"
+                step="any"
+                value={ingredient?.amount ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleIngredientChange(
+                    index,
+                    'amount',
+                    Number(e.target.value)
+                  )
+                }
+                required
+              />
+              <Input
+                name={`ingredientUnits`}
+                placeholder="Unit (e.g., cups, grams)"
+                value={ingredient?.unit ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleIngredientChange(index, 'unit', e.target.value)
+                }
+              />
+              <Button type="button" onClick={() => removeIngredient(index)}>
+                Remove
+              </Button>
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </DndContext>
+      <Button type="button" onClick={addIngredient}>
+        Add Ingredient
+      </Button>
+
+      <h2>Directions</h2>
+      <DndContext
+        sensors={directionsSensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDirectionDrag}
+      >
+        <SortableContext
+          items={directions.map((d) => d.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {directions.map((direction, index) => (
+            <SortableItem key={direction.id} id={direction.id}>
+              <Input
+                name={`directions`}
+                placeholder={`Direction ${index + 1}`}
+                value={direction?.content ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleDirectionChange(index, e.target.value)
+                }
+                onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
+                  handleDirectionPaste(index, e);
+                }}
+                required
+              />
+              <Button type="button" onClick={() => removeDirection(index)}>
+                Remove
+              </Button>
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </DndContext>
+      <Button type="button" onClick={addDirection}>
+        Add Direction
+      </Button>
+      <ColorSelector defaultValue={recipe?.color} />
+      {error ? (
+        <div>Error Loading Tags.</div>
+      ) : isLoading ? (
+        <div>Loading Tags...</div>
+      ) : (
+        <TagSelector
+          value={tags}
+          onChange={setTags}
+          initialOptions={availableTags}
+        />
+      )}
+      <Button type="submit">{recipe ? 'Update' : 'Submit'} Recipe</Button>
+    </ResponsiveForm>
+  );
+};
+
+export default RecipeForm;

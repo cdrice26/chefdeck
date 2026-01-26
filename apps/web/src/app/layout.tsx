@@ -1,0 +1,48 @@
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import Navbar from '@/components/navbar/Navbar';
+import { AuthProvider } from '@/context/AuthContext';
+import BottomNavigation from '@/components/navbar/BottomNavigation';
+import { NotificationProvider, NotificationWrapper } from 'chefdeck-shared/server';
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin']
+});
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin']
+});
+
+export const metadata: Metadata = {
+  title: 'ChefDeck',
+  description: 'Manage your recipes, meal plans, and grocery lists with ease.',
+  icons: {
+    icon: '/favicon.png'
+  }
+};
+
+export default async function RootLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <AuthProvider>
+      <NotificationProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-screen relative flex flex-col m-0`}
+          >
+            <NotificationWrapper />
+            <Navbar />
+            <div className="flex-grow pb-16 lg:pb-0 relative">{children}</div>
+            <BottomNavigation />
+          </body>
+        </html>
+      </NotificationProvider>
+    </AuthProvider>
+  );
+}

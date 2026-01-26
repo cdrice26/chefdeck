@@ -1,0 +1,6 @@
+{
+  "devCommand": "turbo run dev",
+  "installCommand": "npm install --workspaces",
+  "buildCommand": "turbo run build --filter=chefdeck-web",
+  "outputDirectory": "apps/web/.next"
+}
