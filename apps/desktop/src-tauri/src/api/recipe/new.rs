@@ -274,16 +274,13 @@ pub async fn api_recipe_new(
     source_url: Option<String>,
 ) -> Result<i64, String> {
     let db = &state.db;
+    let images_lib_path = &state.images_lib_path;
 
     let image_path = if let Some(image) = image {
-        let image_path_obj = app
-            .path()
-            .app_data_dir()
-            .unwrap()
-            .join("images")
-            .join(Uuid::new_v4().to_string() + ".jpg");
+        let image_name = Uuid::new_v4().to_string() + ".jpg";
+        let image_path_obj = images_lib_path.join(&image_name);
         process_image(Some(&image), &image_path_obj);
-        Some(image_path_obj.to_string_lossy().into_owned())
+        Some(image_name)
     } else {
         None
     };
@@ -312,12 +309,19 @@ pub async fn api_recipe_new(
 
     if should_request {
         if let Ok(recipe_id) = recipe_id {
+        let image_path_for_cloud = match &image_path {
+            Some(image_path) => Some(state.images_lib_path.join(image_path).to_string_lossy().to_string()),
+            None => None
+        };
         tauri::async_runtime::spawn(async move {
             let cloud_result = add_to_cloud(&app, recipe_id, RecipeFormData {
                 title,
                 yield_value,
                 time,
-                image_path,
+                image_path: match image_path {
+                    Some(_) => image_path_for_cloud,
+                    None => None
+                },
                 color,
                 ingredients,
                 directions,

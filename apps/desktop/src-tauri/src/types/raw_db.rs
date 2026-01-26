@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use super::{
     parser::Parsable,
     response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
@@ -114,6 +116,7 @@ pub struct RecipeContext {
     pub ingredients: Vec<Ingredient>,
     pub directions: Vec<Direction>,
     pub tags: Vec<RecipeTag>,
+    pub images_lib_path: PathBuf,
 }
 
 impl<T> Parsable for T
@@ -139,7 +142,10 @@ where
             title: self.title().unwrap_or_default(),
             servings: self.yield_().unwrap_or(0),
             minutes: self.minutes().unwrap_or(0),
-            img_url: self.img_url(),
+            img_url: match self.img_url() {
+                Some(img_url) => Some(context.images_lib_path.join(img_url).to_string_lossy().into_owned()),
+                None => None,
+            },
             source_url: self.source(),
             color: self.color().unwrap_or_default(),
             tags: context.tags,

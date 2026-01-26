@@ -1,12 +1,29 @@
-use tauri::{AppHandle, Manager, Emitter, State};
+use tauri::{AppHandle, Emitter, State};
+use std::path::PathBuf;
 
-use crate::{api::{ErrorResponse, GenericResponse, SuccessResponse}, errors::StringifyError, macros::run_tx, request::delete, types::response_bodies::CloudId, AppState};
+use crate::{api::{ErrorResponse, GenericResponse, SuccessResponse}, errors::StringifyError, macros::run_tx, request::delete, types::{raw_db::RawRecipe, response_bodies::CloudId}, AppState};
 
-async fn perform_delete(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32) -> Result<(), sqlx::Error> {
-    sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
-        .execute(&mut **tx)
-        .await?;
+async fn delete_recipe_img(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32, images_lib_path: &PathBuf) -> Result<(), String> {
+    let recipe = sqlx::query_file_as!(RawRecipe, "db/get_recipe.sql", id)
+        .fetch_one(&mut **tx)
+        .await.string_err()?;
+    let img_path = recipe.img_url;
+    if let Some(img_path) = img_path {
+        std::fs::remove_file(images_lib_path.join(img_path)).string_err()?;
+    }
     Ok(())
+}
+
+async fn perform_delete(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32, images_lib_path: &PathBuf) -> Result<(), sqlx::Error> {
+    match delete_recipe_img(tx, id, images_lib_path).await {
+        Ok(_) => {
+            sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
+                .execute(&mut **tx)
+                .await?;
+            Ok(())
+        }
+        Err(err) => Err(sqlx::Error::Io(std::io::Error::new(std::io::ErrorKind::Other, err))),
+    }
 }
 
 pub async fn get_cloud_id(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32) -> Result<String, sqlx::Error> {
@@ -18,13 +35,10 @@ pub async fn get_cloud_id(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32)
 
 pub async fn delete_recipe(state: &State<'_, AppState>, id: i32) -> Result<(), String> {
     let db = &state.db;
-    run_tx!(db, |tx| perform_delete(tx, id))
+    run_tx!(db, |tx| perform_delete(tx, id, &state.images_lib_path))
 }
 
 async fn cloud_delete_recipe(app: &AppHandle, cloud_id: String) -> Result<(), String> {
-    let state: State<'_, AppState> = app.state();
-    let db = &state.db;
-
     let resp = delete(app, format!("/recipe/{}/delete", cloud_id).as_str()).await;
     match resp {
         Ok(_) => Ok(()),

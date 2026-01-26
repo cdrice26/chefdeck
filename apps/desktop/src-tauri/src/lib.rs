@@ -8,6 +8,7 @@ mod token_keyring;
 mod request;
 
 use crate::database::create::setup_db;
+use std::path::PathBuf;
 use tauri::{
     generate_handler, LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder,
 };
@@ -20,6 +21,7 @@ use tokio::sync::Mutex;
 struct AppState {
     db: database::Db,
     access_token: Mutex<Option<String>>,
+    images_lib_path: PathBuf
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -39,7 +41,11 @@ pub fn run() {
         ])
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });
-            app.manage(AppState { db, access_token: Mutex::new(None) });
+            app.manage(AppState { db, access_token: Mutex::new(None), images_lib_path: app
+                .path()
+                .app_data_dir()
+                .unwrap()
+                .join("images") });
 
             let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("ChefDeck")
