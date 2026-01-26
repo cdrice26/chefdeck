@@ -12,7 +12,7 @@
     "@supabase/supabase-js": "^2.49.7",
     "next": "^15.5.8",
     "sharp": "^0.34.2",
-    "chefdeck-shared": "*",
+    "chefdeck-shared": "file:../../packages/shared",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
