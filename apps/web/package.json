@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.7",
-    "next": "^15.5.7",
+    "next": "^15.5.8",
     "sharp": "^0.34.2",
     "chefdeck-shared": "*",
     "react": "^19.0.0",
