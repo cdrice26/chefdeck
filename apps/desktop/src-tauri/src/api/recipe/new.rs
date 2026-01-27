@@ -1,63 +1,20 @@
 use crate::api::auth::check_auth::get_username;
+use crate::api::{get_cloud_image_path, should_request};
+use crate::img_proc::get_processed_image;
 use crate::macros::run_tx;
-use crate::request::refresh_access_token;
+use crate::request::recipe_post;
 use crate::types::cloud_structs::RecipeFormData;
 use crate::types::response_bodies::Ingredient;
 use crate::AppState;
 use crate::{api::GenericResponse, errors::StringifyError};
-use image::{imageops, ImageReader};
-use reqwest::{Response, StatusCode};
 use serde::Deserialize;
 use sqlx::{Sqlite, Transaction};
-use std::fs;
-use std::path::PathBuf;
 use tauri::{AppHandle, Emitter, Manager, State};
-use uuid::Uuid;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct NewRecipeResponse {
     pub recipe_id: String,
-}
-
-fn process_image(image: Option<&str>, new_location: &PathBuf) {
-    // If no image path is provided, exit early
-    let image_path = match image {
-        Some(path) => path,
-        None => return,
-    };
-
-    // Try to open the image, return early if it fails
-    let reader = match ImageReader::open(image_path) {
-        Ok(reader) => reader,
-        Err(err) => {
-            eprintln!("Error opening image: {}", err);
-            return;
-        }
-    };
-
-    // Try to decode the image
-    let decoded = match reader.decode() {
-        Ok(img) => img,
-        Err(err) => {
-            eprintln!("Error decoding image: {}", err);
-            return;
-        }
-    };
-
-    // Ensure parent directory exists (create recursively if needed)
-    if let Some(parent) = new_location.parent() {
-        if let Err(err) = fs::create_dir_all(parent) {
-            eprintln!("Failed to create directories {:?}: {}", parent, err);
-            return;
-        }
-    }
-
-    // Resize and save
-    let resized = decoded.resize(1000, 1000, imageops::FilterType::Lanczos3);
-    if let Err(err) = resized.save(new_location) {
-        eprintln!("Error saving image: {}", err);
-    }
 }
 
 pub async fn insert_related_data(
@@ -169,95 +126,6 @@ async fn insert_cloud_parent_id(
     Ok(())
 }
 
-async fn do_post_request(
-    state: &State<'_, AppState>,
-    client: &reqwest::Client,
-    endpoint: &str,
-    recipe: &RecipeFormData,
-) -> Result<Response, String> {
-    let api_url = std::env::var("API_URL").unwrap_or_default();
-    let access_token_guard = state.access_token.lock().await;
-    let token = access_token_guard.as_deref().unwrap_or("");
-
-    let mut form = reqwest::multipart::Form::new()
-        .text("title", recipe.title.clone())
-        .text("yield", recipe.yield_value.to_string())
-        .text("time", recipe.time.to_string())
-        .text("color", recipe.color.clone());
-
-    for tag_id in recipe.tags.iter() {
-        form = form.text("tags[]", tag_id.to_string());
-    }
-
-    for ingredient in recipe.ingredients.iter() {
-        form = form.text("ingredientNames", ingredient.name.clone());
-        form = form.text("ingredientAmounts", ingredient.amount.to_string());
-        form = form.text("ingredientUnits", ingredient.unit.clone());
-    }
-
-    for step in recipe.directions.iter() {
-        form = form.text("directions", step.clone());
-    }
-
-    if let Some(source_url) = &recipe.source_url {
-        form = form.text("sourceUrl", source_url.clone());
-    }
-
-    if let Some(path) = &recipe.image_path {
-        // Read file bytes
-        let bytes = tokio::fs::read(path).await.string_err()?;
-
-        // Detect MIME type automatically
-        let mime = infer::get(&bytes)
-            .map(|t| t.mime_type())
-            .unwrap_or("application/octet-stream");
-
-        // Extract filename from the path
-        let filename = std::path::Path::new(path)
-            .file_name()
-            .and_then(|n| n.to_str())
-            .unwrap_or("file")
-            .to_owned();
-
-        // Build multipart part
-        let part = reqwest::multipart::Part::bytes(bytes)
-            .file_name(filename)
-            .mime_str(mime)
-            .string_err()?;
-
-        form = form.part("image", part);
-    }
-
-    let req = client.post(format!("{}{}", api_url, endpoint));
-    let req = if token.is_empty() {
-        req
-    } else {
-        req.header("Authorization", format!("Bearer {}", token))
-    };
-
-    req.multipart(form).send().await.string_err()
-}
-
-async fn post(app: &AppHandle, endpoint: &str, recipe: RecipeFormData) -> Result<Response, String> {
-    let state: State<AppState> = app.state();
-
-    let client = reqwest::Client::new();
-    let mut resp = do_post_request(&state, &client, endpoint, &recipe).await?;
-
-    if resp.status() == StatusCode::UNAUTHORIZED {
-        // Try to refresh and retry once
-        refresh_access_token(&state).await?;
-        resp = do_post_request(&state, &client, endpoint, &recipe).await?;
-        if resp.status() == StatusCode::UNAUTHORIZED {
-            Err("Failed to refresh access token".to_string())
-        } else {
-            Ok(resp)
-        }
-    } else {
-        Ok(resp)
-    }
-}
-
 async fn add_to_cloud(
     app: &AppHandle,
     recipe_id: i64,
@@ -265,7 +133,7 @@ async fn add_to_cloud(
 ) -> Result<(), String> {
     let state = app.state::<AppState>();
     let db = &state.db;
-    let resp = post(&app, "/recipe/new", recipe).await;
+    let resp = recipe_post(&app, "/recipe/new", recipe).await;
     match resp {
         Ok(resp) => {
             let resp_data: GenericResponse<NewRecipeResponse> = resp.json().await.string_err()?;
@@ -285,18 +153,6 @@ async fn add_to_cloud(
         }
         Err(_) => Err(String::from("Failed to add recipe to cloud")),
     }
-}
-
-pub fn get_processed_image(image: Option<String>, images_lib_path: &PathBuf) -> Option<String> {
-    let image_path = if let Some(image) = image {
-        let image_name = Uuid::new_v4().to_string() + ".jpg";
-        let image_path_obj = images_lib_path.join(&image_name);
-        process_image(Some(&image), &image_path_obj);
-        Some(image_name)
-    } else {
-        None
-    };
-    image_path
 }
 
 #[tauri::command]
@@ -331,27 +187,9 @@ pub async fn api_recipe_new(
         &source_url
     ));
 
-    let should_request = {
-        let access_token_mutex = state.access_token.lock().await;
-        if let Some(_) = access_token_mutex.as_ref() {
-            true
-        } else {
-            false
-        }
-    };
-
-    if should_request {
+    if should_request(&state).await {
         if let Ok(recipe_id) = recipe_id {
-            let image_path_for_cloud = match &image_path {
-                Some(image_path) => Some(
-                    state
-                        .images_lib_path
-                        .join(image_path)
-                        .to_string_lossy()
-                        .to_string(),
-                ),
-                None => None,
-            };
+            let image_path_for_cloud = get_cloud_image_path(&state, &image_path).await;
             tauri::async_runtime::spawn(async move {
                 let cloud_result = add_to_cloud(
                     &app,
@@ -372,8 +210,7 @@ pub async fn api_recipe_new(
                     },
                 )
                 .await;
-                if let Err(err) = cloud_result {
-                    println!("{}", err);
+                if let Err(_) = cloud_result {
                     let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
                 }
             });

@@ -164,6 +164,10 @@ export default function RootPage() {
     addNotification(event.payload, 'error');
   });
 
+  useTauriListener('update_recipe_cloud_error', (event) => {
+    addNotification(event.payload, 'error');
+  });
+
   return (
     <>
       <NotificationWrapper />

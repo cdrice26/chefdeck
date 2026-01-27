@@ -1,12 +1,24 @@
-use tauri::{AppHandle, Emitter, State};
 use std::path::PathBuf;
+use tauri::{AppHandle, Emitter, State};
 
-use crate::{api::{ErrorResponse, GenericResponse, SuccessResponse}, errors::StringifyError, macros::run_tx, request::delete, types::{raw_db::RawRecipe, response_bodies::CloudId}, AppState};
+use crate::{
+    api::{get_cloud_id, ErrorResponse, GenericResponse, SuccessResponse},
+    errors::StringifyError,
+    macros::run_tx,
+    request::delete,
+    types::raw_db::RawRecipe,
+    AppState,
+};
 
-async fn delete_recipe_img(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32, images_lib_path: &PathBuf) -> Result<(), String> {
+async fn delete_recipe_img(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    id: i64,
+    images_lib_path: &PathBuf,
+) -> Result<(), String> {
     let recipe = sqlx::query_file_as!(RawRecipe, "db/get_recipe.sql", id)
         .fetch_one(&mut **tx)
-        .await.string_err()?;
+        .await
+        .string_err()?;
     let img_path = recipe.img_url;
     if let Some(img_path) = img_path {
         std::fs::remove_file(images_lib_path.join(img_path)).string_err()?;
@@ -14,7 +26,11 @@ async fn delete_recipe_img(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32
     Ok(())
 }
 
-async fn perform_delete(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32, images_lib_path: &PathBuf) -> Result<(), sqlx::Error> {
+async fn perform_delete(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    id: i64,
+    images_lib_path: &PathBuf,
+) -> Result<(), sqlx::Error> {
     match delete_recipe_img(tx, id, images_lib_path).await {
         Ok(_) => {
             sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
@@ -22,18 +38,14 @@ async fn perform_delete(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32, i
                 .await?;
             Ok(())
         }
-        Err(err) => Err(sqlx::Error::Io(std::io::Error::new(std::io::ErrorKind::Other, err))),
+        Err(err) => Err(sqlx::Error::Io(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            err,
+        ))),
     }
 }
 
-pub async fn get_cloud_id(tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>, id: i32) -> Result<String, sqlx::Error> {
-    let cloud_id = sqlx::query_file_as!(CloudId, "db/get_cloud_id.sql", id)
-        .fetch_one(&mut **tx)
-        .await?;
-    Ok(cloud_id.cloud_recipe_id)
-}
-
-pub async fn delete_recipe(state: &State<'_, AppState>, id: i32) -> Result<(), String> {
+pub async fn delete_recipe(state: &State<'_, AppState>, id: i64) -> Result<(), String> {
     let db = &state.db;
     run_tx!(db, |tx| perform_delete(tx, id, &state.images_lib_path))
 }
@@ -47,7 +59,11 @@ async fn cloud_delete_recipe(app: &AppHandle, cloud_id: String) -> Result<(), St
 }
 
 #[tauri::command]
-pub async fn api_recipe_delete(app: AppHandle, state: State<'_, AppState>, id: i32) -> Result<GenericResponse<SuccessResponse>, ErrorResponse> {
+pub async fn api_recipe_delete(
+    app: AppHandle,
+    state: State<'_, AppState>,
+    id: i64,
+) -> Result<GenericResponse<SuccessResponse>, ErrorResponse> {
     let db = &state.db;
     let cloud_id_result = run_tx!(db, |tx| get_cloud_id(tx, id));
     let result = delete_recipe(&state, id).await;
@@ -66,14 +82,19 @@ pub async fn api_recipe_delete(app: AppHandle, state: State<'_, AppState>, id: i
             tauri::async_runtime::spawn(async move {
                 let cloud_result = cloud_delete_recipe(&app, cloud_id_result.unwrap()).await;
                 if cloud_result.is_err() {
-                    let _ = app.emit("delete_recipe_cloud_error", "Failed to delete recipe from cloud");
+                    let _ = app.emit(
+                        "delete_recipe_cloud_error",
+                        "Failed to delete recipe from cloud",
+                    );
                 }
             });
         }
     }
 
     match result {
-        Ok(_) => Ok(GenericResponse { data: SuccessResponse::new(String::from("Recipe deleted successfully")) }),
+        Ok(_) => Ok(GenericResponse {
+            data: SuccessResponse::new(String::from("Recipe deleted successfully")),
+        }),
         Err(err) => Err(ErrorResponse::new(String::from(err.to_string()))),
     }
 }

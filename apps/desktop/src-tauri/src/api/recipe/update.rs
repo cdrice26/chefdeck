@@ -1,9 +1,17 @@
 use sqlx::{Pool, Sqlite, Transaction};
-use tauri::{AppHandle, State};
+use tauri::{AppHandle, Emitter, Manager, State};
 
-use crate::{errors::StringifyError, macros::run_tx, types::response_bodies::Ingredient, AppState};
+use crate::{
+    api::{get_cloud_id, get_cloud_image_path, should_request},
+    errors::StringifyError,
+    img_proc::get_processed_image,
+    macros::run_tx,
+    request::recipe_post,
+    types::{cloud_structs::RecipeFormData, response_bodies::Ingredient},
+    AppState,
+};
 
-use super::new::{get_processed_image, insert_related_data};
+use super::new::insert_related_data;
 
 async fn update_recipe_data(
     tx: &mut Transaction<'_, Sqlite>,
@@ -67,6 +75,25 @@ pub async fn update_recipe(
     Ok(())
 }
 
+async fn update_in_cloud(
+    app: &AppHandle,
+    recipe_id: i64,
+    recipe: RecipeFormData,
+) -> Result<(), String> {
+    let state = app.state::<AppState>();
+    let cloud_id = run_tx!(state.db, |tx| get_cloud_id(tx, recipe_id));
+    let resp = recipe_post(
+        &app,
+        format!("/recipe/{}/update", cloud_id.unwrap_or_default()).as_str(),
+        recipe,
+    )
+    .await;
+    if resp.is_err() {
+        return Err(String::from("Failed to update recipe in cloud"));
+    }
+    Ok(())
+}
+
 #[tauri::command]
 pub async fn api_recipe_update(
     app: AppHandle,
@@ -99,6 +126,37 @@ pub async fn api_recipe_update(
         &color,
     )
     .await?;
+
+    if should_request(&state).await {
+        let image_path_for_cloud = get_cloud_image_path(&state, &image_path).await;
+        tauri::async_runtime::spawn(async move {
+            let cloud_result = update_in_cloud(
+                &app,
+                id,
+                RecipeFormData {
+                    title,
+                    yield_value,
+                    time,
+                    image_path: match image_path {
+                        Some(_) => image_path_for_cloud,
+                        None => None,
+                    },
+                    color,
+                    ingredients,
+                    directions,
+                    tags,
+                    source_url: None,
+                },
+            )
+            .await;
+            if let Err(_) = cloud_result {
+                let _ = app.emit(
+                    "update_recipe_cloud_error",
+                    "Failed to update recipe in cloud",
+                );
+            }
+        });
+    }
 
     Ok(())
 }
