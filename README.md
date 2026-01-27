@@ -6,7 +6,7 @@ ChefDeck is a recipe manager tool. It allows you to manage your recipes, organiz
 
 - ChefDeck uses Turborepo.
 - The Next.js web application is at: `apps/web`
-- The desktop Tauri app is at: `apps/desktop/`
+- The desktop Tauri app is at: `apps/desktop`
 - Shared code is at: `packages/shared`
 
 ## Prerequisites
