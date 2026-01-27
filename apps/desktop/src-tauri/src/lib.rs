@@ -3,25 +3,25 @@ mod database;
 mod errors;
 #[macro_use]
 mod macros;
-mod types;
-mod token_keyring;
 mod request;
+mod token_keyring;
+mod types;
 
 use crate::database::create::setup_db;
 use std::path::PathBuf;
 use tauri::{
     generate_handler, LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder,
 };
+use tokio::sync::Mutex;
 #[cfg(target_os = "windows")]
 use window_vibrancy::apply_blur;
 #[cfg(target_os = "macos")]
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
-use tokio::sync::Mutex;
 
 struct AppState {
     db: database::Db,
     access_token: Mutex<Option<String>>,
-    images_lib_path: PathBuf
+    images_lib_path: PathBuf,
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -33,6 +33,7 @@ pub fn run() {
             api::recipe::new::api_recipe_new,
             api::recipe::api_recipe,
             api::recipe::delete::api_recipe_delete,
+            api::recipe::update::api_recipe_update,
             api::recipes::api_recipes,
             api::auth::login::api_auth_login,
             api::auth::check_auth::api_auth_check_auth,
@@ -41,11 +42,11 @@ pub fn run() {
         ])
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });
-            app.manage(AppState { db, access_token: Mutex::new(None), images_lib_path: app
-                .path()
-                .app_data_dir()
-                .unwrap()
-                .join("images") });
+            app.manage(AppState {
+                db,
+                access_token: Mutex::new(None),
+                images_lib_path: app.path().app_data_dir().unwrap().join("images"),
+            });
 
             let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
                 .title("ChefDeck")

@@ -1,18 +1,18 @@
 use crate::api::auth::check_auth::get_username;
-use crate::{api::GenericResponse, errors::StringifyError};
 use crate::macros::run_tx;
-use crate::types::response_bodies::Ingredient;
-use crate::AppState;
 use crate::request::refresh_access_token;
 use crate::types::cloud_structs::RecipeFormData;
+use crate::types::response_bodies::Ingredient;
+use crate::AppState;
+use crate::{api::GenericResponse, errors::StringifyError};
 use image::{imageops, ImageReader};
+use reqwest::{Response, StatusCode};
+use serde::Deserialize;
 use sqlx::{Sqlite, Transaction};
 use std::fs;
 use std::path::PathBuf;
-use tauri::{AppHandle, Manager, State, Emitter};
+use tauri::{AppHandle, Emitter, Manager, State};
 use uuid::Uuid;
-use reqwest::{StatusCode, Response};
-use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -60,33 +60,13 @@ fn process_image(image: Option<&str>, new_location: &PathBuf) {
     }
 }
 
-async fn insert_recipe_data(
+pub async fn insert_related_data(
     tx: &mut Transaction<'_, Sqlite>,
-    title: &String,
-    yield_value: &u32,
-    time: &u32,
-    image_path: &Option<String>,
-    color: &String,
+    recipe_id: i64,
     ingredients: &Vec<Ingredient>,
     directions: &Vec<String>,
     tags: &Vec<String>,
-    source_url: &Option<String>,
 ) -> Result<i64, sqlx::Error> {
-    // Insert recipe
-    let row = sqlx::query_file!(
-        "db/insert_recipe.sql",
-        title,
-        yield_value,
-        time,
-        image_path,
-        color,
-        source_url
-    )
-    .fetch_one(&mut **tx)
-    .await?;
-
-    let recipe_id: i64 = row.id;
-
     // Insert ingredients
     for (i, ingredient) in ingredients.iter().enumerate() {
         let sequence = (i + 1) as i64;
@@ -142,10 +122,50 @@ async fn insert_recipe_data(
     Ok(recipe_id)
 }
 
-async fn insert_cloud_parent_id(tx: &mut Transaction<'_, Sqlite>, recipe_id: i64, username: &str, online_recipe_id: &str) -> Result<(), sqlx::Error> {
-    sqlx::query_file!("db/insert_cloud_id.sql", recipe_id, username, online_recipe_id)
-        .execute(&mut **tx)
-        .await?;
+async fn insert_recipe_data(
+    tx: &mut Transaction<'_, Sqlite>,
+    title: &String,
+    yield_value: &u32,
+    time: &u32,
+    image_path: &Option<String>,
+    color: &String,
+    ingredients: &Vec<Ingredient>,
+    directions: &Vec<String>,
+    tags: &Vec<String>,
+    source_url: &Option<String>,
+) -> Result<i64, sqlx::Error> {
+    // Insert recipe
+    let row = sqlx::query_file!(
+        "db/insert_recipe.sql",
+        title,
+        yield_value,
+        time,
+        image_path,
+        color,
+        source_url
+    )
+    .fetch_one(&mut **tx)
+    .await?;
+
+    let recipe_id: i64 = row.id;
+
+    insert_related_data(tx, recipe_id, ingredients, directions, tags).await
+}
+
+async fn insert_cloud_parent_id(
+    tx: &mut Transaction<'_, Sqlite>,
+    recipe_id: i64,
+    username: &str,
+    online_recipe_id: &str,
+) -> Result<(), sqlx::Error> {
+    sqlx::query_file!(
+        "db/insert_cloud_id.sql",
+        recipe_id,
+        username,
+        online_recipe_id
+    )
+    .execute(&mut **tx)
+    .await?;
     Ok(())
 }
 
@@ -202,7 +222,8 @@ async fn do_post_request(
         // Build multipart part
         let part = reqwest::multipart::Part::bytes(bytes)
             .file_name(filename)
-            .mime_str(mime).string_err()?;
+            .mime_str(mime)
+            .string_err()?;
 
         form = form.part("image", part);
     }
@@ -237,7 +258,11 @@ async fn post(app: &AppHandle, endpoint: &str, recipe: RecipeFormData) -> Result
     }
 }
 
-async fn add_to_cloud(app: &AppHandle, recipe_id: i64, recipe: RecipeFormData) -> Result<(), String> {
+async fn add_to_cloud(
+    app: &AppHandle,
+    recipe_id: i64,
+    recipe: RecipeFormData,
+) -> Result<(), String> {
     let state = app.state::<AppState>();
     let db = &state.db;
     let resp = post(&app, "/recipe/new", recipe).await;
@@ -246,17 +271,32 @@ async fn add_to_cloud(app: &AppHandle, recipe_id: i64, recipe: RecipeFormData) -
             let resp_data: GenericResponse<NewRecipeResponse> = resp.json().await.string_err()?;
             let online_recipe_id = resp_data.data.recipe_id;
             let username = get_username(&state).await?;
-            let update_resp = run_tx!(db, |tx| insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str()));
+            let update_resp = run_tx!(db, |tx| insert_cloud_parent_id(
+                tx,
+                recipe_id,
+                username.as_str(),
+                online_recipe_id.as_str()
+            ));
             if update_resp.is_err() {
                 Err(update_resp.err().unwrap().to_string())
             } else {
                 Ok(())
             }
         }
-        Err(_) => {
-            Err(String::from("Failed to add recipe to cloud"))
-        }
+        Err(_) => Err(String::from("Failed to add recipe to cloud")),
     }
+}
+
+pub fn get_processed_image(image: Option<String>, images_lib_path: &PathBuf) -> Option<String> {
+    let image_path = if let Some(image) = image {
+        let image_name = Uuid::new_v4().to_string() + ".jpg";
+        let image_path_obj = images_lib_path.join(&image_name);
+        process_image(Some(&image), &image_path_obj);
+        Some(image_name)
+    } else {
+        None
+    };
+    image_path
 }
 
 #[tauri::command]
@@ -276,14 +316,7 @@ pub async fn api_recipe_new(
     let db = &state.db;
     let images_lib_path = &state.images_lib_path;
 
-    let image_path = if let Some(image) = image {
-        let image_name = Uuid::new_v4().to_string() + ".jpg";
-        let image_path_obj = images_lib_path.join(&image_name);
-        process_image(Some(&image), &image_path_obj);
-        Some(image_name)
-    } else {
-        None
-    };
+    let image_path = get_processed_image(image, images_lib_path);
 
     let recipe_id = run_tx!(db, |tx| insert_recipe_data(
         tx,
@@ -309,30 +342,42 @@ pub async fn api_recipe_new(
 
     if should_request {
         if let Ok(recipe_id) = recipe_id {
-        let image_path_for_cloud = match &image_path {
-            Some(image_path) => Some(state.images_lib_path.join(image_path).to_string_lossy().to_string()),
-            None => None
-        };
-        tauri::async_runtime::spawn(async move {
-            let cloud_result = add_to_cloud(&app, recipe_id, RecipeFormData {
-                title,
-                yield_value,
-                time,
-                image_path: match image_path {
-                    Some(_) => image_path_for_cloud,
-                    None => None
-                },
-                color,
-                ingredients,
-                directions,
-                tags,
-                source_url
-            }).await;
-            if let Err(err) = cloud_result {
-                println!("{}", err);
-                let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
-            }
-        });}
+            let image_path_for_cloud = match &image_path {
+                Some(image_path) => Some(
+                    state
+                        .images_lib_path
+                        .join(image_path)
+                        .to_string_lossy()
+                        .to_string(),
+                ),
+                None => None,
+            };
+            tauri::async_runtime::spawn(async move {
+                let cloud_result = add_to_cloud(
+                    &app,
+                    recipe_id,
+                    RecipeFormData {
+                        title,
+                        yield_value,
+                        time,
+                        image_path: match image_path {
+                            Some(_) => image_path_for_cloud,
+                            None => None,
+                        },
+                        color,
+                        ingredients,
+                        directions,
+                        tags,
+                        source_url,
+                    },
+                )
+                .await;
+                if let Err(err) = cloud_result {
+                    println!("{}", err);
+                    let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
+                }
+            });
+        }
     }
 
     recipe_id

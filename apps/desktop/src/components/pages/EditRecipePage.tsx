@@ -6,7 +6,7 @@ import {
   useRecipeEditMutator
 } from 'chefdeck-shared';
 import { useNavigate, useParams } from 'react-router';
-import { request } from '../../utils/fetchUtils';
+import { request, requestFromFormData } from '../../utils/fetchUtils';
 
 export default function EditRecipePage() {
   const navigate = useNavigate();
@@ -14,7 +14,12 @@ export default function EditRecipePage() {
   const { recipe, isLoading, error } = useRecipe(request, id as string);
   const { addNotification } = useNotification();
 
-  const mutator = useRecipeEditMutator(request, navigate, addNotification, id);
+  const mutator = useRecipeEditMutator(
+    requestFromFormData,
+    navigate,
+    addNotification,
+    id
+  );
 
   return (
     <RecipeForm

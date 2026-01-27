@@ -10,6 +10,7 @@ use super::recipes::transform_recipe;
 
 pub mod new;
 pub mod delete;
+pub mod update;
 
 #[derive(Debug, Serialize)]
 pub struct RecipeResponse {

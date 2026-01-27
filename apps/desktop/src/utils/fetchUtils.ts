@@ -21,6 +21,7 @@ type RequestFn = (
  * @returns An object containing parsed recipe fields: title, ingredients, yieldValue, time, image, directions, tags, color, and sourceUrl.
  */
 const getRecipeUpdateData = (formData: FormData) => {
+  const id = formData.get('id') ?? '';
   const title = formData.get('title')?.toString() || '';
   const ingredientNames = formData.getAll('ingredientNames') as string[];
   const ingredientAmounts = formData.getAll('ingredientAmounts') as string[];
@@ -40,6 +41,7 @@ const getRecipeUpdateData = (formData: FormData) => {
   const color = formData.get('color')?.toString() || 'white';
 
   return {
+    id,
     title,
     ingredients,
     yieldValue,
