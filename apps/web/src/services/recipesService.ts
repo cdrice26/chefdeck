@@ -14,6 +14,30 @@ type GetRecipesOptions = {
 };
 
 /**
+ * Check the existence of recipe IDs.
+ *
+ * This function initializes a Supabase client using the provided auth token,
+ * calls a stored procedure to check the existence of recipe IDs, and returns
+ * an array of booleans indicating the existence of each recipe ID.
+ *
+ * @param authToken - The authentication used to initialize the Supabase client
+ * @param ids - An array of recipe IDs to check existence for
+ * @returns An array of records with `id` and `is_extant` properties indicating
+ * the existence of each recipe ID
+ */
+export const checkExistence = async (
+  authToken: string | null,
+  ids: string[]
+) => {
+  const client = createClientWithToken(authToken ?? '');
+  const { data, error } = await client.rpc('check_recipe_existence', {
+    p_recipe_ids: ids
+  });
+  if (error) throw error;
+  return data;
+};
+
+/**
  * Retrieve a paginated list of recipes for the authenticated user.
  *
  * This function initializes a Supabase client using the provided auth token,
