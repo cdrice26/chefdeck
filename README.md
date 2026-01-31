@@ -11,8 +11,7 @@ ChefDeck is a recipe manager tool. It allows you to manage your recipes, organiz
 
 ## Prerequisites
 
-- Node.js (LTS recommended; Node >= 18)
-- A package manager
+- Node.js and `npm`
 - For Tauri (desktop):
   - Rust toolchain (install via `rustup`)
   - Platform-specific native build tools:
