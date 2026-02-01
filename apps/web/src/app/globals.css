@@ -75,12 +75,12 @@
   --color-blue-normal-dark: rgb(54, 97, 122); /* Darker blue */
 
   --color-button-white-normal-dark: rgb(
-    70,
-    70,
-    70
+    90,
+    90,
+    90
   ); /* Darker button background */
-  --color-button-white-hover-dark: rgb(90, 90, 90); /* Darker hover */
-  --color-button-white-active-dark: rgb(110, 110, 110); /* Darker active */
+  --color-button-white-hover-dark: rgb(110, 110, 110); /* Darker hover */
+  --color-button-white-active-dark: rgb(130, 130, 130); /* Darker active */
 
   --color-button-green-normal-dark: rgb(34, 77, 34); /* Darker button green */
   --color-button-green-hover-dark: rgb(54, 97, 54); /* Darker hover */

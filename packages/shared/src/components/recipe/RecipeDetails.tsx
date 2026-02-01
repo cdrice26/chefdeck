@@ -50,7 +50,7 @@ const RecipeDetails = ({ recipe, isLoading, error }: RecipeDetailsProps) =>
           ))}
       </ul>
 
-      <ul className="flex flex-row items-center justify-start gap-2">
+      <ul className="flex flex-row flex-wrap items-center justify-start gap-2">
         <li>
           <strong>Yield:</strong> {recipe?.servings} Servings
         </li>
@@ -67,7 +67,7 @@ const RecipeDetails = ({ recipe, isLoading, error }: RecipeDetailsProps) =>
       {recipe?.imgUrl && (
         <img
           src={recipe?.imgUrl}
-          className="max-h-[300px] max-w-[500px] w-auto rounded-lg object-cover"
+          className="max-h-[300px] max-w-full md:max-w-[500px] w-auto rounded-lg object-cover"
         />
       )}
       <strong className="text-lg">Ingredients:</strong>
