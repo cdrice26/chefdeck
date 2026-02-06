@@ -22,10 +22,12 @@ export default function RecipesPage() {
     usePaginatedRecipes(request, query, tags);
 
   const updatedRecipes = useMemo(() => {
-    return recipes.map((recipe) => ({
+    const newRecipes = recipes.map((recipe) => ({
       ...recipe,
       imgUrl: recipe?.imgUrl !== null ? convertFileSrc(recipe?.imgUrl) : null
     }));
+    console.log(newRecipes);
+    return newRecipes;
   }, [recipes]);
 
   const loaderRef = useRef<HTMLDivElement | null>(null);

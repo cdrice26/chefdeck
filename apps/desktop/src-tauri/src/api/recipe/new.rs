@@ -79,7 +79,27 @@ pub async fn insert_related_data(
     Ok(recipe_id)
 }
 
-async fn insert_recipe_data(
+/// Inserts a new recipe into the database.
+///
+/// # Arguments
+///
+/// * `tx` - A mutable reference to an SQLx transaction.
+/// * `title` - The title of the recipe.
+/// * `yield_value` - The yield value of the recipe.
+/// * `time` - The time required to prepare the recipe.
+/// * `image_path` - The path to the recipe image.
+/// * `color` - The color of the recipe.
+/// * `ingredients` - The ingredients required for the recipe.
+/// * `directions` - The directions for preparing the recipe.
+/// * `tags` - The tags associated with the recipe.
+/// * `source_url` - The URL of the recipe source.
+/// * `cloud_parent_id` - The ID of the parent recipe in the cloud.
+/// * `username` - The username of the user who created the recipe.
+///
+/// # Returns
+///
+/// A `Result` containing the ID of the inserted recipe or an error.
+pub async fn insert_recipe_data(
     tx: &mut Transaction<'_, Sqlite>,
     title: &String,
     yield_value: &u32,
@@ -90,6 +110,8 @@ async fn insert_recipe_data(
     directions: &Vec<String>,
     tags: &Vec<String>,
     source_url: &Option<String>,
+    cloud_parent_id: &Option<String>,
+    username: &Option<String>,
 ) -> Result<i64, sqlx::Error> {
     // Insert recipe
     let row = sqlx::query_file!(
@@ -105,6 +127,12 @@ async fn insert_recipe_data(
     .await?;
 
     let recipe_id: i64 = row.id;
+
+    if let Some(online_recipe_id) = cloud_parent_id {
+        if let Some(username) = username {
+            insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id).await?;
+        }
+    }
 
     insert_related_data(tx, recipe_id, ingredients, directions, tags).await
 }
@@ -174,6 +202,11 @@ pub async fn api_recipe_new(
 
     let image_path = get_processed_image(image, images_lib_path);
 
+    let username = match get_username(&state).await {
+        Ok(username) => Some(username),
+        Err(_) => None,
+    };
+
     let recipe_id = run_tx!(db, |tx| insert_recipe_data(
         tx,
         &title,
@@ -184,7 +217,9 @@ pub async fn api_recipe_new(
         &ingredients,
         &directions,
         &tags,
-        &source_url
+        &source_url,
+        &None,
+        &username,
     ));
 
     if should_request(&state).await {

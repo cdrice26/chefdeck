@@ -1,7 +1,7 @@
 import { parseRecipe } from '@/models/recipeModel';
 import { parseScheduledRecipe } from '@/models/scheduledRecipesModel';
-import { DBScheduledRecipe } from '@/types/db/DBRecipe';
-import { Recipe } from '@/types/Recipe';
+import { DBRecipe, DBScheduledRecipe } from '@/types/db/DBRecipe';
+import { Direction, Ingredient, Recipe } from '@/types/Recipe';
 import { asyncMap } from 'chefdeck-shared/server';
 import { createClientWithToken } from '@/utils/supabaseUtils';
 import { PostgrestError } from '@supabase/supabase-js';
@@ -35,6 +35,44 @@ export const checkExistence = async (
   });
   if (error) throw error;
   return data;
+};
+
+/**
+ * Retrieve a list of recipes other than the specified IDs.
+ *
+ * This function initializes a Supabase client using the provided auth token,
+ * calls a stored procedure to fetch recipes other than the specified IDs, and
+ * returns the resulting array.
+ *
+ * @param authToken - The authentication used to initialize the Supabase client
+ * @param recipeIds - An array of recipe IDs to exclude from the result
+ * @returns An array of recipe records
+ */
+export const getRecipesOtherThan = async (
+  authToken: string | null,
+  recipeIds: string[]
+) => {
+  const client = createClientWithToken(authToken ?? '');
+  const { data, error } = await client.rpc('get_recipes_other_than', {
+    p_recipe_ids: recipeIds
+  });
+  if (error) throw error;
+  return data.map((recipe: DBRecipe) => ({
+    id: recipe.id,
+    title: recipe.title,
+    yieldValue: recipe['yield'],
+    tags: recipe.tags,
+    time: recipe.minutes,
+    sourceUrl: recipe.source,
+    imagePath: recipe.img_url,
+    color: recipe.color,
+    directions: recipe.directions.map((dir: Direction) => dir.content),
+    ingredients: recipe.ingredients.map((ingredient: Ingredient) => ({
+      name: ingredient.name,
+      amount: ingredient.amount,
+      unit: ingredient.unit
+    }))
+  }));
 };
 
 /**
