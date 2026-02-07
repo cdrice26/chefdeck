@@ -26,7 +26,6 @@ export default function RecipesPage() {
       ...recipe,
       imgUrl: recipe?.imgUrl !== null ? convertFileSrc(recipe?.imgUrl) : null
     }));
-    console.log(newRecipes);
     return newRecipes;
   }, [recipes]);
 
