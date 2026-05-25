@@ -2,8 +2,9 @@ use std::path::PathBuf;
 
 use crate::{
     errors::StringifyError,
+    img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
-    request::post,
+    request::{get, post},
     types::{cloud_structs::DownloadedRecipe, raw_db::RawRecipeSyncable, response_bodies::Recipe},
     AppState,
 };
@@ -68,14 +69,28 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         .await
         .string_err()?;
     for recipe in downloaded_recipes.data {
-        let cloud_parent_id = Some(recipe.id);
+        let cloud_parent_id = Some(recipe.id.clone());
         let username_option = Some(username.clone());
+        let image_path = recipe.image_path.clone();
+        let local_image_path = match image_path {
+            Some(_) => {
+                let signed_url_response =
+                    get(&app, &format!("/recipe/{}/imageUrl", recipe.id.clone())).await?;
+                let signed_url: String = signed_url_response.text().await.string_err()?;
+                let image_bytes = download_image_from_signed_url(&signed_url).await?;
+                save_image(&image_bytes, &state.images_lib_path)
+            }
+            None => None,
+        };
+
+        println!("Local image path: {:?}", local_image_path);
+
         let _ = run_tx!(db, |tx| insert_recipe_data(
             tx,
             &recipe.title,
             &recipe.yield_value,
             &recipe.time,
-            &recipe.image_path,
+            &local_image_path,
             &recipe.color,
             &recipe.ingredients,
             &recipe.directions,

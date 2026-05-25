@@ -24,7 +24,10 @@ export default function RecipesPage() {
   const updatedRecipes = useMemo(() => {
     const newRecipes = recipes.map((recipe) => ({
       ...recipe,
-      imgUrl: recipe?.imgUrl !== null ? convertFileSrc(recipe?.imgUrl) : null
+      imgUrl: recipe?.imgUrl !== null ? convertFileSrc(recipe?.imgUrl) : null,
+      tags: (recipe?.tags as unknown as { name: string }[])?.map(
+        (tag) => tag?.name
+      )
     }));
     return newRecipes;
   }, [recipes]);

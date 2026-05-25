@@ -69,3 +69,29 @@ pub fn get_processed_image(image: Option<String>, images_lib_path: &PathBuf) -> 
     };
     image_path
 }
+
+/// Downloads an image from a signed URL.
+pub async fn download_image_from_signed_url(url: &str) -> Result<Vec<u8>, String> {
+    let client = reqwest::Client::new();
+
+    let resp = client.get(url).send().await.map_err(|e| e.to_string())?;
+
+    if !resp.status().is_success() {
+        return Err(format!("Failed to download image: {}", resp.status()));
+    }
+
+    let bytes = resp.bytes().await.map_err(|e| e.to_string())?;
+    Ok(bytes.to_vec())
+}
+
+/// Saves a downloaded image to the app data directory.
+///
+/// # Arguments
+/// * `image_bytes` - The image data as bytes.
+/// * `images_lib_path` - The path to the app data directory.
+pub fn save_image(image_bytes: &[u8], images_lib_path: &PathBuf) -> Option<String> {
+    let image_name = Uuid::new_v4().to_string() + ".jpg";
+    let image_path = images_lib_path.join(&image_name);
+    std::fs::write(&image_path, image_bytes).ok()?;
+    Some(image_path.to_string_lossy().to_string())
+}
