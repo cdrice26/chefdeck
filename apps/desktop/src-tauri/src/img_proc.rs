@@ -93,5 +93,5 @@ pub fn save_image(image_bytes: &[u8], images_lib_path: &PathBuf) -> Option<Strin
     let image_name = Uuid::new_v4().to_string() + ".jpg";
     let image_path = images_lib_path.join(&image_name);
     std::fs::write(&image_path, image_bytes).ok()?;
-    Some(image_path.to_string_lossy().to_string())
+    Some(image_name)
 }
