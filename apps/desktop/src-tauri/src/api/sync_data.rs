@@ -83,8 +83,6 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
             None => None,
         };
 
-        println!("Local image path: {:?}", local_image_path);
-
         let _ = run_tx!(db, |tx| insert_recipe_data(
             tx,
             &recipe.title,
