@@ -71,7 +71,9 @@ export const getRecipesOtherThan = async (
       name: ingredient.name,
       amount: ingredient.amount,
       unit: ingredient.unit
-    }))
+    })),
+    lastUpdated: recipe.last_updated,
+    lastViewed: recipe.last_viewed
   }));
 };
 

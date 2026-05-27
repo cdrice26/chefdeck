@@ -32,7 +32,14 @@ BEGIN
             FROM recipe_tags rt
             JOIN user_tags ut ON rt.tag_id = ut.id
             WHERE rt.recipe_id = r.id
-        ), '[]'::jsonb)
+        ), '[]'::jsonb),
+        'last_updated', r.last_updated,
+        'last_viewed', (
+            SELECT MAX(last_viewed)
+            FROM recipe_usage ru
+            WHERE user_id = r.user_id
+            AND recipe_id = r.id
+        )
     ) INTO recipe_data
     FROM recipes r
     WHERE r.id = p_id;

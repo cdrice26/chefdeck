@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT cloud_recipe_id FROM cloud_ids\nWHERE recipe_id = $1;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "cloud_recipe_id",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "af99f48811b456257dbd863c6247392ad9cb2bf1d6a6e18c5bfc26f90e9d9a52"
+}

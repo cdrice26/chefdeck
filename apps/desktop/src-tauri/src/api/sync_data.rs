@@ -95,7 +95,9 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
             &recipe.tags,
             &recipe.source_url,
             &cloud_parent_id,
-            &username_option
+            &username_option,
+            &recipe.last_viewed,
+            &recipe.last_updated
         ));
     }
 

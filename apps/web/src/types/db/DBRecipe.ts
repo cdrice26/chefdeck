@@ -55,6 +55,7 @@ export interface DBRecipe {
   ingredients: DBIngredient[];
   directions: DBDirection[];
   last_viewed?: Date;
+  last_updated?: Date;
   tags?: string[];
 }
 

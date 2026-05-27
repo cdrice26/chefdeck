@@ -7,6 +7,7 @@ use crate::types::cloud_structs::RecipeFormData;
 use crate::types::response_bodies::Ingredient;
 use crate::AppState;
 use crate::{api::GenericResponse, errors::StringifyError};
+use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use sqlx::{Sqlite, Transaction};
 use tauri::{AppHandle, Emitter, Manager, State};
@@ -95,6 +96,8 @@ pub async fn insert_related_data(
 /// * `source_url` - The URL of the recipe source.
 /// * `cloud_parent_id` - The ID of the parent recipe in the cloud.
 /// * `username` - The username of the user who created the recipe.
+/// * `last_viewed` - The last viewed date of the recipe.
+/// * `last_updated` - The last updated date of the recipe.
 ///
 /// # Returns
 ///
@@ -112,6 +115,8 @@ pub async fn insert_recipe_data(
     source_url: &Option<String>,
     cloud_parent_id: &Option<String>,
     username: &Option<String>,
+    last_viewed: &Option<String>,
+    last_updated: &Option<String>,
 ) -> Result<i64, sqlx::Error> {
     // Insert recipe
     let row = sqlx::query_file!(
@@ -127,6 +132,23 @@ pub async fn insert_recipe_data(
     .await?;
 
     let recipe_id: i64 = row.id;
+
+    if let Some(last_viewed) = last_viewed {
+        let dt: DateTime<Utc> = last_viewed.parse().unwrap();
+        let formatted = dt.format("%Y-%m-%d %H:%M:%S").to_string();
+
+        sqlx::query_file!("db/update_last_viewed.sql", recipe_id, formatted)
+            .fetch_one(&mut **tx)
+            .await?;
+    }
+
+    if let Some(last_updated) = last_updated {
+        let dt: DateTime<Utc> = last_updated.parse().unwrap();
+        let formatted = dt.format("%Y-%m-%d %H:%M:%S").to_string();
+        sqlx::query_file!("db/update_recipe_last_updated.sql", formatted, recipe_id)
+            .fetch_one(&mut **tx)
+            .await?;
+    }
 
     if let Some(online_recipe_id) = cloud_parent_id {
         if let Some(username) = username {
@@ -220,6 +242,8 @@ pub async fn api_recipe_new(
         &source_url,
         &None,
         &username,
+        &None,
+        &None,
     ));
 
     if should_request(&state).await {

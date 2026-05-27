@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "INSERT INTO recipe_usage (recipe_id, last_viewed)\n    VALUES (?, CURRENT_TIMESTAMP) RETURNING id;;\n",
+  "query": "INSERT INTO recipe_usage (recipe_id, last_viewed)\n    VALUES (?, CURRENT_TIMESTAMP) RETURNING id;\n",
   "describe": {
     "columns": [
       {
@@ -16,5 +16,5 @@
       true
     ]
   },
-  "hash": "1e8a33cf5945b2e6ed518df622065ebbcf5e3add5ebb20a0c2f123061dc3331f"
+  "hash": "d970a04c07b3c1aaefc0bdbe01d52d3915332c0a50db18c4a76bd0e0f6342fe5"
 }

@@ -29,4 +29,6 @@ pub struct DownloadedRecipe {
     pub directions: Vec<String>,
     pub tags: Vec<String>,
     pub source_url: Option<String>,
+    pub last_viewed: Option<String>,
+    pub last_updated: Option<String>,
 }
