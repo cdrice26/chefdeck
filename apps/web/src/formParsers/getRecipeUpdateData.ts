@@ -23,6 +23,8 @@ const getRecipeUpdateData = (formData: FormData) => {
   );
   const sourceUrl = formData.get('sourceUrl')?.toString() || null;
   const color = formData.get('color')?.toString() || 'white';
+  const lastViewed = formData.get('lastViewed')?.toString() || null;
+  const lastUpdated = formData.get('lastUpdated')?.toString() || null;
 
   return {
     title,
@@ -33,7 +35,9 @@ const getRecipeUpdateData = (formData: FormData) => {
     directions,
     tags,
     color,
-    sourceUrl
+    sourceUrl,
+    lastViewed,
+    lastUpdated
   };
 };
 

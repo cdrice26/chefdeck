@@ -1,12 +1,19 @@
 use std::path::PathBuf;
 
 use crate::{
-    api::recipe::delete::delete_recipe,
+    api::{
+        get_cloud_image_path,
+        recipe::{delete::delete_recipe, new::add_to_cloud},
+    },
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
     request::{get, post},
-    types::{cloud_structs::DownloadedRecipe, raw_db::RawRecipeSyncable, response_bodies::Recipe},
+    types::{
+        cloud_structs::{DownloadedRecipe, RecipeFormData},
+        raw_db::RawRecipeSyncable,
+        response_bodies::Recipe,
+    },
     AppState,
 };
 use serde::Deserialize;
@@ -135,7 +142,46 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     let no_cloud_parent: Vec<&Recipe> = local_recipes
         .iter()
         .filter(|r| r.cloud_parent_id.is_none())
+        .filter(|r| r.id.is_some())
         .collect();
+    for recipe in no_cloud_parent {
+        let image_path_for_cloud = get_cloud_image_path(&state, &recipe.img_url).await;
+        add_to_cloud(
+            &app,
+            recipe.id.unwrap(),
+            RecipeFormData {
+                title: recipe.title.clone(),
+                yield_value: recipe.servings as u32,
+                time: recipe.minutes as u32,
+                image_path: match recipe.img_url {
+                    Some(_) => image_path_for_cloud,
+                    None => None,
+                },
+                color: recipe.color.clone(),
+                ingredients: recipe.ingredients.clone(),
+                directions: recipe
+                    .directions
+                    .iter()
+                    .map(|d| d.content.clone())
+                    .collect(),
+                tags: recipe
+                    .tags
+                    .iter()
+                    .map(|t| t.name.clone().unwrap_or_default())
+                    .collect(),
+                source_url: recipe.source_url.clone(),
+                last_viewed: match recipe.last_viewed.clone() {
+                    Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+                    None => None,
+                },
+                last_updated: match recipe.last_updated.clone() {
+                    Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+                    None => None,
+                },
+            },
+        )
+        .await?;
+    }
 
     // Update recipes on the server that have a newer version stored locally
     // Iterate through recipes with a cloud_parent_id, fetch recipe from server, compare dates,

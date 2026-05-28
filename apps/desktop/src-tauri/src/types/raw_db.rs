@@ -45,6 +45,7 @@ pub struct RawRecipeSyncable {
     pub color: Option<String>,
     pub last_updated: Option<chrono::NaiveDateTime>,
     pub cloud_recipe_id: Option<String>,
+    pub last_viewed: Option<chrono::NaiveDateTime>,
 }
 
 /// Represents a common trait for recipes in the local database.
@@ -70,23 +71,51 @@ pub trait RawRecipeCommon {
 }
 
 impl RawRecipeCommon for RawRecipe {
-    fn id(&self) -> Option<i64> { self.id }
-    fn title(&self) -> Option<String> { self.title.clone() }
-    fn yield_(&self) -> Option<i64> { self.r#yield }
-    fn minutes(&self) -> Option<i64> { self.minutes }
-    fn img_url(&self) -> Option<String> { self.img_url.clone() }
-    fn source(&self) -> Option<String> { self.source.clone() }
-    fn color(&self) -> Option<String> { self.color.clone() }
+    fn id(&self) -> Option<i64> {
+        self.id
+    }
+    fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+    fn yield_(&self) -> Option<i64> {
+        self.r#yield
+    }
+    fn minutes(&self) -> Option<i64> {
+        self.minutes
+    }
+    fn img_url(&self) -> Option<String> {
+        self.img_url.clone()
+    }
+    fn source(&self) -> Option<String> {
+        self.source.clone()
+    }
+    fn color(&self) -> Option<String> {
+        self.color.clone()
+    }
 }
 
 impl RawRecipeCommon for RawRecipeWithLastViewed {
-    fn id(&self) -> Option<i64> { self.id }
-    fn title(&self) -> Option<String> { self.title.clone() }
-    fn yield_(&self) -> Option<i64> { self.r#yield }
-    fn minutes(&self) -> Option<i64> { self.minutes }
-    fn img_url(&self) -> Option<String> { self.img_url.clone() }
-    fn source(&self) -> Option<String> { self.source.clone() }
-    fn color(&self) -> Option<String> { self.color.clone() }
+    fn id(&self) -> Option<i64> {
+        self.id
+    }
+    fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+    fn yield_(&self) -> Option<i64> {
+        self.r#yield
+    }
+    fn minutes(&self) -> Option<i64> {
+        self.minutes
+    }
+    fn img_url(&self) -> Option<String> {
+        self.img_url.clone()
+    }
+    fn source(&self) -> Option<String> {
+        self.source.clone()
+    }
+    fn color(&self) -> Option<String> {
+        self.color.clone()
+    }
 
     fn last_viewed(&self) -> Option<chrono::NaiveDateTime> {
         self.last_viewed
@@ -94,16 +123,34 @@ impl RawRecipeCommon for RawRecipeWithLastViewed {
 }
 
 impl RawRecipeCommon for RawRecipeSyncable {
-    fn id(&self) -> Option<i64> { self.id }
-    fn title(&self) -> Option<String> { self.title.clone() }
-    fn yield_(&self) -> Option<i64> { self.r#yield }
-    fn minutes(&self) -> Option<i64> { self.minutes }
-    fn img_url(&self) -> Option<String> { self.img_url.clone() }
-    fn source(&self) -> Option<String> { self.source.clone() }
-    fn color(&self) -> Option<String> { self.color.clone() }
+    fn id(&self) -> Option<i64> {
+        self.id
+    }
+    fn title(&self) -> Option<String> {
+        self.title.clone()
+    }
+    fn yield_(&self) -> Option<i64> {
+        self.r#yield
+    }
+    fn minutes(&self) -> Option<i64> {
+        self.minutes
+    }
+    fn img_url(&self) -> Option<String> {
+        self.img_url.clone()
+    }
+    fn source(&self) -> Option<String> {
+        self.source.clone()
+    }
+    fn color(&self) -> Option<String> {
+        self.color.clone()
+    }
 
     fn last_updated(&self) -> Option<chrono::NaiveDateTime> {
         self.last_updated
+    }
+
+    fn last_viewed(&self) -> Option<chrono::NaiveDateTime> {
+        self.last_viewed
     }
 
     fn cloud_parent_id(&self) -> Option<String> {
@@ -143,7 +190,13 @@ where
             servings: self.yield_().unwrap_or(0),
             minutes: self.minutes().unwrap_or(0),
             img_url: match self.img_url() {
-                Some(img_url) => Some(context.images_lib_path.join(img_url).to_string_lossy().into_owned()),
+                Some(img_url) => Some(
+                    context
+                        .images_lib_path
+                        .join(img_url)
+                        .to_string_lossy()
+                        .into_owned(),
+                ),
                 None => None,
             },
             source_url: self.source(),

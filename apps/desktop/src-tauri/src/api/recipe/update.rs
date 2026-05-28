@@ -146,6 +146,8 @@ pub async fn api_recipe_update(
                     directions,
                     tags,
                     source_url: None,
+                    last_viewed: None,
+                    last_updated: None,
                 },
             )
             .await;

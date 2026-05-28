@@ -192,7 +192,9 @@ export const createOrUpdateRecipe = async (
   tags: string[],
   color: string,
   id: string | null = null,
-  sourceUrl: string | null = null
+  sourceUrl: string | null = null,
+  lastViewed: string | null = null,
+  lastUpdated: string | null = null
 ) => {
   const supabase = createClientWithToken(authToken ?? '');
 
@@ -301,7 +303,9 @@ export const createOrUpdateRecipe = async (
         sequence: index + 1
       })),
       p_tags: tags,
-      p_color: color
+      p_color: color,
+      p_last_viewed: lastViewed,
+      p_last_updated: lastUpdated
     },
     ...(id ? { p_id: id } : {}),
     ...(id ? {} : { p_source_url: sourceUrl })

@@ -22,7 +22,9 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
     directions,
     tags,
     color,
-    sourceUrl
+    sourceUrl,
+    lastViewed,
+    lastUpdated
   } = getRecipeUpdateData(formData);
   try {
     const updateData = await createOrUpdateRecipe(
@@ -36,7 +38,9 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
       tags,
       color,
       null,
-      sourceUrl
+      sourceUrl,
+      lastViewed,
+      lastUpdated
     );
     return NextResponse.json(updateData, { status: 200 });
   } catch (err) {

@@ -33,6 +33,11 @@ BEGIN
         last_updated = now()
     WHERE id = p_id AND user_id = p_current_user_id;
 
+    -- Update last updated timestamp
+    UPDATE recipes
+    SET last_updated = p_last_updated
+    WHERE id = new_recipe_id;
+
     -- Update ingredients
     DELETE FROM ingredients WHERE recipe_id = p_id;
     INSERT INTO ingredients (name, amount, unit, sequence, recipe_id)
@@ -64,8 +69,8 @@ BEGIN
     END LOOP;
 
     -- Update usage record
-    INSERT INTO recipe_usage (user_id, recipe_id)
-    VALUES (p_current_user_id, p_id)
-    ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = NOW();
+    INSERT INTO recipe_usage (user_id, recipe_id, last_viewed)
+    VALUES (p_current_user_id, new_recipe_id, COALESCE(p_last_viewed, NOW()))
+    ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = EXCLUDED.last_viewed;
 END;
 $$ LANGUAGE plpgsql;

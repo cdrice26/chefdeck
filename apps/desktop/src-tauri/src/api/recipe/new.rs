@@ -176,7 +176,7 @@ async fn insert_cloud_parent_id(
     Ok(())
 }
 
-async fn add_to_cloud(
+pub async fn add_to_cloud(
     app: &AppHandle,
     recipe_id: i64,
     recipe: RecipeFormData,
@@ -266,6 +266,8 @@ pub async fn api_recipe_new(
                         directions,
                         tags,
                         source_url,
+                        last_viewed: None,
+                        last_updated: None,
                     },
                 )
                 .await;

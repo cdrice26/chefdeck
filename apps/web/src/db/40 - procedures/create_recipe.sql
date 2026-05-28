@@ -1,17 +1,19 @@
 DROP FUNCTION IF EXISTS public.create_recipe;
 
 CREATE OR REPLACE FUNCTION public.create_recipe(
-    p_title text, 
-    p_yield_value smallint, 
-    p_minutes integer, 
-    p_img_url text, 
-    p_current_user_id uuid, 
-    p_color text, 
-    p_ingredients jsonb, 
-    p_directions jsonb, 
+    p_title text,
+    p_yield_value smallint,
+    p_minutes integer,
+    p_img_url text,
+    p_current_user_id uuid,
+    p_color text,
+    p_ingredients jsonb,
+    p_directions jsonb,
     p_tags jsonb,
-    p_source_url text
-) 
+    p_source_url text,
+    p_last_viewed timestamp,
+    p_last_updated timestamp
+)
 RETURNS uuid
 LANGUAGE plpgsql
 SECURITY INVOKER
@@ -37,6 +39,11 @@ BEGIN
     SELECT (elem->>'content')::text, new_recipe_id, (elem->>'sequence')::int
     FROM jsonb_array_elements(p_directions) AS elem;
 
+    -- Insert last updated timestamp
+    UPDATE recipes
+    SET last_updated = p_last_updated
+    WHERE id = new_recipe_id;
+
     -- Insert tags
     FOR tag_name IN SELECT * FROM jsonb_array_elements_text(p_tags) LOOP
         -- Insert into user_tags if the tag does not exist for the current user
@@ -45,7 +52,7 @@ BEGIN
         ON CONFLICT (user_id, name) DO NOTHING;  -- Avoid inserting duplicates
 
         -- Get the tag_id for the current tag name
-        SELECT id INTO tag_id 
+        SELECT id INTO tag_id
         FROM user_tags ut
         WHERE ut.user_id = p_current_user_id AND ut.name = tag_name;
 
@@ -55,9 +62,9 @@ BEGIN
     END LOOP;
 
     -- Update usage record
-    INSERT INTO recipe_usage (user_id, recipe_id)
-    VALUES (p_current_user_id, new_recipe_id)
-    ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = NOW();
+    INSERT INTO recipe_usage (user_id, recipe_id, last_viewed)
+    VALUES (p_current_user_id, new_recipe_id, COALESCE(p_last_viewed, NOW()))
+    ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = EXCLUDED.last_viewed;
 
     RETURN new_recipe_id;
 END;

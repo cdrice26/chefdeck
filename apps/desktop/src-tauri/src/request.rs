@@ -229,6 +229,13 @@ pub async fn do_recipe_post_request(
         form = form.part("image", part);
     }
 
+    if let Some(last_viewed) = &recipe.last_viewed {
+        form = form.text("lastViewed", last_viewed.clone());
+    }
+    if let Some(last_updated) = &recipe.last_updated {
+        form = form.text("lastUpdated", last_updated.clone());
+    }
+
     let req = client.post(format!("{}{}", api_url, endpoint));
     let req = if token.is_empty() {
         req

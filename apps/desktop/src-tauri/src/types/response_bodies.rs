@@ -7,7 +7,7 @@ pub struct CloudId {
 }
 
 /// Represents an ingredient.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Ingredient {
     pub name: String,
     pub amount: f64,
