@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use crate::{
+    api::recipe::delete::delete_recipe,
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
@@ -20,7 +21,7 @@ use super::{
 #[derive(Debug, Deserialize)]
 struct RecipeExistenceRecord {
     id: String,
-    exists: bool,
+    is_extant: bool,
 }
 
 async fn get_local_recipes(
@@ -102,6 +103,33 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     }
 
     // Delete recipes locally that have a cloud_parent_id but that don't exist on the server
+    let existence_response = post(&app, "/recipes/whichExist", recipe_id_json.as_str())
+        .await
+        .map_err(|e| e.to_string())?;
+    let downloaded_recipe_ids = existence_response
+        .json::<GenericResponse<Vec<RecipeExistenceRecord>>>()
+        .await
+        .string_err()?;
+    let nonexistent_recipe_cloud_ids: Vec<String> = downloaded_recipe_ids
+        .data
+        .into_iter()
+        .filter(|r| !r.is_extant)
+        .map(|r| r.id)
+        .collect();
+    let nonexistent_recipe_local_ids: Vec<i64> = local_recipes
+        .iter()
+        .filter(|r| {
+            let cloud_parent_id = r.cloud_parent_id.as_ref();
+            cloud_parent_id.is_some()
+                && nonexistent_recipe_cloud_ids.contains(cloud_parent_id.unwrap_or(&String::new()))
+        })
+        .map(|recipe| recipe.id)
+        .filter(|id| id.is_some())
+        .map(|id| id.unwrap())
+        .collect();
+    for recipe_id in nonexistent_recipe_local_ids {
+        delete_recipe(&state, recipe_id).await?;
+    }
 
     // Upload recipes that don't exist on the server (error protection)
     let no_cloud_parent: Vec<&Recipe> = local_recipes
