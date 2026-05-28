@@ -10,7 +10,9 @@ CREATE OR REPLACE FUNCTION public.update_recipe(
     p_color text,
     p_ingredients jsonb,
     p_directions jsonb,
-    p_tags jsonb
+    p_tags jsonb,
+    p_last_viewed timestamp,
+    p_last_updated timestamp
 )
 RETURNS void
 SET search_path = public, pg_catalog
@@ -30,13 +32,8 @@ BEGIN
             ELSE img_url
         END,
         color = p_color,
-        last_updated = now()
+        last_updated = COALESCE(p_last_updated, now())
     WHERE id = p_id AND user_id = p_current_user_id;
-
-    -- Update last updated timestamp
-    UPDATE recipes
-    SET last_updated = p_last_updated
-    WHERE id = new_recipe_id;
 
     -- Update ingredients
     DELETE FROM ingredients WHERE recipe_id = p_id;
@@ -70,7 +67,7 @@ BEGIN
 
     -- Update usage record
     INSERT INTO recipe_usage (user_id, recipe_id, last_viewed)
-    VALUES (p_current_user_id, new_recipe_id, COALESCE(p_last_viewed, NOW()))
+    VALUES (p_current_user_id, p_id, COALESCE(p_last_viewed, NOW()))
     ON CONFLICT (user_id, recipe_id) DO UPDATE SET last_viewed = EXCLUDED.last_viewed;
 END;
 $$ LANGUAGE plpgsql;
