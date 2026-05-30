@@ -18,6 +18,7 @@ use crate::{
 };
 use serde::Deserialize;
 use serde_json::json;
+use sqlx::{Sqlite, Transaction};
 use tauri::{AppHandle, Manager};
 
 use super::{
@@ -49,7 +50,7 @@ async fn get_local_recipes(
     Ok(recipes)
 }
 
-async fn sync_recipes(app: AppHandle) -> Result<(), String> {
+async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
     let state = app.state::<AppState>();
     let db = &state.db;
 
@@ -196,7 +197,15 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
 }
 
 async fn sync_all(app: AppHandle) -> Result<(), String> {
-    sync_recipes(app).await?;
+    sync_recipes(&app).await?;
+    let state = app.state::<AppState>();
+    let db = &state.db;
+    run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
+        sqlx::query_file!("db/update_last_synced.sql")
+            .execute(&mut **tx)
+            .await?;
+        Ok::<(), sqlx::Error>(())
+    })?;
     Ok(())
 }
 

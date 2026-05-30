@@ -1,0 +1,3 @@
+INSERT INTO key_value (key, value)
+VALUES ('last_synced', CURRENT_TIMESTAMP)
+ON CONFLICT (key) DO UPDATE SET value = CURRENT_TIMESTAMP;
