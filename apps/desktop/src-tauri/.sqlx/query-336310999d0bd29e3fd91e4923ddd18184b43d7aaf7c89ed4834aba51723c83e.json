@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO key_value (key, value)\nVALUES ('last_synced', CURRENT_TIMESTAMP)\nON CONFLICT (key) DO UPDATE SET value = CURRENT_TIMESTAMP;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "336310999d0bd29e3fd91e4923ddd18184b43d7aaf7c89ed4834aba51723c83e"
+}

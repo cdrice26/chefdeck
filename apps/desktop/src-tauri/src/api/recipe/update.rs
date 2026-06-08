@@ -44,14 +44,8 @@ pub async fn update_recipe_data_with_dates(
         .execute(&mut **tx)
         .await?;
 
-    println!("Updating recipe metadata for {}", *id);
-    println!("Ingredients: {:?}", ingredients);
-    println!("Directions: {:?}", directions);
-    println!("Tags: {:?}", tags);
-
     let _ = insert_related_data(tx, *id, ingredients, directions, tags).await?;
 
-    println!("Updating recipe dates for {}", id);
     update_dates(tx, &last_viewed, &last_updated, *id).await?;
 
     Ok(())

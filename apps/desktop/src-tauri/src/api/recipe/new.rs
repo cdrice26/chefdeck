@@ -61,7 +61,7 @@ pub async fn insert_related_data(
     // Insert into recipe tags table
     for tag_id in tag_ids.iter() {
         sqlx::query_file!("db/insert_recipe_tags.sql", recipe_id, tag_id)
-            .fetch_one(&mut **tx)
+            .execute(&mut **tx)
             .await?;
     }
 
