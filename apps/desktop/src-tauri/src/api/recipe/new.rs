@@ -1,4 +1,5 @@
 use crate::api::auth::check_auth::get_username;
+use crate::api::recipe::update_dates;
 use crate::api::{get_cloud_image_path, should_request};
 use crate::img_proc::get_processed_image;
 use crate::macros::run_tx;
@@ -7,7 +8,6 @@ use crate::types::cloud_structs::RecipeFormData;
 use crate::types::response_bodies::Ingredient;
 use crate::AppState;
 use crate::{api::GenericResponse, errors::StringifyError};
-use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use sqlx::{Sqlite, Transaction};
 use tauri::{AppHandle, Emitter, Manager, State};
@@ -31,7 +31,6 @@ pub async fn insert_related_data(
         sqlx::query_file!(
             "db/insert_ingredient.sql",
             recipe_id,
-            recipe_id,
             ingredient.name,
             ingredient.amount,
             ingredient.unit,
@@ -44,15 +43,9 @@ pub async fn insert_related_data(
     // Insert directions
     for (i, direction) in directions.iter().enumerate() {
         let sequence = (i + 1) as i64;
-        sqlx::query_file!(
-            "db/insert_direction.sql",
-            recipe_id,
-            recipe_id,
-            direction,
-            sequence
-        )
-        .fetch_one(&mut **tx)
-        .await?;
+        sqlx::query_file!("db/insert_direction.sql", recipe_id, direction, sequence)
+            .fetch_one(&mut **tx)
+            .await?;
     }
 
     let mut tag_ids: Vec<i64> = Vec::new();
@@ -67,7 +60,7 @@ pub async fn insert_related_data(
 
     // Insert into recipe tags table
     for tag_id in tag_ids.iter() {
-        sqlx::query_file!("db/insert_recipe_tags.sql", recipe_id, recipe_id, tag_id)
+        sqlx::query_file!("db/insert_recipe_tags.sql", recipe_id, tag_id)
             .fetch_one(&mut **tx)
             .await?;
     }
@@ -133,22 +126,7 @@ pub async fn insert_recipe_data(
 
     let recipe_id: i64 = row.id;
 
-    if let Some(last_viewed) = last_viewed {
-        let dt: DateTime<Utc> = last_viewed.parse().unwrap();
-        let formatted = dt.format("%Y-%m-%d %H:%M:%S").to_string();
-
-        sqlx::query_file!("db/update_last_viewed.sql", recipe_id, formatted)
-            .fetch_one(&mut **tx)
-            .await?;
-    }
-
-    if let Some(last_updated) = last_updated {
-        let dt: DateTime<Utc> = last_updated.parse().unwrap();
-        let formatted = dt.format("%Y-%m-%d %H:%M:%S").to_string();
-        sqlx::query_file!("db/update_recipe_last_updated.sql", formatted, recipe_id)
-            .fetch_one(&mut **tx)
-            .await?;
-    }
+    update_dates(tx, &last_viewed, &last_updated, recipe_id).await?;
 
     if let Some(online_recipe_id) = cloud_parent_id {
         if let Some(username) = username {

@@ -4,6 +4,19 @@ use super::{
     parser::Parsable,
     response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
 };
+use chrono::NaiveDateTime;
+
+/// Represents a value from a pair in the key-value table
+#[derive(sqlx::FromRow, Debug)]
+pub struct StringValue {
+    pub value: Option<String>,
+}
+
+/// Represents an integer value from a pair in the key-value table
+#[derive(sqlx::FromRow, Debug)]
+pub struct IntegerValue {
+    pub value: Option<i64>,
+}
 
 /// Represents a recipe as it exists in the local database
 #[derive(sqlx::FromRow, Debug)]
@@ -29,7 +42,7 @@ pub struct RawRecipeWithLastViewed {
     pub img_url: Option<String>,
     pub source: Option<String>,
     pub color: Option<String>,
-    pub last_viewed: Option<chrono::NaiveDateTime>,
+    pub last_viewed: Option<NaiveDateTime>,
 }
 
 /// Represents a recipe as it exists in the local database, with update information for syncing.
@@ -43,9 +56,9 @@ pub struct RawRecipeSyncable {
     pub img_url: Option<String>,
     pub source: Option<String>,
     pub color: Option<String>,
-    pub last_updated: Option<chrono::NaiveDateTime>,
+    pub last_updated: Option<NaiveDateTime>,
     pub cloud_recipe_id: Option<String>,
-    pub last_viewed: Option<chrono::NaiveDateTime>,
+    pub last_viewed: Option<NaiveDateTime>,
 }
 
 /// Represents a common trait for recipes in the local database.
@@ -59,10 +72,10 @@ pub trait RawRecipeCommon {
     fn color(&self) -> Option<String>;
 
     // override these in specific types
-    fn last_viewed(&self) -> Option<chrono::NaiveDateTime> {
+    fn last_viewed(&self) -> Option<NaiveDateTime> {
         None
     }
-    fn last_updated(&self) -> Option<chrono::NaiveDateTime> {
+    fn last_updated(&self) -> Option<NaiveDateTime> {
         None
     }
     fn cloud_parent_id(&self) -> Option<String> {
@@ -117,7 +130,7 @@ impl RawRecipeCommon for RawRecipeWithLastViewed {
         self.color.clone()
     }
 
-    fn last_viewed(&self) -> Option<chrono::NaiveDateTime> {
+    fn last_viewed(&self) -> Option<NaiveDateTime> {
         self.last_viewed
     }
 }
@@ -145,11 +158,11 @@ impl RawRecipeCommon for RawRecipeSyncable {
         self.color.clone()
     }
 
-    fn last_updated(&self) -> Option<chrono::NaiveDateTime> {
+    fn last_updated(&self) -> Option<NaiveDateTime> {
         self.last_updated
     }
 
-    fn last_viewed(&self) -> Option<chrono::NaiveDateTime> {
+    fn last_viewed(&self) -> Option<NaiveDateTime> {
         self.last_viewed
     }
 

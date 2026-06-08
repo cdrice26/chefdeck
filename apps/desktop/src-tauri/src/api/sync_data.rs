@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use crate::{
     api::{
         get_cloud_image_path,
-        recipe::{delete::delete_recipe, new::add_to_cloud},
+        recipe::{delete::delete_recipe, new::add_to_cloud, update::update_recipe_data_with_dates},
     },
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
@@ -11,14 +11,15 @@ use crate::{
     request::{get, post},
     types::{
         cloud_structs::{DownloadedRecipe, RecipeFormData},
-        raw_db::RawRecipeSyncable,
+        raw_db::{IntegerValue, RawRecipeSyncable, StringValue},
         response_bodies::Recipe,
     },
     AppState,
 };
+use chrono::NaiveDateTime;
 use serde::Deserialize;
 use serde_json::json;
-use sqlx::{Sqlite, Transaction};
+use sqlx::{query_file_as, Sqlite, Transaction};
 use tauri::{AppHandle, Manager};
 
 use super::{
@@ -189,9 +190,86 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
     // and update the server recipe if necessary
 
     // Update local recipes that have a newer version stored on the server
-    // Iterate through recipes with a cloud_parent_id, download the server version, compare dates,
-    // and update the local recipe if necessary
-    // Requires recipe update functionality to be in place
+    let last_synced_db = run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
+        query_file_as!(StringValue, "db/get_key_value.sql", "last_synced")
+            .fetch_one(&mut **tx)
+            .await
+    })?;
+    let last_synced_db = last_synced_db
+        .value
+        .unwrap_or(String::from("1970-01-01 00:00:00"));
+    let last_synced = NaiveDateTime::parse_from_str(&last_synced_db, "%Y-%m-%d %H:%M:%S")
+        .unwrap_or_default()
+        .format("%Y-%m-%dT%H:%M:%SZ")
+        .to_string();
+    let recipes_updated_since =
+        get(&app, &format!("/recipes/updatedAfter/{}", last_synced)).await?;
+    let downloaded_recipes: Vec<DownloadedRecipe> = recipes_updated_since
+        .json::<GenericResponse<Vec<DownloadedRecipe>>>()
+        .await
+        .string_err()?
+        .data;
+    for recipe in downloaded_recipes {
+        let _ = run_tx!(
+            db,
+            async |tx: &mut Transaction<'_, Sqlite>| -> Result<Option<i64>, sqlx::Error> {
+                // Try to get the local id for this cloud recipe. If not found, return Ok(None) to skip.
+                let local_row = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe.id)
+                    .fetch_one(&mut **tx)
+                    .await;
+
+                let local_id_opt = match local_row {
+                    Ok(row) => row.value,
+                    Err(_) => None,
+                };
+
+                if let Some(local_id) = local_id_opt {
+                    let local_image_path = match recipe.image_path {
+                        Some(_) => {
+                            let signed_url_response =
+                                get(&app, &format!("/recipe/{}/imageUrl", recipe.id.clone())).await;
+                            if let Ok(signed_url_response) = signed_url_response {
+                                let signed_url_result = signed_url_response.text().await;
+                                if let Ok(signed_url) = signed_url_result {
+                                    let image_bytes =
+                                        download_image_from_signed_url(&signed_url).await;
+                                    if let Ok(image_bytes) = image_bytes {
+                                        save_image(&image_bytes, &state.images_lib_path)
+                                    } else {
+                                        None
+                                    }
+                                } else {
+                                    None
+                                }
+                            } else {
+                                None
+                            }
+                        }
+                        None => None,
+                    };
+
+                    update_recipe_data_with_dates(
+                        tx,
+                        &local_id,
+                        &recipe.title,
+                        &recipe.ingredients,
+                        &recipe.yield_value,
+                        &recipe.time,
+                        &local_image_path,
+                        &recipe.directions,
+                        &recipe.tags,
+                        &recipe.color,
+                        &recipe.last_updated,
+                        &recipe.last_viewed,
+                    )
+                    .await?;
+                    Ok(Some(local_id))
+                } else {
+                    Ok(None)
+                }
+            }
+        )?;
+    }
 
     Ok(())
 }

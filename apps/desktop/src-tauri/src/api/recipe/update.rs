@@ -2,7 +2,7 @@ use sqlx::{Pool, Sqlite, Transaction};
 use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
-    api::{get_cloud_id, get_cloud_image_path, should_request},
+    api::{get_cloud_id, get_cloud_image_path, recipe::update_dates, should_request},
     errors::StringifyError,
     img_proc::get_processed_image,
     macros::run_tx,
@@ -13,7 +13,7 @@ use crate::{
 
 use super::new::insert_related_data;
 
-async fn update_recipe_data(
+pub async fn update_recipe_data_with_dates(
     tx: &mut Transaction<'_, Sqlite>,
     id: &i64,
     title: &String,
@@ -24,6 +24,8 @@ async fn update_recipe_data(
     directions: &Vec<String>,
     tags: &Vec<String>,
     color: &String,
+    last_updated: &Option<String>,
+    last_viewed: &Option<String>,
 ) -> Result<(), sqlx::Error> {
     // Update recipe
     let _ = sqlx::query_file!(
@@ -42,9 +44,46 @@ async fn update_recipe_data(
         .execute(&mut **tx)
         .await?;
 
+    println!("Updating recipe metadata for {}", *id);
+    println!("Ingredients: {:?}", ingredients);
+    println!("Directions: {:?}", directions);
+    println!("Tags: {:?}", tags);
+
     let _ = insert_related_data(tx, *id, ingredients, directions, tags).await?;
 
+    println!("Updating recipe dates for {}", id);
+    update_dates(tx, &last_viewed, &last_updated, *id).await?;
+
     Ok(())
+}
+
+async fn update_recipe_data(
+    tx: &mut Transaction<'_, Sqlite>,
+    id: &i64,
+    title: &String,
+    ingredients: &Vec<Ingredient>,
+    yield_value: &u32,
+    time: &u32,
+    image_path: &Option<String>,
+    directions: &Vec<String>,
+    tags: &Vec<String>,
+    color: &String,
+) -> Result<(), sqlx::Error> {
+    update_recipe_data_with_dates(
+        tx,
+        id,
+        title,
+        ingredients,
+        yield_value,
+        time,
+        image_path,
+        directions,
+        tags,
+        color,
+        &None,
+        &None,
+    )
+    .await
 }
 
 pub async fn update_recipe(

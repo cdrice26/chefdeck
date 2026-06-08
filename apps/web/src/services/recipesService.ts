@@ -38,6 +38,46 @@ export const checkExistence = async (
 };
 
 /**
+ * Retrieve a list of recipes updated after a specified date.
+ *
+ * This function initializes a Supabase client using the provided auth token,
+ * calls a stored procedure to fetch recipes updated after the specified date, and
+ * returns the resulting array.
+ *
+ * @param authToken - The authentication used to initialize the Supabase client
+ * @param updatedAfter - The date after which to retrieve recipes
+ * @returns An array of recipe records
+ */
+export const getRecipesUpdatedAfter = async (
+  authToken: string | null,
+  updatedAfter: Date
+) => {
+  const client = createClientWithToken(authToken ?? '');
+  const { data, error } = await client.rpc('get_recipes_updated_after', {
+    p_updated_after: updatedAfter
+  });
+  if (error) throw error;
+  return data.map((recipe: DBRecipe) => ({
+    id: recipe.id,
+    title: recipe.title,
+    yieldValue: recipe['yield'],
+    tags: recipe.tags,
+    time: recipe.minutes,
+    sourceUrl: recipe.source,
+    imagePath: recipe.img_url,
+    color: recipe.color,
+    directions: recipe.directions.map((dir: Direction) => dir.content),
+    ingredients: recipe.ingredients.map((ingredient: Ingredient) => ({
+      name: ingredient.name,
+      amount: ingredient.amount,
+      unit: ingredient.unit
+    })),
+    lastUpdated: recipe.last_updated,
+    lastViewed: recipe.last_viewed
+  }));
+};
+
+/**
  * Retrieve a list of recipes other than the specified IDs.
  *
  * This function initializes a Supabase client using the provided auth token,
