@@ -28,7 +28,10 @@ export default function RecipePage() {
       imgUrl:
         recipe?.imgUrl !== null && recipe?.imgUrl !== undefined
           ? convertFileSrc(recipe?.imgUrl)
-          : null
+          : null,
+      tags: (recipe?.tags as unknown as { name: string }[])?.map(
+        (tag: { name: string }) => tag.name
+      )
     }),
     [recipe]
   );
