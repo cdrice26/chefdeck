@@ -8,7 +8,7 @@ use crate::{
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
-    request::{get, post},
+    request::{get, post, recipe_post},
     types::{
         cloud_structs::{DownloadedRecipe, RecipeFormData},
         raw_db::{IntegerValue, RawRecipeSyncable, StringValue},
@@ -186,10 +186,6 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
     }
 
     // Update recipes on the server that have a newer version stored locally
-    // Iterate through recipes with a cloud_parent_id, fetch recipe from server, compare dates,
-    // and update the server recipe if necessary
-
-    // Update local recipes that have a newer version stored on the server
     let last_synced_db = run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
         query_file_as!(StringValue, "db/get_key_value.sql", "last_synced")
             .fetch_one(&mut **tx)
@@ -198,10 +194,79 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
     let last_synced_db = last_synced_db
         .value
         .unwrap_or(String::from("1970-01-01 00:00:00"));
-    let last_synced = NaiveDateTime::parse_from_str(&last_synced_db, "%Y-%m-%d %H:%M:%S")
-        .unwrap_or_default()
+    let last_synced_datetime =
+        NaiveDateTime::parse_from_str(&last_synced_db, "%Y-%m-%d %H:%M:%S").unwrap_or_default();
+    let last_synced = last_synced_datetime
         .format("%Y-%m-%dT%H:%M:%SZ")
         .to_string();
+    let updated_local_recipes: Vec<Recipe> =
+        run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
+            let raw_recipes_res = query_file_as!(
+                RawRecipeSyncable,
+                "db/get_updated_local_recipes.sql",
+                username,
+                last_synced_datetime
+            )
+            .fetch_all(&mut **tx)
+            .await;
+
+            match raw_recipes_res {
+                Ok(raw_recipes) => {
+                    let mut recipes = Vec::with_capacity(raw_recipes.len());
+                    for r in raw_recipes {
+                        recipes.push(transform_recipe(r, tx, &state.images_lib_path).await?);
+                    }
+                    Ok::<Vec<Recipe>, sqlx::Error>(recipes)
+                }
+                Err(err) => Err(err),
+            }
+        })?;
+    for recipe in updated_local_recipes {
+        let image_path_for_cloud = get_cloud_image_path(&state, &recipe.img_url).await;
+        let form_data = RecipeFormData {
+            title: recipe.title.clone(),
+            yield_value: recipe.servings as u32,
+            time: recipe.minutes as u32,
+            image_path: match recipe.img_url {
+                Some(_) => image_path_for_cloud,
+                None => None,
+            },
+            color: recipe.color.clone(),
+            ingredients: recipe.ingredients.clone(),
+            directions: recipe
+                .directions
+                .iter()
+                .map(|d| d.content.clone())
+                .collect(),
+            tags: recipe
+                .tags
+                .iter()
+                .map(|t| t.name.clone().unwrap_or_default())
+                .collect(),
+            source_url: recipe.source_url.clone(),
+            last_viewed: match recipe.last_viewed.clone() {
+                Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+                None => None,
+            },
+            last_updated: match recipe.last_updated.clone() {
+                Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+                None => None,
+            },
+        };
+        if let Some(cloud_parent_id) = recipe.cloud_parent_id.as_deref() {
+            let fetch_result = recipe_post(
+                &app,
+                format!("/recipe/{}/update", cloud_parent_id).as_str(),
+                form_data,
+            )
+            .await;
+            if let Err(err) = fetch_result {
+                return Err(err.to_string());
+            }
+        }
+    }
+
+    // Update local recipes that have a newer version stored on the server
     let recipes_updated_since =
         get(&app, &format!("/recipes/updatedAfter/{}", last_synced)).await?;
     let downloaded_recipes: Vec<DownloadedRecipe> = recipes_updated_since
