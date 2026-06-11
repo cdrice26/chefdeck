@@ -5,6 +5,7 @@ use crate::{
         get_cloud_image_path,
         recipe::{delete::delete_recipe, new::add_to_cloud, update::update_recipe_data_with_dates},
     },
+    crud::Creatable,
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
@@ -79,10 +80,8 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
         .await
         .string_err()?;
     for recipe in downloaded_recipes.data {
-        let cloud_parent_id = Some(recipe.id.clone());
         let username_option = Some(username.clone());
-        let image_path = recipe.image_path.clone();
-        let local_image_path = match image_path {
+        let local_image_path = match &recipe.image_path {
             Some(_) => {
                 let signed_url_response =
                     get(&app, &format!("/recipe/{}/imageUrl", recipe.id.clone())).await?;
@@ -92,23 +91,13 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
             }
             None => None,
         };
+        let mut recipe = recipe.into_form_data();
+        recipe.image_path = local_image_path;
 
-        let _ = run_tx!(db, |tx| insert_recipe_data(
-            tx,
-            &recipe.title,
-            &recipe.yield_value,
-            &recipe.time,
-            &local_image_path,
-            &recipe.color,
-            &recipe.ingredients,
-            &recipe.directions,
-            &recipe.tags,
-            &recipe.source_url,
-            &cloud_parent_id,
-            &username_option,
-            &recipe.last_viewed,
-            &recipe.last_updated
-        ));
+        match recipe.create(&state.db, username_option).await {
+            Ok(_) => {}
+            Err(e) => return Err(e.to_string()),
+        }
     }
 
     // Delete recipes locally that have a cloud_parent_id but that don't exist on the server

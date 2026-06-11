@@ -34,3 +34,21 @@ pub struct DownloadedRecipe {
     pub last_viewed: Option<String>,
     pub last_updated: Option<String>,
 }
+
+impl DownloadedRecipe {
+    pub fn into_form_data(self) -> RecipeFormData {
+        RecipeFormData {
+            title: self.title,
+            yield_value: self.yield_value,
+            time: self.time,
+            image_path: self.image_path,
+            color: self.color,
+            ingredients: self.ingredients,
+            directions: self.directions,
+            tags: self.tags,
+            source_url: self.source_url,
+            last_viewed: self.last_viewed,
+            last_updated: self.last_updated,
+        }
+    }
+}

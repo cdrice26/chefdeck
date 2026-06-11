@@ -1,6 +1,7 @@
 use crate::api::auth::check_auth::get_username;
 use crate::api::recipe::update_dates;
 use crate::api::{get_cloud_image_path, should_request};
+use crate::crud::Creatable;
 use crate::img_proc::get_processed_image;
 use crate::macros::run_tx;
 use crate::request::recipe_post;
@@ -137,7 +138,7 @@ pub async fn insert_recipe_data(
     insert_related_data(tx, recipe_id, ingredients, directions, tags).await
 }
 
-async fn insert_cloud_parent_id(
+pub async fn insert_cloud_parent_id(
     tx: &mut Transaction<'_, Sqlite>,
     recipe_id: i64,
     username: &str,
@@ -207,22 +208,24 @@ pub async fn api_recipe_new(
         Err(_) => None,
     };
 
-    let recipe_id = run_tx!(db, |tx| insert_recipe_data(
-        tx,
-        &title,
-        &yield_value,
-        &time,
-        &image_path,
-        &color,
-        &ingredients,
-        &directions,
-        &tags,
-        &source_url,
-        &None,
-        &username,
-        &None,
-        &None,
-    ));
+    let recipe_form_data = RecipeFormData {
+        title: title.clone(),
+        yield_value,
+        time,
+        image_path: image_path.clone(),
+        color: color.clone(),
+        ingredients: ingredients.clone(),
+        directions: directions.clone(),
+        tags: tags.clone(),
+        source_url: source_url.clone(),
+        last_viewed: None,
+        last_updated: None,
+    };
+
+    let recipe_id = match recipe_form_data.create(db, username).await {
+        Ok(recipe_id) => Ok(recipe_id),
+        Err(e) => Err(e.to_string()),
+    };
 
     if should_request(&state).await {
         if let Ok(recipe_id) = recipe_id {

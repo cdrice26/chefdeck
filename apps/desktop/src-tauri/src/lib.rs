@@ -3,6 +3,7 @@ mod database;
 mod errors;
 #[macro_use]
 mod macros;
+mod crud;
 mod img_proc;
 mod request;
 mod token_keyring;

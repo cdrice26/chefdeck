@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 
+use crate::types::cloud_structs::{DownloadedRecipe, RecipeFormData};
+
 use super::{
     parser::Parsable,
     response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
@@ -177,6 +179,68 @@ pub struct RecipeContext {
     pub directions: Vec<Direction>,
     pub tags: Vec<RecipeTag>,
     pub images_lib_path: PathBuf,
+}
+
+pub trait HasRecipeContext {
+    fn ingredients(&self) -> &Vec<Ingredient>;
+    fn directions(&self) -> &Vec<String>;
+    fn tags(&self) -> &Vec<String>;
+}
+
+impl HasRecipeContext for RecipeFormData {
+    fn ingredients(&self) -> &Vec<Ingredient> {
+        &self.ingredients
+    }
+
+    fn directions(&self) -> &Vec<String> {
+        &self.directions
+    }
+
+    fn tags(&self) -> &Vec<String> {
+        &self.tags
+    }
+}
+
+impl RawRecipeCommon for RecipeFormData {
+    fn id(&self) -> Option<i64> {
+        None
+    }
+
+    fn title(&self) -> Option<String> {
+        Some(self.title.clone())
+    }
+
+    fn yield_(&self) -> Option<i64> {
+        Some(self.yield_value as i64)
+    }
+
+    fn minutes(&self) -> Option<i64> {
+        Some(self.time as i64)
+    }
+
+    fn img_url(&self) -> Option<String> {
+        self.image_path.clone()
+    }
+
+    fn source(&self) -> Option<String> {
+        self.source_url.clone()
+    }
+
+    fn color(&self) -> Option<String> {
+        Some(self.color.clone())
+    }
+
+    fn last_viewed(&self) -> Option<NaiveDateTime> {
+        None
+    }
+
+    fn last_updated(&self) -> Option<NaiveDateTime> {
+        None
+    }
+
+    fn cloud_parent_id(&self) -> Option<String> {
+        None
+    }
 }
 
 impl<T> Parsable for T
