@@ -2,7 +2,8 @@ use sqlx::{Pool, Sqlite, Transaction};
 use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
-    api::{get_cloud_id, get_cloud_image_path, recipe::update_dates, should_request},
+    api::{get_cloud_id, get_cloud_image_path, should_request},
+    crud::recipe::update_dates,
     errors::StringifyError,
     img_proc::get_processed_image,
     macros::run_tx,
@@ -11,7 +12,7 @@ use crate::{
     AppState,
 };
 
-use super::new::insert_related_data;
+use crate::crud::recipe::insert_related_data;
 
 pub async fn update_recipe_data_with_dates(
     tx: &mut Transaction<'_, Sqlite>,

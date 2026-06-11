@@ -1,4 +1,4 @@
-mod recipe;
+pub mod recipe;
 
 pub trait Creatable {
     async fn create(

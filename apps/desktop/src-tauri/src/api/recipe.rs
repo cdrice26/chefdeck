@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-use chrono::{DateTime, Utc};
 use serde::Serialize;
 use sqlx::query_file_as;
 use tauri::State;
@@ -60,40 +59,4 @@ pub async fn api_recipe(
     Ok(GenericResponse {
         data: RecipeResponse { recipe },
     })
-}
-
-/// Updates the last viewed and last updated dates for a recipe.
-///
-/// # Arguments:
-///     tx: The transaction to use for the update.
-///     last_viewed: The last viewed date as an optional string.
-///     last_updated: The last updated date as an optional string.
-///     recipe_id: The ID of the recipe to update.
-///
-/// # Returns:
-///     A Result indicating success or failure.
-pub async fn update_dates(
-    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
-    last_viewed: &Option<String>,
-    last_updated: &Option<String>,
-    recipe_id: i64,
-) -> Result<(), sqlx::Error> {
-    if let Some(last_viewed) = last_viewed {
-        let dt: DateTime<Utc> = last_viewed.parse().unwrap();
-        let formatted = dt.format("%Y-%m-%d %H:%M:%S").to_string();
-
-        sqlx::query_file!("db/update_last_viewed.sql", recipe_id, formatted)
-            .fetch_one(&mut **tx)
-            .await?;
-    }
-
-    if let Some(last_updated) = last_updated {
-        let dt: DateTime<Utc> = last_updated.parse().unwrap();
-        let formatted = dt.format("%Y-%m-%d %H:%M:%S").to_string();
-        sqlx::query_file!("db/update_recipe_last_updated.sql", formatted, recipe_id)
-            .fetch_one(&mut **tx)
-            .await?;
-    }
-
-    Ok(())
 }

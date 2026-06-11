@@ -23,10 +23,7 @@ use serde_json::json;
 use sqlx::{query_file_as, Sqlite, Transaction};
 use tauri::{AppHandle, Manager};
 
-use super::{
-    auth::check_auth::get_username, recipe::new::insert_recipe_data, recipes::transform_recipe,
-    GenericResponse,
-};
+use super::{auth::check_auth::get_username, recipes::transform_recipe, GenericResponse};
 
 #[derive(Debug, Deserialize)]
 struct RecipeExistenceRecord {
