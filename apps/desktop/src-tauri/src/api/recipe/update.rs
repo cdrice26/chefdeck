@@ -1,113 +1,18 @@
-use sqlx::{Pool, Sqlite, Transaction};
 use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
     api::{get_cloud_id, get_cloud_image_path, should_request},
-    crud::{recipe::update_dates, Updatable},
+    crud::Updatable,
     errors::StringifyError,
     img_proc::get_processed_image,
     macros::run_tx,
     request::recipe_post,
-    types::{cloud_structs::RecipeFormData, response_bodies::Ingredient},
+    types::{
+        cloud_structs::{LocalRecipe, RecipeFormData},
+        response_bodies::Ingredient,
+    },
     AppState,
 };
-
-use crate::crud::recipe::insert_related_data;
-
-pub async fn update_recipe_data_with_dates(
-    tx: &mut Transaction<'_, Sqlite>,
-    id: &i64,
-    title: &String,
-    ingredients: &Vec<Ingredient>,
-    yield_value: &u32,
-    time: &u32,
-    image_path: &Option<String>,
-    directions: &Vec<String>,
-    tags: &Vec<String>,
-    color: &String,
-    last_updated: &Option<String>,
-    last_viewed: &Option<String>,
-) -> Result<(), sqlx::Error> {
-    // Update recipe
-    let _ = sqlx::query_file!(
-        "db/update_recipe.sql",
-        title,
-        yield_value,
-        time,
-        image_path,
-        color,
-        id
-    )
-    .fetch_one(&mut **tx)
-    .await?;
-
-    let _ = sqlx::query_file!("db/delete_recipe_metadata.sql", id, id, id)
-        .execute(&mut **tx)
-        .await?;
-
-    let _ = insert_related_data(tx, *id, ingredients, directions, tags).await?;
-
-    update_dates(tx, &last_viewed, &last_updated, *id).await?;
-
-    Ok(())
-}
-
-async fn update_recipe_data(
-    tx: &mut Transaction<'_, Sqlite>,
-    id: &i64,
-    title: &String,
-    ingredients: &Vec<Ingredient>,
-    yield_value: &u32,
-    time: &u32,
-    image_path: &Option<String>,
-    directions: &Vec<String>,
-    tags: &Vec<String>,
-    color: &String,
-) -> Result<(), sqlx::Error> {
-    update_recipe_data_with_dates(
-        tx,
-        id,
-        title,
-        ingredients,
-        yield_value,
-        time,
-        image_path,
-        directions,
-        tags,
-        color,
-        &None,
-        &None,
-    )
-    .await
-}
-
-pub async fn update_recipe(
-    db: &Pool<Sqlite>,
-    id: i64,
-    title: &String,
-    ingredients: &Vec<Ingredient>,
-    yield_value: &u32,
-    time: &u32,
-    image_path: &Option<String>,
-    directions: &Vec<String>,
-    tags: &Vec<String>,
-    color: &String,
-) -> Result<(), String> {
-    let _ = run_tx!(db, |tx| update_recipe_data(
-        tx,
-        &id,
-        title,
-        ingredients,
-        yield_value,
-        time,
-        image_path,
-        directions,
-        tags,
-        color,
-    ))?;
-
-    Ok(())
-}
 
 async fn update_in_cloud(
     app: &AppHandle,
@@ -147,7 +52,8 @@ pub async fn api_recipe_update(
 
     let image_path = get_processed_image(image, images_lib_path);
 
-    let recipe_form_data = RecipeFormData {
+    let recipe_form_data = LocalRecipe {
+        id: id,
         title: title.clone(),
         yield_value,
         time,

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::types::cloud_structs::{DownloadedRecipe, LocalRecipe, RecipeFormData};
+use crate::types::cloud_structs::{LocalRecipe, RecipeFormData};
 
 use super::{
     parser::Parsable,

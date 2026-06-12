@@ -306,14 +306,9 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
                     let mut recipe = recipe.into_local_recipe(local_id);
                     recipe.image_path = local_image_path;
 
-                    println!("Syncing recipe: {:?}", recipe);
-
                     match recipe.update(db).await {
                         Ok(_) => Ok(Some(local_id)),
-                        Err(err) => {
-                            eprintln!("Failed to sync recipe: {:?}", err);
-                            Ok(None)
-                        }
+                        Err(_) => Ok(None),
                     }
                 } else {
                     Ok(None)
