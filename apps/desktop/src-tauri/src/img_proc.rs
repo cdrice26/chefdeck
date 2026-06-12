@@ -1,9 +1,10 @@
 use std::{fs, path::PathBuf};
 
 use image::{imageops, ImageReader};
+use tauri::AppHandle;
 use uuid::Uuid;
 
-use crate::types::raw_db::RawRecipe;
+use crate::{request::get, types::raw_db::RawRecipe};
 
 /// Process an image and save it to a new location.
 /// Resizes the image to a maximum width and height of 1000 pixels.
@@ -118,4 +119,33 @@ pub async fn delete_recipe_img(
         std::fs::remove_file(images_lib_path.join(img_path))?;
     }
     Ok(())
+}
+
+/// Converts a cloud image URL to a local image path by downloading the image and saving it to the app data directory.
+///
+/// # Arguments
+///
+/// * `image_path` - The path to the image to convert.
+/// * `recipe_id` - The ID of the recipe to convert the image for.
+/// * `app` - The app handle to use for the download.
+/// * `images_lib_path` - The path to the app data directory.
+///
+/// # Returns
+///
+/// Returns the local image path as an `Result<Option<String>>`.
+pub async fn convert_cloud_img_to_local(
+    image_path: &Option<String>,
+    recipe_id: &str,
+    app: &AppHandle,
+    images_lib_path: &PathBuf,
+) -> Result<Option<String>, Box<dyn std::error::Error>> {
+    match image_path {
+        Some(_) => {
+            let signed_url_response = get(&app, &format!("/recipe/{}/imageUrl", recipe_id)).await?;
+            let signed_url: String = signed_url_response.text().await?;
+            let image_bytes = download_image_from_signed_url(&signed_url).await?;
+            Ok(save_image(&image_bytes, images_lib_path))
+        }
+        None => Ok(None),
+    }
 }

@@ -1,3 +1,5 @@
+use tauri::AppHandle;
+
 pub mod cloud_id;
 pub mod recipe;
 pub mod recipe_data;
@@ -37,4 +39,11 @@ pub trait Deletable {
         &self,
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     ) -> Result<(), Box<dyn std::error::Error>>;
+}
+
+pub trait DownloadableWith<T>: Sized {
+    async fn download_with(
+        app: &AppHandle,
+        addl_params: T,
+    ) -> Result<Self, Box<dyn std::error::Error>>;
 }

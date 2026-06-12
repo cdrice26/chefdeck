@@ -1,3 +1,4 @@
+use serde::Serialize;
 use std::path::PathBuf;
 
 pub struct UsernameFilter<'a> {
@@ -25,4 +26,16 @@ pub struct UsernameAndUpdatedFilter<'a> {
     pub username: &'a String,
     pub updated_after: &'a chrono::NaiveDateTime,
     pub images_lib_path: &'a PathBuf,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RecipeIds {
+    pub recipe_ids: Vec<String>,
+}
+
+#[derive(Serialize)]
+pub struct ExcludedRecipeIds<'a> {
+    #[serde(rename = "recipeIds")]
+    pub excluded_recipe_ids: &'a Vec<String>,
 }

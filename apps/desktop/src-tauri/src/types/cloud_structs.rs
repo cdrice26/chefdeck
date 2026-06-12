@@ -92,3 +92,9 @@ impl DownloadedRecipe {
         }
     }
 }
+
+#[derive(Debug, Deserialize)]
+pub struct RecipeExistenceRecord {
+    pub id: String,
+    pub is_extant: bool,
+}

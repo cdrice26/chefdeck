@@ -1,13 +1,17 @@
 use std::path::PathBuf;
 
 use sqlx::{Pool, Sqlite, Transaction};
+use tauri::AppHandle;
 
 use crate::{
-    crud::ReadableWith,
+    api::GenericResponse,
+    crud::{DownloadableWith, ReadableWith},
+    request::{get, post},
     types::{
+        cloud_structs::{DownloadedRecipe, RecipeExistenceRecord},
         db_params::{
-            ImagesLibPath, RecipeSearchParams, UsernameAndUpdatedFilter,
-            UsernameFilterWithImagesLibPath,
+            ExcludedRecipeIds, ImagesLibPath, RecipeIds, RecipeSearchParams,
+            UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath,
         },
         parser::Parsable,
         raw_db::{RawRecipeCommon, RawRecipeSyncable, RawRecipeWithLastViewed, RecipeContext},
@@ -184,5 +188,89 @@ impl ReadableWith<RecipeSearchParams<'_>> for Vec<Recipe> {
             transform_recipes(tx, raw_recipes, addl_params.images_lib_path.clone()).await?;
 
         Ok(recipes)
+    }
+}
+
+impl DownloadableWith<ExcludedRecipeIds<'_>> for Vec<DownloadedRecipe> {
+    /// Downloads all recipes excluding those specified in `addl_params`.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    /// * `addl_params` - Additional parameters for the download request.
+    ///     * `excluded_recipe_ids` - A list of recipe IDs to exclude from the download.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the downloaded recipes or an error.
+    async fn download_with(
+        app: &AppHandle,
+        addl_params: ExcludedRecipeIds<'_>,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let body = serde_json::to_string(&addl_params)?;
+        let downloaded_recipes_response = post(&app, "/recipes/otherThan", body.as_str()).await?;
+        let downloaded_recipes = downloaded_recipes_response
+            .json::<GenericResponse<Vec<DownloadedRecipe>>>()
+            .await?;
+        Ok(downloaded_recipes.data)
+    }
+}
+
+impl DownloadableWith<NaiveDateTime> for Vec<DownloadedRecipe> {
+    /// Downloads recipes updated after the specified date and time.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    /// * `addl_params` - The date and time to filter recipes updated after.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the downloaded recipes or an error.
+    async fn download_with(
+        app: &AppHandle,
+        addl_params: NaiveDateTime,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let updated_after_string = addl_params.format("%Y-%m-%dT%H:%M:%SZ").to_string();
+        let recipes_updated_since = get(
+            &app,
+            &format!("/recipes/updatedAfter/{}", updated_after_string),
+        )
+        .await?;
+        let downloaded_recipes: Vec<DownloadedRecipe> = recipes_updated_since
+            .json::<GenericResponse<Vec<DownloadedRecipe>>>()
+            .await?
+            .data;
+        Ok(downloaded_recipes)
+    }
+}
+
+impl DownloadableWith<RecipeIds> for Vec<RecipeExistenceRecord> {
+    /// Downloads a list of recipe existence records for the specified recipe IDs.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    /// * `addl_params` - Additional parameters for the download request.
+    ///     * `recipe_ids` - A list of recipe IDs to check for existence.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the downloaded recipe existence records or an error.
+    async fn download_with(
+        app: &AppHandle,
+        addl_params: RecipeIds,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let body = serde_json::to_string(&addl_params)?;
+        let existence_response = post(&app, "/recipes/whichExist", body.as_str()).await?;
+        let downloaded_recipe_ids = existence_response
+            .json::<GenericResponse<Vec<RecipeExistenceRecord>>>()
+            .await?;
+        let nonexistent_recipe_cloud_ids: Vec<RecipeExistenceRecord> = downloaded_recipe_ids
+            .data
+            .into_iter()
+            .filter(|r| !r.is_extant)
+            .collect();
+        Ok(nonexistent_recipe_cloud_ids)
     }
 }

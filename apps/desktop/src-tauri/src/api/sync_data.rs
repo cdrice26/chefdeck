@@ -1,33 +1,79 @@
 use crate::{
     api::{get_cloud_image_path, recipe::new::add_to_cloud},
     crud::{
-        recipe::{delete_recipe, insert_recipe, update_recipe},
+        recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
+        DownloadableWith, Updatable,
     },
     errors::StringifyError,
-    img_proc::{download_image_from_signed_url, save_image},
-    macros::run_tx,
-    request::{get, post, recipe_post},
+    img_proc::convert_cloud_img_to_local,
+    macros::{run_tx, run_tx_with_error},
+    request::recipe_post,
     types::{
-        cloud_structs::{DownloadedRecipe, RecipeFormData},
-        db_params::{UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath},
+        cloud_structs::{DownloadedRecipe, RecipeExistenceRecord, RecipeFormData},
+        db_params::{
+            ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath,
+        },
         raw_db::{IntegerValue, StringValue},
         response_bodies::Recipe,
     },
     AppState,
 };
 use chrono::NaiveDateTime;
-use serde::Deserialize;
-use serde_json::json;
 use sqlx::{query_file_as, Sqlite, Transaction};
 use tauri::{AppHandle, Manager};
 
-use super::{auth::check_auth::get_username, GenericResponse};
+use super::auth::check_auth::get_username;
 
-#[derive(Debug, Deserialize)]
-struct RecipeExistenceRecord {
-    id: String,
-    is_extant: bool,
+async fn update_local_recipe_from_downloaded(
+    recipe: DownloadedRecipe,
+    app: &AppHandle,
+    state: &AppState,
+) -> Result<Option<i64>, Box<dyn std::error::Error>> {
+    let local_id_opt: Option<i64> = run_tx_with_error!(&state.db, async |tx: &mut Transaction<
+        '_,
+        Sqlite,
+    >|
+           -> Result<
+        Option<i64>,
+        Box<dyn std::error::Error>,
+    > {
+        let local_row = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe.id)
+            .fetch_one(&mut **tx)
+            .await;
+        Ok(match local_row {
+            Ok(row) => row.value,
+            Err(_) => None,
+        })
+    });
+
+    let Some(local_id) = local_id_opt else {
+        return Ok(None);
+    };
+
+    let local_image_path = match convert_cloud_img_to_local(
+        &recipe.image_path,
+        &recipe.id,
+        app,
+        &state.images_lib_path,
+    )
+    .await
+    {
+        Ok(Some(path)) => Some(path),
+        _ => None,
+    };
+
+    run_tx_with_error!(
+        &state.db,
+        async |tx: &mut Transaction<'_, Sqlite>| -> Result<Option<i64>, Box<dyn std::error::Error>> {
+            let mut local_recipe = recipe.into_local_recipe(local_id);
+            local_recipe.image_path = local_image_path;
+            local_recipe.update(tx).await?;
+            Ok(Some(local_id))
+        }
+    );
+
+    Ok(Some(local_id))
 }
 
 async fn sync_recipes(app: AppHandle) -> Result<(), String> {
@@ -56,27 +102,27 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         .iter()
         .map(|r| r.cloud_parent_id.clone())
         .filter(|r| r.is_some())
+        .map(|r| r.unwrap())
         .collect::<Vec<_>>();
-    let recipe_id_json = json!({"recipeIds": recipe_ids}).to_string();
-    let downloaded_recipes_response =
-        post(&app, "/recipes/otherThan", recipe_id_json.as_str()).await?;
-    let downloaded_recipes = downloaded_recipes_response
-        .json::<GenericResponse<Vec<DownloadedRecipe>>>()
-        .await
-        .string_err()?;
-    for recipe in downloaded_recipes.data {
+    let downloaded_recipes: Vec<DownloadedRecipe> = Vec::<DownloadedRecipe>::download_with(
+        &app,
+        ExcludedRecipeIds {
+            excluded_recipe_ids: &recipe_ids,
+        },
+    )
+    .await
+    .map_err(|e: Box<dyn std::error::Error>| e.to_string())?;
+    for recipe in downloaded_recipes {
         let username_option = Some(username.clone());
         let cloud_parent_id = recipe.id.clone();
-        let local_image_path = match &recipe.image_path {
-            Some(_) => {
-                let signed_url_response =
-                    get(&app, &format!("/recipe/{}/imageUrl", recipe.id.clone())).await?;
-                let signed_url: String = signed_url_response.text().await.string_err()?;
-                let image_bytes = download_image_from_signed_url(&signed_url).await?;
-                save_image(&image_bytes, &state.images_lib_path)
-            }
-            None => None,
-        };
+        let local_image_path = convert_cloud_img_to_local(
+            &recipe.image_path,
+            &recipe.id,
+            &app,
+            &state.images_lib_path,
+        )
+        .await
+        .map_err(|e| e.to_string())?;
         let mut recipe = recipe.into_form_data();
         recipe.image_path = local_image_path;
         recipe.cloud_parent_id = Some(cloud_parent_id);
@@ -88,19 +134,14 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     }
 
     // Delete recipes locally that have a cloud_parent_id but that don't exist on the server
-    let existence_response = post(&app, "/recipes/whichExist", recipe_id_json.as_str())
-        .await
-        .map_err(|e| e.to_string())?;
-    let downloaded_recipe_ids = existence_response
-        .json::<GenericResponse<Vec<RecipeExistenceRecord>>>()
-        .await
-        .string_err()?;
-    let nonexistent_recipe_cloud_ids: Vec<String> = downloaded_recipe_ids
-        .data
+    let nonexistent_recipe_cloud_records =
+        Vec::<RecipeExistenceRecord>::download_with(&app, RecipeIds { recipe_ids })
+            .await
+            .map_err(|e| e.to_string())?;
+    let nonexistent_recipe_cloud_ids = nonexistent_recipe_cloud_records
         .into_iter()
-        .filter(|r| !r.is_extant)
         .map(|r| r.id)
-        .collect();
+        .collect::<Vec<String>>();
     let recipes_with_dead_cloud_parent: Vec<&Recipe> = local_recipes
         .iter()
         .filter(|r| {
@@ -173,9 +214,6 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         .unwrap_or(String::from("1970-01-01 00:00:00"));
     let last_synced_datetime =
         NaiveDateTime::parse_from_str(&last_synced_db, "%Y-%m-%d %H:%M:%S").unwrap_or_default();
-    let last_synced = last_synced_datetime
-        .format("%Y-%m-%dT%H:%M:%SZ")
-        .to_string();
     let updated_local_recipes: Vec<Recipe> = get_recipes::<UsernameAndUpdatedFilter<'_>>(
         db,
         UsernameAndUpdatedFilter {
@@ -233,64 +271,13 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     }
 
     // Update local recipes that have a newer version stored on the server
-    let recipes_updated_since =
-        get(&app, &format!("/recipes/updatedAfter/{}", last_synced)).await?;
-    let downloaded_recipes: Vec<DownloadedRecipe> = recipes_updated_since
-        .json::<GenericResponse<Vec<DownloadedRecipe>>>()
+    let downloaded_recipes = Vec::<DownloadedRecipe>::download_with(&app, last_synced_datetime)
         .await
-        .string_err()?
-        .data;
+        .map_err(|e| e.to_string())?;
     for recipe in downloaded_recipes {
-        let _ = run_tx!(
-            db,
-            async |tx: &mut Transaction<'_, Sqlite>| -> Result<Option<i64>, sqlx::Error> {
-                // Try to get the local id for this cloud recipe. If not found, return Ok(None) to skip.
-                let local_row = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe.id)
-                    .fetch_one(&mut **tx)
-                    .await;
-
-                let local_id_opt = match local_row {
-                    Ok(row) => row.value,
-                    Err(_) => None,
-                };
-
-                if let Some(local_id) = local_id_opt {
-                    let local_image_path = match recipe.image_path {
-                        Some(_) => {
-                            let signed_url_response =
-                                get(&app, &format!("/recipe/{}/imageUrl", recipe.id.clone())).await;
-                            if let Ok(signed_url_response) = signed_url_response {
-                                let signed_url_result = signed_url_response.text().await;
-                                if let Ok(signed_url) = signed_url_result {
-                                    let image_bytes =
-                                        download_image_from_signed_url(&signed_url).await;
-                                    if let Ok(image_bytes) = image_bytes {
-                                        save_image(&image_bytes, &state.images_lib_path)
-                                    } else {
-                                        None
-                                    }
-                                } else {
-                                    None
-                                }
-                            } else {
-                                None
-                            }
-                        }
-                        None => None,
-                    };
-
-                    let mut recipe = recipe.into_local_recipe(local_id);
-                    recipe.image_path = local_image_path;
-
-                    match update_recipe(&db, recipe).await {
-                        Ok(_) => Ok(Some(local_id)),
-                        Err(_) => Ok(None),
-                    }
-                } else {
-                    Ok(None)
-                }
-            }
-        )?;
+        let _ = update_local_recipe_from_downloaded(recipe, &app, &state)
+            .await
+            .map_err(|e| e.to_string())?;
     }
 
     Ok(())
