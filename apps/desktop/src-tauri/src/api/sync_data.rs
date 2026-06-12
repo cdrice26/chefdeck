@@ -5,7 +5,7 @@ use crate::{
         get_cloud_image_path,
         recipe::{delete::delete_recipe, new::add_to_cloud},
     },
-    crud::{Creatable, Updatable},
+    crud::recipe::{insert_recipe, update_recipe},
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
@@ -49,7 +49,7 @@ async fn get_local_recipes(
     Ok(recipes)
 }
 
-async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
+async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     let state = app.state::<AppState>();
     let db = &state.db;
 
@@ -93,7 +93,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
         recipe.image_path = local_image_path;
         recipe.cloud_parent_id = Some(cloud_parent_id);
 
-        match recipe.create(&state.db, username_option).await {
+        match insert_recipe(&state.db, recipe, username_option).await {
             Ok(_) => {}
             Err(e) => return Err(e.to_string()),
         }
@@ -306,7 +306,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
                     let mut recipe = recipe.into_local_recipe(local_id);
                     recipe.image_path = local_image_path;
 
-                    match recipe.update(db).await {
+                    match update_recipe(&db, recipe).await {
                         Ok(_) => Ok(Some(local_id)),
                         Err(_) => Ok(None),
                     }
@@ -321,7 +321,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
 }
 
 async fn sync_all(app: AppHandle) -> Result<(), String> {
-    sync_recipes(&app).await?;
+    sync_recipes(app.clone()).await?;
     let state = app.state::<AppState>();
     let db = &state.db;
     run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {

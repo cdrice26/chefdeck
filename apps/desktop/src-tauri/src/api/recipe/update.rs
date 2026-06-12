@@ -2,7 +2,7 @@ use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
     api::{get_cloud_id, get_cloud_image_path, should_request},
-    crud::Updatable,
+    crud::recipe::update_recipe,
     errors::StringifyError,
     img_proc::get_processed_image,
     macros::run_tx,
@@ -68,7 +68,7 @@ pub async fn api_recipe_update(
         cloud_parent_id: None,
     };
 
-    let result = match recipe_form_data.update(db).await {
+    let result = match update_recipe(&db, recipe_form_data).await {
         Ok(_) => Ok(()),
         Err(e) => Err(e.to_string()),
     };

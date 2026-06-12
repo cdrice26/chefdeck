@@ -16,17 +16,35 @@ pub struct Ingredient {
 }
 
 /// Represents a direction.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Direction {
     pub id: Option<i64>,
     pub content: String,
 }
 
+impl Direction {
+    pub fn from_string(content: String) -> Self {
+        Self {
+            id: None,
+            content: content,
+        }
+    }
+}
+
 /// Represents a keyword tag on a recipe.
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct RecipeTag {
     pub id: Option<i64>,
     pub name: Option<String>,
+}
+
+impl RecipeTag {
+    pub fn from_string(name: String) -> Self {
+        Self {
+            id: None,
+            name: Some(name),
+        }
+    }
 }
 
 /// Represents a recipe.

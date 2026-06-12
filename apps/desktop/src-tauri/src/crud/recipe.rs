@@ -1,11 +1,11 @@
 use chrono::{DateTime, Utc};
-use sqlx::{Pool, Sqlite, Transaction};
+use sqlx::{Sqlite, Transaction};
 
 use crate::{
-    crud::{Creatable, Updatable},
+    crud::{Creatable, Deletable, Readable, Updatable},
     types::{
-        raw_db::{HasRecipeContext, RawRecipeCommon},
-        response_bodies::Ingredient,
+        cloud_structs::{LocalRecipe, RecipeFormData},
+        raw_db::{HasRecipeContext, RawRecipeCommon, RecipeContext},
     },
 };
 
@@ -45,74 +45,6 @@ pub async fn update_dates(
     Ok(())
 }
 
-/// Inserts related data for a recipe (ingredients, directions, tags).
-///
-/// # Arguments
-///
-/// * `tx` - The transaction to use for the insert.
-/// * `recipe_id` - The ID of the recipe to insert related data for.
-/// * `ingredients` - A vector of ingredients to insert.
-/// * `directions` - A vector of directions to insert.
-/// * `tags` - A vector of tags to insert.
-///
-/// # Returns
-///
-/// Returns the ID of the recipe.
-pub async fn insert_related_data(
-    tx: &mut Transaction<'_, Sqlite>,
-    recipe_id: i64,
-    ingredients: &Vec<Ingredient>,
-    directions: &Vec<String>,
-    tags: &Vec<String>,
-) -> Result<i64, sqlx::Error> {
-    // Insert ingredients
-    for (i, ingredient) in ingredients.iter().enumerate() {
-        let sequence = (i + 1) as i64;
-        sqlx::query_file!(
-            "db/insert_ingredient.sql",
-            recipe_id,
-            ingredient.name,
-            ingredient.amount,
-            ingredient.unit,
-            sequence
-        )
-        .fetch_one(&mut **tx)
-        .await?;
-    }
-
-    // Insert directions
-    for (i, direction) in directions.iter().enumerate() {
-        let sequence = (i + 1) as i64;
-        sqlx::query_file!("db/insert_direction.sql", recipe_id, direction, sequence)
-            .fetch_one(&mut **tx)
-            .await?;
-    }
-
-    let mut tag_ids: Vec<i64> = Vec::new();
-
-    // Make sure user has all tags defined and get tag IDs
-    for tag in tags.iter() {
-        let tag_id = sqlx::query_file!("db/insert_user_tag.sql", tag)
-            .fetch_one(&mut **tx)
-            .await?;
-        tag_ids.push(tag_id.id);
-    }
-
-    // Insert into recipe tags table
-    for tag_id in tag_ids.iter() {
-        sqlx::query_file!("db/insert_recipe_tags.sql", recipe_id, tag_id)
-            .execute(&mut **tx)
-            .await?;
-    }
-
-    // Insert recipe usage record
-    sqlx::query_file!("db/insert_recipe_usage.sql", recipe_id)
-        .fetch_one(&mut **tx)
-        .await?;
-
-    Ok(recipe_id)
-}
-
 /// Inserts the cloud parent ID for a recipe.
 ///
 /// # Arguments
@@ -142,79 +74,104 @@ pub async fn insert_cloud_parent_id(
     Ok(())
 }
 
+/// Wrapper for recipe_form_data.create that creates the database transaction
+///
+/// # Arguments:
+/// * `db` - The database pool to use for the transaction.
+/// * `recipe_form_data` - The recipe data to insert.
+/// * `username` - The username of the user who owns the recipe.
+///
+/// # Returns:
+/// `Ok(recipe_id)` if the insert was successful, or an error if one occurred.
+pub async fn insert_recipe(
+    db: &sqlx::SqlitePool,
+    recipe_form_data: RecipeFormData,
+    username: Option<String>,
+) -> Result<i64, Box<dyn std::error::Error>> {
+    let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
+        let recipe_id = recipe_form_data.create(tx).await?;
+        if let Some(online_recipe_id) = recipe_form_data.cloud_parent_id() {
+            if let Some(username) = username {
+                insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str())
+                    .await?;
+            }
+        }
+        Ok::<i64, Box<dyn std::error::Error>>(recipe_id)
+    });
+
+    Ok(recipe_id)
+}
+
+/// Wrapper for recipe_form_data.update that creates the database transaction
+///
+/// # Arguments:
+/// * `db` - The database pool to use for the transaction.
+/// * `recipe_form_data` - The recipe data to update.
+///
+/// # Returns:
+/// `Ok(recipe_id)` if the update was successful, or an error if one occurred.
+pub async fn update_recipe(
+    db: &sqlx::SqlitePool,
+    recipe_form_data: LocalRecipe,
+) -> Result<i64, Box<dyn std::error::Error>> {
+    let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
+        recipe_form_data.update(tx).await
+    });
+    Ok(recipe_id)
+}
+
 impl<T: RawRecipeCommon + HasRecipeContext> Creatable for T {
     /// Creates a new recipe in the database.
     ///
     /// # Arguments
     ///
-    /// * `db` - The database pool to use for the insert.
-    /// * `username` - The username of the user who owns the recipe.
+    /// * `tx` - The database transaction to use for the insert.
     ///
     /// # Returns
     ///
     /// Returns the ID of the newly created recipe, or an error if one occurred.
     async fn create(
         &self,
-        db: &Pool<Sqlite>,
-        username: Option<String>,
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     ) -> Result<i64, Box<dyn std::error::Error>> {
-        let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::SqliteTransaction| {
-            let title = self.title();
-            let yield_ = self.yield_();
-            let minutes = self.minutes();
-            let img_url = self.img_url();
-            let color = self.color();
-            let source = self.source();
+        let title = self.title();
+        let yield_ = self.yield_();
+        let minutes = self.minutes();
+        let img_url = self.img_url();
+        let color = self.color();
+        let source = self.source();
 
-            let row = sqlx::query_file!(
-                "db/insert_recipe.sql",
-                title,
-                yield_,
-                minutes,
-                img_url,
-                color,
-                source
-            )
-            .fetch_one(&mut **tx)
-            .await?;
+        let row = sqlx::query_file!(
+            "db/insert_recipe.sql",
+            title,
+            yield_,
+            minutes,
+            img_url,
+            color,
+            source
+        )
+        .fetch_one(&mut **tx)
+        .await?;
 
-            let recipe_id: i64 = row.id;
+        let recipe_id: i64 = row.id;
 
-            update_dates(
-                tx,
-                &self
-                    .last_viewed()
-                    .as_ref()
-                    .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string()),
-                &self
-                    .last_updated()
-                    .as_ref()
-                    .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string()),
-                recipe_id,
-            )
-            .await?;
+        update_dates(
+            tx,
+            &self
+                .last_viewed()
+                .as_ref()
+                .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string()),
+            &self
+                .last_updated()
+                .as_ref()
+                .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string()),
+            recipe_id,
+        )
+        .await?;
 
-            if let Some(online_recipe_id) = self.cloud_parent_id() {
-                if let Some(username) = username {
-                    insert_cloud_parent_id(
-                        tx,
-                        recipe_id,
-                        username.as_str(),
-                        online_recipe_id.as_str(),
-                    )
-                    .await?;
-                }
-            }
+        let recipe_context = RecipeContext::from_form_data(self);
 
-            insert_related_data(
-                tx,
-                recipe_id,
-                self.ingredients(),
-                self.directions(),
-                self.tags(),
-            )
-            .await
-        });
+        recipe_context.create(tx).await?;
         Ok(recipe_id)
     }
 }
@@ -224,51 +181,49 @@ impl<T: RawRecipeCommon + HasRecipeContext> Updatable for T {
     ///
     /// # Arguments
     ///
-    /// * `db` - The database connection pool.
+    /// * `tx` - The database transaction.
     ///
     /// # Returns
     ///
     /// Returns the ID of the updated recipe.
-    async fn update(&self, db: &Pool<Sqlite>) -> Result<i64, Box<dyn std::error::Error>> {
-        let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::SqliteTransaction| {
-            let title = self.title();
-            let yield_value = self.yield_();
-            let time = self.minutes();
-            let image_path = self.img_url();
-            let color = self.color();
-            let id = self.id().unwrap_or(0);
-            let ingredients = self.ingredients();
-            let directions = self.directions();
-            let tags = self.tags();
-            let last_viewed = self
-                .last_viewed()
-                .as_ref()
-                .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string());
-            let last_updated = self
-                .last_updated()
-                .as_ref()
-                .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string());
+    async fn update(
+        &self,
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    ) -> Result<i64, Box<dyn std::error::Error>> {
+        let title = self.title();
+        let yield_value = self.yield_();
+        let time = self.minutes();
+        let image_path = self.img_url();
+        let color = self.color();
+        let id = self.id().unwrap_or(0);
+        let last_viewed = self
+            .last_viewed()
+            .as_ref()
+            .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string());
+        let last_updated = self
+            .last_updated()
+            .as_ref()
+            .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string());
 
-            let _ = sqlx::query_file!(
-                "db/update_recipe.sql",
-                title,
-                yield_value,
-                time,
-                image_path,
-                color,
-                id
-            )
-            .fetch_one(&mut **tx)
-            .await?;
+        let _ = sqlx::query_file!(
+            "db/update_recipe.sql",
+            title,
+            yield_value,
+            time,
+            image_path,
+            color,
+            id
+        )
+        .fetch_one(&mut **tx)
+        .await?;
 
-            let _ = sqlx::query_file!("db/delete_recipe_metadata.sql", id, id, id)
-                .execute(&mut **tx)
-                .await?;
+        update_dates(tx, &last_viewed, &last_updated, id).await?;
 
-            update_dates(tx, &last_viewed, &last_updated, id).await?;
+        let recipe_context = RecipeContext::from_form_data(self);
 
-            insert_related_data(tx, id, ingredients, directions, tags).await
-        });
-        Ok(recipe_id)
+        recipe_context.delete(tx).await?;
+        recipe_context.create(tx).await?;
+
+        Ok(id)
     }
 }

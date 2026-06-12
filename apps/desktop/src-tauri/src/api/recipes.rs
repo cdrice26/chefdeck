@@ -69,6 +69,7 @@ pub async fn transform_recipe<T: RawRecipeCommon>(
     let tags = get_recipe_tags(tx, r_id).await?;
 
     r.parse(RecipeContext {
+        recipe_id: r_id,
         ingredients,
         directions,
         tags,
@@ -84,9 +85,16 @@ async fn get_recipes(
     q: String,
     tags: String,
 ) -> Result<Vec<Recipe>, sqlx::Error> {
-    let raw_recipes = sqlx::query_file_as!(RawRecipeWithLastViewed, "db/get_recipes.sql", q, tags, page, limit)
-        .fetch_all(&mut **tx)
-        .await?;
+    let raw_recipes = sqlx::query_file_as!(
+        RawRecipeWithLastViewed,
+        "db/get_recipes.sql",
+        q,
+        tags,
+        page,
+        limit
+    )
+    .fetch_all(&mut **tx)
+    .await?;
     let mut recipes = Vec::with_capacity(raw_recipes.len());
 
     for r in raw_recipes {
@@ -105,7 +113,14 @@ async fn fetch_recipes_with_tx(
     tags: String,
 ) -> Result<GenericResponse<Vec<Recipe>>, String> {
     // run_tx! resolves inside this async fn
-    let recipes = run_tx!(db, |tx| get_recipes(tx, images_lib_path, page, limit, q, tags));
+    let recipes = run_tx!(db, |tx| get_recipes(
+        tx,
+        images_lib_path,
+        page,
+        limit,
+        q,
+        tags
+    ));
 
     match recipes {
         Ok(recipes) => Ok(GenericResponse { data: recipes }),

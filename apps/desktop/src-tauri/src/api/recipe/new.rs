@@ -1,6 +1,6 @@
 use crate::api::auth::check_auth::get_username;
 use crate::api::{get_cloud_image_path, should_request};
-use crate::crud::{recipe::insert_cloud_parent_id, Creatable};
+use crate::crud::recipe::{insert_cloud_parent_id, insert_recipe};
 use crate::img_proc::get_processed_image;
 use crate::macros::run_tx;
 use crate::request::recipe_post;
@@ -85,9 +85,9 @@ pub async fn api_recipe_new(
         cloud_parent_id: None,
     };
 
-    let recipe_id = match recipe_form_data.create(db, username).await {
+    let recipe_id = match insert_recipe(&db, recipe_form_data, username).await {
         Ok(recipe_id) => Ok(recipe_id),
-        Err(e) => Err(e.to_string()),
+        Err(err) => Err(err.to_string()),
     };
 
     if should_request(&state).await {

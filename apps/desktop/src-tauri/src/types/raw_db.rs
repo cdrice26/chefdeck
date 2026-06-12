@@ -175,10 +175,33 @@ impl RawRecipeCommon for RawRecipeSyncable {
 
 /// Represents the context for parsing a recipe from the local database.
 pub struct RecipeContext {
+    pub recipe_id: i64,
     pub ingredients: Vec<Ingredient>,
     pub directions: Vec<Direction>,
     pub tags: Vec<RecipeTag>,
     pub images_lib_path: PathBuf,
+}
+
+impl RecipeContext {
+    pub fn from_form_data(recipe_form_data: &(impl RawRecipeCommon + HasRecipeContext)) -> Self {
+        Self {
+            recipe_id: recipe_form_data.id().unwrap_or(0),
+            ingredients: recipe_form_data.ingredients().to_vec(),
+            directions: recipe_form_data
+                .directions()
+                .to_vec()
+                .into_iter()
+                .map(|d| Direction::from_string(d))
+                .collect(),
+            tags: recipe_form_data
+                .tags()
+                .to_vec()
+                .into_iter()
+                .map(|t| RecipeTag::from_string(t))
+                .collect(),
+            images_lib_path: PathBuf::new(),
+        }
+    }
 }
 
 pub trait HasRecipeContext {
