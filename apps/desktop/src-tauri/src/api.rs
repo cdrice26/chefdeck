@@ -6,7 +6,7 @@ pub mod sync_data;
 use serde::{Deserialize, Serialize};
 use tauri::State;
 
-use crate::{types::response_bodies::CloudId, AppState};
+use crate::AppState;
 
 /// Represents a generic API response with a data field.
 #[derive(Serialize, Deserialize)]
@@ -92,22 +92,4 @@ pub async fn get_cloud_image_path(
         ),
         None => None,
     }
-}
-
-/// Gets cloud recipe ID
-///
-/// Arguments:
-/// * `tx` - A mutable reference to the database transaction.
-/// * `id` - The ID of the recipe.
-///
-/// Returns:
-/// * `Result<String, sqlx::Error>` - The cloud recipe ID or an error.
-pub async fn get_cloud_id(
-    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
-    id: i64,
-) -> Result<String, sqlx::Error> {
-    let cloud_id = sqlx::query_file_as!(CloudId, "db/get_cloud_id.sql", id)
-        .fetch_one(&mut **tx)
-        .await?;
-    Ok(cloud_id.cloud_recipe_id)
 }

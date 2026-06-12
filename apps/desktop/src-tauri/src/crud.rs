@@ -9,6 +9,14 @@ pub trait Creatable {
     ) -> Result<i64, Box<dyn std::error::Error>>;
 }
 
+pub trait ReadableWith<T>: Sized {
+    async fn read_with(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+        id: i64,
+        addl_params: T,
+    ) -> Result<Self, Box<dyn std::error::Error>>;
+}
+
 pub trait Readable: Sized {
     async fn read(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,

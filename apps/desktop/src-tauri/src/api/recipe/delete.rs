@@ -2,11 +2,12 @@ use std::path::PathBuf;
 use tauri::{AppHandle, Emitter, State};
 
 use crate::{
-    api::{get_cloud_id, ErrorResponse, GenericResponse, SuccessResponse},
+    api::{auth::check_auth::get_username, ErrorResponse, GenericResponse, SuccessResponse},
+    crud::cloud_id::get_cloud_id_with_username,
     errors::StringifyError,
     macros::run_tx,
     request::delete,
-    types::raw_db::RawRecipe,
+    types::{db_params::UsernameFilter, raw_db::RawRecipe},
     AppState,
 };
 
@@ -65,7 +66,23 @@ pub async fn api_recipe_delete(
     id: i64,
 ) -> Result<GenericResponse<SuccessResponse>, ErrorResponse> {
     let db = &state.db;
-    let cloud_id_result = run_tx!(db, |tx| get_cloud_id(tx, id));
+    let username = match get_username(&state).await {
+        Ok(username) => Some(username),
+        Err(_) => None,
+    };
+
+    let cloud_id_result = match get_cloud_id_with_username(
+        db,
+        id,
+        UsernameFilter {
+            username: username.unwrap_or_default(),
+        },
+    )
+    .await
+    {
+        Ok(result) => Ok(result),
+        Err(e) => Err(e.to_string()),
+    };
     let result = delete_recipe(&state, id).await;
 
     if result.is_ok() {
@@ -78,9 +95,10 @@ pub async fn api_recipe_delete(
             }
         };
 
-        if should_request && cloud_id_result.is_ok() {
+        if should_request && (cloud_id_result.is_ok()) {
             tauri::async_runtime::spawn(async move {
-                let cloud_result = cloud_delete_recipe(&app, cloud_id_result.unwrap()).await;
+                let cloud_result =
+                    cloud_delete_recipe(&app, cloud_id_result.unwrap().cloud_id).await;
                 if cloud_result.is_err() {
                     let _ = app.emit(
                         "delete_recipe_cloud_error",

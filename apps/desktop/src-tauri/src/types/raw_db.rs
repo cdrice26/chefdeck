@@ -383,6 +383,12 @@ where
     }
 }
 
+pub struct RawCloudId {
+    pub cloud_recipe_id: String,
+    pub username: String,
+    pub recipe_id: Option<i64>,
+}
+
 pub struct CloudId {
     pub local_id: i64,
     pub cloud_id: String,

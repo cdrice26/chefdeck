@@ -1,14 +1,13 @@
 use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
-    api::{get_cloud_id, get_cloud_image_path, should_request},
-    crud::recipe::update_recipe,
-    errors::StringifyError,
+    api::{auth::check_auth::get_username, get_cloud_image_path, should_request},
+    crud::{cloud_id::get_cloud_id_with_username, recipe::update_recipe},
     img_proc::get_processed_image,
-    macros::run_tx,
     request::recipe_post,
     types::{
         cloud_structs::{LocalRecipe, RecipeFormData},
+        db_params::UsernameFilter,
         response_bodies::Ingredient,
     },
     AppState,
@@ -20,10 +19,25 @@ async fn update_in_cloud(
     recipe: RecipeFormData,
 ) -> Result<(), String> {
     let state = app.state::<AppState>();
-    let cloud_id = run_tx!(state.db, |tx| get_cloud_id(tx, recipe_id));
+    let cloud_id_result = match get_cloud_id_with_username(
+        &state.db,
+        recipe_id,
+        UsernameFilter {
+            username: get_username(&state).await?,
+        },
+    )
+    .await
+    {
+        Ok(result) => Ok(result),
+        Err(e) => Err(e.to_string()),
+    };
+
+    if cloud_id_result.is_err() {
+        return Err(String::from("Failed to get cloud id"));
+    }
     let resp = recipe_post(
         &app,
-        format!("/recipe/{}/update", cloud_id.unwrap_or_default()).as_str(),
+        format!("/recipe/{}/update", cloud_id_result.unwrap().cloud_id).as_str(),
         recipe,
     )
     .await;
