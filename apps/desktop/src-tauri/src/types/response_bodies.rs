@@ -1,11 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-/// Represents a cloud ID.
-#[derive(Deserialize, Serialize, Debug)]
-pub struct CloudId {
-    pub cloud_recipe_id: String,
-}
-
 /// Represents an ingredient.
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Ingredient {
