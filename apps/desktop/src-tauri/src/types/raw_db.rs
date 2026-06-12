@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::types::cloud_structs::RecipeFormData;
+use crate::types::cloud_structs::{DownloadedRecipe, LocalRecipe, RecipeFormData};
 
 use super::{
     parser::Parsable,
@@ -201,6 +201,20 @@ impl HasRecipeContext for RecipeFormData {
     }
 }
 
+impl HasRecipeContext for LocalRecipe {
+    fn ingredients(&self) -> &Vec<Ingredient> {
+        &self.ingredients
+    }
+
+    fn directions(&self) -> &Vec<String> {
+        &self.directions
+    }
+
+    fn tags(&self) -> &Vec<String> {
+        &self.tags
+    }
+}
+
 impl RawRecipeCommon for RecipeFormData {
     fn id(&self) -> Option<i64> {
         None
@@ -231,15 +245,73 @@ impl RawRecipeCommon for RecipeFormData {
     }
 
     fn last_viewed(&self) -> Option<NaiveDateTime> {
-        None
+        if let Some(last_viewed) = &self.last_viewed {
+            NaiveDateTime::parse_from_str(last_viewed, "%Y-%m-%d %H:%M:%S").ok()
+        } else {
+            None
+        }
     }
 
     fn last_updated(&self) -> Option<NaiveDateTime> {
-        None
+        if let Some(last_updated) = &self.last_updated {
+            NaiveDateTime::parse_from_str(last_updated, "%Y-%m-%d %H:%M:%S").ok()
+        } else {
+            None
+        }
     }
 
     fn cloud_parent_id(&self) -> Option<String> {
-        None
+        self.cloud_parent_id.clone()
+    }
+}
+
+impl RawRecipeCommon for LocalRecipe {
+    fn id(&self) -> Option<i64> {
+        Some(self.id)
+    }
+
+    fn title(&self) -> Option<String> {
+        Some(self.title.clone())
+    }
+
+    fn yield_(&self) -> Option<i64> {
+        Some(self.yield_value as i64)
+    }
+
+    fn minutes(&self) -> Option<i64> {
+        Some(self.time as i64)
+    }
+
+    fn img_url(&self) -> Option<String> {
+        self.image_path.clone()
+    }
+
+    fn source(&self) -> Option<String> {
+        self.source_url.clone()
+    }
+
+    fn color(&self) -> Option<String> {
+        Some(self.color.clone())
+    }
+
+    fn last_viewed(&self) -> Option<NaiveDateTime> {
+        if let Some(last_viewed) = &self.last_viewed {
+            NaiveDateTime::parse_from_str(last_viewed, "%Y-%m-%d %H:%M:%S").ok()
+        } else {
+            None
+        }
+    }
+
+    fn last_updated(&self) -> Option<NaiveDateTime> {
+        if let Some(last_updated) = &self.last_updated {
+            NaiveDateTime::parse_from_str(last_updated, "%Y-%m-%d %H:%M:%S").ok()
+        } else {
+            None
+        }
+    }
+
+    fn cloud_parent_id(&self) -> Option<String> {
+        self.cloud_parent_id.clone()
     }
 }
 

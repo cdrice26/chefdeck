@@ -3,9 +3,9 @@ use std::path::PathBuf;
 use crate::{
     api::{
         get_cloud_image_path,
-        recipe::{delete::delete_recipe, new::add_to_cloud, update::update_recipe_data_with_dates},
+        recipe::{delete::delete_recipe, new::add_to_cloud},
     },
-    crud::Creatable,
+    crud::{Creatable, Updatable},
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
@@ -78,6 +78,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
         .string_err()?;
     for recipe in downloaded_recipes.data {
         let username_option = Some(username.clone());
+        let cloud_parent_id = recipe.id.clone();
         let local_image_path = match &recipe.image_path {
             Some(_) => {
                 let signed_url_response =
@@ -90,6 +91,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
         };
         let mut recipe = recipe.into_form_data();
         recipe.image_path = local_image_path;
+        recipe.cloud_parent_id = Some(cloud_parent_id);
 
         match recipe.create(&state.db, username_option).await {
             Ok(_) => {}
@@ -166,6 +168,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
                     Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
                     None => None,
                 },
+                cloud_parent_id: None,
             },
         )
         .await?;
@@ -238,6 +241,7 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
                 Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
                 None => None,
             },
+            cloud_parent_id: None,
         };
         if let Some(cloud_parent_id) = recipe.cloud_parent_id.as_deref() {
             let fetch_result = recipe_post(
@@ -299,22 +303,18 @@ async fn sync_recipes(app: &AppHandle) -> Result<(), String> {
                         None => None,
                     };
 
-                    update_recipe_data_with_dates(
-                        tx,
-                        &local_id,
-                        &recipe.title,
-                        &recipe.ingredients,
-                        &recipe.yield_value,
-                        &recipe.time,
-                        &local_image_path,
-                        &recipe.directions,
-                        &recipe.tags,
-                        &recipe.color,
-                        &recipe.last_updated,
-                        &recipe.last_viewed,
-                    )
-                    .await?;
-                    Ok(Some(local_id))
+                    let mut recipe = recipe.into_local_recipe(local_id);
+                    recipe.image_path = local_image_path;
+
+                    println!("Syncing recipe: {:?}", recipe);
+
+                    match recipe.update(db).await {
+                        Ok(_) => Ok(Some(local_id)),
+                        Err(err) => {
+                            eprintln!("Failed to sync recipe: {:?}", err);
+                            Ok(None)
+                        }
+                    }
                 } else {
                     Ok(None)
                 }

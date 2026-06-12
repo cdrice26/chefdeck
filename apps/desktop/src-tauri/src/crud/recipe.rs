@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use sqlx::{Pool, Sqlite, Transaction};
 
 use crate::{
-    crud::Creatable,
+    crud::{Creatable, Updatable},
     types::{
         raw_db::{HasRecipeContext, RawRecipeCommon},
         response_bodies::Ingredient,
@@ -57,7 +57,7 @@ pub async fn update_dates(
 ///
 /// # Returns
 ///
-/// Returns the ID of the last inserted ingredient, or an error if one occurred.
+/// Returns the ID of the recipe.
 pub async fn insert_related_data(
     tx: &mut Transaction<'_, Sqlite>,
     recipe_id: i64,
@@ -214,6 +214,60 @@ impl<T: RawRecipeCommon + HasRecipeContext> Creatable for T {
                 self.tags(),
             )
             .await
+        });
+        Ok(recipe_id)
+    }
+}
+
+impl<T: RawRecipeCommon + HasRecipeContext> Updatable for T {
+    /// Updates the recipe in the database.
+    ///
+    /// # Arguments
+    ///
+    /// * `db` - The database connection pool.
+    ///
+    /// # Returns
+    ///
+    /// Returns the ID of the updated recipe.
+    async fn update(&self, db: &Pool<Sqlite>) -> Result<i64, Box<dyn std::error::Error>> {
+        let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::SqliteTransaction| {
+            let title = self.title();
+            let yield_value = self.yield_();
+            let time = self.minutes();
+            let image_path = self.img_url();
+            let color = self.color();
+            let id = self.id().unwrap_or(0);
+            let ingredients = self.ingredients();
+            let directions = self.directions();
+            let tags = self.tags();
+            let last_viewed = self
+                .last_viewed()
+                .as_ref()
+                .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string());
+            let last_updated = self
+                .last_updated()
+                .as_ref()
+                .map(|v| v.format("%Y-%m-%d %H:%M:%S").to_string());
+
+            let _ = sqlx::query_file!(
+                "db/update_recipe.sql",
+                title,
+                yield_value,
+                time,
+                image_path,
+                color,
+                id
+            )
+            .fetch_one(&mut **tx)
+            .await?;
+
+            let _ = sqlx::query_file!("db/delete_recipe_metadata.sql", id, id, id)
+                .execute(&mut **tx)
+                .await?;
+
+            update_dates(tx, &last_viewed, &last_updated, id).await?;
+
+            insert_related_data(tx, id, ingredients, directions, tags).await
         });
         Ok(recipe_id)
     }

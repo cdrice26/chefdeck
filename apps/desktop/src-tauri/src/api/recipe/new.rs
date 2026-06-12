@@ -82,6 +82,7 @@ pub async fn api_recipe_new(
         source_url: source_url.clone(),
         last_viewed: None,
         last_updated: None,
+        cloud_parent_id: None,
     };
 
     let recipe_id = match recipe_form_data.create(db, username).await {
@@ -111,6 +112,7 @@ pub async fn api_recipe_new(
                         source_url,
                         last_viewed: None,
                         last_updated: None,
+                        cloud_parent_id: None,
                     },
                 )
                 .await;

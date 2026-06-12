@@ -9,13 +9,18 @@ pub trait Creatable {
 }
 
 pub trait Readable: Sized {
-    async fn read(&self) -> Result<Self, Box<dyn std::error::Error>>;
+    async fn read(&self, db: &sqlx::Pool<sqlx::Sqlite>)
+        -> Result<Self, Box<dyn std::error::Error>>;
 }
 
-pub trait Updatable: Sized {
-    async fn update(&self) -> Result<Self, Box<dyn std::error::Error>>;
+pub trait Updatable {
+    async fn update(
+        &self,
+        db: &sqlx::Pool<sqlx::Sqlite>,
+    ) -> Result<i64, Box<dyn std::error::Error>>;
 }
 
 pub trait Deletable: Sized {
-    async fn delete(&self) -> Result<(), Box<dyn std::error::Error>>;
+    async fn delete(&self, db: &sqlx::Pool<sqlx::Sqlite>)
+        -> Result<(), Box<dyn std::error::Error>>;
 }

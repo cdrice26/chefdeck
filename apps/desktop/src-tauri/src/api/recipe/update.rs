@@ -3,7 +3,7 @@ use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
     api::{get_cloud_id, get_cloud_image_path, should_request},
-    crud::recipe::update_dates,
+    crud::{recipe::update_dates, Updatable},
     errors::StringifyError,
     img_proc::get_processed_image,
     macros::run_tx,
@@ -147,19 +147,25 @@ pub async fn api_recipe_update(
 
     let image_path = get_processed_image(image, images_lib_path);
 
-    let _ = update_recipe(
-        db,
-        id,
-        &title,
-        &ingredients,
-        &yield_value,
-        &time,
-        &image_path,
-        &directions,
-        &tags,
-        &color,
-    )
-    .await?;
+    let recipe_form_data = RecipeFormData {
+        title: title.clone(),
+        yield_value,
+        time,
+        image_path: image_path.clone(),
+        directions: directions.clone(),
+        tags: tags.clone(),
+        color: color.clone(),
+        ingredients: ingredients.clone(),
+        source_url: None,
+        last_viewed: None,
+        last_updated: None,
+        cloud_parent_id: None,
+    };
+
+    let result = match recipe_form_data.update(db).await {
+        Ok(_) => Ok(()),
+        Err(e) => Err(e.to_string()),
+    };
 
     if should_request(&state).await {
         let image_path_for_cloud = get_cloud_image_path(&state, &image_path).await;
@@ -182,6 +188,7 @@ pub async fn api_recipe_update(
                     source_url: None,
                     last_viewed: None,
                     last_updated: None,
+                    cloud_parent_id: None,
                 },
             )
             .await;
@@ -194,5 +201,5 @@ pub async fn api_recipe_update(
         });
     }
 
-    Ok(())
+    result
 }
