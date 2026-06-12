@@ -5,7 +5,7 @@ use crate::{
     crud::{Creatable, Deletable, Readable, Updatable},
     types::{
         cloud_structs::{LocalRecipe, RecipeFormData},
-        raw_db::{HasRecipeContext, RawRecipeCommon, RecipeContext},
+        raw_db::{CloudId, HasRecipeContext, RawRecipeCommon, RecipeContext},
     },
 };
 
@@ -92,8 +92,12 @@ pub async fn insert_recipe(
         let recipe_id = recipe_form_data.create(tx).await?;
         if let Some(online_recipe_id) = recipe_form_data.cloud_parent_id() {
             if let Some(username) = username {
-                insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str())
-                    .await?;
+                let cloud_id = CloudId {
+                    local_id: recipe_id,
+                    cloud_id: online_recipe_id,
+                    username,
+                };
+                cloud_id.create(tx).await?;
             }
         }
         Ok::<i64, Box<dyn std::error::Error>>(recipe_id)

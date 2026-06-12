@@ -382,3 +382,9 @@ where
         })
     }
 }
+
+pub struct CloudId {
+    pub local_id: i64,
+    pub cloud_id: String,
+    pub username: String,
+}
