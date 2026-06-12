@@ -1,12 +1,17 @@
 use chrono::{DateTime, Utc};
 use sqlx::{Sqlite, Transaction};
+use tauri::State;
 
 use crate::{
-    crud::{Creatable, Deletable, Readable, Updatable},
+    crud::{Creatable, Deletable, Readable, ReadableWith, Updatable},
     types::{
         cloud_structs::{LocalRecipe, RecipeFormData},
-        raw_db::{CloudId, HasRecipeContext, RawRecipeCommon, RecipeContext},
+        db_params::ImagesLibPath,
+        parser::Parsable,
+        raw_db::{CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RecipeContext},
+        response_bodies::Recipe,
     },
+    AppState,
 };
 
 /// Updates the last viewed and last updated dates for a recipe.
@@ -104,6 +109,30 @@ pub async fn insert_recipe(
     });
 
     Ok(recipe_id)
+}
+
+/// Wraps the read method of Recipe to create a database transaction.
+///
+/// # Arguments:
+///     state: The application state.
+///     id: The ID of the recipe to retrieve.
+///
+/// # Returns:
+///     A Result containing the retrieved recipe or an error.
+pub async fn get_recipe(
+    state: State<'_, AppState>,
+    id: i64,
+) -> Result<Recipe, Box<dyn std::error::Error>> {
+    let db = &state.db;
+    let images_lib_path = &state.images_lib_path;
+    let recipe = run_tx_with_error!(db, |tx| Recipe::read_with(
+        tx,
+        id,
+        ImagesLibPath {
+            images_lib_path: images_lib_path.clone()
+        }
+    ));
+    Ok(recipe)
 }
 
 /// Wrapper for recipe_form_data.update that creates the database transaction
@@ -229,5 +258,30 @@ impl<T: RawRecipeCommon + HasRecipeContext> Updatable for T {
         recipe_context.create(tx).await?;
 
         Ok(id)
+    }
+}
+
+impl Readable for RawRecipe {
+    async fn read(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+        id: i64,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let raw_recipe = sqlx::query_file_as!(RawRecipe, "db/get_recipe.sql", id)
+            .fetch_one(&mut **tx)
+            .await?;
+        Ok(raw_recipe)
+    }
+}
+
+impl ReadableWith<ImagesLibPath> for Recipe {
+    async fn read_with(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+        id: i64,
+        addl_params: ImagesLibPath,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let raw_recipe = RawRecipe::read(tx, id).await?;
+        let recipe_context = RecipeContext::read_with(tx, id, addl_params).await?;
+        let recipe = raw_recipe.parse(recipe_context)?;
+        Ok(recipe)
     }
 }

@@ -55,6 +55,17 @@ impl Creatable for CloudId {
 }
 
 impl ReadableWith<UsernameFilter> for CloudId {
+    /// Reads a CloudId from the database with the given ID and username filter.
+    ///
+    /// # Arguments
+    ///
+    /// * `tx` - The transaction to use for the read.
+    /// * `id` - The ID of the recipe.
+    /// * `addl_params` - The username filter to use for the read.
+    ///
+    /// # Returns
+    ///
+    /// * `Result<CloudId, Box<dyn std::error::Error>>` - The cloud ID or an error.
     async fn read_with(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
         id: i64,

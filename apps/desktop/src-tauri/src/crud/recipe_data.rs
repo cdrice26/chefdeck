@@ -1,8 +1,12 @@
 use sqlx::{Sqlite, Transaction};
 
 use crate::{
-    crud::{Creatable, Deletable},
-    types::raw_db::RecipeContext,
+    crud::{Creatable, Deletable, ReadableWith},
+    types::{
+        db_params::ImagesLibPath,
+        raw_db::RecipeContext,
+        response_bodies::{Direction, Ingredient, RecipeTag},
+    },
 };
 
 impl Creatable for RecipeContext {
@@ -94,5 +98,30 @@ impl Deletable for RecipeContext {
             .await?;
 
         Ok(())
+    }
+}
+
+impl ReadableWith<ImagesLibPath> for RecipeContext {
+    async fn read_with(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+        id: i64,
+        addl_params: ImagesLibPath,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let ingredients = sqlx::query_file_as!(Ingredient, "db/get_ingredients.sql", id)
+            .fetch_all(&mut **tx)
+            .await?;
+        let directions = sqlx::query_file_as!(Direction, "db/get_directions.sql", id)
+            .fetch_all(&mut **tx)
+            .await?;
+        let recipe_tags = sqlx::query_file_as!(RecipeTag, "db/get_recipe_tags.sql", id)
+            .fetch_all(&mut **tx)
+            .await?;
+        Ok(RecipeContext {
+            recipe_id: id,
+            ingredients,
+            directions,
+            tags: recipe_tags,
+            images_lib_path: addl_params.images_lib_path,
+        })
     }
 }
