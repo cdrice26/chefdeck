@@ -1,3 +1,4 @@
+use crate::types::raw_db::RawRecipeCommon;
 use serde::{Deserialize, Serialize};
 
 /// Represents an ingredient.
@@ -58,4 +59,34 @@ pub struct Recipe {
     pub last_viewed: Option<chrono::NaiveDateTime>,
     pub last_updated: Option<chrono::NaiveDateTime>,
     pub cloud_parent_id: Option<String>,
+}
+
+impl RawRecipeCommon for &Recipe {
+    fn id(&self) -> Option<i64> {
+        self.id
+    }
+
+    fn title(&self) -> Option<String> {
+        Some(self.title.clone())
+    }
+
+    fn yield_(&self) -> Option<i64> {
+        Some(self.servings)
+    }
+
+    fn minutes(&self) -> Option<i64> {
+        Some(self.minutes)
+    }
+
+    fn img_url(&self) -> Option<String> {
+        self.img_url.as_deref().map(|s| s.to_string())
+    }
+
+    fn source(&self) -> Option<String> {
+        self.source_url.as_deref().map(|s| s.to_string())
+    }
+
+    fn color(&self) -> Option<String> {
+        Some(self.color.clone())
+    }
 }

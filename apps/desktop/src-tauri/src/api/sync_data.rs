@@ -1,10 +1,7 @@
 use crate::{
-    api::{
-        get_cloud_image_path,
-        recipe::{delete::delete_recipe, new::add_to_cloud},
-    },
+    api::{get_cloud_image_path, recipe::new::add_to_cloud},
     crud::{
-        recipe::{insert_recipe, update_recipe},
+        recipe::{delete_recipe, insert_recipe, update_recipe},
         recipes::get_recipes,
     },
     errors::StringifyError,
@@ -104,19 +101,19 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         .filter(|r| !r.is_extant)
         .map(|r| r.id)
         .collect();
-    let nonexistent_recipe_local_ids: Vec<i64> = local_recipes
+    let recipes_with_dead_cloud_parent: Vec<&Recipe> = local_recipes
         .iter()
         .filter(|r| {
             let cloud_parent_id = r.cloud_parent_id.as_ref();
             cloud_parent_id.is_some()
                 && nonexistent_recipe_cloud_ids.contains(cloud_parent_id.unwrap_or(&String::new()))
         })
-        .map(|recipe| recipe.id)
-        .filter(|id| id.is_some())
-        .map(|id| id.unwrap())
+        .filter(|recipe| recipe.id.is_some())
         .collect();
-    for recipe_id in nonexistent_recipe_local_ids {
-        delete_recipe(&state, recipe_id).await?;
+    for recipe in recipes_with_dead_cloud_parent {
+        delete_recipe(db, recipe, &state.images_lib_path)
+            .await
+            .map_err(|e| e.to_string())?;
     }
 
     // Upload recipes that don't exist on the server (error protection)

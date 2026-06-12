@@ -1,9 +1,12 @@
+use std::path::PathBuf;
+
 use chrono::{DateTime, Utc};
 use sqlx::{Sqlite, Transaction};
 use tauri::State;
 
 use crate::{
     crud::{Creatable, Deletable, Readable, ReadableWith, Updatable},
+    img_proc::delete_recipe_img,
     types::{
         cloud_structs::{LocalRecipe, RecipeFormData},
         db_params::ImagesLibPath,
@@ -111,7 +114,7 @@ pub async fn insert_recipe(
     Ok(recipe_id)
 }
 
-/// Wraps the read method of Recipe to create a database transaction.
+/// Wraps the read_with method of Recipe to create a database transaction.
 ///
 /// # Arguments:
 ///     state: The application state.
@@ -135,6 +138,23 @@ pub async fn get_recipe(
     Ok(recipe)
 }
 
+/// Wraps the read method of RawRecipe to create a database transaction.
+///
+/// # Arguments:
+///     state: The application state.
+///     id: The ID of the recipe to retrieve.
+///
+/// # Returns:
+///     A Result containing the retrieved recipe or an error.
+pub async fn get_raw_recipe(
+    state: &State<'_, AppState>,
+    id: i64,
+) -> Result<RawRecipe, Box<dyn std::error::Error>> {
+    let db = &state.db;
+    let recipe = run_tx_with_error!(db, |tx| RawRecipe::read(tx, id));
+    Ok(recipe)
+}
+
 /// Wrapper for recipe_form_data.update that creates the database transaction
 ///
 /// # Arguments:
@@ -151,6 +171,39 @@ pub async fn update_recipe(
         recipe_form_data.update(tx).await
     });
     Ok(recipe_id)
+}
+
+/// Wrapper for recipe.delete that creates the database transaction and deletes the recipe's image from the images library.
+///
+/// # Arguments:
+/// * `db` - The database pool to use for the transaction.
+/// * `recipe` - The recipe to delete.
+/// * `images_lib_path` - The path to the images library to delete the recipe's image from.
+///
+/// # Returns:
+/// `Ok(())` if the delete was successful, or an error if one occurred.
+pub async fn delete_recipe<T: RawRecipeCommon>(
+    db: &sqlx::SqlitePool,
+    recipe: T,
+    images_lib_path: &PathBuf,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let id = match recipe.id() {
+        Some(id) => id,
+        None => {
+            return Err(Box::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                "recipe id is required",
+            )))
+        }
+    };
+    run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
+        delete_recipe_img(tx, id, images_lib_path).await?;
+        sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
+            .execute(&mut **tx)
+            .await?;
+        Ok::<(), Box<dyn std::error::Error>>(())
+    });
+    Ok(())
 }
 
 impl<T: RawRecipeCommon + HasRecipeContext> Creatable for T {
@@ -202,7 +255,8 @@ impl<T: RawRecipeCommon + HasRecipeContext> Creatable for T {
         )
         .await?;
 
-        let recipe_context = RecipeContext::from_form_data(self);
+        let mut recipe_context = RecipeContext::from_form_data(self);
+        recipe_context.recipe_id = recipe_id;
 
         recipe_context.create(tx).await?;
         Ok(recipe_id)
@@ -304,5 +358,35 @@ impl ReadableWith<ImagesLibPath<'_>> for Recipe {
         let recipe_context = RecipeContext::read_with(tx, id, addl_params).await?;
         let recipe = raw_recipe.parse(recipe_context)?;
         Ok(recipe)
+    }
+}
+
+impl<T: RawRecipeCommon> Deletable for T {
+    /// Deletes a recipe from the database.
+    ///
+    /// # Arguments
+    ///
+    /// * `tx` - The transaction to use for the query.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` indicating success or failure.
+    async fn delete(
+        &self,
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let id = match self.id() {
+            Some(id) => id,
+            None => {
+                return Err(Box::new(std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "id is required",
+                )))
+            }
+        };
+        sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
+            .execute(&mut **tx)
+            .await?;
+        Ok(())
     }
 }

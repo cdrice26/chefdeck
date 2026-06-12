@@ -3,6 +3,8 @@ use std::{fs, path::PathBuf};
 use image::{imageops, ImageReader};
 use uuid::Uuid;
 
+use crate::types::raw_db::RawRecipe;
+
 /// Process an image and save it to a new location.
 /// Resizes the image to a maximum width and height of 1000 pixels.
 ///
@@ -94,4 +96,26 @@ pub fn save_image(image_bytes: &[u8], images_lib_path: &PathBuf) -> Option<Strin
     let image_path = images_lib_path.join(&image_name);
     std::fs::write(&image_path, image_bytes).ok()?;
     Some(image_name)
+}
+
+/// Deletes the image associated with a recipe from the app data directory.
+///
+/// # Arguments
+///
+/// * `tx` - The transaction to use for the query.
+/// * `id` - The ID of the recipe to delete the image for.
+/// * `images_lib_path` - The path to the app data directory.
+pub async fn delete_recipe_img(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    id: i64,
+    images_lib_path: &PathBuf,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let recipe = sqlx::query_file_as!(RawRecipe, "db/get_recipe.sql", id)
+        .fetch_one(&mut **tx)
+        .await?;
+    let img_path = recipe.img_url;
+    if let Some(img_path) = img_path {
+        std::fs::remove_file(images_lib_path.join(img_path))?;
+    }
+    Ok(())
 }
