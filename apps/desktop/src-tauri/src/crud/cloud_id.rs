@@ -8,6 +8,15 @@ use crate::{
     },
 };
 
+/// Wrapper for read_with method of CloudId that creates the transaction to use.
+///
+/// Arguments:
+/// * `db` - The database pool to use.
+/// * `id` - The ID of the recipe.
+/// * `username` - The username of the recipe.
+///
+/// Returns:
+/// * `Result<CloudId, Box<dyn std::error::Error>>` - The cloud ID or an error.
 pub async fn get_cloud_id_with_username(
     db: &Pool<Sqlite>,
     id: i64,
