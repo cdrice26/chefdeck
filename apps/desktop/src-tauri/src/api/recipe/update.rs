@@ -23,7 +23,7 @@ async fn update_in_cloud(
         &state.db,
         recipe_id,
         UsernameFilter {
-            username: get_username(&state).await?,
+            username: &get_username(&state).await?,
         },
     )
     .await

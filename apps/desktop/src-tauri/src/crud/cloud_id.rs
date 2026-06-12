@@ -20,7 +20,7 @@ use crate::{
 pub async fn get_cloud_id_with_username(
     db: &Pool<Sqlite>,
     id: i64,
-    username: UsernameFilter,
+    username: UsernameFilter<'_>,
 ) -> Result<CloudId, Box<dyn std::error::Error>> {
     let cloud_id = run_tx_with_error!(db, async |tx: &mut Transaction<'_, Sqlite>| {
         CloudId::read_with(tx, id, username).await
@@ -54,7 +54,7 @@ impl Creatable for CloudId {
     }
 }
 
-impl ReadableWith<UsernameFilter> for CloudId {
+impl ReadableWith<UsernameFilter<'_>> for CloudId {
     /// Reads a CloudId from the database with the given ID and username filter.
     ///
     /// # Arguments
@@ -69,7 +69,7 @@ impl ReadableWith<UsernameFilter> for CloudId {
     async fn read_with(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
         id: i64,
-        addl_params: UsernameFilter,
+        addl_params: UsernameFilter<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let cloud_id =
             sqlx::query_file_as!(RawCloudId, "db/get_cloud_id.sql", id, addl_params.username)

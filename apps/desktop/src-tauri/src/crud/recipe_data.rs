@@ -101,11 +101,11 @@ impl Deletable for RecipeContext {
     }
 }
 
-impl ReadableWith<ImagesLibPath> for RecipeContext {
+impl ReadableWith<ImagesLibPath<'_>> for RecipeContext {
     async fn read_with(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
         id: i64,
-        addl_params: ImagesLibPath,
+        addl_params: ImagesLibPath<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let ingredients = sqlx::query_file_as!(Ingredient, "db/get_ingredients.sql", id)
             .fetch_all(&mut **tx)
@@ -121,7 +121,7 @@ impl ReadableWith<ImagesLibPath> for RecipeContext {
             ingredients,
             directions,
             tags: recipe_tags,
-            images_lib_path: addl_params.images_lib_path,
+            images_lib_path: addl_params.images_lib_path.to_path_buf(),
         })
     }
 }

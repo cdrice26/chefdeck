@@ -1,6 +1,7 @@
 pub mod cloud_id;
 pub mod recipe;
 pub mod recipe_data;
+pub mod recipes;
 
 pub trait Creatable {
     async fn create(

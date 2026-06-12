@@ -129,7 +129,7 @@ pub async fn get_recipe(
         tx,
         id,
         ImagesLibPath {
-            images_lib_path: images_lib_path.clone()
+            images_lib_path: &images_lib_path
         }
     ));
     Ok(recipe)
@@ -262,6 +262,16 @@ impl<T: RawRecipeCommon + HasRecipeContext> Updatable for T {
 }
 
 impl Readable for RawRecipe {
+    /// Reads a raw recipe from the database by ID.
+    ///
+    /// # Arguments
+    ///
+    /// * `tx` - The transaction to use for the query.
+    /// * `id` - The ID of the recipe to read.
+    ///
+    /// # Returns
+    ///
+    /// A `RawRecipe` if one is found, otherwise an error.
     async fn read(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
         id: i64,
@@ -273,11 +283,22 @@ impl Readable for RawRecipe {
     }
 }
 
-impl ReadableWith<ImagesLibPath> for Recipe {
+impl ReadableWith<ImagesLibPath<'_>> for Recipe {
+    /// Reads a recipe from the database by ID, including additional parameters for the images library path.
+    ///
+    /// # Arguments
+    ///
+    /// * `tx` - The transaction to use for the query.
+    /// * `id` - The ID of the recipe to read.
+    /// * `addl_params` - Additional parameters, including the images library path.
+    ///
+    /// # Returns
+    ///
+    /// A `Recipe` if one is found, otherwise an error.
     async fn read_with(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
         id: i64,
-        addl_params: ImagesLibPath,
+        addl_params: ImagesLibPath<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let raw_recipe = RawRecipe::read(tx, id).await?;
         let recipe_context = RecipeContext::read_with(tx, id, addl_params).await?;

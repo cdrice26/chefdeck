@@ -75,7 +75,7 @@ pub async fn api_recipe_delete(
         db,
         id,
         UsernameFilter {
-            username: username.unwrap_or_default(),
+            username: &username.unwrap_or_default(),
         },
     )
     .await

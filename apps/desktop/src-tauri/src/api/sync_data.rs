@@ -1,18 +1,20 @@
-use std::path::PathBuf;
-
 use crate::{
     api::{
         get_cloud_image_path,
         recipe::{delete::delete_recipe, new::add_to_cloud},
     },
-    crud::recipe::{insert_recipe, update_recipe},
+    crud::{
+        recipe::{insert_recipe, update_recipe},
+        recipes::get_recipes,
+    },
     errors::StringifyError,
     img_proc::{download_image_from_signed_url, save_image},
     macros::run_tx,
     request::{get, post, recipe_post},
     types::{
         cloud_structs::{DownloadedRecipe, RecipeFormData},
-        raw_db::{IntegerValue, RawRecipeSyncable, StringValue},
+        db_params::{UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath},
+        raw_db::{IntegerValue, StringValue},
         response_bodies::Recipe,
     },
     AppState,
@@ -23,30 +25,12 @@ use serde_json::json;
 use sqlx::{query_file_as, Sqlite, Transaction};
 use tauri::{AppHandle, Manager};
 
-use super::{auth::check_auth::get_username, recipes::transform_recipe, GenericResponse};
+use super::{auth::check_auth::get_username, GenericResponse};
 
 #[derive(Debug, Deserialize)]
 struct RecipeExistenceRecord {
     id: String,
     is_extant: bool,
-}
-
-async fn get_local_recipes(
-    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
-    username: &str,
-    images_lib_path: &PathBuf,
-) -> Result<Vec<Recipe>, sqlx::Error> {
-    let raw_recipes = sqlx::query_file_as!(RawRecipeSyncable, "db/get_all_recipes.sql", username)
-        .fetch_all(&mut **tx)
-        .await?;
-
-    let mut recipes = Vec::with_capacity(raw_recipes.len());
-
-    for r in raw_recipes {
-        recipes.push(transform_recipe(r, tx, images_lib_path).await?);
-    }
-
-    Ok(recipes)
 }
 
 async fn sync_recipes(app: AppHandle) -> Result<(), String> {
@@ -57,11 +41,18 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     let username = get_username(&state).await?;
 
     // Get all local recipes before downloading
-    let local_recipes = run_tx!(db, |tx| get_local_recipes(
-        tx,
-        username.as_str(),
-        &state.images_lib_path
-    ))?;
+    let local_recipes = match get_recipes::<UsernameFilterWithImagesLibPath>(
+        db,
+        UsernameFilterWithImagesLibPath {
+            username: &username,
+            images_lib_path: &state.images_lib_path,
+        },
+    )
+    .await
+    {
+        Ok(recipes) => recipes,
+        Err(e) => return Err(e.to_string()),
+    };
 
     // Download recipes that only exist on the server
     let recipe_ids = local_recipes
@@ -188,28 +179,16 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     let last_synced = last_synced_datetime
         .format("%Y-%m-%dT%H:%M:%SZ")
         .to_string();
-    let updated_local_recipes: Vec<Recipe> =
-        run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
-            let raw_recipes_res = query_file_as!(
-                RawRecipeSyncable,
-                "db/get_updated_local_recipes.sql",
-                username,
-                last_synced_datetime
-            )
-            .fetch_all(&mut **tx)
-            .await;
-
-            match raw_recipes_res {
-                Ok(raw_recipes) => {
-                    let mut recipes = Vec::with_capacity(raw_recipes.len());
-                    for r in raw_recipes {
-                        recipes.push(transform_recipe(r, tx, &state.images_lib_path).await?);
-                    }
-                    Ok::<Vec<Recipe>, sqlx::Error>(recipes)
-                }
-                Err(err) => Err(err),
-            }
-        })?;
+    let updated_local_recipes: Vec<Recipe> = get_recipes::<UsernameAndUpdatedFilter<'_>>(
+        db,
+        UsernameAndUpdatedFilter {
+            username: &username,
+            updated_after: &last_synced_datetime,
+            images_lib_path: &state.images_lib_path,
+        },
+    )
+    .await
+    .map_err(|e| e.to_string())?;
     for recipe in updated_local_recipes {
         let image_path_for_cloud = get_cloud_image_path(&state, &recipe.img_url).await;
         let form_data = RecipeFormData {
