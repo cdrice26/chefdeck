@@ -5,7 +5,6 @@ import { request } from '../../utils/fetchUtils';
 import {
   useRecipe,
   useNotification,
-  usePrinter,
   RecipeDetails,
   useRecipeMutator,
   Recipe
@@ -14,6 +13,7 @@ import { confirm } from '@tauri-apps/plugin-dialog';
 import { useMemo } from 'react';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { useOpener } from '../../hooks/useOpener';
+import usePrinter from '../../hooks/usePrinter';
 
 export default function RecipePage() {
   const navigate = useNavigate();
@@ -40,7 +40,11 @@ export default function RecipePage() {
 
   const handlePrint = usePrinter(
     addNotification,
-    <RecipeDetails recipe={recipe} error={null} isLoading={false} />,
+    <RecipeDetails
+      recipe={{ ...updatedRecipe, tags: [] }}
+      error={null}
+      isLoading={false}
+    />,
     'Print Recipe'
   );
 
