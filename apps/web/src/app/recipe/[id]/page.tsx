@@ -23,7 +23,11 @@ export default function RecipePage() {
 
   const handlePrint = usePrinter(
     addNotification,
-    <RecipeDetails recipe={recipe} error={null} isLoading={false} />,
+    <RecipeDetails
+      recipe={{ ...recipe, tags: [] }}
+      error={null}
+      isLoading={false}
+    />,
     'Print Recipe'
   );
 
