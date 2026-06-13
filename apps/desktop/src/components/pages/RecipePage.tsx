@@ -13,9 +13,11 @@ import {
 import { confirm } from '@tauri-apps/plugin-dialog';
 import { useMemo } from 'react';
 import { convertFileSrc } from '@tauri-apps/api/core';
+import { useOpener } from '../../hooks/useOpener';
 
 export default function RecipePage() {
   const navigate = useNavigate();
+  useOpener();
 
   const { id } = useParams() as { id: string };
 

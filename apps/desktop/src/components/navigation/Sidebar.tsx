@@ -15,7 +15,7 @@ export default function Sidebar({
   const location = useLocation();
   const { availableTags } = useAvailableTags(request);
   const [selectedTags, setSelectedTags] = useState<OptionType[]>([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [_searchParams, setSearchParams] = useSearchParams();
 
   const pages = [
     {
@@ -76,7 +76,7 @@ export default function Sidebar({
         ))}
       </div>
       <div className="flex flex-row flex-wrap gap-2 h-full overflow-y-auto p-2">
-        {availableTags.map((tag: OptionType) => (
+        {availableTags?.map((tag: OptionType) => (
           <button
             key={tag.value}
             className={`px-2 py-1 transition-all ${selectedTags.includes(tag) ? 'bg-green-800' : 'bg-gray-100 dark:bg-[#505050]'} rounded-lg text-sm`}

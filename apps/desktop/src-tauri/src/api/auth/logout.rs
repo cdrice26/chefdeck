@@ -1,4 +1,9 @@
-use crate::{AppState, errors::StringifyError, api::{SuccessResponse, ErrorResponse}, token_keyring::clear_refresh_token};
+use crate::{
+    api::{ErrorResponse, SuccessResponse},
+    errors::StringifyError,
+    token_keyring::clear_refresh_token,
+    AppState,
+};
 use tauri::State;
 
 #[tauri::command]

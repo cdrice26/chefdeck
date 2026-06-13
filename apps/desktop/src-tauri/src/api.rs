@@ -5,7 +5,8 @@ pub mod sync_data;
 pub mod tags;
 
 use serde::{Deserialize, Serialize};
-use tauri::State;
+use tauri::{AppHandle, State};
+use tauri_plugin_opener::OpenerExt;
 
 use crate::AppState;
 
@@ -93,4 +94,16 @@ pub async fn get_cloud_image_path(
         ),
         None => None,
     }
+}
+
+/// Opens the given URL in the default browser.
+///
+/// # Arguments
+/// * `url` - The URL to open.
+#[tauri::command]
+pub async fn open_url(app: AppHandle, url: &str) -> Result<(), String> {
+    app.opener()
+        .open_url(url, None::<&str>)
+        .map_err(|e| e.to_string())?;
+    Ok(())
 }

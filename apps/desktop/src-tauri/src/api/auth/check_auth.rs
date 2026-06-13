@@ -1,27 +1,32 @@
+use crate::api::GenericResponse;
+use crate::errors::StringifyError;
+use crate::request::refresh_access_token;
+use crate::AppState;
 use reqwest::Response;
 use serde::{Deserialize, Serialize};
 use tauri::State;
-use crate::AppState;
-use crate::errors::StringifyError;
-use crate::api::GenericResponse;
-use crate::request::refresh_access_token;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Profile {
-    pub username: String
+    pub username: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CheckAuthResponse {
-    pub profile: Profile
+    pub profile: Profile,
 }
 
 async fn make_auth_request(access_token: &str) -> Result<Response, String> {
     let client = reqwest::Client::new();
-    client.get(format!("{}/auth/checkAuth", std::env::var("API_URL").unwrap_or_default()))
+    client
+        .get(format!(
+            "{}/auth/checkAuth",
+            std::env::var("API_URL").unwrap_or_default()
+        ))
         .header("Authorization", format!("Bearer {}", access_token))
         .send()
-        .await.string_err()
+        .await
+        .string_err()
 }
 
 async fn parse_response(response: Response) -> Result<GenericResponse<CheckAuthResponse>, String> {
@@ -29,7 +34,9 @@ async fn parse_response(response: Response) -> Result<GenericResponse<CheckAuthR
     Ok(data)
 }
 
-pub async fn check_auth(state: &State<'_, AppState>) -> Result<GenericResponse<CheckAuthResponse>, String> {
+pub async fn check_auth(
+    state: &State<'_, AppState>,
+) -> Result<GenericResponse<CheckAuthResponse>, String> {
     let needs_refresh = {
         let access_token = state.access_token.lock().await;
         access_token.is_none()
@@ -76,6 +83,8 @@ pub async fn get_username(state: &State<'_, AppState>) -> Result<String, String>
 }
 
 #[tauri::command]
-pub async fn api_auth_check_auth(state: State<'_, AppState>) -> Result<GenericResponse<CheckAuthResponse>, String> {
+pub async fn api_auth_check_auth(
+    state: State<'_, AppState>,
+) -> Result<GenericResponse<CheckAuthResponse>, String> {
     check_auth(&state).await
 }

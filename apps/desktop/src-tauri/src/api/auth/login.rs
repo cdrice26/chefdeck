@@ -1,31 +1,40 @@
-use crate::{AppState, errors::StringifyError, token_keyring};
+use crate::api::{ErrorResponse, SuccessResponse};
+use crate::{errors::StringifyError, token_keyring, AppState};
 use serde::Deserialize;
 use tauri::State;
-use crate::api::{ErrorResponse, SuccessResponse};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct Tokens {
     access_token: String,
-    refresh_token: String
+    refresh_token: String,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct LoginResponse {
-    data: Tokens
+    data: Tokens,
 }
 
 #[tauri::command]
-pub async fn api_auth_login(state: State<'_, AppState>, email: String, password: String) -> Result<SuccessResponse, ErrorResponse> {
+pub async fn api_auth_login(
+    state: State<'_, AppState>,
+    email: String,
+    password: String,
+) -> Result<SuccessResponse, ErrorResponse> {
     let client = reqwest::Client::new();
-    let response = client.post(format!("{}/auth/login", std::env::var("API_URL").unwrap_or_default()))
+    let response = client
+        .post(format!(
+            "{}/auth/login",
+            std::env::var("API_URL").unwrap_or_default()
+        ))
         .json(&serde_json::json!({
             "email": email,
             "password": password
         }))
         .send()
-        .await.string_err()?;
+        .await
+        .string_err()?;
 
     if response.status().is_success() {
         let rjson: LoginResponse = response.json().await.string_err()?;

@@ -29,9 +29,12 @@ struct AppState {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_opener::init())
         .invoke_handler(generate_handler![
+            api::open_url,
             api::recipe::new::api_recipe_new,
             api::recipe::api_recipe,
             api::recipe::delete::api_recipe_delete,
