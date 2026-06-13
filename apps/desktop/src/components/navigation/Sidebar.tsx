@@ -45,10 +45,18 @@ export default function Sidebar({
   };
 
   useEffect(() => {
-    setSearchParams((prev) => ({
-      ...prev,
-      tags: selectedTags.map((t) => t.value).join(',')
-    }));
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (selectedTags.length) {
+          next.set('tags', selectedTags.map((t) => t.value).join(','));
+        } else {
+          next.delete('tags');
+        }
+        return next;
+      },
+      { replace: true }
+    );
   }, [selectedTags, setSearchParams]);
 
   return (

@@ -58,7 +58,10 @@ export default function Toolbar() {
       >
         <button
           className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            console.log('going back');
+            navigate(-1);
+          }}
         >
           <IoIosArrowBack className="pointer-events-none text-black dark:text-white" />
         </button>

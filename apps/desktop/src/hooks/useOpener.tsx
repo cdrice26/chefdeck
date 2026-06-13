@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 export const useOpener = () => {
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      console.log('handling');
       const anchor = (e.target as Element).closest('a');
       if (!anchor) return;
 
