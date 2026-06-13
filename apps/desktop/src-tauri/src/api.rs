@@ -2,6 +2,7 @@ pub mod auth;
 pub mod recipe;
 pub mod recipes;
 pub mod sync_data;
+pub mod tags;
 
 use serde::{Deserialize, Serialize};
 use tauri::State;
