@@ -2,12 +2,14 @@ import { platform } from '@tauri-apps/plugin-os';
 import {
   IoIosArrowBack,
   IoIosArrowForward,
+  IoIosClose,
   IoIosPerson,
   IoIosSearch,
   IoIosSync
 } from 'react-icons/io';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useSync } from '../../hooks/useSync';
 
@@ -15,6 +17,30 @@ export default function Toolbar() {
   const navigate = useNavigate();
   const { username } = useAuth();
   const { sync } = useSync();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') ?? '');
+
+  // Keep local input state in sync when search params change externally
+  useEffect(() => {
+    setQuery(searchParams.get('q') ?? '');
+  }, [searchParams]);
+
+  // Debounce updating the URL search params when the user types
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (query) next.set('q', query);
+          else next.delete('q');
+          return next;
+        },
+        { replace: true }
+      );
+    }, 300);
+
+    return () => clearTimeout(handler);
+  }, [query, setSearchParams]);
 
   return (
     <div
@@ -81,12 +107,30 @@ export default function Toolbar() {
               : 'rounded-lg bg-gray-100 dark:bg-[#505050]'
           }`}
         >
-          <IoIosSearch className="pointer-events-none text-black dark:text-white" />
+          <IoIosSearch className="ml-1 aspect-square h-full pointer-events-none text-black dark:text-white" />
           <input
             className="py-1 pr-1 outline-none h-full"
             placeholder="Search"
             type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
+          <button
+            className="h-full mr-1"
+            onClick={() => {
+              setQuery('');
+              setSearchParams(
+                (prev) => {
+                  const next = new URLSearchParams(prev);
+                  next.delete('q');
+                  return next;
+                },
+                { replace: true }
+              );
+            }}
+          >
+            <IoIosClose className="h-full pointer-events-none text-black dark:text-white" />
+          </button>
         </div>
       </div>
     </div>
