@@ -11,7 +11,7 @@ use tauri_plugin_opener::OpenerExt;
 use crate::AppState;
 
 /// Represents a generic API response with a data field.
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GenericResponse<T> {
     pub data: T,
 }
@@ -69,30 +69,6 @@ pub async fn should_request(state: &State<'_, AppState>) -> bool {
         true
     } else {
         false
-    }
-}
-
-/// Gets local image path for upload to cloud
-///
-/// Arguments:
-/// * `state` - A reference to the application state.
-/// * `image_path` - The name of the image file.
-///
-/// Returns:
-/// * `String` - The path to the image in the cloud.
-pub async fn get_cloud_image_path(
-    state: &State<'_, AppState>,
-    image_path: &Option<String>,
-) -> Option<String> {
-    match &image_path {
-        Some(image_path) => Some(
-            state
-                .images_lib_path
-                .join(image_path)
-                .to_string_lossy()
-                .to_string(),
-        ),
-        None => None,
     }
 }
 

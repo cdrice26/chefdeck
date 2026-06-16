@@ -1,10 +1,10 @@
 use std::{fs, path::PathBuf};
 
 use image::{imageops, ImageReader};
-use tauri::AppHandle;
+use tauri::{AppHandle, State};
 use uuid::Uuid;
 
-use crate::{request::get, types::raw_db::RawRecipe};
+use crate::{request::get, types::raw_db::RawRecipe, AppState};
 
 /// Process an image and save it to a new location.
 /// Resizes the image to a maximum width and height of 1000 pixels.
@@ -147,5 +147,29 @@ pub async fn convert_cloud_img_to_local(
             Ok(save_image(&image_bytes, images_lib_path))
         }
         None => Ok(None),
+    }
+}
+
+/// Gets local image path for upload to cloud
+///
+/// Arguments:
+/// * `state` - A reference to the application state.
+/// * `image_path` - The name of the image file.
+///
+/// Returns:
+/// * `String` - The path to the image in the cloud.
+pub async fn get_cloud_image_path(
+    state: &State<'_, AppState>,
+    image_path: &Option<String>,
+) -> Option<String> {
+    match &image_path {
+        Some(image_path) => Some(
+            state
+                .images_lib_path
+                .join(image_path)
+                .to_string_lossy()
+                .to_string(),
+        ),
+        None => None,
     }
 }

@@ -2,16 +2,20 @@ use std::path::PathBuf;
 
 use chrono::{DateTime, Utc};
 use sqlx::{Sqlite, Transaction};
-use tauri::State;
+use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
-    crud::{Creatable, Deletable, Readable, ReadableWith, Updatable},
-    img_proc::delete_recipe_img,
+    api::{auth::check_auth::get_username, GenericResponse},
+    crud::{Creatable, Deletable, Readable, ReadableWith, Updatable, Uploadable},
+    img_proc::{delete_recipe_img, get_cloud_image_path},
+    request::recipe_post,
     types::{
-        cloud_structs::{LocalRecipe, RecipeFormData},
+        cloud_structs::{LocalRecipe, NewRecipeResponse, RecipeFormData},
         db_params::ImagesLibPath,
         parser::Parsable,
-        raw_db::{CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RecipeContext},
+        raw_db::{
+            CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RecipeContext, ToRecipeFormData,
+        },
         response_bodies::Recipe,
     },
     AppState,
@@ -93,7 +97,7 @@ pub async fn insert_cloud_parent_id(
 /// `Ok(recipe_id)` if the insert was successful, or an error if one occurred.
 pub async fn insert_recipe(
     db: &sqlx::SqlitePool,
-    recipe_form_data: RecipeFormData,
+    recipe_form_data: &RecipeFormData,
     username: Option<String>,
 ) -> Result<i64, Box<dyn std::error::Error>> {
     let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
@@ -387,6 +391,86 @@ impl<T: RawRecipeCommon> Deletable for T {
         sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
             .execute(&mut **tx)
             .await?;
+        Ok(())
+    }
+}
+
+impl<T: RawRecipeCommon + HasRecipeContext + ToRecipeFormData> Uploadable for T {
+    /// Uploads the recipe to the cloud.
+    ///
+    /// # Arguments:
+    ///
+    /// * `app` - The Tauri app handle.
+    ///
+    /// # Returns:
+    ///
+    /// * `Ok(())` - The recipe was successfully uploaded.
+    /// * `Err` - An error occurred while uploading the recipe.
+    async fn upload(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+        let state: State<AppState> = app.state();
+        let image_path_for_cloud = get_cloud_image_path(&state, &self.img_url()).await;
+        let Some(recipe_id) = self.id() else {
+            return Ok(());
+        };
+
+        let app = app.clone();
+        let image_path = self.img_url();
+        let form_data = self.into_recipe_form_data();
+
+        tauri::async_runtime::spawn(async move {
+            if let Err(_) = form_data
+                .try_upload(&app, recipe_id, image_path, image_path_for_cloud)
+                .await
+            {
+                let _ = app.emit("new_recipe_cloud_error", "Failed to add recipe to cloud");
+            }
+        });
+
+        Ok(())
+    }
+}
+
+impl RecipeFormData {
+    /// Attempts to upload the recipe to the cloud.
+    ///
+    /// # Arguments:
+    ///
+    /// * `app` - The Tauri app handle.
+    /// * `recipe_id` - The local recipe ID.
+    /// * `image_path` - The local image path.
+    /// * `image_path_for_cloud` - The cloud image path.
+    ///
+    /// # Returns:
+    ///
+    /// * `Ok(())` - The upload was successful.
+    /// * `Err` - The upload failed.
+    pub async fn try_upload(
+        self,
+        app: &AppHandle,
+        recipe_id: i64,
+        image_path: Option<String>,
+        image_path_for_cloud: Option<String>,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let state = app.state::<AppState>();
+
+        let cloud_recipe = RecipeFormData {
+            image_path: image_path.and(image_path_for_cloud),
+            ..self
+        };
+
+        let resp_data: GenericResponse<NewRecipeResponse> =
+            recipe_post(app, "/recipe/new", cloud_recipe)
+                .await?
+                .json()
+                .await?;
+
+        let online_recipe_id = resp_data.data.recipe_id;
+        let username = get_username(&state).await?;
+
+        run_tx_with_error!(&state.db, |tx| {
+            insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str())
+        });
+
         Ok(())
     }
 }

@@ -205,36 +205,59 @@ impl RecipeContext {
 }
 
 pub trait HasRecipeContext {
-    fn ingredients(&self) -> &Vec<Ingredient>;
-    fn directions(&self) -> &Vec<String>;
-    fn tags(&self) -> &Vec<String>;
+    fn ingredients(&self) -> Vec<Ingredient>;
+    fn directions(&self) -> Vec<String>;
+    fn tags(&self) -> Vec<String>;
 }
 
 impl HasRecipeContext for RecipeFormData {
-    fn ingredients(&self) -> &Vec<Ingredient> {
-        &self.ingredients
+    fn ingredients(&self) -> Vec<Ingredient> {
+        self.ingredients.clone()
     }
 
-    fn directions(&self) -> &Vec<String> {
-        &self.directions
+    fn directions(&self) -> Vec<String> {
+        self.directions.clone()
     }
 
-    fn tags(&self) -> &Vec<String> {
-        &self.tags
+    fn tags(&self) -> Vec<String> {
+        self.tags.clone()
     }
 }
 
 impl HasRecipeContext for LocalRecipe {
-    fn ingredients(&self) -> &Vec<Ingredient> {
-        &self.ingredients
+    fn ingredients(&self) -> Vec<Ingredient> {
+        self.ingredients.clone()
     }
 
-    fn directions(&self) -> &Vec<String> {
-        &self.directions
+    fn directions(&self) -> Vec<String> {
+        self.directions.clone()
     }
 
-    fn tags(&self) -> &Vec<String> {
-        &self.tags
+    fn tags(&self) -> Vec<String> {
+        self.tags.clone()
+    }
+}
+
+impl HasRecipeContext for Recipe {
+    fn ingredients(&self) -> Vec<Ingredient> {
+        self.ingredients.clone()
+    }
+
+    fn directions(&self) -> Vec<String> {
+        self.directions
+            .clone()
+            .into_iter()
+            .map(|d| d.content)
+            .collect()
+    }
+
+    fn tags(&self) -> Vec<String> {
+        self.tags
+            .clone()
+            .into_iter()
+            .filter(|t| t.name.is_some())
+            .map(|t| t.name.clone().unwrap())
+            .collect()
     }
 }
 
@@ -337,6 +360,74 @@ impl RawRecipeCommon for LocalRecipe {
         self.cloud_parent_id.clone()
     }
 }
+
+impl RawRecipeCommon for Recipe {
+    fn id(&self) -> Option<i64> {
+        self.id
+    }
+
+    fn title(&self) -> Option<String> {
+        Some(self.title.clone())
+    }
+
+    fn yield_(&self) -> Option<i64> {
+        Some(self.servings)
+    }
+
+    fn minutes(&self) -> Option<i64> {
+        Some(self.minutes)
+    }
+
+    fn img_url(&self) -> Option<String> {
+        self.img_url.clone()
+    }
+
+    fn source(&self) -> Option<String> {
+        self.source_url.clone()
+    }
+
+    fn color(&self) -> Option<String> {
+        Some(self.color.clone())
+    }
+
+    fn last_viewed(&self) -> Option<NaiveDateTime> {
+        self.last_viewed
+    }
+
+    fn last_updated(&self) -> Option<NaiveDateTime> {
+        self.last_updated
+    }
+
+    fn cloud_parent_id(&self) -> Option<String> {
+        self.cloud_parent_id.clone()
+    }
+}
+
+pub trait ToRecipeFormData: RawRecipeCommon + HasRecipeContext {
+    fn into_recipe_form_data(&self) -> RecipeFormData {
+        RecipeFormData {
+            title: self.title().unwrap_or_default(),
+            yield_value: self.yield_().unwrap_or_default() as u32,
+            time: self.minutes().unwrap_or_default() as u32,
+            image_path: self.img_url(),
+            color: self.color().unwrap_or_default(),
+            ingredients: self.ingredients().clone(),
+            directions: self.directions().clone(),
+            tags: self.tags().clone(),
+            source_url: self.source().clone(),
+            last_viewed: self
+                .last_viewed()
+                .map(|t| t.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+            last_updated: self
+                .last_updated()
+                .map(|t| t.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+            cloud_parent_id: self.cloud_parent_id().clone(),
+        }
+    }
+}
+
+// Blanket impl for anything that satisfies both bounds
+impl<T: RawRecipeCommon + HasRecipeContext> ToRecipeFormData for T {}
 
 impl<T> Parsable for T
 where

@@ -1,9 +1,9 @@
 use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
-    api::{auth::check_auth::get_username, get_cloud_image_path, should_request},
+    api::{auth::check_auth::get_username, should_request},
     crud::{cloud_id::get_cloud_id_with_username, recipe::update_recipe},
-    img_proc::get_processed_image,
+    img_proc::{get_cloud_image_path, get_processed_image},
     request::recipe_post,
     types::{
         cloud_structs::{LocalRecipe, RecipeFormData},

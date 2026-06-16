@@ -48,3 +48,7 @@ pub trait DownloadableWith<T>: Sized {
         addl_params: T,
     ) -> Result<Self, Box<dyn std::error::Error>>;
 }
+
+pub trait Uploadable {
+    async fn upload(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>>;
+}

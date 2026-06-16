@@ -1,12 +1,11 @@
 use crate::{
-    api::{get_cloud_image_path, recipe::new::add_to_cloud},
     crud::{
         recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
-        DownloadableWith, Updatable,
+        DownloadableWith, Updatable, Uploadable,
     },
     errors::StringifyError,
-    img_proc::convert_cloud_img_to_local,
+    img_proc::{convert_cloud_img_to_local, get_cloud_image_path},
     macros::{run_tx, run_tx_with_error},
     request::recipe_post,
     types::{
@@ -14,7 +13,7 @@ use crate::{
         db_params::{
             ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath,
         },
-        raw_db::{IntegerValue, StringValue},
+        raw_db::{IntegerValue, StringValue, ToRecipeFormData},
         response_bodies::Recipe,
     },
     AppState,
@@ -130,7 +129,7 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         recipe.image_path = local_image_path;
         recipe.cloud_parent_id = Some(cloud_parent_id);
 
-        match insert_recipe(&state.db, recipe, username_option).await {
+        match insert_recipe(&state.db, &recipe, username_option).await {
             Ok(_) => {}
             Err(e) => return Err(e.to_string()),
         }
@@ -167,43 +166,10 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         .filter(|r| r.id.is_some())
         .collect();
     for recipe in no_cloud_parent {
-        let image_path_for_cloud = get_cloud_image_path(&state, &recipe.img_url).await;
-        add_to_cloud(
-            &app,
-            recipe.id.unwrap(),
-            RecipeFormData {
-                title: recipe.title.clone(),
-                yield_value: recipe.servings as u32,
-                time: recipe.minutes as u32,
-                image_path: match recipe.img_url {
-                    Some(_) => image_path_for_cloud,
-                    None => None,
-                },
-                color: recipe.color.clone(),
-                ingredients: recipe.ingredients.clone(),
-                directions: recipe
-                    .directions
-                    .iter()
-                    .map(|d| d.content.clone())
-                    .collect(),
-                tags: recipe
-                    .tags
-                    .iter()
-                    .map(|t| t.name.clone().unwrap_or_default())
-                    .collect(),
-                source_url: recipe.source_url.clone(),
-                last_viewed: match recipe.last_viewed.clone() {
-                    Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
-                    None => None,
-                },
-                last_updated: match recipe.last_updated.clone() {
-                    Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
-                    None => None,
-                },
-                cloud_parent_id: None,
-            },
-        )
-        .await?;
+        let form_data = recipe
+            .into_recipe_form_data()
+            .into_local_recipe(recipe.id.unwrap());
+        form_data.upload(&app).await.map_err(|e| e.to_string())?;
     }
 
     // Update recipes on the server that have a newer version stored locally
