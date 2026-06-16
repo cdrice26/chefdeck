@@ -38,19 +38,22 @@ async fn update_local_recipe_from_downloaded(
         Option<i64>,
         Box<dyn std::error::Error>,
     > {
-        let local_row = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe.id)
-            .fetch_one(&mut **tx)
+        let local_row_res = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe.id)
+            .fetch_optional(&mut **tx)
             .await;
-        Ok(match local_row {
-            Ok(row) => row.value,
-            Err(_) => None,
-        })
+
+        match local_row_res {
+            Ok(opt_row) => Ok(opt_row.and_then(|r| r.value)),
+            Err(e) => Err(Box::from(e)),
+        }
     });
 
     let Some(local_id) = local_id_opt else {
         return Ok(None);
     };
 
+    // If converting the image fails, treat that as an error so the caller can abort
+    // and avoid updating last_synced when a local update did not complete.
     let local_image_path = match convert_cloud_img_to_local(
         &recipe.image_path,
         &recipe.id,
@@ -59,8 +62,8 @@ async fn update_local_recipe_from_downloaded(
     )
     .await
     {
-        Ok(Some(path)) => Some(path),
-        _ => None,
+        Ok(opt) => opt,
+        Err(e) => return Err(e),
     };
 
     run_tx_with_error!(
