@@ -3,6 +3,8 @@ use tauri::State;
 
 use crate::{api::ErrorResponse, crud::tags::get_tags, AppState};
 
+pub mod delete;
+
 #[derive(Serialize)]
 pub struct Tag {
     pub value: String,

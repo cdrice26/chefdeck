@@ -8,12 +8,6 @@ use super::{
 };
 use chrono::NaiveDateTime;
 
-/// Represents a value from a pair in the key-value table
-#[derive(sqlx::FromRow, Debug)]
-pub struct StringValue {
-    pub value: Option<String>,
-}
-
 /// Represents an integer value from a pair in the key-value table
 #[derive(sqlx::FromRow, Debug)]
 pub struct IntegerValue {
@@ -500,5 +494,11 @@ pub struct RawCloudId {
 pub struct CloudId {
     pub local_id: i64,
     pub cloud_id: String,
+    pub username: String,
+}
+
+#[derive(Debug)]
+pub struct TagCloudId {
+    pub local_id: i64,
     pub username: String,
 }

@@ -4,6 +4,8 @@ pub mod cloud_id;
 pub mod recipe;
 pub mod recipe_data;
 pub mod recipes;
+pub mod tag;
+pub mod tag_cloud_id;
 pub mod tags;
 
 pub trait Creatable {

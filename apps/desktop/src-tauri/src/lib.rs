@@ -45,6 +45,7 @@ pub fn run() {
             api::auth::logout::api_auth_logout,
             api::sync_data::sync_data,
             api::tags::api_tags,
+            api::tags::delete::api_tags_delete,
         ])
         .setup(|app| {
             let db = tauri::async_runtime::block_on(async { setup_db(app).await });

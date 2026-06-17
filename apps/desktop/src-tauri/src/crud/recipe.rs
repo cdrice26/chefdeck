@@ -18,7 +18,7 @@ use crate::{
         parser::Parsable,
         raw_db::{
             CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RawRecipeSyncable,
-            RecipeContext, ToRecipeFormData,
+            RecipeContext, TagCloudId, ToRecipeFormData,
         },
         response_bodies::Recipe,
     },
@@ -206,9 +206,31 @@ pub async fn delete_recipe<T: RawRecipeCommon>(
     };
     run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
         delete_recipe_img(tx, id, images_lib_path).await?;
-        sqlx::query_file!("db/delete_recipe.sql", id, id, id, id, id, id, id)
-            .execute(&mut **tx)
-            .await?;
+        recipe.delete(tx).await?;
+        Ok::<(), Box<dyn std::error::Error>>(())
+    });
+    Ok(())
+}
+
+pub async fn create_tag_cloud_ids(
+    db: &sqlx::SqlitePool,
+    recipe: &RecipeFormData,
+    username: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    run_tx_with_error!(db, async |tx: &mut Transaction<'_, Sqlite>| {
+        for tag_name in recipe.tags.iter() {
+            // Query for the tag ID
+            let tag_result = sqlx::query_file!("db/insert_user_tag.sql", tag_name)
+                .fetch_one(&mut **tx)
+                .await?;
+
+            // Create tag cloud ID using tag name as cloud ID
+            let tag_cloud_id = TagCloudId {
+                local_id: tag_result.id,
+                username: username.to_string(),
+            };
+            tag_cloud_id.create(tx).await?;
+        }
         Ok::<(), Box<dyn std::error::Error>>(())
     });
     Ok(())
@@ -459,7 +481,7 @@ impl RecipeFormData {
 
         let cloud_recipe = RecipeFormData {
             image_path: image_path.and(image_path_for_cloud),
-            ..self
+            ..self.clone()
         };
 
         let resp_data: GenericResponse<NewRecipeResponse> =
@@ -474,6 +496,11 @@ impl RecipeFormData {
         run_tx_with_error!(&state.db, |tx| {
             insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str())
         });
+
+        // Create tag cloud IDs for all tags in this recipe
+        if !self.tags.is_empty() {
+            create_tag_cloud_ids(&state.db, &self, username.as_str()).await?;
+        }
 
         Ok(())
     }
@@ -539,11 +566,12 @@ impl RecipeFormData {
         image_path_for_cloud: Option<String>,
     ) -> Result<(), Box<dyn std::error::Error>> {
         let state = app.state::<AppState>();
+        let username = get_username(&state).await?;
         let cloud_id_result = match get_cloud_id_with_username(
             &state.db,
             recipe_id,
             UsernameFilter {
-                username: &get_username(&state).await?,
+                username: &username,
             },
         )
         .await
@@ -558,7 +586,7 @@ impl RecipeFormData {
 
         let cloud_recipe = RecipeFormData {
             image_path: image_path.and(image_path_for_cloud),
-            ..self
+            ..self.clone()
         };
 
         let resp = recipe_post(
@@ -569,6 +597,10 @@ impl RecipeFormData {
         .await;
         if resp.is_err() {
             return Err(String::from("Failed to update recipe in cloud").into());
+        }
+        // Create tag cloud IDs for all tags in this recipe
+        if !self.tags.is_empty() {
+            create_tag_cloud_ids(&state.db, &self, username.as_str()).await?;
         }
         Ok(())
     }
