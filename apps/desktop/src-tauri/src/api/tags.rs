@@ -1,15 +1,8 @@
-use serde::Serialize;
 use tauri::State;
 
-use crate::{api::ErrorResponse, crud::tags::get_tags, AppState};
+use crate::{api::ErrorResponse, crud::tags::get_tags, types::cloud_structs::Tag, AppState};
 
 pub mod delete;
-
-#[derive(Serialize)]
-pub struct Tag {
-    pub value: String,
-    pub label: String,
-}
 
 #[tauri::command]
 pub async fn api_tags(state: State<'_, AppState>) -> Result<Vec<Tag>, ErrorResponse> {

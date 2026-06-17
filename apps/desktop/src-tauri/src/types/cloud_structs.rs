@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::types::response_bodies::Ingredient;
 
@@ -129,4 +129,10 @@ pub struct RecipeExistenceRecord {
 #[derive(Debug, Deserialize, sqlx::FromRow)]
 pub struct LastSyncedRecord {
     pub last_synced: Option<NaiveDateTime>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Tag {
+    pub value: String,
+    pub label: String,
 }

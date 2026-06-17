@@ -2,7 +2,9 @@ use crate::{
     crud::{
         recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
-        DownloadableWith, RemoteUpdatable, Updatable, Uploadable,
+        tag::delete_tag,
+        tags::get_tags_with_cloud_ids,
+        Downloadable, DownloadableWith, RemoteUpdatable, Updatable, Uploadable,
     },
     errors::StringifyError,
     img_proc::convert_cloud_img_to_local,
@@ -10,10 +12,11 @@ use crate::{
     types::{
         cloud_structs::{DownloadedRecipe, LastSyncedRecord, RecipeExistenceRecord},
         db_params::{
-            ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath,
+            ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilter,
+            UsernameFilterWithImagesLibPath,
         },
         raw_db::{IntegerValue, ToRecipeFormData},
-        response_bodies::Recipe,
+        response_bodies::{Recipe, RecipeTag},
     },
     AppState,
 };
@@ -223,8 +226,41 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+async fn sync_tags(app: AppHandle) -> Result<(), String> {
+    let state = app.state::<AppState>();
+    let db = &state.db;
+    let username = get_username(&state).await?;
+    let local_tags = get_tags_with_cloud_ids(
+        db,
+        UsernameFilter {
+            username: &username,
+        },
+    )
+    .await
+    .map_err(|e| e.to_string())?;
+
+    let downloaded_tags = Vec::<RecipeTag>::download(&app)
+        .await
+        .map_err(|e| e.to_string())?
+        .into_iter()
+        .filter(|tag| tag.name.is_some())
+        .map(|tag| tag.name.clone().unwrap())
+        .collect::<Vec<_>>();
+
+    for tag in local_tags.iter() {
+        if let Some(tag_name) = &tag.name {
+            if !downloaded_tags.contains(tag_name) {
+                delete_tag(db, tag).await.map_err(|e| e.to_string())?;
+            }
+        }
+    }
+
+    Ok(())
+}
+
 async fn sync_all(app: AppHandle) -> Result<(), String> {
     sync_recipes(app.clone()).await?;
+    sync_tags(app.clone()).await?;
     let state = app.state::<AppState>();
     let db = &state.db;
     let username = get_username(&state).await?;

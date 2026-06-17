@@ -44,6 +44,10 @@ pub trait Deletable {
     ) -> Result<(), Box<dyn std::error::Error>>;
 }
 
+pub trait Downloadable: Sized {
+    async fn download(app: &AppHandle) -> Result<Self, Box<dyn std::error::Error>>;
+}
+
 pub trait DownloadableWith<T>: Sized {
     async fn download_with(
         app: &AppHandle,
