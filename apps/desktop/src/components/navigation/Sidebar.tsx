@@ -15,6 +15,7 @@ export default function Sidebar({
   const location = useLocation();
   const { availableTags } = useAvailableTags(request);
   const [selectedTags, setSelectedTags] = useState<OptionType[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_searchParams, setSearchParams] = useSearchParams();
 
   const pages = [
