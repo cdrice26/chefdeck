@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 export default function Sidebar({
   ref
 }: {
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLDivElement | null>;
 }) {
   const navigate = useNavigate();
   const location = useLocation();

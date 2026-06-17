@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import Sidebar from '../navigation/Sidebar';
 import { platform } from '@tauri-apps/plugin-os';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Toolbar from '../navigation/Toolbar';
 import { NotificationWrapper, useNotification } from 'chefdeck-shared';
 import { useTauriListener } from '../../hooks/useTauriListener';
@@ -12,8 +12,6 @@ export default function RootPage() {
   const [dragWidth, setDragWidth] = useState(0);
 
   const { addNotification } = useNotification();
-
-  const pxToNum = (px: string) => Number(px.replace('px', '')) || 0;
 
   useEffect(() => {
     if (platform() !== 'macos') return;
