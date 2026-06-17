@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 export default function Sidebar({
   ref
 }: {
-  ref: React.RefObject<HTMLDivElement | null>;
+  ref: React.RefObject<HTMLDivElement>;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,11 +62,7 @@ export default function Sidebar({
   return (
     <div
       ref={ref}
-      className={`flex flex-col gap-4 w-64 p-2 h-full ${
-        platform() === 'macos'
-          ? 'rounded-[20px] border-white dark:border-[#505050] border drop-shadow-2xl bg-[#ffffffaa] dark:bg-[#202020aa]'
-          : 'border-r border-r-gray-100 dark:border-r-[#505050]'
-      }`}
+      className={`flex flex-col gap-4 w-64 px-2 pt-2 h-full border-r border-r-gray-100 dark:border-r-[#505050]`}
     >
       {platform() === 'macos' ? <div className="h-6"></div> : <></>}
       <div className="flex flex-col gap-1">
