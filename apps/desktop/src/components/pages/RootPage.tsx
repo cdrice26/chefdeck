@@ -64,7 +64,7 @@ export default function RootPage() {
         <Sidebar ref={sidebarRef} />
         <div
           ref={contentRef}
-          className={`flex-1 flex flex-col z-10 p-2 bg-white dark:bg-[#202020]`}
+          className={`flex-1 flex flex-col z-10 px-2 pt-2 bg-white dark:bg-[#202020]`}
         >
           <Toolbar />
           <div className="flex-1 min-h-0 overflow-y-auto relative">

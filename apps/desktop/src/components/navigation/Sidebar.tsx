@@ -1,7 +1,7 @@
 import { platform } from '@tauri-apps/plugin-os';
 import SidebarButton from './SidebarButton';
 import { useNavigate, useLocation, useSearchParams } from 'react-router';
-import { IoIosCalendar, IoIosHome, IoIosList } from 'react-icons/io';
+import { IoIosCalendar, IoIosHome, IoIosList, IoIosMore } from 'react-icons/io';
 import { OptionType, useAvailableTags } from 'chefdeck-shared';
 import { request } from '../../utils/fetchUtils';
 import { useEffect, useState } from 'react';
@@ -29,6 +29,10 @@ export default function Sidebar({
     {
       label: 'Groceries',
       icon: IoIosList
+    },
+    {
+      label: 'More',
+      icon: IoIosMore
     }
   ];
 
@@ -62,7 +66,7 @@ export default function Sidebar({
   return (
     <div
       ref={ref}
-      className={`flex flex-col gap-4 w-64 px-2 pt-2 h-full border-r border-r-gray-100 dark:border-r-[#505050]`}
+      className={`flex flex-col gap-4 w-64 px-2 pt-2 h-full border-r border-r-gray-100 dark:border-r-[#505050] bg-[#ffffffaa] dark:bg-[#202020aa]`}
     >
       {platform() === 'macos' ? <div className="h-6"></div> : <></>}
       <div className="flex flex-col gap-1">
@@ -83,7 +87,7 @@ export default function Sidebar({
         {availableTags?.map((tag: OptionType) => (
           <button
             key={tag.value}
-            className={`px-2 py-1 max-h-10 transition-all ${selectedTags.includes(tag) ? 'bg-green-800' : 'bg-gray-100 dark:bg-[#505050]'} rounded-lg text-sm`}
+            className={`px-2 py-1 max-h-10 transition-all ${selectedTags.includes(tag) ? 'bg-green-800' : 'bg-gray-300 dark:bg-[#505050]'} rounded-lg text-sm`}
             onClick={() => handleTagChange(tag)}
           >
             {tag.label}
