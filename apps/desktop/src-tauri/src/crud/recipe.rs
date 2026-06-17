@@ -8,16 +8,17 @@ use crate::{
     api::{auth::check_auth::get_username, GenericResponse},
     crud::{
         cloud_id::get_cloud_id_with_username, Creatable, Deletable, Readable, ReadableWith,
-        RemoteUpdatable, Updatable, Uploadable,
+        RemoteDeletable, RemoteUpdatable, Updatable, Uploadable,
     },
     img_proc::{delete_recipe_img, get_cloud_image_path},
-    request::recipe_post,
+    request::{delete, recipe_post},
     types::{
         cloud_structs::{LocalRecipe, NewRecipeResponse, RecipeFormData},
         db_params::{ImagesLibPath, UsernameFilter},
         parser::Parsable,
         raw_db::{
-            CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RecipeContext, ToRecipeFormData,
+            CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RawRecipeSyncable,
+            RecipeContext, ToRecipeFormData,
         },
         response_bodies::Recipe,
     },
@@ -191,7 +192,7 @@ pub async fn update_recipe(
 /// `Ok(())` if the delete was successful, or an error if one occurred.
 pub async fn delete_recipe<T: RawRecipeCommon>(
     db: &sqlx::SqlitePool,
-    recipe: T,
+    recipe: &T,
     images_lib_path: &PathBuf,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let id = match recipe.id() {
@@ -479,6 +480,16 @@ impl RecipeFormData {
 }
 
 impl<T: RawRecipeCommon + HasRecipeContext + ToRecipeFormData> RemoteUpdatable for T {
+    /// Updates the recipe in the cloud.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` if the update was successful.
+    /// * `Err` if the update failed.
     async fn update_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
         let state: State<AppState> = app.state();
         let image_path_for_cloud = get_cloud_image_path(&state, &self.img_url()).await;
@@ -507,6 +518,19 @@ impl<T: RawRecipeCommon + HasRecipeContext + ToRecipeFormData> RemoteUpdatable f
 }
 
 impl RecipeFormData {
+    /// Updates the recipe in the cloud.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    /// * `recipe_id` - The ID of the recipe to update.
+    /// * `image_path` - The local image path of the recipe.
+    /// * `image_path_for_cloud` - The cloud image path of the recipe.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` if the update was successful.
+    /// * `Err` if the update failed.
     pub async fn try_update_remote(
         self,
         app: &AppHandle,
@@ -547,5 +571,56 @@ impl RecipeFormData {
             return Err(String::from("Failed to update recipe in cloud").into());
         }
         Ok(())
+    }
+}
+
+impl RemoteDeletable for RawRecipeSyncable {
+    /// Deletes the recipe from the cloud.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    ///
+    /// # Returns
+    ///
+    /// Returns `Ok(())` if the recipe was successfully deleted, or an error if it failed.
+    async fn delete_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+        let app = app.clone();
+        let recipe = self.clone();
+        tauri::async_runtime::spawn(async move {
+            if recipe.try_delete_remote(&app).await.is_err() {
+                let _ = app.emit(
+                    "delete_recipe_cloud_error",
+                    "Failed to delete recipe from cloud",
+                );
+            }
+        });
+        Ok(())
+    }
+}
+
+impl RawRecipeSyncable {
+    /// Tries to delete the recipe from the cloud.
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - The Tauri app handle.
+    ///
+    /// # Returns
+    ///
+    /// Returns `Ok(())` if the recipe was successfully deleted, or an error if it failed.
+    async fn try_delete_remote(self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+        if self.cloud_recipe_id.is_none() {
+            return Ok(());
+        }
+        let resp = delete(
+            app,
+            format!("/recipe/{}/delete", self.cloud_recipe_id.unwrap()).as_str(),
+        )
+        .await;
+        match resp {
+            Ok(_) => Ok(()),
+            Err(_) => Err(String::from("Failed to delete recipe from cloud").into()),
+        }
     }
 }

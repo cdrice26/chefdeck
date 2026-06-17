@@ -1,23 +1,15 @@
-use tauri::{AppHandle, Emitter, State};
+use tauri::{AppHandle, State};
 
 use crate::{
     api::{auth::check_auth::get_username, ErrorResponse, GenericResponse, SuccessResponse},
     crud::{
         cloud_id::get_cloud_id_with_username,
         recipe::{delete_recipe, get_raw_recipe},
+        RemoteDeletable,
     },
-    request::delete,
     types::db_params::UsernameFilter,
     AppState,
 };
-
-async fn cloud_delete_recipe(app: &AppHandle, cloud_id: String) -> Result<(), String> {
-    let resp = delete(app, format!("/recipe/{}/delete", cloud_id).as_str()).await;
-    match resp {
-        Ok(_) => Ok(()),
-        Err(_) => Err(String::from("Failed to delete recipe from cloud")),
-    }
-}
 
 #[tauri::command]
 pub async fn api_recipe_delete(
@@ -51,7 +43,7 @@ pub async fn api_recipe_delete(
             })
         }
     };
-    let _ = match delete_recipe(db, recipe, &state.images_lib_path).await {
+    let _ = match delete_recipe(db, &recipe, &state.images_lib_path).await {
         Ok(result) => result,
         Err(e) => {
             return Err(ErrorResponse {
@@ -70,15 +62,14 @@ pub async fn api_recipe_delete(
     };
 
     if should_request && (cloud_id_result.is_ok()) {
-        tauri::async_runtime::spawn(async move {
-            let cloud_result = cloud_delete_recipe(&app, cloud_id_result.unwrap().cloud_id).await;
-            if cloud_result.is_err() {
-                let _ = app.emit(
-                    "delete_recipe_cloud_error",
-                    "Failed to delete recipe from cloud",
-                );
-            }
-        });
+        let cloud_id = cloud_id_result.unwrap().cloud_id;
+        let syncable = recipe.into_syncable(Some(cloud_id));
+        syncable
+            .delete_remote(&app)
+            .await
+            .map_err(|e| ErrorResponse {
+                error: e.to_string(),
+            })?;
     }
 
     Ok(GenericResponse {

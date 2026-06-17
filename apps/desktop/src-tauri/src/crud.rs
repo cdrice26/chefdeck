@@ -56,3 +56,7 @@ pub trait Uploadable {
 pub trait RemoteUpdatable {
     async fn update_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>>;
 }
+
+pub trait RemoteDeletable {
+    async fn delete_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>>;
+}

@@ -48,7 +48,7 @@ pub struct RawRecipeWithLastViewed {
 }
 
 /// Represents a recipe as it exists in the local database, with update information for syncing.
-#[derive(sqlx::FromRow, Debug)]
+#[derive(sqlx::FromRow, Debug, Clone)]
 pub struct RawRecipeSyncable {
     pub id: Option<i64>,
     pub title: Option<String>,
@@ -82,6 +82,23 @@ pub trait RawRecipeCommon {
     }
     fn cloud_parent_id(&self) -> Option<String> {
         None
+    }
+}
+
+impl RawRecipe {
+    pub fn into_syncable(self, cloud_recipe_id: Option<String>) -> RawRecipeSyncable {
+        RawRecipeSyncable {
+            cloud_recipe_id,
+            last_updated: None,
+            last_viewed: None,
+            id: self.id,
+            title: self.title,
+            r#yield: self.r#yield,
+            minutes: self.minutes,
+            img_url: self.img_url,
+            source: self.source,
+            color: self.color,
+        }
     }
 }
 
