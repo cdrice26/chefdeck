@@ -8,11 +8,11 @@
   ],
   "packageManager": "npm@11.6.2",
   "scripts": {
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=chefdeck-web...",
     "dev:desktop": "turbo run dev --filter=chefdeck-desktop...",
     "build": "turbo run build",
-    "start": "turbo run start --parallel",
+    "start": "turbo run start",
     "lint": "turbo run lint",
     "cargo": "cd apps/desktop/src-tauri && cargo"
   },

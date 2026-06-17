@@ -20,6 +20,11 @@
       "persistent": true,
       "dependsOn": ["^build", "chefdeck-shared#build"]
     },
+    "start": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build", "chefdeck-shared#build"]
+    },
     "lint": {
       "outputs": []
     },
