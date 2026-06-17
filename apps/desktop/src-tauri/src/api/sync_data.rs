@@ -2,14 +2,13 @@ use crate::{
     crud::{
         recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
-        DownloadableWith, Updatable, Uploadable,
+        DownloadableWith, RemoteUpdatable, Updatable, Uploadable,
     },
     errors::StringifyError,
-    img_proc::{convert_cloud_img_to_local, get_cloud_image_path},
+    img_proc::convert_cloud_img_to_local,
     macros::{run_tx, run_tx_with_error},
-    request::recipe_post,
     types::{
-        cloud_structs::{DownloadedRecipe, RecipeExistenceRecord, RecipeFormData},
+        cloud_structs::{DownloadedRecipe, RecipeExistenceRecord},
         db_params::{
             ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath,
         },
@@ -194,49 +193,16 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
     .await
     .map_err(|e| e.to_string())?;
     for recipe in updated_local_recipes {
-        let image_path_for_cloud = get_cloud_image_path(&state, &recipe.img_url).await;
-        let form_data = RecipeFormData {
-            title: recipe.title.clone(),
-            yield_value: recipe.servings as u32,
-            time: recipe.minutes as u32,
-            image_path: match recipe.img_url {
-                Some(_) => image_path_for_cloud,
-                None => None,
-            },
-            color: recipe.color.clone(),
-            ingredients: recipe.ingredients.clone(),
-            directions: recipe
-                .directions
-                .iter()
-                .map(|d| d.content.clone())
-                .collect(),
-            tags: recipe
-                .tags
-                .iter()
-                .map(|t| t.name.clone().unwrap_or_default())
-                .collect(),
-            source_url: recipe.source_url.clone(),
-            last_viewed: match recipe.last_viewed.clone() {
-                Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
-                None => None,
-            },
-            last_updated: match recipe.last_updated.clone() {
-                Some(date) => Some(date.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
-                None => None,
-            },
-            cloud_parent_id: None,
-        };
-        if let Some(cloud_parent_id) = recipe.cloud_parent_id.as_deref() {
-            let fetch_result = recipe_post(
-                &app,
-                format!("/recipe/{}/update", cloud_parent_id).as_str(),
-                form_data,
-            )
-            .await;
-            if let Err(err) = fetch_result {
-                return Err(err.to_string());
-            }
+        let recipe_id_opt = recipe.id;
+        if recipe_id_opt.is_none() {
+            continue;
         }
+        let recipe_id = recipe_id_opt.unwrap();
+        let local_recipe = recipe.into_recipe_form_data().into_local_recipe(recipe_id);
+        local_recipe
+            .update_remote(&app)
+            .await
+            .map_err(|e| e.to_string())?;
     }
 
     // Update local recipes that have a newer version stored on the server

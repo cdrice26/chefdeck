@@ -83,11 +83,11 @@ export default function Sidebar({
           />
         ))}
       </div>
-      <div className="flex flex-row flex-wrap gap-2 h-full overflow-y-auto p-2">
+      <div className="flex flex-row flex-wrap gap-2 h-full items-start justify-start content-start overflow-y-auto p-2">
         {availableTags?.map((tag: OptionType) => (
           <button
             key={tag.value}
-            className={`px-2 py-1 transition-all ${selectedTags.includes(tag) ? 'bg-green-800' : 'bg-gray-100 dark:bg-[#505050]'} rounded-lg text-sm`}
+            className={`px-2 py-1 max-h-10 transition-all ${selectedTags.includes(tag) ? 'bg-green-800' : 'bg-gray-100 dark:bg-[#505050]'} rounded-lg text-sm`}
             onClick={() => handleTagChange(tag)}
           >
             {tag.label}
