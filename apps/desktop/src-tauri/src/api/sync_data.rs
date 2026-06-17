@@ -8,11 +8,11 @@ use crate::{
     img_proc::convert_cloud_img_to_local,
     macros::{run_tx, run_tx_with_error},
     types::{
-        cloud_structs::{DownloadedRecipe, RecipeExistenceRecord},
+        cloud_structs::{DownloadedRecipe, LastSyncedRecord, RecipeExistenceRecord},
         db_params::{
             ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilterWithImagesLibPath,
         },
-        raw_db::{IntegerValue, StringValue, ToRecipeFormData},
+        raw_db::{IntegerValue, ToRecipeFormData},
         response_bodies::Recipe,
     },
     AppState,
@@ -171,17 +171,22 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         form_data.upload(&app).await.map_err(|e| e.to_string())?;
     }
 
+    let username_ref = &username;
+
     // Update recipes on the server that have a newer version stored locally
     let last_synced_db = run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
-        query_file_as!(StringValue, "db/get_key_value.sql", "last_synced")
-            .fetch_one(&mut **tx)
+        query_file_as!(LastSyncedRecord, "db/get_last_synced.sql", username_ref)
+            .fetch_optional(&mut **tx)
             .await
     })?;
-    let last_synced_db = last_synced_db
-        .value
-        .unwrap_or(String::from("1970-01-01 00:00:00"));
-    let last_synced_datetime =
-        NaiveDateTime::parse_from_str(&last_synced_db, "%Y-%m-%d %H:%M:%S").unwrap_or_default();
+    let last_synced_datetime = match last_synced_db {
+        Some(record) => record.last_synced.unwrap_or(
+            NaiveDateTime::parse_from_str("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
+                .unwrap_or_default(),
+        ),
+        None => NaiveDateTime::parse_from_str("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
+            .unwrap_or_default(),
+    };
     let updated_local_recipes: Vec<Recipe> = get_recipes::<UsernameAndUpdatedFilter<'_>>(
         db,
         UsernameAndUpdatedFilter {
@@ -222,8 +227,10 @@ async fn sync_all(app: AppHandle) -> Result<(), String> {
     sync_recipes(app.clone()).await?;
     let state = app.state::<AppState>();
     let db = &state.db;
+    let username = get_username(&state).await?;
     run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
-        sqlx::query_file!("db/update_last_synced.sql")
+        let username_ref = &username;
+        sqlx::query_file!("db/update_last_synced.sql", username_ref)
             .execute(&mut **tx)
             .await?;
         Ok::<(), sqlx::Error>(())

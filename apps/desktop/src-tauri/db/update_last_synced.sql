@@ -1,3 +1,3 @@
-INSERT INTO key_value (key, value)
-VALUES ('last_synced', CURRENT_TIMESTAMP)
-ON CONFLICT (key) DO UPDATE SET value = CURRENT_TIMESTAMP;
+INSERT INTO last_synced_per_account (username, last_synced)
+VALUES (?, CURRENT_TIMESTAMP)
+ON CONFLICT (username) DO UPDATE SET last_synced = CURRENT_TIMESTAMP;

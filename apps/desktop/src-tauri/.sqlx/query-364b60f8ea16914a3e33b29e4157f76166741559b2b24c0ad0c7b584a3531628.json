@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE last_synced_per_account\nSET last_synced = CURRENT_TIMESTAMP\nWHERE username = ?;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "364b60f8ea16914a3e33b29e4157f76166741559b2b24c0ad0c7b584a3531628"
+}

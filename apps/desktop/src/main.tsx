@@ -11,6 +11,7 @@ import { NotificationProvider } from 'chefdeck-shared';
 import RecipePage from './components/pages/RecipePage';
 import EditRecipePage from './components/pages/EditRecipePage';
 import { AuthProvider } from './hooks/useAuth';
+import MorePage from './components/pages/MorePage';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');
@@ -28,6 +29,7 @@ ReactDOM.createRoot(rootElement).render(
               <Route path="groceries" element={<GroceriesPage />} />
               <Route path="create" element={<AddRecipePage />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="more" element={<MorePage />} />
               <Route path="recipe/:id">
                 <Route index element={<RecipePage />} />
                 <Route path="edit" element={<EditRecipePage />} />
