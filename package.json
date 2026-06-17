@@ -13,7 +13,8 @@
     "dev:desktop": "turbo run dev --filter=chefdeck-desktop...",
     "build": "turbo run build",
     "start": "turbo run start --parallel",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "cargo": "cd apps/desktop/src-tauri && cargo"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
