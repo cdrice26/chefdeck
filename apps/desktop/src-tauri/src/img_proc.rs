@@ -12,11 +12,14 @@ use crate::{request::get, types::raw_db::RawRecipe, AppState};
 /// # Arguments
 /// * `image` - The path to the image to process.
 /// * `new_location` - The path to save the processed image to.
-fn process_image(image: Option<&str>, new_location: &PathBuf) {
+fn process_image(
+    image: Option<&str>,
+    new_location: &PathBuf,
+) -> Result<(), Box<dyn std::error::Error>> {
     // If no image path is provided, exit early
     let image_path = match image {
         Some(path) => path,
-        None => return,
+        None => return Ok(()),
     };
 
     // Try to open the image, return early if it fails
@@ -24,7 +27,7 @@ fn process_image(image: Option<&str>, new_location: &PathBuf) {
         Ok(reader) => reader,
         Err(err) => {
             eprintln!("Error opening image: {}", err);
-            return;
+            return Err(Box::new(err));
         }
     };
 
@@ -33,7 +36,7 @@ fn process_image(image: Option<&str>, new_location: &PathBuf) {
         Ok(img) => img,
         Err(err) => {
             eprintln!("Error decoding image: {}", err);
-            return;
+            return Err(Box::new(err));
         }
     };
 
@@ -41,7 +44,7 @@ fn process_image(image: Option<&str>, new_location: &PathBuf) {
     if let Some(parent) = new_location.parent() {
         if let Err(err) = fs::create_dir_all(parent) {
             eprintln!("Failed to create directories {:?}: {}", parent, err);
-            return;
+            return Err(Box::new(err));
         }
     }
 
@@ -49,7 +52,9 @@ fn process_image(image: Option<&str>, new_location: &PathBuf) {
     let resized = decoded.resize(1000, 1000, imageops::FilterType::Lanczos3);
     if let Err(err) = resized.save(new_location) {
         eprintln!("Error saving image: {}", err);
+        return Err(Box::new(err));
     }
+    Ok(())
 }
 
 /// Processes an image, saves it in the app data directory, and
@@ -65,7 +70,10 @@ pub fn get_processed_image(image: Option<String>, images_lib_path: &PathBuf) -> 
     let image_path = if let Some(image) = image {
         let image_name = Uuid::new_v4().to_string() + ".jpg";
         let image_path_obj = images_lib_path.join(&image_name);
-        process_image(Some(&image), &image_path_obj);
+        let process_result = process_image(Some(&image), &image_path_obj);
+        if let Err(err) = process_result {
+            eprintln!("Error processing image: {}", err);
+        }
         Some(image_name)
     } else {
         None

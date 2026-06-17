@@ -6,12 +6,15 @@ use tauri::{AppHandle, Emitter, Manager, State};
 
 use crate::{
     api::{auth::check_auth::get_username, GenericResponse},
-    crud::{Creatable, Deletable, Readable, ReadableWith, Updatable, Uploadable},
+    crud::{
+        cloud_id::get_cloud_id_with_username, Creatable, Deletable, Readable, ReadableWith,
+        RemoteUpdatable, Updatable, Uploadable,
+    },
     img_proc::{delete_recipe_img, get_cloud_image_path},
     request::recipe_post,
     types::{
         cloud_structs::{LocalRecipe, NewRecipeResponse, RecipeFormData},
-        db_params::ImagesLibPath,
+        db_params::{ImagesLibPath, UsernameFilter},
         parser::Parsable,
         raw_db::{
             CloudId, HasRecipeContext, RawRecipe, RawRecipeCommon, RecipeContext, ToRecipeFormData,
@@ -169,7 +172,7 @@ pub async fn get_raw_recipe(
 /// `Ok(recipe_id)` if the update was successful, or an error if one occurred.
 pub async fn update_recipe(
     db: &sqlx::SqlitePool,
-    recipe_form_data: LocalRecipe,
+    recipe_form_data: &LocalRecipe,
 ) -> Result<i64, Box<dyn std::error::Error>> {
     let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
         recipe_form_data.update(tx).await
@@ -471,6 +474,78 @@ impl RecipeFormData {
             insert_cloud_parent_id(tx, recipe_id, username.as_str(), online_recipe_id.as_str())
         });
 
+        Ok(())
+    }
+}
+
+impl<T: RawRecipeCommon + HasRecipeContext + ToRecipeFormData> RemoteUpdatable for T {
+    async fn update_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+        let state: State<AppState> = app.state();
+        let image_path_for_cloud = get_cloud_image_path(&state, &self.img_url()).await;
+        let Some(recipe_id) = self.id() else {
+            return Ok(());
+        };
+
+        let app = app.clone();
+        let image_path = self.img_url();
+        let form_data = self.into_recipe_form_data();
+
+        tauri::async_runtime::spawn(async move {
+            if let Err(_) = form_data
+                .try_update_remote(&app, recipe_id, image_path, image_path_for_cloud)
+                .await
+            {
+                let _ = app.emit(
+                    "update_recipe_cloud_error",
+                    "Failed to update recipe in cloud",
+                );
+            }
+        });
+
+        Ok(())
+    }
+}
+
+impl RecipeFormData {
+    pub async fn try_update_remote(
+        self,
+        app: &AppHandle,
+        recipe_id: i64,
+        image_path: Option<String>,
+        image_path_for_cloud: Option<String>,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let state = app.state::<AppState>();
+        let cloud_id_result = match get_cloud_id_with_username(
+            &state.db,
+            recipe_id,
+            UsernameFilter {
+                username: &get_username(&state).await?,
+            },
+        )
+        .await
+        {
+            Ok(result) => Ok(result),
+            Err(e) => Err(e.to_string()),
+        };
+
+        if cloud_id_result.is_err() {
+            return Err(String::from("Failed to get cloud id").into());
+        }
+
+        let cloud_recipe = RecipeFormData {
+            image_path: image_path.and(image_path_for_cloud),
+            ..self
+        };
+
+        let resp = recipe_post(
+            &app,
+            format!("/recipe/{}/update", cloud_id_result.unwrap().cloud_id).as_str(),
+            cloud_recipe,
+        )
+        .await;
+        if resp.is_err() {
+            return Err(String::from("Failed to update recipe in cloud").into());
+        }
         Ok(())
     }
 }

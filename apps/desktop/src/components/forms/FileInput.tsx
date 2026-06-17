@@ -17,7 +17,9 @@ export default function FileInput() {
 
   return (
     <>
-      <Button onClick={handleClick}>Choose Image</Button>
+      <Button type="button" onClick={handleClick}>
+        Choose Image
+      </Button>
       <input type="hidden" name="filePath" value={filePath ?? ''} />
     </>
   );

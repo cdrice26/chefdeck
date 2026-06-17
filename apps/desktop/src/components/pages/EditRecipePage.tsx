@@ -8,6 +8,7 @@ import {
 import { useNavigate, useParams } from 'react-router';
 import { request, requestFromFormData } from '../../utils/fetchUtils';
 import { useMemo } from 'react';
+import FileInput from '../forms/FileInput';
 
 export default function EditRecipePage() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function EditRecipePage() {
       request={request}
       recipe={error || isLoading ? null : updatedRecipe}
       TagSelector={TagSelector}
+      FileInput={FileInput}
     />
   );
 }

@@ -52,3 +52,7 @@ pub trait DownloadableWith<T>: Sized {
 pub trait Uploadable {
     async fn upload(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>>;
 }
+
+pub trait RemoteUpdatable {
+    async fn update_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>>;
+}

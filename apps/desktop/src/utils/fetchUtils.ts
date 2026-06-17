@@ -143,6 +143,7 @@ export const requestFromFormData: RequestFn = async (url, _method, body) => {
     throw new Error('Body must be a FormData object');
   } else {
     const recipeObj = getRecipeUpdateData(body);
+    console.log(recipeObj);
     return await request(url, _method, recipeObj);
   }
 };
