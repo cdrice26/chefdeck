@@ -1,14 +1,17 @@
-use tauri::State;
+use tauri::{AppHandle, State};
 
 use crate::{
     api::{ErrorResponse, SuccessResponse},
-    crud::schedules::update_recipe_schedules,
-    types::raw_db::{RawScheduleFormData, ScheduleFormData},
+    crud::{schedules::update_recipe_schedules, RemoteUpdatable},
+    types::raw_db::{
+        RawScheduleFormData, ScheduleFormData, ScheduleFormDataList, ScheduleFormDataWithId,
+    },
     AppState,
 };
 
 #[tauri::command]
 pub async fn api_recipe_schedules_update(
+    app: AppHandle,
     state: State<'_, AppState>,
     data: Vec<RawScheduleFormData>,
     id: i64,
@@ -17,11 +20,22 @@ pub async fn api_recipe_schedules_update(
         .into_iter()
         .map(|d| d.into_schedule_form_data(id))
         .collect::<Vec<ScheduleFormData>>();
-    update_recipe_schedules(&state.db, &schedule)
+    let mut schedule_ids = update_recipe_schedules(&state.db, &schedule)
         .await
         .map_err(|e| ErrorResponse {
             error: e.to_string(),
         })?;
+    ScheduleFormDataList(
+        schedule
+            .into_iter()
+            .map(|s| s.into_schedule_form_data_with_id(schedule_ids.remove(0)))
+            .collect::<Vec<ScheduleFormDataWithId>>(),
+    )
+    .update_remote(&app)
+    .await
+    .map_err(|e| ErrorResponse {
+        error: e.to_string(),
+    })?;
     Ok(SuccessResponse {
         message: "Schedules updated successfully".to_string(),
     })

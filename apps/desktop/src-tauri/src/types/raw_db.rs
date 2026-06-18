@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use crate::{
     date_utils::{add_months, next_monthly_day_occurrence, week_of_month},
     types::{
-        cloud_structs::{LocalRecipe, RecipeFormData},
+        cloud_structs::{CloudSchedule, LocalRecipe, RecipeFormData},
         response_bodies::{Repeat, Schedule, ScheduleDisplay},
     },
 };
@@ -678,6 +678,37 @@ pub struct ScheduleFormData {
     pub end_repeat: Option<NaiveDate>,
 }
 
+impl ScheduleFormData {
+    pub fn into_schedule_form_data_with_id(self, id: i64) -> ScheduleFormDataWithId {
+        ScheduleFormDataWithId {
+            id,
+            recipe_id: self.recipe_id,
+            date: self.date,
+            repeat: self.repeat,
+            end_repeat: self.end_repeat,
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ScheduleFormDataWithId {
+    pub id: i64,
+    pub recipe_id: i64,
+    pub date: NaiveDate,
+    pub repeat: String,
+    pub end_repeat: Option<NaiveDate>,
+}
+
+impl ScheduleFormDataWithId {
+    pub fn into_cloud_schedule(self) -> CloudSchedule {
+        CloudSchedule {
+            date: self.date,
+            repeat: self.repeat,
+            end_repeat: self.end_repeat,
+        }
+    }
+}
+
 impl RawScheduleFormData {
     pub fn into_schedule_form_data(self, id: i64) -> ScheduleFormData {
         ScheduleFormData {
@@ -690,3 +721,6 @@ impl RawScheduleFormData {
         }
     }
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ScheduleFormDataList(pub Vec<ScheduleFormDataWithId>);

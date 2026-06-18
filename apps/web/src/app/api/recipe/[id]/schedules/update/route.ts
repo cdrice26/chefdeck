@@ -33,9 +33,13 @@ export async function POST(
       date: new Date(schedule?.date),
       endRepeat: new Date(schedule?.endRepeat)
     }));
-    await scheduleRecipe(await getAccessToken(req), id, schedules);
+    const scheduleIds = await scheduleRecipe(
+      await getAccessToken(req),
+      id,
+      schedules
+    );
     return NextResponse.json(
-      { message: 'Recipe schedules updated successfully.' },
+      { message: 'Recipe schedules updated successfully.', data: scheduleIds },
       { status: 200 }
     );
   } catch (error) {

@@ -140,7 +140,7 @@ export const scheduleRecipe = async (
   const {
     data: { user }
   } = await supabase.auth.getUser();
-  const { error } = await supabase.rpc('upsert_scheduled_recipes', {
+  const { data, error } = await supabase.rpc('upsert_scheduled_recipes', {
     p_user_id: user?.id,
     p_recipe_id: recipeId,
     p_schedules: schedules.map((schedule) => ({
@@ -152,6 +152,7 @@ export const scheduleRecipe = async (
     }))
   });
   if (error) throw error;
+  return (data as { id: string }[]).map((item) => item.id);
 };
 
 /**

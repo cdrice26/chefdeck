@@ -49,6 +49,10 @@ export default function RootPage() {
     addNotification(event.payload, 'error');
   });
 
+  useTauriListener('schedule_update_cloud_error', (event) => {
+    addNotification(event.payload, 'error');
+  });
+
   return (
     <>
       <NotificationWrapper />

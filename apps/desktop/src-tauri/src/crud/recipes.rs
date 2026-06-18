@@ -5,7 +5,7 @@ use tauri::AppHandle;
 
 use crate::{
     api::GenericResponse,
-    crud::{DownloadableWith, ReadableWith},
+    crud::{BatchReadableWith, DownloadableWith, ReadableWith},
     request::{get, post},
     types::{
         cloud_structs::{DownloadedRecipe, RecipeExistenceRecord},
@@ -40,10 +40,10 @@ pub async fn get_recipes<T>(
     addl_params: T,
 ) -> Result<Vec<Recipe>, Box<dyn std::error::Error>>
 where
-    Vec<Recipe>: ReadableWith<T>,
+    Vec<Recipe>: BatchReadableWith<T>,
 {
     let result = run_tx_with_error!(db, async |tx: &mut Transaction<'_, Sqlite>| {
-        Vec::<Recipe>::read_with(tx, 0, addl_params).await
+        Vec::<Recipe>::read_with(tx, addl_params).await
     });
     Ok(result)
 }
@@ -81,13 +81,12 @@ async fn transform_recipes(
     Ok(recipes)
 }
 
-impl ReadableWith<UsernameFilterWithImagesLibPath<'_>> for Vec<Recipe> {
+impl BatchReadableWith<UsernameFilterWithImagesLibPath<'_>> for Vec<Recipe> {
     /// Reads all recipes for the given username.
     ///
     /// # Arguments
     ///
     /// * `tx` - The transaction to use for reading.
-    /// * `_id` - The ID of the recipe to read (not used).
     /// * `addl_params` - The username and images library path to use for filtering.
     ///    * `username` - The username to filter by.
     ///    * `images_lib_path` - The images library path.
@@ -97,7 +96,6 @@ impl ReadableWith<UsernameFilterWithImagesLibPath<'_>> for Vec<Recipe> {
     /// A `Result` containing the list of recipes, or an error if one occurred.
     async fn read_with(
         tx: &mut Transaction<'_, Sqlite>,
-        _id: i64,
         addl_params: UsernameFilterWithImagesLibPath<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let raw_recipes = sqlx::query_file_as!(
@@ -115,13 +113,12 @@ impl ReadableWith<UsernameFilterWithImagesLibPath<'_>> for Vec<Recipe> {
     }
 }
 
-impl ReadableWith<UsernameAndUpdatedFilter<'_>> for Vec<Recipe> {
+impl BatchReadableWith<UsernameAndUpdatedFilter<'_>> for Vec<Recipe> {
     /// Retrieves a paginated list of recipes from the database based on the username and updated after parameters.
     ///
     /// # Arguments
     ///
     /// * `tx` - The transaction to use for the database query.
-    /// * `_id` - The ID of the recipe to retrieve (not used in this implementation).
     /// * `addl_params` - The additional search parameters to apply to the query.
     ///    * `username` - The username of the user to filter recipes by.
     ///    * `updated_after` - The date and time to filter recipes by.
@@ -132,7 +129,6 @@ impl ReadableWith<UsernameAndUpdatedFilter<'_>> for Vec<Recipe> {
     /// A `Result` containing the list of recipes if successful, or an error if the query fails.
     async fn read_with(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
-        _id: i64,
         addl_params: UsernameAndUpdatedFilter<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let raw_recipes_res = sqlx::query_file_as!(
@@ -151,13 +147,12 @@ impl ReadableWith<UsernameAndUpdatedFilter<'_>> for Vec<Recipe> {
     }
 }
 
-impl ReadableWith<RecipeSearchParams<'_>> for Vec<Recipe> {
+impl BatchReadableWith<RecipeSearchParams<'_>> for Vec<Recipe> {
     /// Retrieves a paginated list of recipes from the database based on the provided search parameters.
     ///
     /// # Arguments
     ///
     /// * `tx` - The transaction to use for the database query.
-    /// * `_id` - The ID of the recipe to retrieve (not used in this implementation).
     /// * `addl_params` - The search parameters to use for filtering recipes:
     ///   * `q` - The search query string.
     ///   * `tags` - The tags to filter recipes by.
@@ -170,7 +165,6 @@ impl ReadableWith<RecipeSearchParams<'_>> for Vec<Recipe> {
     /// A `Result` containing the list of recipes if successful, or an error if the query fails.
     async fn read_with(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
-        _id: i64,
         addl_params: RecipeSearchParams<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let raw_recipes = sqlx::query_file_as!(

@@ -107,7 +107,7 @@ const Schedule = ({
                     isValidColor(recipe?.recipeColor)
                       ? recipe?.recipeColor
                       : 'white'
-                  )} w-full p-1 rounded-lg text-left shadow-md text-xs md:text-md hyphens-auto line-clamp-2 max-h-16`}
+                  )} w-full p-1 rounded-lg text-left shadow-md text-xs md:text-md lg:text-lg hyphens-auto line-clamp-2 max-h-16`}
                   onClick={() => handleButtonClick(recipe?.recipeId)}
                 >
                   {recipe?.recipeTitle}

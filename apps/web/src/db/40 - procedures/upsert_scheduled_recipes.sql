@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION public.upsert_scheduled_recipes(
     p_recipe_id uuid,
     p_schedules jsonb
 )
-RETURNS void
+RETURNS TABLE(id uuid)
 LANGUAGE plpgsql
 SECURITY INVOKER
 SET search_path = public
@@ -15,15 +15,17 @@ BEGIN
     DELETE FROM public.scheduled_recipes WHERE user_id = p_user_id AND recipe_id = p_recipe_id;
 
     -- Insert new schedules from the JSONB array
+    RETURN QUERY
     INSERT INTO public.scheduled_recipes (id, recipe_id, user_id, date, repeat, repeat_end, last_updated)
     SELECT
-        (item->>'id')::uuid,
+        COALESCE((item->>'id')::uuid, gen_random_uuid()),
         (item->>'recipe_id')::uuid,
         p_user_id,
         (item->>'date')::date,
         item->>'repeat',
         (item->>'repeat_end')::date,
         now()
-    FROM jsonb_array_elements(p_schedules) AS arr(item);
+    FROM jsonb_array_elements(p_schedules) AS arr(item)
+    RETURNING scheduled_recipes.id;
 END;
 $function$;

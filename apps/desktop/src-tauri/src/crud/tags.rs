@@ -2,10 +2,9 @@ use sqlx::{Pool, Sqlite, Transaction};
 use tauri::AppHandle;
 
 use crate::{
-    crud::{Downloadable, Readable, ReadableWith},
+    crud::{BatchReadable, BatchReadableWith, Downloadable},
     request::get,
-    types::cloud_structs::Tag,
-    types::{db_params::UsernameFilter, response_bodies::RecipeTag},
+    types::{cloud_structs::Tag, db_params::UsernameFilter, response_bodies::RecipeTag},
 };
 
 /// Wraps the `get_tags` query in a transaction and returns the list of tags as a `Vec<RecipeTag>`.
@@ -22,7 +21,7 @@ pub async fn get_tags(db: &Pool<Sqlite>) -> Result<Vec<RecipeTag>, Box<dyn std::
         '_,
         Sqlite,
     >| {
-        let tags = Vec::<RecipeTag>::read(tx, 0).await?;
+        let tags = Vec::<RecipeTag>::read(tx).await?;
         Ok::<Vec<RecipeTag>, Box<dyn std::error::Error>>(tags)
     }))
 }
@@ -42,27 +41,23 @@ pub async fn get_tags_with_cloud_ids(
     username_filter: UsernameFilter<'_>,
 ) -> Result<Vec<RecipeTag>, Box<dyn std::error::Error>> {
     let tags = run_tx_with_error!(db, async |tx: &mut Transaction<'_, Sqlite>| {
-        let tags = Vec::<RecipeTag>::read_with(tx, 0, username_filter).await?;
+        let tags = Vec::<RecipeTag>::read_with(tx, username_filter).await?;
         Ok::<Vec<RecipeTag>, Box<dyn std::error::Error>>(tags)
     });
     Ok(tags)
 }
 
-impl Readable for Vec<RecipeTag> {
+impl BatchReadable for Vec<RecipeTag> {
     /// Get all tags from the database.
     ///
     /// # Arguments
     ///
     /// * `tx` - A mutable reference to the SQLite transaction.
-    /// * `_id` - Unused.
     ///
     /// # Returns
     ///
     /// A `Result` containing a vector of `RecipeTag` if successful, or an error if one occurred.
-    async fn read(
-        tx: &mut Transaction<'_, Sqlite>,
-        _id: i64,
-    ) -> Result<Self, Box<dyn std::error::Error>> {
+    async fn read(tx: &mut Transaction<'_, Sqlite>) -> Result<Self, Box<dyn std::error::Error>> {
         Ok(sqlx::query_file_as!(RecipeTag, "db/get_tags.sql")
             .fetch_all(&mut **tx)
             .await
@@ -70,13 +65,12 @@ impl Readable for Vec<RecipeTag> {
     }
 }
 
-impl ReadableWith<UsernameFilter<'_>> for Vec<RecipeTag> {
+impl BatchReadableWith<UsernameFilter<'_>> for Vec<RecipeTag> {
     /// Get all tags from the database with cloud IDs filtered by username.
     ///
     /// # Arguments
     ///
     /// * `tx` - A mutable reference to the SQLite transaction.
-    /// * `_id` - Unused.
     /// * `addl_params` - Additional parameters including the username to filter by.
     ///
     /// # Returns
@@ -84,7 +78,6 @@ impl ReadableWith<UsernameFilter<'_>> for Vec<RecipeTag> {
     /// A `Result` containing a vector of `RecipeTag` if successful, or an error if one occurred.
     async fn read_with(
         tx: &mut Transaction<'_, Sqlite>,
-        _id: i64,
         addl_params: UsernameFilter<'_>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         Ok(sqlx::query_file_as!(

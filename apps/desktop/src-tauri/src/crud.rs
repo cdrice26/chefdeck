@@ -24,10 +24,23 @@ pub trait ReadableWith<T>: Sized {
     ) -> Result<Self, Box<dyn std::error::Error>>;
 }
 
+pub trait BatchReadableWith<T>: Sized {
+    async fn read_with(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+        addl_params: T,
+    ) -> Result<Self, Box<dyn std::error::Error>>;
+}
+
 pub trait Readable: Sized {
     async fn read(
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
         id: i64,
+    ) -> Result<Self, Box<dyn std::error::Error>>;
+}
+
+pub trait BatchReadable: Sized {
+    async fn read(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     ) -> Result<Self, Box<dyn std::error::Error>>;
 }
 
@@ -36,6 +49,13 @@ pub trait Updatable {
         &self,
         tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     ) -> Result<i64, Box<dyn std::error::Error>>;
+}
+
+pub trait BatchUpdatable {
+    async fn update(
+        &self,
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    ) -> Result<Vec<i64>, Box<dyn std::error::Error>>;
 }
 
 pub trait Deletable {

@@ -1,4 +1,4 @@
-use chrono::NaiveDateTime;
+use chrono::{NaiveDate, NaiveDateTime};
 use serde::{Deserialize, Serialize};
 
 use crate::types::response_bodies::Ingredient;
@@ -135,4 +135,12 @@ pub struct LastSyncedRecord {
 pub struct Tag {
     pub value: String,
     pub label: String,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CloudSchedule {
+    pub date: NaiveDate,
+    pub repeat: String,
+    pub end_repeat: Option<NaiveDate>,
 }
