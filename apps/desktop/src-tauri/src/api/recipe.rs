@@ -10,6 +10,7 @@ use crate::{
 
 pub mod delete;
 pub mod new;
+pub mod schedules;
 pub mod update;
 
 #[derive(Debug, Serialize)]

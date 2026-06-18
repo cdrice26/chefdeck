@@ -4,6 +4,8 @@ use crate::types::db_params::RecipeSearchParams;
 use crate::{types::response_bodies::Recipe, AppState};
 use tauri::State;
 
+pub mod scheduled;
+
 #[tauri::command]
 pub async fn api_recipes(
     state: State<'_, AppState>,

@@ -1,8 +1,27 @@
+import {
+  Schedule,
+  useIsDark,
+  useNotification,
+  useScheduleActions,
+  useScheduledRecipes
+} from 'chefdeck-shared';
+import { useNavigate } from 'react-router';
+import { request } from '../../utils/fetchUtils';
+import Select from 'react-select';
+
 export default function SchedulePage() {
+  const navigate = useNavigate();
+  const { addNotification } = useNotification();
+  const data = useScheduledRecipes(request, addNotification);
+  const isDark = useIsDark();
+  const { handleButtonClick } = useScheduleActions(navigate);
+
   return (
-    <div>
-      <h1>Schedule</h1>
-      <p>This is the schedule page.</p>
-    </div>
+    <Schedule
+      {...data}
+      isDark={isDark}
+      handleButtonClick={handleButtonClick}
+      SelectComponent={Select as (props: any) => React.ReactNode}
+    />
   );
 }

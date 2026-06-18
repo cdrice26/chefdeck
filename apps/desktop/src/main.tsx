@@ -12,6 +12,7 @@ import RecipePage from './components/pages/RecipePage';
 import EditRecipePage from './components/pages/EditRecipePage';
 import { AuthProvider } from './hooks/useAuth';
 import MorePage from './components/pages/MorePage';
+import ManageSchedulesPage from './components/pages/ManageSchedulesPage';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');
@@ -33,6 +34,7 @@ ReactDOM.createRoot(rootElement).render(
               <Route path="recipe/:id">
                 <Route index element={<RecipePage />} />
                 <Route path="edit" element={<EditRecipePage />} />
+                <Route path="schedule" element={<ManageSchedulesPage />} />
               </Route>
             </Route>
           </Routes>

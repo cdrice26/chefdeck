@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM scheduled_recipes WHERE recipe_id = ?;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "30115fcbd1a07e3238a64968f0e65acaacfd5913f5d0c582c4eeedce2ac12a15"
+}

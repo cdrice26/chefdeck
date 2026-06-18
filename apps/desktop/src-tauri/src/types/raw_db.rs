@@ -1,12 +1,16 @@
 use std::path::PathBuf;
 
-use crate::types::cloud_structs::{LocalRecipe, RecipeFormData};
+use crate::types::{
+    cloud_structs::{LocalRecipe, RecipeFormData},
+    response_bodies::{Repeat, Schedule},
+};
 
 use super::{
     parser::Parsable,
     response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
 };
-use chrono::NaiveDateTime;
+use chrono::{Days, NaiveDate, NaiveDateTime};
+use serde::{Deserialize, Serialize};
 
 /// Represents an integer value from a pair in the key-value table
 #[derive(sqlx::FromRow, Debug)]
@@ -501,4 +505,80 @@ pub struct CloudId {
 pub struct TagCloudId {
     pub local_id: i64,
     pub username: String,
+}
+
+#[derive(Debug)]
+pub struct ScheduleCloudId {
+    pub local_id: i64,
+    pub cloud_id: String,
+    pub username: String,
+}
+
+#[derive(sqlx::FromRow, Debug)]
+pub struct RawSchedule {
+    pub id: i64,
+    pub recipe_id: i64,
+    pub date: NaiveDate,
+    pub repeat: Option<String>,
+    pub end_repeat: Option<NaiveDate>,
+}
+
+impl RawSchedule {
+    pub fn into_schedule(self) -> Schedule {
+        Schedule {
+            id: self.id,
+            recipe_id: self.recipe_id,
+            date: self.date,
+            repeat: match self.repeat.unwrap_or_default().as_str() {
+                "none" => Repeat::None,
+                "weekly" => Repeat::Weekly,
+                "monthly date" => Repeat::MonthlyDate,
+                "monthly day" => Repeat::MonthlyDay,
+                _ => Repeat::None,
+            },
+            end_repeat: self
+                .end_repeat
+                .unwrap_or(self.date.checked_add_days(Days::new(1)).unwrap_or_default()),
+        }
+    }
+}
+
+pub struct RawScheduleWithDisplayInfo {
+    pub id: i64,
+    pub date: NaiveDate,
+    pub repeat: String,
+    pub end_repeat: Option<NaiveDate>,
+    pub recipe_id: i64,
+    pub recipe_name: String,
+    pub recipe_color: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct RawScheduleFormData {
+    pub id: i64,
+    pub date: String,
+    pub repeat: String,
+    pub end_repeat: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ScheduleFormData {
+    pub recipe_id: i64,
+    pub date: NaiveDate,
+    pub repeat: String,
+    pub end_repeat: Option<NaiveDate>,
+}
+
+impl RawScheduleFormData {
+    pub fn into_schedule_form_data(self, id: i64) -> ScheduleFormData {
+        ScheduleFormData {
+            recipe_id: id,
+            date: NaiveDate::parse_from_str(&self.date, "%Y-%m-%d").unwrap(),
+            repeat: self.repeat,
+            end_repeat: self
+                .end_repeat
+                .map(|d| NaiveDate::parse_from_str(&d, "%Y-%m-%d").unwrap()),
+        }
+    }
 }

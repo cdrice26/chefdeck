@@ -1,5 +1,14 @@
 use crate::types::raw_db::RawRecipeCommon;
-use serde::{Deserialize, Serialize};
+use chrono::NaiveDate;
+use serde::{Deserialize, Serialize, Serializer};
+
+fn serialize_date_with_time<S>(date: &NaiveDate, s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    // Append 00:00:00 so JS parses it as local time, not UTC midnight
+    s.serialize_str(&format!("{} 00:00:00", date))
+}
 
 /// Represents an ingredient.
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -40,6 +49,40 @@ impl RecipeTag {
             name: Some(name),
         }
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Repeat {
+    #[serde(rename = "none")]
+    None,
+    #[serde(rename = "weekly")]
+    Weekly,
+    #[serde(rename = "monthly date")]
+    MonthlyDate,
+    #[serde(rename = "monthly day")]
+    MonthlyDay,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Schedule {
+    pub id: i64,
+    pub recipe_id: i64,
+    #[serde(serialize_with = "serialize_date_with_time")]
+    pub date: NaiveDate,
+    pub repeat: Repeat,
+    #[serde(serialize_with = "serialize_date_with_time")]
+    pub end_repeat: NaiveDate,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct ScheduleDisplay {
+    pub schedule_id: i64,
+    pub recipe_id: i64,
+    pub recipe_title: String,
+    pub recipe_color: String,
+    pub scheduled_date: NaiveDate,
 }
 
 /// Represents a recipe.
