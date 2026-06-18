@@ -21,6 +21,7 @@ export default function SchedulePage() {
       {...data}
       isDark={isDark}
       handleButtonClick={handleButtonClick}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       SelectComponent={Select as (props: any) => React.ReactNode}
     />
   );

@@ -39,3 +39,8 @@ pub struct ExcludedRecipeIds<'a> {
     #[serde(rename = "recipeIds")]
     pub excluded_recipe_ids: &'a Vec<String>,
 }
+
+pub struct DateFilter<'a> {
+    pub start_date: &'a chrono::NaiveDate,
+    pub end_date: &'a chrono::NaiveDate,
+}

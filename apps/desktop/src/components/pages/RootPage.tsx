@@ -68,7 +68,7 @@ export default function RootPage() {
         >
           <Toolbar />
           <div className="flex-1 min-h-0 overflow-y-auto relative">
-            <div className="w-full">
+            <div className="w-full h-full">
               <Outlet />
             </div>
           </div>

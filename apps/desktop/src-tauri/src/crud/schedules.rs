@@ -1,10 +1,12 @@
+use chrono::NaiveDate;
 use sqlx::{Pool, Sqlite, Transaction};
 
 use crate::{
-    crud::{Readable, Updatable},
+    crud::{Readable, ReadableWith, Updatable},
     types::{
-        raw_db::{RawSchedule, ScheduleFormData},
-        response_bodies::Schedule,
+        db_params::DateFilter,
+        raw_db::{RawSchedule, RawScheduleWithDisplayInfo, ScheduleFormData},
+        response_bodies::{Schedule, ScheduleDisplay},
     },
 };
 
@@ -50,6 +52,41 @@ pub async fn get_schedules_for_recipe(
         Sqlite,
     >| {
         Ok::<Vec<Schedule>, Box<dyn std::error::Error>>(Vec::<Schedule>::read(tx, id).await?)
+    }))
+}
+
+/// Wraps the retrieval of schedules for a date range in a transaction.
+///
+/// # Arguments
+///
+/// * `db` - The database pool to use for the operation.
+/// * `start_date` - The start date of the range to filter by.
+/// * `end_date` - The end date of the range to filter by.
+///
+/// # Returns
+///
+/// * `Ok(Vec<ScheduleDisplay>)` - The operation was successful.
+/// * `Err` - An error occurred during the operation.
+pub async fn get_schedules_for_date_range(
+    db: &Pool<Sqlite>,
+    start_date: &NaiveDate,
+    end_date: &NaiveDate,
+) -> Result<Vec<ScheduleDisplay>, Box<dyn std::error::Error>> {
+    Ok(run_tx_with_error!(db, async |tx: &mut Transaction<
+        '_,
+        Sqlite,
+    >| {
+        Ok::<Vec<ScheduleDisplay>, Box<dyn std::error::Error>>(
+            Vec::<ScheduleDisplay>::read_with(
+                tx,
+                0,
+                DateFilter {
+                    start_date,
+                    end_date,
+                },
+            )
+            .await?,
+        )
     }))
 }
 
@@ -110,5 +147,43 @@ impl Readable for Vec<Schedule> {
                 .map(|s| s.into_schedule())
                 .collect::<Vec<Schedule>>(),
         )
+    }
+}
+
+impl ReadableWith<DateFilter<'_>> for Vec<ScheduleDisplay> {
+    /// Retrieves a list of scheduled recipes within the specified date range.
+    ///
+    /// # Arguments
+    ///
+    /// * `tx` - The database transaction to use for the query.
+    /// * `_id` - The ID of the recipe to retrieve schedules for (unused).
+    /// * `addl_params` - Additional parameters for filtering the date range.
+    ///     * `start_date` - The start date of the range to filter by.
+    ///     * `end_date` - The end date of the range to filter by.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the list of `ScheduleDisplay` items, or an error if the query fails.
+    async fn read_with(
+        tx: &mut Transaction<'_, Sqlite>,
+        _id: i64,
+        addl_params: DateFilter<'_>,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let raw_schedules = sqlx::query_file_as!(
+            RawScheduleWithDisplayInfo,
+            "db/get_scheduled_recipes.sql",
+            addl_params.start_date,
+            addl_params.end_date,
+            addl_params.end_date,
+            addl_params.end_date,
+            addl_params.start_date
+        )
+        .fetch_all(&mut **tx)
+        .await?;
+        let displays: Vec<ScheduleDisplay> = raw_schedules
+            .into_iter()
+            .flat_map(|r| r.into_schedule_displays(*addl_params.start_date, *addl_params.end_date))
+            .collect();
+        Ok(displays)
     }
 }

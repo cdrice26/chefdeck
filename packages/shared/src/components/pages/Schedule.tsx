@@ -93,9 +93,12 @@ const Schedule = ({
         </p>
       )}
       {!isLoading && !error && (
-        <div className="grid grid-cols-7 w-full flex-grow">
+        <div className="grid grid-cols-7 w-full grow h-full">
           {recipesOnDates?.map((date: RecipeDate, index: number) => (
-            <div key={index} className="w-full h-full p-1 overflow-y-auto">
+            <div
+              key={index}
+              className="w-full h-full p-1 min-h-1/6 overflow-y-auto"
+            >
               <h1>{date?.date?.getDate() ?? ''}</h1>
               {date.recipes.map((recipe: ScheduleDisplay, index: number) => (
                 <button
@@ -104,7 +107,7 @@ const Schedule = ({
                     isValidColor(recipe?.recipeColor)
                       ? recipe?.recipeColor
                       : 'white'
-                  )} w-full p-1 rounded-lg text-left shadow-md text-xs md:text-lg hyphens-auto`}
+                  )} w-full p-1 rounded-lg text-left shadow-md text-xs md:text-md hyphens-auto line-clamp-2 max-h-16`}
                   onClick={() => handleButtonClick(recipe?.recipeId)}
                 >
                   {recipe?.recipeTitle}

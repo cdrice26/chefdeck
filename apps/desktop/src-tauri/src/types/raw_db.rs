@@ -1,15 +1,18 @@
 use std::path::PathBuf;
 
-use crate::types::{
-    cloud_structs::{LocalRecipe, RecipeFormData},
-    response_bodies::{Repeat, Schedule},
+use crate::{
+    date_utils::{add_months, next_monthly_day_occurrence, week_of_month},
+    types::{
+        cloud_structs::{LocalRecipe, RecipeFormData},
+        response_bodies::{Repeat, Schedule, ScheduleDisplay},
+    },
 };
 
 use super::{
     parser::Parsable,
     response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
 };
-use chrono::{Days, NaiveDate, NaiveDateTime};
+use chrono::{Datelike, Days, Duration, NaiveDate, NaiveDateTime, Weekday};
 use serde::{Deserialize, Serialize};
 
 /// Represents an integer value from a pair in the key-value table
@@ -546,11 +549,117 @@ impl RawSchedule {
 pub struct RawScheduleWithDisplayInfo {
     pub id: i64,
     pub date: NaiveDate,
-    pub repeat: String,
+    pub repeat: Option<String>,
     pub end_repeat: Option<NaiveDate>,
     pub recipe_id: i64,
     pub recipe_name: String,
     pub recipe_color: String,
+}
+
+impl RawScheduleWithDisplayInfo {
+    pub fn into_schedule_displays(
+        self,
+        start_date: NaiveDate,
+        end_date: NaiveDate,
+    ) -> Vec<ScheduleDisplay> {
+        match self.repeat.as_deref() {
+            None | Some("none") => {
+                // Only include if within range (should always be true given the query, but be safe)
+                if self.date >= start_date && self.date <= end_date {
+                    vec![ScheduleDisplay {
+                        schedule_id: self.id,
+                        recipe_id: self.recipe_id,
+                        recipe_title: self.recipe_name,
+                        recipe_color: self.recipe_color,
+                        scheduled_date: self.date,
+                    }]
+                } else {
+                    vec![]
+                }
+            }
+
+            Some("weekly") => {
+                let repeat_end = self.end_repeat.unwrap_or(end_date).min(end_date);
+                let window_start = self.date.max(start_date);
+
+                // Advance base date to the first occurrence >= window_start
+                let days_ahead = (window_start - self.date).num_days();
+                let weeks_ahead = (days_ahead + 6) / 7; // ceiling division
+                let first_occurrence = self.date + Duration::weeks(weeks_ahead);
+
+                let mut dates = Vec::new();
+                let mut current = first_occurrence;
+                while current <= repeat_end {
+                    dates.push(current);
+                    current += Duration::weeks(1);
+                }
+
+                Self::dates_to_displays(&self, dates)
+            }
+
+            Some("monthly date") => {
+                // Same day-of-month each month (e.g. every 15th)
+                let repeat_end = self.end_repeat.unwrap_or(end_date).min(end_date);
+                let mut dates = Vec::new();
+
+                let mut current = self.date;
+                while current <= repeat_end {
+                    if current >= start_date {
+                        dates.push(current);
+                    }
+                    // Advance by one month, keeping the same day
+                    current = match add_months(current, 1) {
+                        Some(d) => d,
+                        None => break,
+                    };
+                }
+
+                Self::dates_to_displays(&self, dates)
+            }
+
+            Some("monthly day") => {
+                // Same weekday + week-of-month (e.g. every 2nd Tuesday)
+                let repeat_end = self.end_repeat.unwrap_or(end_date).min(end_date);
+                let weekday = self.date.weekday();
+                let week_of_month = week_of_month(self.date);
+                let mut dates = Vec::new();
+
+                let mut current = self.date;
+                while current <= repeat_end {
+                    if current >= start_date {
+                        dates.push(current);
+                    }
+                    current = match next_monthly_day_occurrence(current, weekday, week_of_month) {
+                        Some(d) => d,
+                        None => break,
+                    };
+                }
+
+                Self::dates_to_displays(&self, dates)
+            }
+
+            Some(other) => {
+                eprintln!("Unknown repeat type '{}' for schedule {}", other, self.id);
+                vec![]
+            }
+        }
+    }
+
+    fn dates_to_displays(
+        raw: &RawScheduleWithDisplayInfo,
+        dates: Vec<NaiveDate>,
+    ) -> Vec<ScheduleDisplay> {
+        dates
+            .into_iter()
+            .map(|date| ScheduleDisplay {
+                schedule_id: raw.id,
+                recipe_id: raw.recipe_id,
+                recipe_title: raw.recipe_name.clone(),
+                recipe_color: raw.recipe_color.clone(),
+                scheduled_date: date,
+            })
+            .collect()
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
