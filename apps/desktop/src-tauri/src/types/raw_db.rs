@@ -12,7 +12,7 @@ use super::{
     parser::Parsable,
     response_bodies::{Direction, Ingredient, Recipe, RecipeTag},
 };
-use chrono::{Datelike, Days, Duration, NaiveDate, NaiveDateTime, Weekday};
+use chrono::{Datelike, Days, Duration, NaiveDate, NaiveDateTime};
 use serde::{Deserialize, Serialize};
 
 /// Represents an integer value from a pair in the key-value table
@@ -665,7 +665,6 @@ impl RawScheduleWithDisplayInfo {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RawScheduleFormData {
-    pub id: i64,
     pub date: String,
     pub repeat: String,
     pub end_repeat: Option<String>,
