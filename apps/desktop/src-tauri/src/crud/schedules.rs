@@ -5,16 +5,16 @@ use tauri::{AppHandle, Emitter, Manager};
 use crate::{
     api::{auth::check_auth::get_username, GenericResponse},
     crud::{
-        cloud_id::get_cloud_id_with_username, BatchReadableWith, BatchUpdatable, Downloadable,
-        Readable, RemoteUpdatable,
+        cloud_id::get_cloud_id_with_username, schedule_cloud_id::insert_schedule_cloud_id,
+        BatchReadableWith, BatchUpdatable, Downloadable, Readable, RemoteUpdatable,
     },
     request::{get, post},
     types::{
         cloud_structs::CloudScheduleWithIds,
         db_params::{DateFilter, UsernameFilter},
         raw_db::{
-            RawSchedule, RawScheduleWithDisplayInfo, ScheduleFormDataList,
-            ScheduleFormDataListNoIds,
+            RawSchedule, RawScheduleWithDisplayInfo, ScheduleCloudId, ScheduleFormDataLike,
+            ScheduleFormDataList,
         },
         response_bodies::{Schedule, ScheduleDisplay},
     },
@@ -32,9 +32,9 @@ use crate::{
 ///
 /// * `Ok(Vec<i64>)` - The IDs of the schedules that were inserted or updated.
 /// * `Err` - An error occurred during the operation.
-pub async fn update_recipe_schedules(
+pub async fn update_recipe_schedules<T: ScheduleFormDataLike + Clone>(
     db: &Pool<Sqlite>,
-    schedules: &ScheduleFormDataListNoIds,
+    schedules: &ScheduleFormDataList<T>,
 ) -> Result<Vec<i64>, Box<dyn std::error::Error>> {
     Ok(run_tx_with_error!(db, async |tx: &mut Transaction<
         '_,
@@ -102,7 +102,7 @@ pub async fn get_schedules_for_date_range(
     }))
 }
 
-impl BatchUpdatable for ScheduleFormDataListNoIds {
+impl<T: ScheduleFormDataLike + Clone> BatchUpdatable for ScheduleFormDataList<T> {
     /// Inserts or updates the schedules for a recipe in the database.
     ///
     /// # Arguments
@@ -122,12 +122,16 @@ impl BatchUpdatable for ScheduleFormDataListNoIds {
             .await?;
         let mut ids = Vec::new();
         for schedule in &self.list {
+            let recipe_id = schedule.recipe_id();
+            let date = schedule.date();
+            let repeat = schedule.repeat();
+            let end_repeat = schedule.end_repeat();
             let id = sqlx::query_file!(
                 "db/insert_recipe_schedules.sql",
-                schedule.recipe_id,
-                schedule.date,
-                schedule.repeat,
-                schedule.end_repeat
+                recipe_id,
+                date,
+                repeat,
+                end_repeat
             )
             .execute(&mut **tx)
             .await?
@@ -201,7 +205,9 @@ impl BatchReadableWith<DateFilter<'_>> for Vec<ScheduleDisplay> {
     }
 }
 
-impl RemoteUpdatable for ScheduleFormDataList {
+impl<T: ScheduleFormDataLike + Clone + Send + Sync + 'static> RemoteUpdatable
+    for ScheduleFormDataList<T>
+{
     /// Updates the schedule remotely by sending a POST request to the server.
     /// Emits an app event on failure rather than returning an error.
     ///
@@ -215,7 +221,7 @@ impl RemoteUpdatable for ScheduleFormDataList {
     /// * `Err` - An error occurred while updating the schedule.
     async fn update_remote(&self, app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
         let app = app.clone();
-        let self_clone: ScheduleFormDataList = self.clone();
+        let self_clone: ScheduleFormDataList<T> = self.clone();
         tauri::async_runtime::spawn(async move {
             let result = self_clone.try_update_remote(&app).await;
             if let Err(_) = result {
@@ -232,7 +238,7 @@ impl RemoteUpdatable for ScheduleFormDataList {
     }
 }
 
-impl ScheduleFormDataList {
+impl<T: ScheduleFormDataLike + Clone> ScheduleFormDataList<T> {
     /// Updates the schedule remotely by sending a POST request to the server.
     ///
     /// # Arguments
@@ -275,25 +281,18 @@ impl ScheduleFormDataList {
         )
         .await?;
         let cloud_schedule_ids = response.json::<GenericResponse<Vec<String>>>().await?.data;
-        run_tx_with_error!(&state.db, async |tx: &mut Transaction<'_, Sqlite>| {
-            let username_ref = &username;
-            for (local_id, cloud_id) in self
-                .list
-                .iter()
-                .map(|s| s.id)
-                .zip(cloud_schedule_ids.iter())
-            {
-                sqlx::query_file!(
-                    "db/insert_schedule_cloud_id.sql",
-                    local_id,
-                    cloud_id,
-                    username_ref
-                )
-                .execute(&mut **tx)
-                .await?;
-            }
-            Ok::<(), Box<dyn std::error::Error>>(())
-        });
+        for cloud_id in self
+            .list
+            .iter()
+            .zip(cloud_schedule_ids.into_iter())
+            .map(|(s, cloud_id)| ScheduleCloudId {
+                local_id: s.id(),
+                cloud_id: Some(cloud_id),
+                username: Some(username.clone()),
+            })
+        {
+            insert_schedule_cloud_id(&state.db, &cloud_id).await?;
+        }
         Ok(())
     }
 }

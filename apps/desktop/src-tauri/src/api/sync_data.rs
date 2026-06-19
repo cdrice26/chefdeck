@@ -4,6 +4,7 @@ use crate::{
     crud::{
         recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
+        schedule_cloud_id::insert_schedule_cloud_id,
         schedules::update_recipe_schedules,
         tag::delete_tag,
         tags::get_tags_with_cloud_ids,
@@ -21,10 +22,10 @@ use crate::{
             UsernameFilterWithImagesLibPath,
         },
         raw_db::{
-            IntegerValue, ScheduleCloudId, ScheduleFormData, ScheduleFormDataListNoIds,
-            ToRecipeFormData,
+            IntegerValue, RawSchedule, ScheduleCloudId, ScheduleFormDataList,
+            ScheduleFormDataWithCloudId, ScheduleFormDataWithId, ToRecipeFormData,
         },
-        response_bodies::{Recipe, RecipeTag, Schedule},
+        response_bodies::{Recipe, RecipeTag},
     },
     AppState,
 };
@@ -194,7 +195,7 @@ async fn sync_recipes(app: AppHandle) -> Result<(), String> {
         query_file_as!(LastSyncedRecord, "db/get_last_synced.sql", username_ref)
             .fetch_optional(&mut **tx)
             .await
-    })?;
+    });
     let last_synced_datetime = match last_synced_db {
         Some(record) => record.last_synced.unwrap_or(
             NaiveDateTime::parse_from_str("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
@@ -291,47 +292,94 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
             .fetch_all(&mut **tx)
             .await?)
         }
-    )?;
-    let mut grouped: HashMap<i64, Vec<ScheduleFormData>> = HashMap::new();
+    );
 
+    // Group ALL downloaded schedules by recipe_id first
+    let mut server_by_recipe: HashMap<i64, Vec<&CloudScheduleWithIds>> = HashMap::new();
     for schedule in downloaded_schedules.iter() {
-        let already_exists = schedule_cloud_ids
-            .iter()
-            .any(|cid| cid.cloud_id == Some(schedule.id.clone()));
-
-        if !already_exists {
-            let local_recipe_id = match get_local_id_from_cloud(db, &schedule.recipe_id)
-                .await
-                .map_err(|e| e.to_string())?
-            {
-                Some(local_id) => local_id,
-                None => continue,
-            };
-
-            grouped
+        if let Some(local_recipe_id) = get_local_id_from_cloud(db, &schedule.recipe_id)
+            .await
+            .map_err(|e| e.to_string())?
+        {
+            server_by_recipe
                 .entry(local_recipe_id)
                 .or_insert_with(Vec::new)
-                .push(ScheduleFormData {
-                    recipe_id: local_recipe_id,
-                    date: schedule.date,
-                    repeat: schedule.repeat.clone(),
-                    end_repeat: schedule.end_repeat,
-                });
+                .push(schedule);
         }
     }
 
-    let to_insert: Vec<ScheduleFormDataListNoIds> = grouped
-        .into_iter()
-        .map(|(recipe_id, list)| ScheduleFormDataListNoIds { recipe_id, list })
-        .collect();
+    let mut to_insert: Vec<ScheduleFormDataList<ScheduleFormDataWithCloudId>> = Vec::new();
+
+    for (local_recipe_id, server_schedules) in server_by_recipe.iter() {
+        let list = server_schedules
+            .iter()
+            .map(|s| ScheduleFormDataWithCloudId {
+                cloud_id: s.id.clone(),
+                recipe_id: *local_recipe_id,
+                date: s.date,
+                repeat: s.repeat.clone(),
+                end_repeat: s.end_repeat,
+            })
+            .collect();
+        to_insert.push(ScheduleFormDataList {
+            recipe_id: *local_recipe_id,
+            list,
+        });
+    }
 
     for recipe_schedules in to_insert.iter() {
-        update_recipe_schedules(db, recipe_schedules)
+        let inserted_ids = update_recipe_schedules(db, &recipe_schedules)
+            .await
+            .map_err(|e| e.to_string())?;
+        for (schedule, id) in recipe_schedules.list.iter().zip(inserted_ids) {
+            let schedule_cloud_id = ScheduleCloudId {
+                local_id: Some(id),
+                cloud_id: Some(schedule.cloud_id.clone()),
+                username: Some(username.clone()),
+            };
+            insert_schedule_cloud_id(db, &schedule_cloud_id)
+                .await
+                .map_err(|e| e.to_string())?;
+        }
+    }
+
+    // Upload schedules that don't have a cloud parent
+    let local_only_schedules = run_tx!(
+        db,
+        async |tx: &mut Transaction<'_, Sqlite>| -> Result<Vec<RawSchedule>, sqlx::Error> {
+            sqlx::query_file_as!(RawSchedule, "db/get_schedules_with_no_cloud_parent.sql")
+                .fetch_all(&mut **tx)
+                .await
+        }
+    );
+
+    let mut grouped: HashMap<i64, Vec<ScheduleFormDataWithId>> = HashMap::new();
+
+    for schedule in local_only_schedules.iter() {
+        grouped
+            .entry(schedule.recipe_id)
+            .or_insert_with(Vec::new)
+            .push(ScheduleFormDataWithId {
+                id: schedule.id,
+                recipe_id: schedule.recipe_id,
+                date: schedule.date,
+                repeat: schedule.repeat.clone().unwrap_or(String::from("none")),
+                end_repeat: schedule.end_repeat,
+            });
+    }
+
+    let to_upload: Vec<ScheduleFormDataList<ScheduleFormDataWithId>> = grouped
+        .into_iter()
+        .map(|(recipe_id, list)| ScheduleFormDataList { recipe_id, list })
+        .collect();
+
+    for recipe_schedules in to_upload.iter() {
+        recipe_schedules
+            .update_remote(&app)
             .await
             .map_err(|e| e.to_string())?;
     }
 
-    // Upload schedules that don't have a cloud parent
     Ok(())
 }
 
@@ -348,7 +396,7 @@ async fn sync_all(app: AppHandle) -> Result<(), String> {
             .execute(&mut **tx)
             .await?;
         Ok::<(), sqlx::Error>(())
-    })?;
+    });
     Ok(())
 }
 

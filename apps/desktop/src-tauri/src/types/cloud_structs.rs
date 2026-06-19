@@ -137,7 +137,7 @@ pub struct Tag {
     pub label: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct CloudSchedule {
     pub date: NaiveDate,
@@ -145,7 +145,7 @@ pub struct CloudSchedule {
     pub end_repeat: Option<NaiveDate>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct CloudScheduleWithIds {
     pub id: String,

@@ -4,7 +4,7 @@ use crate::{
     api::{ErrorResponse, SuccessResponse},
     crud::{schedules::update_recipe_schedules, RemoteUpdatable},
     types::raw_db::{
-        RawScheduleFormData, ScheduleFormData, ScheduleFormDataList, ScheduleFormDataListNoIds,
+        RawScheduleFormData, ScheduleFormData, ScheduleFormDataLike, ScheduleFormDataList,
         ScheduleFormDataWithId,
     },
     AppState,
@@ -23,7 +23,7 @@ pub async fn api_recipe_schedules_update(
         .collect::<Vec<ScheduleFormData>>();
     let mut schedule_ids = update_recipe_schedules(
         &state.db,
-        &ScheduleFormDataListNoIds {
+        &ScheduleFormDataList::<ScheduleFormData> {
             list: schedule.clone(),
             recipe_id: id,
         },
@@ -32,7 +32,7 @@ pub async fn api_recipe_schedules_update(
     .map_err(|e| ErrorResponse {
         error: e.to_string(),
     })?;
-    ScheduleFormDataList {
+    ScheduleFormDataList::<ScheduleFormDataWithId> {
         list: schedule
             .into_iter()
             .map(|s| s.into_schedule_form_data_with_id(schedule_ids.remove(0)))

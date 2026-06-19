@@ -513,6 +513,8 @@ pub struct TagCloudId {
 #[derive(Debug)]
 pub struct ScheduleCloudId {
     pub cloud_id: Option<String>,
+    pub local_id: Option<i64>,
+    pub username: Option<String>,
 }
 
 #[derive(sqlx::FromRow, Debug, Deserialize)]
@@ -660,12 +662,95 @@ impl RawScheduleWithDisplayInfo {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+pub trait ScheduleFormDataLike {
+    fn id(&self) -> Option<i64>;
+    fn cloud_id(&self) -> Option<String>;
+    fn recipe_id(&self) -> Option<i64>;
+    fn date(&self) -> Option<NaiveDate>;
+    fn repeat(&self) -> Option<String>;
+    fn end_repeat(&self) -> Option<NaiveDate>;
+
+    fn into_cloud_schedule(self) -> CloudSchedule
+    where
+        Self: Sized,
+    {
+        CloudSchedule {
+            date: self.date().unwrap_or_default(),
+            repeat: self.repeat().unwrap_or_default(),
+            end_repeat: self.end_repeat(),
+        }
+    }
+
+    fn into_schedule_form_data(self, id: i64) -> ScheduleFormData
+    where
+        Self: Sized,
+    {
+        ScheduleFormData {
+            recipe_id: id,
+            date: self.date().unwrap_or_default(),
+            repeat: self.repeat().unwrap_or_default(),
+            end_repeat: self.end_repeat(),
+        }
+    }
+
+    fn into_schedule_form_data_with_id(self, id: i64) -> ScheduleFormDataWithId
+    where
+        Self: Sized,
+    {
+        ScheduleFormDataWithId {
+            id,
+            recipe_id: self.recipe_id().unwrap_or_default(),
+            date: self.date().unwrap_or_default(),
+            repeat: self.repeat().unwrap_or_default(),
+            end_repeat: self.end_repeat(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct RawScheduleFormData {
     pub date: String,
     pub repeat: String,
     pub end_repeat: Option<String>,
+}
+
+impl ScheduleFormDataLike for RawScheduleFormData {
+    fn id(&self) -> Option<i64> {
+        None
+    }
+
+    fn cloud_id(&self) -> Option<String> {
+        None
+    }
+
+    fn recipe_id(&self) -> Option<i64> {
+        None
+    }
+
+    fn date(&self) -> Option<NaiveDate> {
+        match NaiveDate::parse_from_str(self.date.as_str(), "%Y-%m-%d") {
+            Ok(date) => Some(date),
+            Err(_) => None,
+        }
+    }
+
+    fn repeat(&self) -> Option<String> {
+        Some(self.repeat.clone())
+    }
+
+    fn end_repeat(&self) -> Option<NaiveDate> {
+        match NaiveDate::parse_from_str(
+            self.end_repeat
+                .as_ref()
+                .unwrap_or(&String::from("1970-01-01"))
+                .as_str(),
+            "%Y-%m-%d",
+        ) {
+            Ok(date) => Some(date),
+            Err(_) => None,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -676,15 +761,64 @@ pub struct ScheduleFormData {
     pub end_repeat: Option<NaiveDate>,
 }
 
-impl ScheduleFormData {
-    pub fn into_schedule_form_data_with_id(self, id: i64) -> ScheduleFormDataWithId {
-        ScheduleFormDataWithId {
-            id,
-            recipe_id: self.recipe_id,
-            date: self.date,
-            repeat: self.repeat,
-            end_repeat: self.end_repeat,
-        }
+impl ScheduleFormDataLike for ScheduleFormData {
+    fn id(&self) -> Option<i64> {
+        None
+    }
+
+    fn cloud_id(&self) -> Option<String> {
+        None
+    }
+
+    fn recipe_id(&self) -> Option<i64> {
+        Some(self.recipe_id)
+    }
+
+    fn date(&self) -> Option<NaiveDate> {
+        Some(self.date.clone())
+    }
+
+    fn repeat(&self) -> Option<String> {
+        Some(self.repeat.clone())
+    }
+
+    fn end_repeat(&self) -> Option<NaiveDate> {
+        self.end_repeat.clone()
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ScheduleFormDataWithCloudId {
+    pub recipe_id: i64,
+    pub date: NaiveDate,
+    pub repeat: String,
+    pub end_repeat: Option<NaiveDate>,
+    pub cloud_id: String,
+}
+
+impl ScheduleFormDataLike for ScheduleFormDataWithCloudId {
+    fn id(&self) -> Option<i64> {
+        None
+    }
+
+    fn cloud_id(&self) -> Option<String> {
+        Some(self.cloud_id.clone())
+    }
+
+    fn recipe_id(&self) -> Option<i64> {
+        Some(self.recipe_id)
+    }
+
+    fn date(&self) -> Option<NaiveDate> {
+        Some(self.date.clone())
+    }
+
+    fn repeat(&self) -> Option<String> {
+        Some(self.repeat.clone())
+    }
+
+    fn end_repeat(&self) -> Option<NaiveDate> {
+        self.end_repeat.clone()
     }
 }
 
@@ -697,37 +831,34 @@ pub struct ScheduleFormDataWithId {
     pub end_repeat: Option<NaiveDate>,
 }
 
-impl ScheduleFormDataWithId {
-    pub fn into_cloud_schedule(self) -> CloudSchedule {
-        CloudSchedule {
-            date: self.date,
-            repeat: self.repeat,
-            end_repeat: self.end_repeat,
-        }
+impl ScheduleFormDataLike for ScheduleFormDataWithId {
+    fn id(&self) -> Option<i64> {
+        Some(self.id)
     }
-}
 
-impl RawScheduleFormData {
-    pub fn into_schedule_form_data(self, id: i64) -> ScheduleFormData {
-        ScheduleFormData {
-            recipe_id: id,
-            date: NaiveDate::parse_from_str(&self.date, "%Y-%m-%d").unwrap(),
-            repeat: self.repeat,
-            end_repeat: self
-                .end_repeat
-                .map(|d| NaiveDate::parse_from_str(&d, "%Y-%m-%d").unwrap()),
-        }
+    fn cloud_id(&self) -> Option<String> {
+        None
+    }
+
+    fn recipe_id(&self) -> Option<i64> {
+        Some(self.recipe_id)
+    }
+
+    fn date(&self) -> Option<NaiveDate> {
+        Some(self.date.clone())
+    }
+
+    fn repeat(&self) -> Option<String> {
+        Some(self.repeat.clone())
+    }
+
+    fn end_repeat(&self) -> Option<NaiveDate> {
+        self.end_repeat.clone()
     }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ScheduleFormDataList {
-    pub list: Vec<ScheduleFormDataWithId>,
-    pub recipe_id: i64,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ScheduleFormDataListNoIds {
-    pub list: Vec<ScheduleFormData>,
+pub struct ScheduleFormDataList<T: ScheduleFormDataLike + Clone> {
+    pub list: Vec<T>,
     pub recipe_id: i64,
 }
