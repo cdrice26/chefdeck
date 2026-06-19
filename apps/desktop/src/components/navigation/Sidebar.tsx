@@ -84,7 +84,9 @@ export default function Sidebar({
           />
         ))}
       </div>
-      <div className="flex flex-row flex-wrap gap-2 h-full items-start justify-start content-start overflow-y-auto p-2">
+      <div
+        className={`flex flex-row flex-wrap gap-2 h-full items-start justify-start content-start overflow-y-auto p-2 ${location.pathname === '/' ? '' : 'hidden'}`}
+      >
         {availableTags?.map((tag: OptionType) => (
           <button
             key={tag.value}

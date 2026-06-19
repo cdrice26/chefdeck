@@ -11,7 +11,10 @@ use crate::{
     request::post,
     types::{
         db_params::{DateFilter, UsernameFilter},
-        raw_db::{RawSchedule, RawScheduleWithDisplayInfo, ScheduleFormData, ScheduleFormDataList},
+        raw_db::{
+            RawSchedule, RawScheduleWithDisplayInfo, ScheduleFormData, ScheduleFormDataList,
+            ScheduleFormDataListNoIds,
+        },
         response_bodies::{Schedule, ScheduleDisplay},
     },
     AppState,
@@ -30,7 +33,7 @@ use crate::{
 /// * `Err` - An error occurred during the operation.
 pub async fn update_recipe_schedules(
     db: &Pool<Sqlite>,
-    schedules: &Vec<ScheduleFormData>,
+    schedules: &ScheduleFormDataListNoIds,
 ) -> Result<Vec<i64>, Box<dyn std::error::Error>> {
     Ok(run_tx_with_error!(db, async |tx: &mut Transaction<
         '_,
@@ -98,7 +101,7 @@ pub async fn get_schedules_for_date_range(
     }))
 }
 
-impl BatchUpdatable for Vec<ScheduleFormData> {
+impl BatchUpdatable for ScheduleFormDataListNoIds {
     /// Inserts or updates the schedules for a recipe in the database.
     ///
     /// # Arguments
@@ -113,11 +116,11 @@ impl BatchUpdatable for Vec<ScheduleFormData> {
         &self,
         tx: &mut Transaction<'_, Sqlite>,
     ) -> Result<Vec<i64>, Box<dyn std::error::Error>> {
-        sqlx::query_file!("db/delete_recipe_schedules.sql", self[0].recipe_id)
+        sqlx::query_file!("db/delete_recipe_schedules.sql", self.recipe_id)
             .execute(&mut **tx)
             .await?;
         let mut ids = Vec::new();
-        for schedule in self {
+        for schedule in &self.list {
             let id = sqlx::query_file!(
                 "db/insert_recipe_schedules.sql",
                 schedule.recipe_id,
@@ -245,7 +248,7 @@ impl ScheduleFormDataList {
     ) -> Result<(), Box<dyn std::error::Error>> {
         let state = app.state::<AppState>();
         let username = get_username(&state).await?;
-        let recipe_id = self.0[0].recipe_id;
+        let recipe_id = self.recipe_id;
         let cloud_recipe_id = get_cloud_id_with_username(
             &state.db,
             recipe_id,
@@ -257,7 +260,7 @@ impl ScheduleFormDataList {
         .cloud_id;
         let body = serde_json::to_string(&GenericResponse {
             data: &self
-                .0
+                .list
                 .clone()
                 .into_iter()
                 .map(|s| s.into_cloud_schedule())
@@ -273,7 +276,12 @@ impl ScheduleFormDataList {
         let cloud_schedule_ids = response.json::<GenericResponse<Vec<String>>>().await?.data;
         run_tx_with_error!(&state.db, async |tx: &mut Transaction<'_, Sqlite>| {
             let username_ref = &username;
-            for (local_id, cloud_id) in self.0.iter().map(|s| s.id).zip(cloud_schedule_ids.iter()) {
+            for (local_id, cloud_id) in self
+                .list
+                .iter()
+                .map(|s| s.id)
+                .zip(cloud_schedule_ids.iter())
+            {
                 sqlx::query_file!(
                     "db/insert_schedule_cloud_id.sql",
                     local_id,

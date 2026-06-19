@@ -258,9 +258,16 @@ async fn sync_tags(app: AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+async fn sync_schedules(app: AppHandle) -> Result<(), String> {
+    // Download schedules where the server has a different version
+    // Upload schedules that don't have a cloud parent
+    Ok(())
+}
+
 async fn sync_all(app: AppHandle) -> Result<(), String> {
     sync_recipes(app.clone()).await?;
     sync_tags(app.clone()).await?;
+    sync_schedules(app.clone()).await?;
     let state = app.state::<AppState>();
     let db = &state.db;
     let username = get_username(&state).await?;

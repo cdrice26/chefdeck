@@ -670,7 +670,7 @@ pub struct RawScheduleFormData {
     pub end_repeat: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ScheduleFormData {
     pub recipe_id: i64,
     pub date: NaiveDate,
@@ -723,4 +723,13 @@ impl RawScheduleFormData {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ScheduleFormDataList(pub Vec<ScheduleFormDataWithId>);
+pub struct ScheduleFormDataList {
+    pub list: Vec<ScheduleFormDataWithId>,
+    pub recipe_id: i64,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ScheduleFormDataListNoIds {
+    pub list: Vec<ScheduleFormData>,
+    pub recipe_id: i64,
+}
