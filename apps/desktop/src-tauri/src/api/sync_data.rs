@@ -1,7 +1,10 @@
+use std::collections::HashMap;
+
 use crate::{
     crud::{
         recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
+        schedules::update_recipe_schedules,
         tag::delete_tag,
         tags::get_tags_with_cloud_ids,
         Downloadable, DownloadableWith, RemoteUpdatable, Updatable, Uploadable,
@@ -10,44 +13,54 @@ use crate::{
     img_proc::convert_cloud_img_to_local,
     macros::{run_tx, run_tx_with_error},
     types::{
-        cloud_structs::{DownloadedRecipe, LastSyncedRecord, RecipeExistenceRecord},
+        cloud_structs::{
+            CloudScheduleWithIds, DownloadedRecipe, LastSyncedRecord, RecipeExistenceRecord,
+        },
         db_params::{
             ExcludedRecipeIds, RecipeIds, UsernameAndUpdatedFilter, UsernameFilter,
             UsernameFilterWithImagesLibPath,
         },
-        raw_db::{IntegerValue, ToRecipeFormData},
-        response_bodies::{Recipe, RecipeTag},
+        raw_db::{
+            IntegerValue, ScheduleCloudId, ScheduleFormData, ScheduleFormDataListNoIds,
+            ToRecipeFormData,
+        },
+        response_bodies::{Recipe, RecipeTag, Schedule},
     },
     AppState,
 };
 use chrono::NaiveDateTime;
-use sqlx::{query_file_as, Sqlite, Transaction};
+use sqlx::{query_file_as, Pool, Sqlite, Transaction};
 use tauri::{AppHandle, Manager};
 
 use super::auth::check_auth::get_username;
+
+async fn get_local_id_from_cloud(
+    db: &Pool<Sqlite>,
+    recipe_id: &str,
+) -> Result<Option<i64>, Box<dyn std::error::Error>> {
+    let result: Option<i64> =
+        run_tx_with_error!(db, async |tx: &mut Transaction<'_, Sqlite>| -> Result<
+            Option<i64>,
+            Box<dyn std::error::Error>,
+        > {
+            let local_row_res = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe_id)
+                .fetch_optional(&mut **tx)
+                .await;
+
+            match local_row_res {
+                Ok(opt_row) => Ok(opt_row.and_then(|r| r.value)),
+                Err(e) => Err(Box::from(e)),
+            }
+        });
+    Ok(result)
+}
 
 async fn update_local_recipe_from_downloaded(
     recipe: DownloadedRecipe,
     app: &AppHandle,
     state: &AppState,
 ) -> Result<Option<i64>, Box<dyn std::error::Error>> {
-    let local_id_opt: Option<i64> = run_tx_with_error!(&state.db, async |tx: &mut Transaction<
-        '_,
-        Sqlite,
-    >|
-           -> Result<
-        Option<i64>,
-        Box<dyn std::error::Error>,
-    > {
-        let local_row_res = query_file_as!(IntegerValue, "db/get_local_id.sql", recipe.id)
-            .fetch_optional(&mut **tx)
-            .await;
-
-        match local_row_res {
-            Ok(opt_row) => Ok(opt_row.and_then(|r| r.value)),
-            Err(e) => Err(Box::from(e)),
-        }
-    });
+    let local_id_opt: Option<i64> = get_local_id_from_cloud(&state.db, &recipe.id.as_str()).await?;
 
     let Some(local_id) = local_id_opt else {
         return Ok(None);
@@ -260,6 +273,64 @@ async fn sync_tags(app: AppHandle) -> Result<(), String> {
 
 async fn sync_schedules(app: AppHandle) -> Result<(), String> {
     // Download schedules where the server has a different version
+    let state = app.state::<AppState>();
+    let db = &state.db;
+    let username = get_username(&state).await?;
+    let downloaded_schedules = Vec::<CloudScheduleWithIds>::download(&app)
+        .await
+        .map_err(|e| e.to_string())?;
+    let username_ref = &username;
+    let schedule_cloud_ids = run_tx!(
+        db,
+        async |tx: &mut Transaction<'_, Sqlite>| -> Result<Vec<ScheduleCloudId>, sqlx::Error> {
+            Ok(sqlx::query_file_as!(
+                ScheduleCloudId,
+                "db/get_schedule_cloud_ids.sql",
+                username_ref
+            )
+            .fetch_all(&mut **tx)
+            .await?)
+        }
+    )?;
+    let mut grouped: HashMap<i64, Vec<ScheduleFormData>> = HashMap::new();
+
+    for schedule in downloaded_schedules.iter() {
+        let already_exists = schedule_cloud_ids
+            .iter()
+            .any(|cid| cid.cloud_id == Some(schedule.id.clone()));
+
+        if !already_exists {
+            let local_recipe_id = match get_local_id_from_cloud(db, &schedule.recipe_id)
+                .await
+                .map_err(|e| e.to_string())?
+            {
+                Some(local_id) => local_id,
+                None => continue,
+            };
+
+            grouped
+                .entry(local_recipe_id)
+                .or_insert_with(Vec::new)
+                .push(ScheduleFormData {
+                    recipe_id: local_recipe_id,
+                    date: schedule.date,
+                    repeat: schedule.repeat.clone(),
+                    end_repeat: schedule.end_repeat,
+                });
+        }
+    }
+
+    let to_insert: Vec<ScheduleFormDataListNoIds> = grouped
+        .into_iter()
+        .map(|(recipe_id, list)| ScheduleFormDataListNoIds { recipe_id, list })
+        .collect();
+
+    for recipe_schedules in to_insert.iter() {
+        update_recipe_schedules(db, recipe_schedules)
+            .await
+            .map_err(|e| e.to_string())?;
+    }
+
     // Upload schedules that don't have a cloud parent
     Ok(())
 }

@@ -5,14 +5,15 @@ use tauri::{AppHandle, Emitter, Manager};
 use crate::{
     api::{auth::check_auth::get_username, GenericResponse},
     crud::{
-        cloud_id::get_cloud_id_with_username, BatchReadableWith, BatchUpdatable, Readable,
-        RemoteUpdatable,
+        cloud_id::get_cloud_id_with_username, BatchReadableWith, BatchUpdatable, Downloadable,
+        Readable, RemoteUpdatable,
     },
-    request::post,
+    request::{get, post},
     types::{
+        cloud_structs::CloudScheduleWithIds,
         db_params::{DateFilter, UsernameFilter},
         raw_db::{
-            RawSchedule, RawScheduleWithDisplayInfo, ScheduleFormData, ScheduleFormDataList,
+            RawSchedule, RawScheduleWithDisplayInfo, ScheduleFormDataList,
             ScheduleFormDataListNoIds,
         },
         response_bodies::{Schedule, ScheduleDisplay},
@@ -294,5 +295,24 @@ impl ScheduleFormDataList {
             Ok::<(), Box<dyn std::error::Error>>(())
         });
         Ok(())
+    }
+}
+
+impl Downloadable for Vec<CloudScheduleWithIds> {
+    /// Downloads all schedules from the cloud
+    ///
+    /// # Arguments:
+    ///     * `app` - Tauri app handle
+    ///
+    /// # Returns:
+    ///     * `Ok(schedules)` - The list of schedules in the cloud
+    ///     * `Err` - If an error occured
+    async fn download(app: &AppHandle) -> Result<Self, Box<dyn std::error::Error>> {
+        let response = get(app, "/schedules").await?;
+        let schedules = response
+            .json::<GenericResponse<Vec<CloudScheduleWithIds>>>()
+            .await?
+            .data;
+        Ok(schedules)
     }
 }

@@ -26,6 +26,7 @@ export interface Schedule {
   date: Date;
   repeat: Repeat;
   endRepeat: null | Date;
+  recipeId?: string;
 }
 
 /**

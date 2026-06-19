@@ -512,12 +512,10 @@ pub struct TagCloudId {
 
 #[derive(Debug)]
 pub struct ScheduleCloudId {
-    pub local_id: i64,
-    pub cloud_id: String,
-    pub username: String,
+    pub cloud_id: Option<String>,
 }
 
-#[derive(sqlx::FromRow, Debug)]
+#[derive(sqlx::FromRow, Debug, Deserialize)]
 pub struct RawSchedule {
     pub id: i64,
     pub recipe_id: i64,

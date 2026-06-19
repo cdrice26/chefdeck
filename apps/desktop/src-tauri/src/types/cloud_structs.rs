@@ -144,3 +144,13 @@ pub struct CloudSchedule {
     pub repeat: String,
     pub end_repeat: Option<NaiveDate>,
 }
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CloudScheduleWithIds {
+    pub id: String,
+    pub recipe_id: String,
+    pub date: NaiveDate,
+    pub repeat: String,
+    pub end_repeat: Option<NaiveDate>,
+}
