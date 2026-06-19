@@ -664,7 +664,6 @@ impl RawScheduleWithDisplayInfo {
 
 pub trait ScheduleFormDataLike {
     fn id(&self) -> Option<i64>;
-    fn cloud_id(&self) -> Option<String>;
     fn recipe_id(&self) -> Option<i64>;
     fn date(&self) -> Option<NaiveDate>;
     fn repeat(&self) -> Option<String>;
@@ -720,10 +719,6 @@ impl ScheduleFormDataLike for RawScheduleFormData {
         None
     }
 
-    fn cloud_id(&self) -> Option<String> {
-        None
-    }
-
     fn recipe_id(&self) -> Option<i64> {
         None
     }
@@ -766,10 +761,6 @@ impl ScheduleFormDataLike for ScheduleFormData {
         None
     }
 
-    fn cloud_id(&self) -> Option<String> {
-        None
-    }
-
     fn recipe_id(&self) -> Option<i64> {
         Some(self.recipe_id)
     }
@@ -799,10 +790,6 @@ pub struct ScheduleFormDataWithCloudId {
 impl ScheduleFormDataLike for ScheduleFormDataWithCloudId {
     fn id(&self) -> Option<i64> {
         None
-    }
-
-    fn cloud_id(&self) -> Option<String> {
-        Some(self.cloud_id.clone())
     }
 
     fn recipe_id(&self) -> Option<i64> {
@@ -836,10 +823,6 @@ impl ScheduleFormDataLike for ScheduleFormDataWithId {
         Some(self.id)
     }
 
-    fn cloud_id(&self) -> Option<String> {
-        None
-    }
-
     fn recipe_id(&self) -> Option<i64> {
         Some(self.recipe_id)
     }
@@ -854,6 +837,33 @@ impl ScheduleFormDataLike for ScheduleFormDataWithId {
 
     fn end_repeat(&self) -> Option<NaiveDate> {
         self.end_repeat.clone()
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ScheduleId {
+    pub id: i64,
+}
+
+impl ScheduleFormDataLike for ScheduleId {
+    fn id(&self) -> Option<i64> {
+        Some(self.id)
+    }
+
+    fn recipe_id(&self) -> Option<i64> {
+        None
+    }
+
+    fn date(&self) -> Option<NaiveDate> {
+        None
+    }
+
+    fn repeat(&self) -> Option<String> {
+        None
+    }
+
+    fn end_repeat(&self) -> Option<NaiveDate> {
+        None
     }
 }
 

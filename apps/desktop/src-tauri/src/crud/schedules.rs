@@ -6,7 +6,7 @@ use crate::{
     api::{auth::check_auth::get_username, GenericResponse},
     crud::{
         cloud_id::get_cloud_id_with_username, schedule_cloud_id::insert_schedule_cloud_id,
-        BatchReadableWith, BatchUpdatable, Downloadable, Readable, RemoteUpdatable,
+        BatchReadableWith, BatchUpdatable, Deletable, Downloadable, Readable, RemoteUpdatable,
     },
     request::{get, post},
     types::{
@@ -102,6 +102,18 @@ pub async fn get_schedules_for_date_range(
     }))
 }
 
+/// Wraps the schedule delete method in a database transaction
+pub async fn delete_schedule<T: ScheduleFormDataLike>(
+    db: &Pool<Sqlite>,
+    schedule: T,
+) -> Result<(), Box<dyn std::error::Error>> {
+    run_tx_with_error!(db, async |tx: &mut Transaction<'_, Sqlite>| {
+        FromSchedule(schedule).delete(tx).await?;
+        Ok::<_, Box<dyn std::error::Error>>(())
+    });
+    Ok(())
+}
+
 impl<T: ScheduleFormDataLike + Clone> BatchUpdatable for ScheduleFormDataList<T> {
     /// Inserts or updates the schedules for a recipe in the database.
     ///
@@ -117,9 +129,13 @@ impl<T: ScheduleFormDataLike + Clone> BatchUpdatable for ScheduleFormDataList<T>
         &self,
         tx: &mut Transaction<'_, Sqlite>,
     ) -> Result<Vec<i64>, Box<dyn std::error::Error>> {
-        sqlx::query_file!("db/delete_recipe_schedules.sql", self.recipe_id)
-            .execute(&mut **tx)
-            .await?;
+        sqlx::query_file!(
+            "db/delete_recipe_schedules.sql",
+            self.recipe_id,
+            self.recipe_id
+        )
+        .execute(&mut **tx)
+        .await?;
         let mut ids = Vec::new();
         for schedule in &self.list {
             let recipe_id = schedule.recipe_id();
@@ -313,5 +329,20 @@ impl Downloadable for Vec<CloudScheduleWithIds> {
             .await?
             .data;
         Ok(schedules)
+    }
+}
+
+struct FromSchedule<T>(T);
+impl<T: ScheduleFormDataLike> Deletable for FromSchedule<T> {
+    /// Deletes a schedule by ID.
+    async fn delete(
+        &self,
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let schedule_id = self.0.id();
+        sqlx::query_file!("db/delete_schedule.sql", schedule_id)
+            .execute(&mut **tx)
+            .await?;
+        Ok(())
     }
 }

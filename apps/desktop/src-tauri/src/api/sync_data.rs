@@ -7,7 +7,7 @@ use crate::{
         schedule_cloud_id::{
             delete_schedule_cloud_id, get_cloud_schedule_ids_for_user, insert_schedule_cloud_id,
         },
-        schedules::update_recipe_schedules,
+        schedules::{delete_schedule, update_recipe_schedules},
         tag::delete_tag,
         tags::get_tags_with_cloud_ids,
         Downloadable, DownloadableWith, RemoteUpdatable, Updatable, Uploadable,
@@ -25,7 +25,7 @@ use crate::{
         },
         raw_db::{
             IntegerValue, RawSchedule, ScheduleCloudId, ScheduleFormDataList,
-            ScheduleFormDataWithCloudId, ScheduleFormDataWithId, ToRecipeFormData,
+            ScheduleFormDataWithCloudId, ScheduleFormDataWithId, ScheduleId, ToRecipeFormData,
         },
         response_bodies::{Recipe, RecipeTag},
     },
@@ -348,6 +348,14 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
             delete_schedule_cloud_id(db, cloud_id)
                 .await
                 .map_err(|e| e.to_string())?;
+            delete_schedule(
+                db,
+                ScheduleId {
+                    id: cloud_id.local_id.unwrap(),
+                },
+            )
+            .await
+            .map_err(|e| e.to_string())?;
         }
     }
 
@@ -360,8 +368,6 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
                 .await
         }
     );
-
-    println!("{:?}", local_only_schedules);
 
     let mut grouped: HashMap<i64, Vec<ScheduleFormDataWithId>> = HashMap::new();
 
@@ -385,7 +391,8 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
 
     for recipe_schedules in to_upload.iter() {
         recipe_schedules
-            .update_remote(&app)
+            .clone()
+            .try_update_remote(&app)
             .await
             .map_err(|e| e.to_string())?;
     }
