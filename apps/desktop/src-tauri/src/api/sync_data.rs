@@ -4,7 +4,9 @@ use crate::{
     crud::{
         recipe::{delete_recipe, insert_recipe},
         recipes::get_recipes,
-        schedule_cloud_id::insert_schedule_cloud_id,
+        schedule_cloud_id::{
+            delete_schedule_cloud_id, get_cloud_schedule_ids_for_user, insert_schedule_cloud_id,
+        },
         schedules::update_recipe_schedules,
         tag::delete_tag,
         tags::get_tags_with_cloud_ids,
@@ -280,19 +282,9 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
     let downloaded_schedules = Vec::<CloudScheduleWithIds>::download(&app)
         .await
         .map_err(|e| e.to_string())?;
-    let username_ref = &username;
-    let schedule_cloud_ids = run_tx!(
-        db,
-        async |tx: &mut Transaction<'_, Sqlite>| -> Result<Vec<ScheduleCloudId>, sqlx::Error> {
-            Ok(sqlx::query_file_as!(
-                ScheduleCloudId,
-                "db/get_schedule_cloud_ids.sql",
-                username_ref
-            )
-            .fetch_all(&mut **tx)
-            .await?)
-        }
-    );
+    let schedule_cloud_ids = get_cloud_schedule_ids_for_user(db, &username)
+        .await
+        .map_err(|e| e.to_string())?;
 
     // Group ALL downloaded schedules by recipe_id first
     let mut server_by_recipe: HashMap<i64, Vec<&CloudScheduleWithIds>> = HashMap::new();
@@ -343,6 +335,22 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
         }
     }
 
+    // Delete local schedules that have a cloud parent defined but no real cloud parent
+    let ids_in_cloud = downloaded_schedules
+        .into_iter()
+        .map(|s| s.id)
+        .collect::<Vec<String>>();
+    for cloud_id in schedule_cloud_ids
+        .iter()
+        .filter(|cid| cid.cloud_id.is_some())
+    {
+        if !ids_in_cloud.contains(&cloud_id.cloud_id.as_ref().unwrap()) {
+            delete_schedule_cloud_id(db, cloud_id)
+                .await
+                .map_err(|e| e.to_string())?;
+        }
+    }
+
     // Upload schedules that don't have a cloud parent
     let local_only_schedules = run_tx!(
         db,
@@ -352,6 +360,8 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
                 .await
         }
     );
+
+    println!("{:?}", local_only_schedules);
 
     let mut grouped: HashMap<i64, Vec<ScheduleFormDataWithId>> = HashMap::new();
 
