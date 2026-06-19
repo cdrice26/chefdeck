@@ -17,7 +17,7 @@ DECLARE
     rid uuid;
 BEGIN
 	FOREACH rid IN ARRAY v_recipe_ids LOOP
-		IF EXISTS(SELECT FROM recipes r WHERE r.id = rid) THEN
+		IF EXISTS(SELECT FROM recipes r WHERE r.id = rid AND r.user_id = auth.uid()) THEN
 			RETURN NEXT (rid, TRUE::boolean);
 		ELSE
 			RETURN NEXT (rid, FALSE::boolean);

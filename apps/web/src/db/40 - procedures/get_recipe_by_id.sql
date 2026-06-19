@@ -42,7 +42,8 @@ BEGIN
         )
     ) INTO recipe_data
     FROM recipes r
-    WHERE r.id = p_id;
+    WHERE r.id = p_id
+    AND r.user_id = auth.uid();
 
     -- Return the recipe data
     RETURN recipe_data;

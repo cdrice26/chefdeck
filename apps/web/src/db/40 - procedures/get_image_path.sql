@@ -5,8 +5,9 @@ CREATE OR REPLACE FUNCTION get_image_path(p_recipe_id uuid)
   LANGUAGE sql
   SECURITY INVOKER
   SET search_path = public
-  AS $$ 
+  AS $$
     SELECT img_url FROM recipes
       WHERE id = p_recipe_id
+      AND user_id = auth.uid()
       LIMIT 1
   $$;

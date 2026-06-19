@@ -13,6 +13,6 @@ AS $$
         FROM recipe_usage
         GROUP BY recipe_id
     ) ru ON ru.recipe_id = r.id
-    WHERE r.last_updated >= p_updated_after
-    OR (ru.last_viewed IS NOT NULL AND ru.last_viewed >= p_updated_after);
+    WHERE r.user_id = auth.uid() AND (r.last_updated >= p_updated_after
+    OR (ru.last_viewed IS NOT NULL AND ru.last_viewed >= p_updated_after));
 $$;

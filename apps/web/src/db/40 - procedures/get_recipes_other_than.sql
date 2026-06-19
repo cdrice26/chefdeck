@@ -6,5 +6,5 @@ LANGUAGE sql
 SECURITY INVOKER
 SET search_path = public
 AS $$
-    SELECT get_recipe_by_id(id) FROM recipes WHERE NOT id = ANY(p_recipe_ids::uuid[])
+    SELECT get_recipe_by_id(id) FROM recipes WHERE NOT id = ANY(p_recipe_ids::uuid[]) AND user_id = auth.uid()
 $$;
