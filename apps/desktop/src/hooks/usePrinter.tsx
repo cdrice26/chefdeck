@@ -2,7 +2,6 @@ import { NotificationKind } from 'cookycardz-shared';
 import { createRoot } from 'react-dom/client';
 
 const printComponent = (component: React.ReactNode, title: string): void => {
-  const prevTitle = document.title;
   document.title = title;
 
   // Create or reuse a dedicated print container at the top of body
