@@ -19,10 +19,7 @@ pub struct CheckAuthResponse {
 async fn make_auth_request(access_token: &str) -> Result<Response, String> {
     let client = reqwest::Client::new();
     client
-        .get(format!(
-            "{}/auth/checkAuth",
-            std::env::var("API_URL").unwrap_or_default()
-        ))
+        .get(format!("{}/auth/checkAuth", env!("API_URL")))
         .header("Authorization", format!("Bearer {}", access_token))
         .send()
         .await

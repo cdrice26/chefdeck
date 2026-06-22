@@ -21,10 +21,7 @@ pub async fn refresh_access_token(state: &State<'_, AppState>) -> Result<(), Str
         .ok_or("Refresh token not found")?;
     let client = reqwest::Client::new();
     let response = client
-        .post(format!(
-            "{}/auth/refreshToken",
-            std::env::var("API_URL").unwrap_or_default()
-        ))
+        .post(format!("{}/auth/refreshToken", env!("API_URL")))
         .header("x-refresh-token", refresh_token)
         .send()
         .await
@@ -48,7 +45,7 @@ async fn do_get_request(
     client: &reqwest::Client,
     endpoint: &str,
 ) -> Result<Response, String> {
-    let api_url = std::env::var("API_URL").unwrap_or_default();
+    let api_url = env!("API_URL");
     let access_token_guard = state.access_token.lock().await;
     let token = access_token_guard.as_deref().unwrap_or("");
 
@@ -69,7 +66,7 @@ async fn do_post_request(
     endpoint: &str,
     body: &str,
 ) -> Result<Response, String> {
-    let api_url = std::env::var("API_URL").unwrap_or_default();
+    let api_url = env!("API_URL");
     let access_token_guard = state.access_token.lock().await;
     let token = access_token_guard.as_deref().unwrap_or("");
 
@@ -89,7 +86,7 @@ async fn do_delete_request(
     client: &reqwest::Client,
     endpoint: &str,
 ) -> Result<Response, String> {
-    let api_url = std::env::var("API_URL").unwrap_or_default();
+    let api_url = env!("API_URL");
     let access_token_guard = state.access_token.lock().await;
     let token = access_token_guard.as_deref().unwrap_or("");
 
@@ -176,7 +173,7 @@ pub async fn do_recipe_post_request(
     endpoint: &str,
     recipe: &RecipeFormData,
 ) -> Result<Response, String> {
-    let api_url = std::env::var("API_URL").unwrap_or_default();
+    let api_url = env!("API_URL");
     let access_token_guard = state.access_token.lock().await;
     let token = access_token_guard.as_deref().unwrap_or("");
 

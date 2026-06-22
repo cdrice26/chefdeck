@@ -26,10 +26,7 @@ pub async fn api_auth_login(
 ) -> Result<SuccessResponse, ErrorResponse> {
     let client = reqwest::Client::new();
     let response = client
-        .post(format!(
-            "{}/auth/login",
-            std::env::var("API_URL").unwrap_or_default()
-        ))
+        .post(format!("{}/auth/login", env!("API_URL")))
         .json(&serde_json::json!({
             "email": email,
             "password": password
