@@ -5,6 +5,8 @@ import { getErrorResponse } from '@/utils/errorUtils';
 import { PostgrestError } from '@supabase/supabase-js';
 import { getAccessToken } from '@/utils/authUtils';
 
+const MAX_BODY_SIZE = 1024 * 1024 * 10;
+
 /**
  * POST /api/recipe/[id]/update
  *
@@ -41,6 +43,19 @@ export const POST = async (
   if (!id) {
     return new Response('Recipe ID is required', { status: 400 });
   }
+
+  const contentLength = req.headers.get('content-length');
+
+  if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
+    return NextResponse.json(
+      {
+        message:
+          'Recipe size too large. Maximum size is 10MB. Try a smaller image.'
+      },
+      { status: 413 }
+    );
+  }
+
   const formData = await req.formData();
   const {
     title,
