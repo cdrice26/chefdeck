@@ -10,6 +10,7 @@ import { request } from '../../utils/fetchUtils';
 import { confirm } from '@tauri-apps/plugin-dialog';
 import { FormEvent } from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { LicensesDialog } from '../LicensesDialog';
 
 export default function MorePage() {
   const { availableTags, error, isLoading, refetch } =
@@ -59,6 +60,7 @@ export default function MorePage() {
         error={error}
         isLoading={isLoading}
       />
+      <LicensesDialog />
     </div>
   );
 }

@@ -18,3 +18,13 @@ This page lists the licenses of the projects used in CookyCardz Desktop.
 {{text}}
 ```
 {{/each}}
+
+## NOTICE Files
+{{#each crates}}
+{{#if notices}}
+### {{name}} {{version}}
+{{#each notices}}
+{{text}}
+{{/each}}
+{{/if}}
+{{/each}}

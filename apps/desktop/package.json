@@ -5,10 +5,11 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "licenses": "cd ../.. && yes | generate-license-file --input package.json --output apps/desktop/src/licenses-js.txt && cargo about generate -m apps/desktop/src-tauri/Cargo.toml apps/desktop/src-tauri/about.hbs -o apps/desktop/src/licenses-rust.txt",
     "dev:vite": "vite",
     "dev": "tauri dev",
-    "build:vite": "tsc && vite build",
-    "build": "tauri build",
+    "build:vite": "npm run licenses && tsc && vite build",
+    "build": "npm run licenses && tsc && tauri build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
