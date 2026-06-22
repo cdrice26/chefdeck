@@ -2,7 +2,7 @@ import {
   Dashboard,
   useInfiniteScroll,
   usePaginatedRecipes
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import { useMemo, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { request } from '../../utils/fetchUtils';

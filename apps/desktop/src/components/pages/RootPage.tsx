@@ -3,7 +3,7 @@ import Sidebar from '../navigation/Sidebar';
 import { platform } from '@tauri-apps/plugin-os';
 import { useEffect, useRef, useState } from 'react';
 import Toolbar from '../navigation/Toolbar';
-import { NotificationWrapper, useNotification } from 'chefdeck-shared';
+import { NotificationWrapper, useNotification } from 'cookycardz-shared';
 import { useTauriListener } from '../../hooks/useTauriListener';
 
 export default function RootPage() {

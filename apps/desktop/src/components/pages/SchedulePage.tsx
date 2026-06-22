@@ -4,7 +4,7 @@ import {
   useNotification,
   useScheduleActions,
   useScheduledRecipes
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import { useNavigate } from 'react-router';
 import { request } from '../../utils/fetchUtils';
 import Select from 'react-select';

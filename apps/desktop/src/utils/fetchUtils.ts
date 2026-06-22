@@ -1,5 +1,5 @@
 import { invoke, InvokeArgs } from '@tauri-apps/api/core';
-import { zipArrays } from 'chefdeck-shared';
+import { zipArrays } from 'cookycardz-shared';
 
 interface IPCResponse {
   json: () => Promise<object>;
@@ -76,7 +76,7 @@ const camelToSnake = (str: string) =>
  * Takes a url and converts it into a format that can be used for Tauri IPC requests.
  * * Search parameters are converted to a plain object, `params`.
  * * The first numeric path segment is used as the `id` parameter
- *   (this is the only url path parameter used in ChefDeck).
+ *   (this is the only url path parameter used in CookyCardz).
  * * The remaining path segments are joined with underscores to form the `fnName`.
  *
  * @param url The URL to parse
@@ -131,7 +131,7 @@ export const request: RequestFn = async (url, _method, body) => {
 
 /**
  * Makes Tauri IPC requests from FormData. Specific to recipe creation and update requests at the moment
- * as these are the only requests in ChefDeck that use FormData (required due to the image submissions).
+ * as these are the only requests in CookyCardz that use FormData (required due to the image submissions).
  *
  * @param url - The URL of the corresponding web page. This is used to determine the function name and parameters.
  * @param _method - The HTTP method to use for the request. This is not used in Tauri IPC requests.

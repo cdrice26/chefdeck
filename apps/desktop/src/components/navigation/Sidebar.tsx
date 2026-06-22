@@ -2,7 +2,7 @@ import { platform } from '@tauri-apps/plugin-os';
 import SidebarButton from './SidebarButton';
 import { useNavigate, useLocation, useSearchParams } from 'react-router';
 import { IoIosCalendar, IoIosHome, IoIosList, IoIosMore } from 'react-icons/io';
-import { OptionType, useAvailableTags } from 'chefdeck-shared';
+import { OptionType, useAvailableTags } from 'cookycardz-shared';
 import { request } from '../../utils/fetchUtils';
 import { useEffect, useState } from 'react';
 

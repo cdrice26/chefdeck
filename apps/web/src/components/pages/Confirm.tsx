@@ -1,5 +1,5 @@
 import { ConfirmActions } from '@/hooks/useConfirmActions';
-import { Card, Input, Button } from 'chefdeck-shared';
+import { Card, Input, Button } from 'cookycardz-shared';
 
 const Confirm = ({
   status,

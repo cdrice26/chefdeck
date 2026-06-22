@@ -10,7 +10,7 @@ import {
   RecipeDetails,
   useRecipeMutator,
   Recipe
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 
 export default function RecipePage() {
   const router = useRouter();

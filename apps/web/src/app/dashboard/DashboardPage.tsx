@@ -2,10 +2,14 @@
 
 import useRequireAuth from '@/hooks/useRequireAuth';
 import request from '@/utils/fetchUtils';
-import { usePaginatedRecipes, useImageRefetcher, useInfiniteScroll, Dashboard } from 'chefdeck-shared';
+import {
+  usePaginatedRecipes,
+  useImageRefetcher,
+  useInfiniteScroll,
+  Dashboard
+} from 'cookycardz-shared';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useMemo, useRef } from 'react';
-
 
 /**
  * Dashboard component.

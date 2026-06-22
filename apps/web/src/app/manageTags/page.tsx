@@ -1,7 +1,12 @@
 'use client';
 
 import request from '@/utils/fetchUtils';
-import { useAvailableTags, useNotification, useTagsMutator, ManageTags } from 'chefdeck-shared';
+import {
+  useAvailableTags,
+  useNotification,
+  useTagsMutator,
+  ManageTags
+} from 'cookycardz-shared';
 
 export default function ManageTagsPage() {
   const { availableTags, error, isLoading, refetch } =

@@ -1,4 +1,4 @@
-import { Button, Login, useLoginMutator } from 'chefdeck-shared';
+import { Button, Login, useLoginMutator } from 'cookycardz-shared';
 import { useAuth } from '../../hooks/useAuth';
 import { request } from '../../utils/fetchUtils';
 import { useNavigate } from 'react-router';
@@ -32,7 +32,7 @@ export default function ProfilePage() {
     return (
       <>
         <h1 className="text-2xl flex items-center justify-center">
-          Sign in to ChefDeck to enable cloud syncing.
+          Sign in to CookyCardz to enable cloud syncing.
         </h1>
         <Login
           error={error}

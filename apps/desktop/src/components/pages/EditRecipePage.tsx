@@ -4,7 +4,7 @@ import {
   useNotification,
   useRecipe,
   useRecipeEditMutator
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import { useNavigate, useParams } from 'react-router';
 import { request, requestFromFormData } from '../../utils/fetchUtils';
 import { useMemo } from 'react';

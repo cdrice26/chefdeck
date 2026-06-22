@@ -1,4 +1,4 @@
-# ChefDeck
+# CookyCardz
 
 This is a recipe manager app. It allows you to keep track of your recipes, assign tags to them, search through them, and schedule them.
 

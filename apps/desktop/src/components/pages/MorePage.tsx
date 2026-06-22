@@ -5,7 +5,7 @@ import {
   useAvailableTags,
   useNotification,
   useTagsMutator
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import { request } from '../../utils/fetchUtils';
 
 export default function MorePage() {

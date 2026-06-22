@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useNotification } from 'chefdeck-shared';
+import { useNotification } from 'cookycardz-shared';
 import Confirm from '@/components/pages/Confirm';
 import request from '@/utils/fetchUtils';
 import useConfirmActions from '@/hooks/useConfirmActions';

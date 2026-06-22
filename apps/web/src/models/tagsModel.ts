@@ -1,4 +1,4 @@
-import { OptionType } from 'chefdeck-shared/server';
+import { OptionType } from 'cookycardz-shared/server';
 import { DBTag } from '@/types/db/DBTag';
 
 /**

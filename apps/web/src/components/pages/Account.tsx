@@ -1,4 +1,4 @@
-import { Input, Button } from 'chefdeck-shared';
+import { Input, Button } from 'cookycardz-shared';
 import Section from '@/components/AccountSection';
 import { Mutator } from '@/hooks/mutators/useAccountMutator';
 

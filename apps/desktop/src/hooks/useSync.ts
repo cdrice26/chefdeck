@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
-import { useNotification } from 'chefdeck-shared';
+import { useNotification } from 'cookycardz-shared';
 import { useState } from 'react';
 
 export const useSync = () => {

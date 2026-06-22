@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import fetchImageUrl from '../utils/imageUtils';
 import { Recipe } from '@/types/Recipe';
-import { isValidColor } from 'chefdeck-shared/server';
+import { isValidColor } from 'cookycardz-shared/server';
 import {
   DBDirection,
   DBIngredient,

@@ -1,4 +1,4 @@
-import { NotificationKind } from 'chefdeck-shared';
+import { NotificationKind } from 'cookycardz-shared';
 import { createRoot } from 'react-dom/client';
 
 const printComponent = (component: React.ReactNode, title: string): void => {

@@ -1,4 +1,4 @@
-import { Card } from 'chefdeck-shared/server';
+import { Card } from 'cookycardz-shared/server';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -19,14 +19,8 @@ function FeatureCard({
         {title}
       </h2>
       <p>{description}</p>
-      <div className="flex justify-center items-center bg-white rounded-lg w-full h-full overflow-hidden">
-        <Image
-          src={imgPath}
-          alt={imgAlt}
-          layout="responsive"
-          width={40}
-          height={30}
-        />
+      <div className="relative aspect-4/3 flex justify-center items-center bg-white rounded-lg w-full h-full overflow-hidden">
+        <Image src={imgPath} alt={imgAlt} className="object-contain" fill />
       </div>
     </Card>
   );
@@ -37,7 +31,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen p-10">
       <header className="text-center p-10 min-h-[400px] background-cupcakes flex flex-col items-start justify-start w-full shadow-md rounded-lg">
         <h1 className="text-5xl font-bold text-white text-shadow">
-          Welcome to ChefDeck
+          Welcome to CookyCardz
         </h1>
         <p className="mt-4 text-lg text-gray-100 text-shadow">
           Your ultimate recipe management tool.
@@ -89,7 +83,7 @@ export default function Home() {
             Get Started Today!
           </h2>
           <p className="mt-4 text-lg text-gray-100">
-            Join ChefDeck and take control of your cooking.
+            Join CookyCardz and take control of your cooking.
           </p>
           <a
             href="/signup"
@@ -102,10 +96,10 @@ export default function Home() {
 
       <footer className="mt-10 text-center">
         <p className="text-gray-600 dark:text-gray-400">
-          &copy; 2025 ChefDeck. All rights reserved.
+          &copy; 2026 Caleb Rice. All rights reserved.
         </p>
         <p className="text-gray-600 dark:text-gray-400">
-          ChefDeck is created by Caleb Rice. The source code is available on{' '}
+          CookyCardz is created by Caleb Rice. The source code is available on{' '}
           <a href="https://github.com/cdrice26/chefdeck" className="underline">
             Github
           </a>
@@ -124,7 +118,7 @@ export default function Home() {
           <Link href="/licenses" className="underline">
             here
           </Link>
-          . ChefDeck is one person's project and it is not affiliated with or
+          . CookyCardz is one person's project and it is not affiliated with or
           endorsed by any organization.
         </p>
       </footer>

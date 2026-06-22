@@ -3,5 +3,5 @@
 
 fn main() {
     dotenv::dotenv().ok();
-    chefdeck_desktop::run();
+    cookycardz::run();
 }

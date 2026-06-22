@@ -18,12 +18,12 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["^build", "chefdeck-shared#build"]
+      "dependsOn": ["^build", "cookycardz-shared#build"]
     },
     "start": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["^build", "chefdeck-shared#build"]
+      "dependsOn": ["^build", "cookycardz-shared#build"]
     },
     "lint": {
       "outputs": []

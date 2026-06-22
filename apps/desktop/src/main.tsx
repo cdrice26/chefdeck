@@ -7,7 +7,7 @@ import SchedulePage from './components/pages/SchedulePage';
 import GroceriesPage from './components/pages/GroceriesPage';
 import AddRecipePage from './components/pages/AddRecipePage';
 import ProfilePage from './components/pages/ProfilePage';
-import { NotificationProvider } from 'chefdeck-shared';
+import { NotificationProvider } from 'cookycardz-shared';
 import RecipePage from './components/pages/RecipePage';
 import EditRecipePage from './components/pages/EditRecipePage';
 import { AuthProvider } from './hooks/useAuth';

@@ -9,7 +9,7 @@ import {
   useIsDark,
   useScheduleActions,
   Schedule
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import dynamic from 'next/dynamic';
 
 const Select = dynamic(() => import('react-select'), { ssr: false });

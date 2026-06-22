@@ -8,7 +8,7 @@ import {
   RecipeDetails,
   useRecipeMutator,
   Recipe
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import { confirm } from '@tauri-apps/plugin-dialog';
 import { useMemo } from 'react';
 import { convertFileSrc } from '@tauri-apps/api/core';

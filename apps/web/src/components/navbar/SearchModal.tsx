@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal } from 'chefdeck-shared';
+import { Button, Modal } from 'cookycardz-shared';
 import SearchBarRenderer from '../navbar/SearchBarRenderer';
 
 interface TagOption {

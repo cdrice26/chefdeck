@@ -6,7 +6,7 @@ import {
   useNotification,
   useScheduleMutator,
   useSchedules
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 
 export default function ManageSchedulesPage() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { NotificationKind } from 'chefdeck-shared';
+import { NotificationKind } from 'cookycardz-shared';
 import RequestFn from '@/types/RequestFn';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

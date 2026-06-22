@@ -1,5 +1,5 @@
 import { open } from '@tauri-apps/plugin-dialog';
-import { Button } from 'chefdeck-shared';
+import { Button } from 'cookycardz-shared';
 import { useState } from 'react';
 
 export default function FileInput() {

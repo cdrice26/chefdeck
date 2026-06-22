@@ -4,7 +4,10 @@ import './globals.css';
 import Navbar from '@/components/navbar/Navbar';
 import { AuthProvider } from '@/context/AuthContext';
 import BottomNavigation from '@/components/navbar/BottomNavigation';
-import { NotificationProvider, NotificationWrapper } from 'chefdeck-shared/server';
+import {
+  NotificationProvider,
+  NotificationWrapper
+} from 'cookycardz-shared/server';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -17,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ChefDeck',
+  title: 'CookyCardz',
   description: 'Manage your recipes, meal plans, and grocery lists with ease.',
   icons: {
     icon: '/favicon.png'

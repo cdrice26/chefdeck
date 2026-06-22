@@ -1,6 +1,5 @@
 import { PasswordMutator } from '@/hooks/mutators/usePasswordMutator';
-import { ResponsiveForm, Input, Button } from 'chefdeck-shared';
-
+import { ResponsiveForm, Input, Button } from 'cookycardz-shared';
 
 const ForgotPassword: React.FC<PasswordMutator> = ({
   handleSubmit,

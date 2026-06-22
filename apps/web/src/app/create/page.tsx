@@ -7,12 +7,12 @@ import {
   useNotification,
   RecipeForm,
   OptionType
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import request from '@/utils/fetchUtils';
 import dynamic from 'next/dynamic';
 
 const TagSelector = dynamic(
-  () => import('chefdeck-shared').then((module) => module.TagSelector),
+  () => import('cookycardz-shared').then((module) => module.TagSelector),
   {
     ssr: false
   }

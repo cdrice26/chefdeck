@@ -8,12 +8,12 @@ import {
   useRecipeEditMutator,
   RecipeForm,
   OptionType
-} from 'chefdeck-shared';
+} from 'cookycardz-shared';
 import dynamic from 'next/dynamic';
 import { useParams, useRouter } from 'next/navigation';
 
 const TagSelector = dynamic(
-  () => import('chefdeck-shared').then((module) => module.TagSelector),
+  () => import('cookycardz-shared').then((module) => module.TagSelector),
   {
     ssr: false
   }

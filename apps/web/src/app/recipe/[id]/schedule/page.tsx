@@ -3,7 +3,13 @@
 import useRequireAuth from '@/hooks/useRequireAuth';
 import { useParams, useRouter } from 'next/navigation';
 import request from '@/utils/fetchUtils';
-import { useNotification, useSchedules, useIsDark, useScheduleMutator, ManageSchedules } from 'chefdeck-shared';
+import {
+  useNotification,
+  useSchedules,
+  useIsDark,
+  useScheduleMutator,
+  ManageSchedules
+} from 'cookycardz-shared';
 
 export default function ScheduleRecipePage() {
   const router = useRouter();

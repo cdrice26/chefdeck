@@ -1,5 +1,5 @@
 import { ProfileMutator } from '@/hooks/mutators/useProfileMutator';
-import { ResponsiveForm, Input, Button } from 'chefdeck-shared';
+import { ResponsiveForm, Input, Button } from 'cookycardz-shared';
 
 const SetupProfile = ({ handleSubmit, error }: ProfileMutator) => (
   <ResponsiveForm onSubmit={handleSubmit}>

@@ -1,7 +1,11 @@
 import { useNavigate } from 'react-router';
-import { RecipeForm, useNotification, useRecipeCreator } from 'chefdeck-shared';
+import {
+  RecipeForm,
+  useNotification,
+  useRecipeCreator
+} from 'cookycardz-shared';
 import { request, requestFromFormData } from '../../utils/fetchUtils';
-import { TagSelector } from 'chefdeck-shared';
+import { TagSelector } from 'cookycardz-shared';
 import FileInput from '../forms/FileInput';
 
 export default function AddRecipePage() {

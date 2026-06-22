@@ -61,7 +61,7 @@ pub fn run() {
             });
 
             let win_builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::default())
-                .title("ChefDeck")
+                .title("CookyCardz")
                 .transparent(true)
                 .inner_size(800.0, 600.0);
 

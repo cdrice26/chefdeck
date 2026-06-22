@@ -1,4 +1,4 @@
-import { Card } from 'chefdeck-shared';
+import { Card } from 'cookycardz-shared';
 
 interface SectionProps {
   children: React.ReactNode;

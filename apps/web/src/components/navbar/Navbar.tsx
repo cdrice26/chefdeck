@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { useIsDark } from 'chefdeck-shared';
+import { useIsDark } from 'cookycardz-shared';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -91,7 +91,7 @@ const Navbar: React.FC = () => {
         <Image
           src={isDark ? '/logo-darktheme.png' : '/logo.png'}
           className="w-[100px]"
-          alt="ChefDeck"
+          alt="CookyCardz"
           width={80}
           height={50}
         />

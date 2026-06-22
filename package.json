@@ -1,5 +1,5 @@
 {
-  "name": "chefdeck",
+  "name": "cookycardz",
   "version": "0.1.0",
   "private": true,
   "workspaces": [
@@ -9,8 +9,8 @@
   "packageManager": "npm@11.6.2",
   "scripts": {
     "dev": "turbo run dev",
-    "dev:web": "turbo run dev --filter=chefdeck-web...",
-    "dev:desktop": "turbo run dev --filter=chefdeck-desktop...",
+    "dev:web": "turbo run dev --filter=cookycardz-web...",
+    "dev:desktop": "turbo run dev --filter=cookycardz-desktop...",
     "build": "turbo run build",
     "start": "turbo run start",
     "lint": "turbo run lint",

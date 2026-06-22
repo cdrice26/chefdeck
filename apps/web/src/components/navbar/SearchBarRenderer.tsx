@@ -2,7 +2,7 @@
 
 import Select, { MultiValue, ActionMeta } from 'react-select';
 import { IoSearch } from 'react-icons/io5';
-import { useIsDark, getSelectStyles } from 'chefdeck-shared';
+import { useIsDark, getSelectStyles } from 'cookycardz-shared';
 
 interface SearchBarRendererProps {
   tagOptions: { label: string; value: string }[];

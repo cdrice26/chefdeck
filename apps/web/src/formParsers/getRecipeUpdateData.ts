@@ -1,4 +1,4 @@
-import { zipArrays } from 'chefdeck-shared/server';
+import { zipArrays } from 'cookycardz-shared/server';
 
 /**
  * Parse a FormData object from the recipe update form into a plain object.

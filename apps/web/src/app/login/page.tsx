@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useLoginMutator, Login } from 'chefdeck-shared';
+import { useLoginMutator, Login } from 'cookycardz-shared';
 import request from '@/utils/fetchUtils';
 
 const LoginPage = () => {
