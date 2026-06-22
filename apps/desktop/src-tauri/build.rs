@@ -1,6 +1,6 @@
 fn main() {
     let api_url = if cfg!(debug_assertions) {
-        "https://chefdeck.vercel.app/api"
+        "http://localhost:3000/api"
     } else {
         "https://chefdeck.vercel.app/api"
     };
