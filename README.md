@@ -1,4 +1,4 @@
-# CookyCardz
+# CookyCardz (formerly ChefDeck)
 
 CookyCardz is a recipe manager tool. It allows you to manage your recipes, organize them with tags, schedule them, and generate grocery lists. It is both a cloud-based web app and a (WIP) desktop application with optional cloud syncing.
 
