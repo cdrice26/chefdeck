@@ -43,7 +43,7 @@ pub async fn api_recipe_update(
         cloud_parent_id: None,
     };
 
-    let result = match update_recipe(&db, &recipe_form_data).await {
+    let result = match update_recipe(&db, &recipe_form_data, images_lib_path).await {
         Ok(_) => Ok(()),
         Err(e) => Err(e.to_string()),
     };

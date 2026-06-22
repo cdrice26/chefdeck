@@ -13,7 +13,7 @@ use crate::{
         Downloadable, DownloadableWith, RemoteUpdatable, Updatable, Uploadable,
     },
     errors::StringifyError,
-    img_proc::convert_cloud_img_to_local,
+    img_proc::{convert_cloud_img_to_local, delete_recipe_img},
     macros::{run_tx, run_tx_with_error},
     types::{
         cloud_structs::{
@@ -88,6 +88,7 @@ async fn update_local_recipe_from_downloaded(
         async |tx: &mut Transaction<'_, Sqlite>| -> Result<Option<i64>, Box<dyn std::error::Error>> {
             let mut local_recipe = recipe.into_local_recipe(local_id);
             local_recipe.image_path = local_image_path;
+            delete_recipe_img(tx, local_id, &state.images_lib_path).await?;
             local_recipe.update(tx).await?;
             Ok(Some(local_id))
         }

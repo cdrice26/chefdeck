@@ -163,7 +163,7 @@ pub async fn get_raw_recipe(
     Ok(recipe)
 }
 
-/// Wrapper for recipe_form_data.update that creates the database transaction
+/// Wrapper for recipe_form_data.update that creates the database transaction and deletes the image before updating;
 ///
 /// # Arguments:
 /// * `db` - The database pool to use for the transaction.
@@ -174,8 +174,11 @@ pub async fn get_raw_recipe(
 pub async fn update_recipe(
     db: &sqlx::SqlitePool,
     recipe_form_data: &LocalRecipe,
+    images_lib_path: &PathBuf,
 ) -> Result<i64, Box<dyn std::error::Error>> {
+    let provided_recipe_id = recipe_form_data.id;
     let recipe_id = run_tx_with_error!(db, async |tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>| {
+        delete_recipe_img(tx, provided_recipe_id, images_lib_path).await?;
         recipe_form_data.update(tx).await
     });
     Ok(recipe_id)

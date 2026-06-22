@@ -61,7 +61,6 @@ export default function Toolbar() {
         <button
           className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-[#505050] flex justify-center items-center"
           onClick={() => {
-            console.log('going back');
             navigate(-1);
           }}
         >

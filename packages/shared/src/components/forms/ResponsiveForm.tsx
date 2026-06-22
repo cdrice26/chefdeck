@@ -30,7 +30,7 @@ const ResponsiveForm: React.FC<ResponsiveFormProps> = ({
   onSubmit,
   children
 }) => (
-  <div className="w-full h-full flex justify-center items-center p-0 sm:p-4">
+  <div className="w-full min-h-full flex justify-center items-center p-0 sm:p-4">
     <Card
       className="p-4 w-full h-full xl:w-1/2 sm:min-h-1/2 sm:h-auto"
       squareOnMobile
