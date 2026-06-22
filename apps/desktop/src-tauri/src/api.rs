@@ -1,3 +1,4 @@
+pub mod archive;
 pub mod auth;
 pub mod recipe;
 pub mod recipes;

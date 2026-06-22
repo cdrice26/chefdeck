@@ -11,6 +11,7 @@
     "dialog:allow-message",
     "dialog:allow-confirm",
     "dialog:allow-open",
+    "dialog:allow-save",
     "opener:allow-default-urls",
     "core:webview:allow-print"
   ]

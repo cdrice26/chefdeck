@@ -7,6 +7,9 @@ import {
   useTagsMutator
 } from 'cookycardz-shared';
 import { request } from '../../utils/fetchUtils';
+import { confirm } from '@tauri-apps/plugin-dialog';
+import { FormEvent } from 'react';
+import { invoke } from '@tauri-apps/api/core';
 
 export default function MorePage() {
   const { availableTags, error, isLoading, refetch } =
@@ -15,11 +18,40 @@ export default function MorePage() {
 
   const mutator = useTagsMutator(request, addNotification, refetch);
 
+  const handleBackupAction = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const action = (e.nativeEvent as SubmitEvent).submitter?.getAttribute(
+      'value'
+    );
+    if (action === 'export') {
+      await invoke('zip_data');
+    } else if (action === 'import') {
+      if (
+        await confirm(
+          'Are you sure you want to import data? ALL your existing CookyCardz data will be replaced!'
+        )
+      )
+        try {
+          await invoke('unzip_data');
+          addNotification('Import complete!', 'success');
+        } catch (e) {
+          addNotification(
+            'Error importing data. Please check your archive.',
+            'error'
+          );
+        }
+    }
+  };
   return (
     <div>
-      <ResponsiveForm onSubmit={() => {}}>
-        <h1 className="text-2xl font-bold mb-4">Export Recipes</h1>
-        <Button>Export All Recipes to Archive</Button>
+      <ResponsiveForm onSubmit={handleBackupAction}>
+        <h1 className="text-2xl font-bold mb-4">Import/Export Database</h1>
+        <Button type="submit" name="action" value="export">
+          Export All Recipes to Archive
+        </Button>
+        <Button type="submit" name="action" value="import">
+          Import All Recipes from Archive
+        </Button>
       </ResponsiveForm>
       <ManageTags
         {...mutator}
