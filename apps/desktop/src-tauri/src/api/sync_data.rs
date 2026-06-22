@@ -400,13 +400,16 @@ async fn sync_schedules(app: AppHandle) -> Result<(), String> {
     Ok(())
 }
 
-async fn sync_all(app: AppHandle) -> Result<(), String> {
+pub async fn sync_all(app: AppHandle) -> Result<(), String> {
+    let state = app.state::<AppState>();
+    let username = match get_username(&state).await {
+        Ok(username) => username,
+        Err(_) => return Ok(()),
+    };
     sync_recipes(app.clone()).await?;
     sync_tags(app.clone()).await?;
     sync_schedules(app.clone()).await?;
-    let state = app.state::<AppState>();
     let db = &state.db;
-    let username = get_username(&state).await?;
     run_tx!(db, async |tx: &mut Transaction<'_, Sqlite>| {
         let username_ref = &username;
         sqlx::query_file!("db/update_last_synced.sql", username_ref)

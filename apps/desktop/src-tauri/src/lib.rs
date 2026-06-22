@@ -10,10 +10,14 @@ mod request;
 mod token_keyring;
 mod types;
 
-use crate::database::create::setup_db;
+use crate::{
+    api::{auth::check_auth::get_username, sync_data::sync_all},
+    database::create::setup_db,
+};
 use std::path::PathBuf;
 use tauri::{
-    generate_handler, LogicalPosition, Manager, TitleBarStyle, WebviewUrl, WebviewWindowBuilder,
+    generate_handler, Emitter, LogicalPosition, Manager, TitleBarStyle, WebviewUrl,
+    WebviewWindowBuilder,
 };
 use tokio::sync::Mutex;
 #[cfg(target_os = "windows")]
@@ -100,6 +104,20 @@ pub fn run() {
                         .build(),
                 )?;
             }
+
+            let app = app.handle().clone();
+
+            tauri::async_runtime::spawn(async move {
+                let state = app.state::<AppState>();
+                match get_username(&state).await {
+                    Ok(username) => username,
+                    Err(_) => return Ok(()),
+                };
+                match sync_all(app.clone()).await {
+                    Ok(_) => app.emit("sync_success", "Sync complete!"),
+                    Err(_) => app.emit("sync_error", "Failed to sync data"),
+                }
+            });
 
             Ok(())
         })

@@ -53,6 +53,14 @@ export default function RootPage() {
     addNotification(event.payload, 'error');
   });
 
+  useTauriListener('sync_error', (event) => {
+    addNotification(event.payload, 'error');
+  });
+
+  useTauriListener('sync_success', (event) => {
+    addNotification(event.payload, 'success');
+  });
+
   return (
     <>
       <NotificationWrapper />
