@@ -110,7 +110,7 @@ export default function Toolbar() {
             platform() === 'macos'
               ? 'rounded-full border border-white dark:border-[#303030] bg-[#fefefe] dark:bg-[#151515] drop-shadow-2xl'
               : 'rounded-lg bg-gray-100 dark:bg-[#505050]'
-          } ${pathname === '/' ? '' : 'hidden'}`}
+          } ${pathname === '/' || pathname === '/dashboard' ? '' : 'hidden'}`}
         >
           <IoIosSearch className="ml-1 aspect-square h-full pointer-events-none text-black dark:text-white" />
           <input

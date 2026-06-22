@@ -100,7 +100,10 @@ export default function Home() {
         </p>
         <p className="text-gray-600 dark:text-gray-400">
           CookyCardz is created by Caleb Rice. The source code is available on{' '}
-          <a href="https://github.com/cdrice26/chefdeck" className="underline">
+          <a
+            href="https://github.com/cdrice26/cookycardz"
+            className="underline"
+          >
             Github
           </a>
           .
@@ -108,7 +111,7 @@ export default function Home() {
         <p className="text-gray-600 dark:text-gray-400">
           This project is licensed under the{' '}
           <a
-            href="https://github.com/cdrice26/chefdeck/blob/main/LICENSE"
+            href="https://github.com/cdrice26/cookycardz/blob/main/LICENSE"
             className="underline"
           >
             MIT License

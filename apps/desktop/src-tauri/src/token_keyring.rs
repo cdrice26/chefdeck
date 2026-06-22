@@ -1,5 +1,5 @@
 /// Service name used for OS keyring entries.
-const SERVICE_NAME: &str = "chefdeck";
+const SERVICE_NAME: &str = "cookycardz";
 /// Key under which the refresh token is stored in the keyring.
 const REFRESH_TOKEN_KEY: &str = "refresh_token";
 

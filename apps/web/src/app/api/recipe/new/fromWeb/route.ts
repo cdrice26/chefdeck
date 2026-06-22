@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest) => {
   //       return NextResponse.json({
   //         error: {
   //           message:
-  //             "That website doesn't permit ChefDeck to access its recipes."
+  //             "That website doesn't permit CookyCardz to access its recipes."
   //         }
   //       });
   //     }

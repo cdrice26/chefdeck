@@ -85,7 +85,7 @@ export default function Sidebar({
         ))}
       </div>
       <div
-        className={`flex flex-row flex-wrap gap-2 h-full items-start justify-start content-start overflow-y-auto p-2 ${location.pathname === '/' ? '' : 'hidden'}`}
+        className={`flex flex-row flex-wrap gap-2 h-full items-start justify-start content-start overflow-y-auto p-2 ${location.pathname === '/' || location.pathname === '/dashboard' ? '' : 'hidden'}`}
       >
         {availableTags?.map((tag: OptionType) => (
           <button
