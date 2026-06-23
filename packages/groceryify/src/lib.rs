@@ -3,7 +3,7 @@ use crate::{
     lemmatizer::Lemmatizer, parsed_ingredient::ParsedIngredient,
 };
 
-mod ingredient;
+pub mod ingredient;
 mod ingredient_name;
 mod ingredient_unit;
 mod lemmatizer;
