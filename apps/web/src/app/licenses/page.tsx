@@ -12,6 +12,7 @@ export default async function LicensesPage() {
   return (
     <div className="w-full h-full overflow-y-auto">
       <pre>{text}</pre>
+      <pre>License Text for Ionicons:</pre>
       <pre className="mt-2 whitespace-pre-wrap wrap-break-word font-mono">
         Ionicons The MIT License (MIT) Copyright (c) 2015-present Ionic
         (http://ionic.io/) Permission is hereby granted, free of charge, to any
