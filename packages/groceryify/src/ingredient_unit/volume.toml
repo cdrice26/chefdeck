@@ -1,0 +1,35 @@
+[teaspoon]
+canonical = "tsp"
+fuzzy = ["teaspoon", "teaspoons", "tsps"]
+
+[tablespoon]
+canonical = "tbsp"
+fuzzy = ["tablespoon", "tablespoons", "tbsps", "Tbsp", "TBSP"]
+
+[fluid_ounce]
+canonical = "fl oz"
+fuzzy = ["fluid ounce", "fluid ounces", "fl oz", "fl_oz", "floz", "fluid-ounce", "fluid-ounces", "oz (fluid)"]
+
+[gallon]
+canonical = "gal"
+fuzzy = ["gallon", "gallons", "gals", "gal.", "gallon (liquid)"]
+
+[quart]
+canonical = "qt"
+fuzzy = ["quart", "quarts", "qts", "qt.", "quart (liquid)"]
+
+[pint]
+canonical = "pt"
+fuzzy = ["pint", "pints", "pts", "pt.", "pint (liquid)"]
+
+[cup]
+canonical = "c"
+fuzzy = ["cup", "cups", "c.", "c ", "cups (US)", "US cup", "cups (us)"]
+
+[milliliter]
+canonical = "mL"
+fuzzy = ["milliliter", "milliliters", "millilitre", "millilitres", "ml", "mL.", "m l"]
+
+[liter]
+canonical = "L"
+fuzzy = ["liter", "liters", "litre", "litres", "l", "L.", "l."]

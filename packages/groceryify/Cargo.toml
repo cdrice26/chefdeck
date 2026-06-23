@@ -1,0 +1,19 @@
+[package]
+name = "groceryify"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+measurements = { version = "0.11.1", features = ["from_str"]}
+serde = { version = "1.0.228", features = ["derive"] }
+toml = "1.1.2"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+wasm = ["wasm-bindgen", "serde-wasm-bindgen"]
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = { version = "0.2", optional = true }
+serde-wasm-bindgen = { version = "0.6", optional = true }

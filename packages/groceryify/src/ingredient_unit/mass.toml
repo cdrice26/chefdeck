@@ -1,0 +1,15 @@
+[ounce]
+canonical = "oz"
+fuzzy = ["ounce", "ounces", "oz.", "ozs"]
+
+[pound]
+canonical = "lb"
+fuzzy = ["pound", "pounds", "lb.", "lbs", "lbs."]
+
+[grams]
+canonical = "g"
+fuzzy = ["gram", "grams", "g.", "gr", "g "]
+
+[kilograms]
+canonical = "kg"
+fuzzy = ["kilogram", "kilograms", "kg.", "kgs"]
