@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use measurements::Measurement;
 
 use crate::{
@@ -16,16 +18,37 @@ pub enum Quantity {
 impl Quantity {
     pub fn new(ingredient: &Ingredient) -> Self {
         let parsed_measurement: Result<ParsedMeasurement, ParsedMeasurementError> =
-            <&Ingredient as TryInto<ParsedMeasurement>>::try_into(ingredient);
+            <&Ingredient>::try_into(ingredient);
         match parsed_measurement {
-            Ok(measurement) => Quantity::Known {
+            Ok(measurement) => Self::Known {
                 amount: measurement.as_base_units(),
                 unit_key: measurement.get_base_units_name().to_string(),
             },
-            Err(_) => Quantity::Custom {
+            Err(_) => Self::Custom {
                 amount: ingredient.amount,
                 unit: ingredient.unit.clone(),
             },
+        }
+    }
+
+    pub fn kind_rank(&self) -> u8 {
+        match self {
+            Quantity::Known { .. } => 0,
+            Quantity::Custom { .. } => 1,
+        }
+    }
+
+    pub fn unit_key(&self) -> &str {
+        match self {
+            Quantity::Known { unit_key, .. } => unit_key.as_str(),
+            Quantity::Custom { unit, .. } => unit.as_str(),
+        }
+    }
+
+    pub fn amount(&self) -> f64 {
+        match self {
+            Quantity::Known { amount, .. } => *amount,
+            Quantity::Custom { amount, .. } => *amount,
         }
     }
 
@@ -59,6 +82,34 @@ impl Quantity {
             }),
             (a, b) => Err((a, b)),
         }
+    }
+}
+
+impl PartialEq for Quantity {
+    fn eq(&self, other: &Self) -> bool {
+        self.kind_rank() == other.kind_rank()
+            && self.unit_key() == other.unit_key()
+            && self.amount().to_bits() == other.amount().to_bits()
+    }
+}
+
+impl Eq for Quantity {}
+
+impl PartialOrd for Quantity {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Quantity {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.kind_rank()
+            .cmp(&other.kind_rank())
+            .then_with(|| self.unit_key().cmp(other.unit_key()))
+            .then_with(|| {
+                // total ordering for f64 (handles NaN consistently)
+                self.amount().total_cmp(&other.amount())
+            })
     }
 }
 
@@ -146,6 +197,89 @@ mod tests {
             Quantity::Known { amount, .. } => assert!(amount.is_finite()),
             Quantity::Custom { .. } => panic!("expected Known, got Custom"),
         }
+    }
+
+    // ordering tests
+    #[test]
+    fn orders_known_before_custom() {
+        let a = custom(1.0, "m");
+        let b = known(1.0, "m");
+
+        assert!(b < a);
+        assert!(a > b);
+        assert_eq!(b.cmp(&a), std::cmp::Ordering::Less);
+    }
+
+    #[test]
+    fn orders_by_unit_key_within_known() {
+        let a = known(1.0, "b");
+        let b = known(1.0, "a");
+
+        assert!(b < a);
+        assert_eq!(a.cmp(&b), std::cmp::Ordering::Greater);
+    }
+
+    #[test]
+    fn orders_by_unit_within_custom() {
+        let a = custom(1.0, "b");
+        let b = custom(1.0, "a");
+
+        assert!(b < a);
+        assert_eq!(a.cmp(&b), std::cmp::Ordering::Greater);
+    }
+
+    #[test]
+    fn orders_by_amount_when_kind_and_unit_match() {
+        let a = known(1.0, "m");
+        let b = known(2.0, "m");
+
+        assert!(a < b);
+        assert_eq!(b.cmp(&a), std::cmp::Ordering::Greater);
+    }
+
+    #[test]
+    fn full_sort_uses_kind_then_unit_then_amount() {
+        let mut v = vec![
+            custom(2.0, "m"), // custom, m, 2
+            known(2.0, "m"),  // known,  m, 2
+            known(1.0, "s"),  // known,  s, 1
+            custom(1.0, "s"), // custom, s, 1
+            known(1.0, "m"),  // known,  m, 1
+            custom(0.5, "m"), // custom, m, 0.5
+        ];
+
+        v.sort();
+
+        let expected = vec![
+            known(1.0, "m"),
+            known(2.0, "m"),
+            known(1.0, "s"),
+            custom(0.5, "m"),
+            custom(2.0, "m"),
+            custom(1.0, "s"),
+        ];
+
+        assert_eq!(v, expected);
+    }
+
+    #[test]
+    fn equal_when_same_kind_unit_amount() {
+        let a = known(1.25, "kg");
+        let b = known(1.25, "kg");
+
+        assert_eq!(a, b);
+        assert_eq!(a.cmp(&b), std::cmp::Ordering::Equal);
+    }
+
+    #[test]
+    fn different_amount_orders_consistently_for_f64() {
+        let a = custom(1.0, "L");
+        let b = custom(1.0, "L");
+        let c = custom(2.0, "L");
+
+        assert_eq!(a.cmp(&b), std::cmp::Ordering::Equal);
+        assert!(a < c);
+        assert!(c > b);
     }
 
     // adding tests
