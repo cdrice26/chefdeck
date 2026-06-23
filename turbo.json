@@ -15,6 +15,10 @@
         "apps/desktop/src-tauri/target/**"
       ]
     },
+    "build:vercel": {
+      "dependsOn": ["cookycardz-shared#build"],
+      "outputs": ["dist/**", ".next/**", "build/**"]
+    },
     "dev": {
       "cache": false,
       "persistent": true,
@@ -25,14 +29,8 @@
       "persistent": true,
       "dependsOn": ["^build", "cookycardz-shared#build", "groceryify#build"]
     },
-    "lint": {
-      "outputs": []
-    },
-    "test": {
-      "outputs": []
-    },
-    "format": {
-      "outputs": []
-    }
+    "lint": { "outputs": [] },
+    "test": { "outputs": [] },
+    "format": { "outputs": [] }
   }
 }
