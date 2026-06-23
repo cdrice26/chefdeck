@@ -18,12 +18,12 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["^build", "cookycardz-shared#build"]
+      "dependsOn": ["^build", "cookycardz-shared#build", "groceryify#build"]
     },
     "start": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["^build", "cookycardz-shared#build"]
+      "dependsOn": ["^build", "cookycardz-shared#build", "groceryify#build"]
     },
     "lint": {
       "outputs": []
