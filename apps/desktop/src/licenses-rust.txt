@@ -3,7 +3,7 @@ This page lists the licenses of the projects used in CookyCardz Desktop.
 
 ## Overview of Licenses
 - [Apache License 2.0](#Apache-2.0) (436)
-- [MIT License](#MIT) (160)
+- [MIT License](#MIT) (163)
 - [Unicode License v3](#Unicode-3.0) (19)
 - [BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License](#BSD-3-Clause) (10)
 - [Mozilla Public License 2.0](#MPL-2.0) (5)
@@ -12603,6 +12603,21 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 <a id="MIT"></a>
 ### MIT License
 #### Used by:
+- [app 0.1.0]( https://crates.io/crates/app )
+- [groceryify 0.1.0]( https://crates.io/crates/groceryify )
+```
+Copyright 2026 Caleb Rice
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+```
+<a id="MIT"></a>
+### MIT License
+#### Used by:
 - [fax 0.2.7]( https://github.com/pdf-rs/fax )
 ```
 Copyright © 2021 The pdf-rs contributers.
@@ -13372,12 +13387,13 @@ SOFTWARE.
 <a id="MIT"></a>
 ### MIT License
 #### Used by:
-- [app 0.1.0]( https://crates.io/crates/app )
 - [block2 0.6.2]( https://github.com/madsmtm/objc2 )
 - [brotli-decompressor 5.0.0]( https://github.com/dropbox/rust-brotli-decompressor )
 - [dlopen2 0.8.2]( https://github.com/OpenByteDev/dlopen2 )
 - [dlopen2_derive 0.4.3]( https://github.com/OpenByteDev/dlopen2 )
 - [dpi 0.1.2]( https://github.com/rust-windowing/winit )
+- [libm 0.2.16]( https://github.com/rust-lang/compiler-builtins )
+- [measurements 0.11.1]( https://github.com/rust-embedded-community/rust-measurements )
 - [objc2-encode 4.1.0]( https://github.com/madsmtm/objc2 )
 - [objc2-foundation 0.3.2]( https://github.com/madsmtm/objc2 )
 - [objc2 0.6.4]( https://github.com/madsmtm/objc2 )

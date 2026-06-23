@@ -8,10 +8,11 @@
   ],
   "packageManager": "npm@11.6.2",
   "scripts": {
+    "licenses": "yes | generate-license-file --input package.json --output ThirdPartyNotices.txt && cargo about generate -m packages/groceryify/Cargo.toml --target wasm32-unknown-unknown packages/groceryify/about.hbs --features wasm >> ThirdPartyNotices.txt",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=cookycardz-web...",
     "dev:desktop": "turbo run dev --filter=cookycardz-desktop...",
-    "build": "turbo run build",
+    "build": "npm run licenses && turbo run build",
     "start": "turbo run start",
     "lint": "turbo run lint",
     "cargo": "cd apps/desktop/src-tauri && cargo"

@@ -1,0 +1,30 @@
+# Third Party Licenses
+This page lists the licenses of the projects used in Groceryify.
+
+## Overview of Licenses
+{{#each overview}}
+- [{{name}}](#{{id}}) ({{count}})
+{{/each}}
+
+## All License Texts
+{{#each licenses}}
+<a id="{{id}}"></a>
+### {{name}}
+#### Used by:
+{{#each used_by}}
+- [{{crate.name}} {{crate.version}}]({{#if crate.repository}} {{crate.repository}} {{else}} https://crates.io/crates/{{crate.name}} {{/if}})
+{{/each}}
+```
+{{text}}
+```
+{{/each}}
+
+## NOTICE Files
+{{#each crates}}
+{{#if notices}}
+### {{name}} {{version}}
+{{#each notices}}
+{{text}}
+{{/each}}
+{{/if}}
+{{/each}}

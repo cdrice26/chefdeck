@@ -2,6 +2,7 @@
 name = "groceryify"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
 
 [dependencies]
 measurements = { version = "0.11.1", features = ["from_str"]}

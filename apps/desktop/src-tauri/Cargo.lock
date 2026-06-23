@@ -116,6 +116,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "getrandom 0.2.17",
+ "groceryify",
  "image",
  "infer",
  "keyring",
@@ -2021,6 +2022,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "groceryify"
+version = "0.1.0"
+dependencies = [
+ "measurements",
+ "serde",
+ "toml 1.1.2+spec-1.1.0",
+]
+
+[[package]]
 name = "gtk"
 version = "0.18.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2968,6 +2978,16 @@ checksum = "d89e7ee0cfbedfc4da3340218492196241d89eefb6dab27de5df917a6d2e78cf"
 dependencies = [
  "cfg-if",
  "digest 0.10.7",
+]
+
+[[package]]
+name = "measurements"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f72b38901c571007811f0483e64a7e215ac9e6e3688e9f83705a717621d81513"
+dependencies = [
+ "libm",
+ "regex",
 ]
 
 [[package]]
