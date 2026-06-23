@@ -1,0 +1,6 @@
+{
+  "name": "groceryify",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./groceryify.js"
+}

@@ -1,6 +1,7 @@
 use crate::{ingredient_unit::Quantity, parsed_ingredient::ParsedIngredient};
 
 use measurements::{Mass, Measurement, Volume};
+use serde::{Deserialize, Serialize};
 
 fn convert_from_base(base_amount: f64, base_unit: &str, original_unit: &str) -> f64 {
     let one_target_in_base = match base_unit {
@@ -17,7 +18,7 @@ fn convert_from_base(base_amount: f64, base_unit: &str, original_unit: &str) -> 
     base_amount / one_target_in_base
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Ingredient {
     pub name: String,
     pub amount: f64,

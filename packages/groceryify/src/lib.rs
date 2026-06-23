@@ -8,6 +8,8 @@ mod ingredient_name;
 mod ingredient_unit;
 mod lemmatizer;
 mod parsed_ingredient;
+#[cfg(feature = "wasm")]
+pub mod wasm;
 
 /// Takes a list of ingredients and merges like ingredients to create a grocery list.
 ///
