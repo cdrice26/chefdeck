@@ -11,8 +11,15 @@ mod measurement_parser;
 
 #[derive(Clone, Debug)]
 pub enum Quantity {
-    Known { amount: f64, unit_key: String },
-    Custom { amount: f64, unit: String },
+    Known {
+        amount: f64,
+        unit_key: String,
+        original_unit: String,
+    },
+    Custom {
+        amount: f64,
+        unit: String,
+    },
 }
 
 impl Quantity {
@@ -23,6 +30,7 @@ impl Quantity {
             Ok(measurement) => Self::Known {
                 amount: measurement.as_base_units(),
                 unit_key: measurement.get_base_units_name().to_string(),
+                original_unit: ingredient.unit.clone(),
             },
             Err(_) => Self::Custom {
                 amount: ingredient.amount,
@@ -71,14 +79,34 @@ impl Quantity {
                 Quantity::Known {
                     amount: a1,
                     unit_key: k1,
+                    original_unit: u1,
                 },
                 Quantity::Known {
                     amount: a2,
                     unit_key: k2,
+                    original_unit: u2,
+                },
+            ) if k1 == k2 && u1 == u2 => Ok(Quantity::Known {
+                amount: a1 + a2, // already in the same unit, just add
+                unit_key: k1,
+                original_unit: u1, // keep it
+            }),
+            // different original units but same dimension (e.g. tsp + tbsp):
+            (
+                Quantity::Known {
+                    amount: a1,
+                    unit_key: k1,
+                    original_unit: u1,
+                },
+                Quantity::Known {
+                    amount: a2,
+                    unit_key: k2,
+                    ..
                 },
             ) if k1 == k2 => Ok(Quantity::Known {
-                amount: a1 + a2,
+                amount: a1 + a2, // both already in base units, sum is valid
                 unit_key: k1,
+                original_unit: u1, // keep the first ingredient's unit as the display unit
             }),
             (a, b) => Err((a, b)),
         }
@@ -122,6 +150,7 @@ mod tests {
         Quantity::Known {
             amount,
             unit_key: unit_key.to_string(),
+            original_unit: "tsp".to_string(),
         }
     }
 
@@ -153,7 +182,9 @@ mod tests {
         let q = Quantity::new(&ing);
 
         match q {
-            Quantity::Known { amount, unit_key } => {
+            Quantity::Known {
+                amount, unit_key, ..
+            } => {
                 // amount is stored as base units
                 assert_eq!(
                     amount,
@@ -289,8 +320,10 @@ mod tests {
     #[test]
     fn known_same_unit_adds() {
         let result = known(1.0, "ml").try_add(known(2.0, "ml"));
-        assert!(matches!(result, Ok(Quantity::Known { amount, unit_key })
-            if amount == 3.0 && unit_key == "ml"));
+        assert!(
+            matches!(result, Ok(Quantity::Known { amount, unit_key, .. })
+            if amount == 3.0 && unit_key == "ml")
+        );
     }
 
     #[test]

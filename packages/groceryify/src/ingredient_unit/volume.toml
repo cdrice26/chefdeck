@@ -23,13 +23,13 @@ canonical = "pt"
 fuzzy = ["pint", "pints", "pts", "pt.", "pint (liquid)"]
 
 [cup]
-canonical = "c"
+canonical = "cup"
 fuzzy = ["cup", "cups", "c.", "c ", "cups (US)", "US cup", "cups (us)"]
 
 [milliliter]
-canonical = "mL"
-fuzzy = ["milliliter", "milliliters", "millilitre", "millilitres", "ml", "mL.", "m l"]
+canonical = "ml"
+fuzzy = ["milliliter", "milliliters", "millilitre", "millilitres", "ml", "mL.", "m l", "mL"]
 
 [liter]
-canonical = "L"
-fuzzy = ["liter", "liters", "litre", "litres", "l", "L.", "l."]
+canonical = "l"
+fuzzy = ["liter", "liters", "litre", "litres", "L", "l", "L.", "l."]

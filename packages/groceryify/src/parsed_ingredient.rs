@@ -62,6 +62,7 @@ mod tests {
         Quantity::Known {
             amount,
             unit_key: unit_key.to_string(),
+            original_unit: "tsp".to_string(),
         }
     }
     fn q_custom(amount: f64, unit: &str) -> Quantity {
