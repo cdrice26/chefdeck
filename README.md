@@ -8,6 +8,7 @@ CookyCardz is a recipe manager tool. It allows you to manage your recipes, organ
 - The Next.js web application is at: `apps/web`
 - The desktop Tauri app is at: `apps/desktop`
 - Shared code is at: `packages/shared`
+- The grocery list generator code is at: `packages/groceryify`
 
 ## Prerequisites
 
@@ -82,7 +83,7 @@ npm run build
 ```
 this builds both web and desktop apps.
 
-# Licensing
+## Licensing
 - CookyCardz is licensed under the [MIT License](LICENSE).
 - Third Party Licenses for the web app are located in [ThirdPartyNotices.txt](ThirdPartyNotices.txt) in the repo root.
 - Third Party Licenses for the desktop app are located in [licenses-js.txt](apps/desktop/src/licenses-js.txt) and [licenses-rust.txt](apps/desktop/src/licenses-rust.txt) in `apps/desktop/src`.
