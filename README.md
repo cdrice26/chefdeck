@@ -84,3 +84,7 @@ From the root, run:
 npm run build
 ```
 this builds both web and desktop apps.
+
+# Citation
+Grocery list generation depends on WordNet, a registered trademark of Princeton University. CookyCardz is neither affiliated with nor endorsed by Princeton University.
+Princeton University "About WordNet." WordNet. Princeton University. 2010.
