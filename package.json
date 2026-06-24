@@ -8,7 +8,7 @@
   ],
   "packageManager": "npm@11.6.2",
   "scripts": {
-    "licenses": "yes | generate-license-file --input package.json --output ThirdPartyNotices.txt && cargo about generate -m packages/groceryify/Cargo.toml --target wasm32-unknown-unknown packages/groceryify/about.hbs --features wasm >> ThirdPartyNotices.txt && node scripts/copy_wordnet_license.js",
+    "licenses": "node scripts/compile_licenses.js",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=cookycardz-web...",
     "dev:desktop": "turbo run dev --filter=cookycardz-desktop...",

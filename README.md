@@ -85,6 +85,9 @@ npm run build
 ```
 this builds both web and desktop apps.
 
-# Citation
-Grocery list generation depends on WordNet, a registered trademark of Princeton University. CookyCardz is neither affiliated with nor endorsed by Princeton University.
-Princeton University "About WordNet." WordNet. Princeton University. 2010.
+# Licensing
+- CookyCardz is licensed under the [MIT License](LICENSE).
+- Third Party Licenses for the web app are located in [ThirdPartyNotices.txt](ThirdPartyNotices.txt) in the repo root.
+- Third Party Licenses for the desktop app are located in [licenses-js.txt](apps/desktop/src/licenses-js.txt) and [licenses-rust.txt](apps/desktop/src/licenses-rust.txt) in `apps/desktop/src`.
+- Grocery list generation depends on WordNet, a registered trademark of Princeton University. CookyCardz is neither affiliated with nor endorsed by Princeton University.
+    - Princeton University "About WordNet." WordNet. Princeton University. 2010.
