@@ -27,9 +27,6 @@ You'll need to set the following environment variables for the web app (put `.en
 - `SUPABASE_ANON_KEY` - Your supabase anon key.
 - `SUPABASE_SERVICE_ROLE_KEY` - Your supabase service role key. Used only for account deletion.
 - `NEXT_PUBLIC_SITE_URL` - The URL of your website. This will be http://localhost:3000 in development.
-- `PYTHON_API_URL` - URL of the Python API, used mostly for generating grocery lists. If you don't want to use this feature, you don't need it.
-
-You'll also need the [Python API](https://github.com/cdrice26/chefdeck-python-api) cloned and running if you're using the grocery list feature.
 
 For the desktop app Rust backend you'll need the following (put `.env` file in `apps/desktop/src-tauri`):
 - `DATABASE_URL` - SQLx database connection URL for the sqlite database. The database should be located in the app's data directory and the .db file needs to be created in order for the app to compile. You can use the `sqlx` CLI to run migrations.

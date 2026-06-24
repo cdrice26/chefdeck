@@ -13,7 +13,7 @@ execSync(
   { stdio: 'inherit' }
 );
 execSync(
-  'wasm-bindgen --target nodejs --out-dir ./pkg ./target/wasm32-unknown-unknown/release/groceryify.wasm',
+  'wasm-bindgen --target bundler --out-dir ./pkg ./target/wasm32-unknown-unknown/release/groceryify.wasm',
   { stdio: 'inherit' }
 );
 copyFileSync('package.json', 'pkg/package.json');

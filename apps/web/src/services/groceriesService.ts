@@ -1,6 +1,7 @@
 import { Ingredient } from '@/types/Recipe';
 import { createClientWithToken } from '@/utils/supabaseUtils';
 import { PostgrestError } from '@supabase/supabase-js';
+import { merge } from 'groceryify';
 
 /**
  * Fetch merged groceries for the authenticated user between two dates.
@@ -45,30 +46,5 @@ export const getGroceries = async (
     amount: grocery.amount,
     unit: grocery.unit
   }));
-  const resp = await fetch(`${process.env.PYTHON_API_URL}/merge-ingredients`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': process.env.PYTHON_API_KEY ?? ''
-    },
-    body: JSON.stringify(toSend)
-  });
-  if (!resp.ok) {
-    if (resp.status === 429) {
-      throw new PostgrestError({
-        message: 'Too many requests.',
-        details: 'You have exceeded the usage limit of this endpoint.',
-        hint: 'Try again in a minute.',
-        code: '429'
-      });
-    }
-    throw new PostgrestError({
-      message: 'Could not merge ingredients.',
-      details: 'Could not merge ingredients.',
-      hint: 'Check to make sure your ingredients are formatted properly.',
-      code: '500'
-    });
-  }
-  const json = await resp.json();
-  return json;
+  return await merge(toSend);
 };
