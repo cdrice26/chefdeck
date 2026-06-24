@@ -108,7 +108,6 @@ mod tests {
             ing("flour", 2.0, "cup"),
         ];
         let result = merge(&ingredients);
-        println!("{:?}", result);
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].amount, 3.0);
     }
@@ -143,7 +142,6 @@ mod tests {
     fn single_ingredient_passes_through() {
         let ingredients = vec![ing("salt", 1.0, "tsp")];
         let result = merge(&ingredients);
-        println!("{:?}", result);
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].name, "salt");
         assert_eq!(result[0].amount, 1.0);

@@ -4,7 +4,6 @@ use measurements::{Mass, Measurement, Volume};
 use serde::{Deserialize, Serialize};
 
 fn convert_from_base(base_amount: f64, base_unit: &str, original_unit: &str) -> f64 {
-    println!("{}", original_unit);
     let one_target_in_base = match base_unit {
         "l" => format!("1 {original_unit}")
             .parse::<Volume>()
