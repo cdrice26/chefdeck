@@ -1,5 +1,6 @@
 pub mod archive;
 pub mod auth;
+pub mod groceries;
 pub mod recipe;
 pub mod recipes;
 pub mod sync_data;
@@ -54,6 +55,32 @@ impl From<String> for ErrorResponse {
     /// Creates a new `ErrorResponse` from a string error message.
     fn from(error: String) -> Self {
         Self { error }
+    }
+}
+
+/// Represents an error API response with an error message.
+#[derive(Serialize)]
+pub struct Message {
+    message: String,
+}
+#[derive(Serialize)]
+pub struct ErrorResponseWithMessage {
+    pub error: Message,
+}
+
+impl ErrorResponseWithMessage {
+    /// Creates a new `ErrorResponse` with the given error message.
+    pub fn new(error: String) -> Self {
+        Self {
+            error: Message { message: error },
+        }
+    }
+}
+
+impl From<String> for ErrorResponseWithMessage {
+    /// Creates a new `ErrorResponse` from a string error message.
+    fn from(error: String) -> Self {
+        Self::new(error)
     }
 }
 

@@ -63,14 +63,14 @@ impl From<ParseFloatError> for ParsedMeasurementError {
 }
 
 #[derive(Debug, Deserialize)]
-struct Unit {
+pub struct Unit {
     canonical: String,
     fuzzy: Vec<String>,
 }
 
-type Units = HashMap<String, Unit>;
+pub type Units = HashMap<String, Unit>;
 
-fn canonical_from_fuzzy<'a>(
+pub fn canonical_from_fuzzy<'a>(
     units: &'a Units,
     input: &str,
 ) -> Result<&'a str, ParsedMeasurementError> {

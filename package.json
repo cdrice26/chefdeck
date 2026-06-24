@@ -8,7 +8,7 @@
   ],
   "packageManager": "npm@11.6.2",
   "scripts": {
-    "licenses": "node scripts/compile_licenses.js",
+    "licenses": "node scripts/compile_licenses.mjs",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=cookycardz-web...",
     "dev:desktop": "turbo run dev --filter=cookycardz-desktop...",

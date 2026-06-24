@@ -1,13 +1,32 @@
-use sqlx::{Sqlite, Transaction};
+use chrono::NaiveDate;
+use sqlx::{Pool, Sqlite, Transaction};
 
 use crate::{
-    crud::{Creatable, Deletable, ReadableWith},
+    crud::{BatchReadableWith, Creatable, Deletable, ReadableWith},
     types::{
-        db_params::ImagesLibPath,
+        db_params::{DateFilter, ImagesLibPath},
         raw_db::RecipeContext,
         response_bodies::{Direction, Ingredient, RecipeTag},
     },
 };
+
+pub async fn get_groceries(
+    db: &Pool<Sqlite>,
+    start_date: NaiveDate,
+    end_date: NaiveDate,
+) -> Result<Vec<Ingredient>, Box<dyn std::error::Error>> {
+    Ok(run_tx_with_error!(db, async |tx: &mut Transaction<
+        '_,
+        Sqlite,
+    >| Vec::<Ingredient>::read_with(
+        tx,
+        DateFilter {
+            start_date: &start_date,
+            end_date: &end_date,
+        }
+    )
+    .await))
+}
 
 impl Creatable for RecipeContext {
     /// Inserts the recipe context into the database.
@@ -123,5 +142,20 @@ impl ReadableWith<ImagesLibPath<'_>> for RecipeContext {
             tags: recipe_tags,
             images_lib_path: addl_params.images_lib_path.to_path_buf(),
         })
+    }
+}
+
+impl BatchReadableWith<DateFilter<'_>> for Vec<Ingredient> {
+    async fn read_with(
+        tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+        addl_params: DateFilter<'_>,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let start_str = addl_params.start_date.to_string();
+        let end_str = addl_params.end_date.to_string();
+        let groceries =
+            sqlx::query_file_as!(Ingredient, "db/get_groceries.sql", start_str, end_str)
+                .fetch_all(&mut **tx)
+                .await;
+        Ok(groceries?)
     }
 }

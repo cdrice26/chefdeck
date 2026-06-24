@@ -4,7 +4,9 @@ use measurements::Measurement;
 
 use crate::{
     ingredient::Ingredient,
-    ingredient_unit::measurement_parser::{ParsedMeasurement, ParsedMeasurementError},
+    ingredient_unit::measurement_parser::{
+        ParsedMeasurement, ParsedMeasurementError, Units, canonical_from_fuzzy,
+    },
 };
 
 mod measurement_parser;
@@ -24,13 +26,19 @@ pub enum Quantity {
 
 impl Quantity {
     pub fn new(ingredient: &Ingredient) -> Self {
+        let vol_toml = include_str!("ingredient_unit/volume.toml");
+        let mass_toml = include_str!("ingredient_unit/mass.toml");
+        let units: Units = toml::from_str(format!("{} {}", vol_toml, mass_toml).as_str()).unwrap();
         let parsed_measurement: Result<ParsedMeasurement, ParsedMeasurementError> =
             <&Ingredient>::try_into(ingredient);
+        let original_unit = ingredient.unit.as_str();
         match parsed_measurement {
             Ok(measurement) => Self::Known {
                 amount: measurement.as_base_units(),
                 unit_key: measurement.get_base_units_name().to_string(),
-                original_unit: ingredient.unit.clone(),
+                original_unit: canonical_from_fuzzy(&units, original_unit)
+                    .unwrap_or(original_unit)
+                    .to_string(),
             },
             Err(_) => Self::Custom {
                 amount: ingredient.amount,

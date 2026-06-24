@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "licenses": "node scripts/license_compiler.js",
+    "licenses": "node scripts/license_compiler.mjs",
     "dev:vite": "vite",
     "dev": "tauri dev",
     "build:vite": "npm run licenses && tsc && vite build",
